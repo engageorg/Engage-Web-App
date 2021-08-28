@@ -1,6 +1,7 @@
 import React from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import Dummy from "./Dummy";
+import IDE from "./IDE";
 
 export default function Recorder() {
   const Recording = { events: [], startTime: -1 };
@@ -23,6 +24,7 @@ export default function Recorder() {
     {
       eventName: "click",
       handler: function handleClick(e) {
+        console.log(e);
         Recording.events.push({
           type: "click",
           target: e.target.className,
@@ -84,7 +86,7 @@ export default function Recorder() {
 
   return (
     <>
-      <Dummy/>
+      <IDE/>
       <button onClick={handleClick} className="record">
         Start Record
       </button>

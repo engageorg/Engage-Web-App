@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
 import Dummy from "./Dummy";
+import IDE from "./IDE";
+
+
 export default function Video() {
 
   // fetch recording from local storage
@@ -59,14 +61,20 @@ export default function Video() {
         flashClass(fakeCursor, "click");
         console.log(event.target);
         var tar = document.getElementsByClassName(event.target)[0];
-        flashClass(tar, "clicked");
+        if(tar !=  null){
+          flashClass(tar, "clicked");
+        }
+       
       }
       if (event.type === "keypress") {
         console.log("keypress");
         const path = event.target;
         var tar = document.getElementsByClassName(path)[0];
-        tar.focus();
-        tar.value = event.value;
+        if(tar != null){
+          tar.focus();
+          tar.value = event.value;
+        }
+
       }
     }
 
@@ -80,7 +88,7 @@ export default function Video() {
 
   return (
     <>
-      <Dummy/>
+      <IDE/>
       <button className="record">Start Record</button>
       <button className="button" id="record">
         Stop Recording
