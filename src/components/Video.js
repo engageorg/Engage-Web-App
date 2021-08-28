@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState} from "react";
 import Dummy from "./Dummy";
 import IDE from "./IDE";
 
 
 export default function Video() {
 
+  const [value, setValue] = useState('');
+   
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
   const recordingJsonValue = localStorage.getItem("recording")
   if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue)
+  console.log(recording);
 
   useEffect(() => {
     // fake cursor, declared outside, so it will scoped to all functions
@@ -72,7 +75,7 @@ export default function Video() {
         var tar = document.getElementsByClassName(path)[0];
         if(tar != null){
           tar.focus();
-          tar.value = event.value;
+          setValue(event.value);
         }
 
       }
@@ -88,7 +91,7 @@ export default function Video() {
 
   return (
     <>
-      <IDE/>
+      <IDE val = {value}/>
       <button className="record">Start Record</button>
       <button className="button" id="record">
         Stop Recording
