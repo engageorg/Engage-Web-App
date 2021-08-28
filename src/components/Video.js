@@ -1,8 +1,13 @@
 import React, { useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import Dummy from "./Dummy";
 
 export default function Video() {
-  const [rec, setrec] = useLocalStorage("recording", "");
+
+  // fetch recording from local storage
+  let recording = { events: [], startTime: -1 };
+  const recordingJsonValue = localStorage.getItem("recording")
+  if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue)
 
   useEffect(() => {
     // fake cursor, declared outside, so it will scoped to all functions
@@ -22,13 +27,13 @@ export default function Video() {
       var documentReference = document.documentElement;
       (function draw() {
         //select an event and check if its empty
-        let event = rec.events[i];
+        let event = recording.events[i];
         if (!event) {
           return;
         }
 
         //To check if event is valid
-        let offsetRecording = event.time - rec.startTime;
+        let offsetRecording = event.time - recording.startTime;
         let offsetPlay = (Date.now() - startPlay) * 1;
         if (offsetPlay >= offsetRecording) {
           //draws event amd matches with listner
@@ -37,7 +42,7 @@ export default function Video() {
         }
 
         //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
-        if (i < rec.events.length) {
+        if (i < recording.events.length) {
           requestAnimationFrame(draw);
         }
       })();
@@ -76,14 +81,7 @@ export default function Video() {
 
   return (
     <>
-      <div className="heading">test</div>
-
-      <input className="input1"></input>
-
-      <input className="input2"></input>
-
-      <input className="input3"></input>
-
+      <Dummy/>
       <button className="record">Start Record</button>
       <button className="button" id="record">
         Stop Recording

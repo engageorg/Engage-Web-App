@@ -1,9 +1,11 @@
 import React from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import Dummy from "./Dummy";
 
 export default function App() {
   const Recording = { events: [], startTime: -1 };
   const [rec, setrec] = useLocalStorage("recording", Recording);
+
 
   // Record each type of event
   const handlers = [
@@ -82,14 +84,7 @@ export default function App() {
 
   return (
     <>
-      <div className="heading">test</div>
-      <br></br>
-      <input className="input1"></input>
-
-      <input className="input2"></input>
-
-      <input className="input3"></input>
-
+      <Dummy/>
       <button onClick={handleClick} className="record">
         Start Record
       </button>
