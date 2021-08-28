@@ -8,45 +8,35 @@ export default function Video() {
     //console.log(rec);
  
     useEffect(() => {
-        var cur_prog = 0,html,css,js;
-        const fakeCursor = document.createElement('div');
-        var play = document.getElementsByClassName("play")[0];
-        let i = 0;
-        console.log(play);
-        play.addEventListener("click",function(){
-         
-          //remove cursor from previous draw
-          var cursor = document.getElementsByClassName("cursor");
-          for(i = 0; i < cursor.length; i++){
-                        cursor[i].remove();
-          }
+      var cur_prog = 0,html,css,js;
+    const fakeCursor = document.createElement('div');
+    var play = document.getElementById("pa");
+    let i = 0;
+    play.addEventListener("click",function(){
+                  fakeCursor.className = "cursor";
+                  document.body.appendChild(fakeCursor);
+                  const startPlay = Date.now();
+      })
 
-          //create a new cursor
-          const fakeCursor = document.createElement('div');
-          fakeCursor.className = "cursor";
-          document.body.appendChild(fakeCursor);
-          const startPlay = Date.now(); 
-          
-          //play recording
-          let event = rec.events[i];
-          if (!event) {
-            return;
-          }
-          let offsetRecording = event.time - rec.startTime;
-          let offsetPlay = (Date.now() - startPlay) * 1;
-          
-          function player() {
-          if(offsetPlay >= offsetRecording) {
-            drawEvent(event, fakeCursor, document.documentElement);
-            i++;
-            offsetRecording = event.time - rec.startTime;
-            event = rec.events[i];
-            
-          }
-          }
-          
-          })
-   
+      var doc = document.documentElement;
+      const startPlay = Date.now();
+      (function draw(){
+        let event = rec.events[i];
+        if (!event) {
+          return;
+        }
+        let offsetRecording = event.time - rec.startTime;
+        let offsetPlay = (Date.now() - startPlay) * 1;
+        if (offsetPlay >= offsetRecording) {
+          drawEvent(event, fakeCursor, doc);
+          i++;
+        }   
+        
+        if(i < rec.events.length){
+          requestAnimationFrame(draw);
+        }
+      })();
+
           function drawEvent(event, fakeCursor, Doc) {
             if (event.type === "click" || event.type === "mousemove") {
                 console.log("mouse");
@@ -87,7 +77,7 @@ export default function Video() {
 
         <button  className="record">Start Record</button>
         <button  className = "button" id="record">Stop Recording</button>
-        <button className = "play">Play</button>
+        <button className = "play" id = "pa">Play</button>
         </>
     )
 }

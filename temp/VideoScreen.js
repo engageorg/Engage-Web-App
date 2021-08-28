@@ -41,16 +41,6 @@ function App(props) {
       var doc = document.documentElement;
       const startPlay = Date.now();
       (function draw(){
-        if(cur_prog > 0){
-          i = cur_prog;
-          cur_prog = 0
-          var h = document.getElementById("htmltext");
-          setHtml(html);
-          var c = document.getElementById("csstext");
-          setCss(css);
-          var j = document.getElementById("jstext");
-          setJs(js);
-        }
         let event = rec.events[i];
         if (!event) {
           return;
@@ -60,7 +50,11 @@ function App(props) {
         if (offsetPlay >= offsetRecording) {
           drawEvent(event, fakeCursor, doc);
           i++;
-        }        
+        }   
+        
+        if(i < rec.events.length){
+          requestAnimationFrame(draw);
+        }
       })();
 
       function drawEvent(event, fakeCursor, Doc) {
