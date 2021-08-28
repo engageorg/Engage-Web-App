@@ -1,5 +1,4 @@
 import React, { useEffect, useState} from "react";
-import Dummy from "./Dummy";
 import IDE from "./IDE";
 
 
