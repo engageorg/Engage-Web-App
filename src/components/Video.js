@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import Dummy from "./Dummy";
-
 export default function Video() {
 
   // fetch recording from local storage
