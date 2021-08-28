@@ -63,9 +63,9 @@ export default function Video() {
         flashClass(fakeCursor, "click");
         console.log(event.target);
         var tar = document.getElementsByClassName(event.target)[0];
-        //if(tar !=  null){
+        if(tar !=  null){
           flashClass(tar, "clicked");
-        //}
+        }
        
       }
       if (event.type === "keypress") {
