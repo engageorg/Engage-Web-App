@@ -25,7 +25,7 @@ function App(props) {
 
   return (
     <Editor
-    height="50vh"
+    height="90vh"
     className = "edit"
     defaultLanguage="javascript"
     value = {props.val}

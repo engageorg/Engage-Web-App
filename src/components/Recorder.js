@@ -3,6 +3,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import Dummy from "./Dummy";
 import IDE from "./IDE";
 
+
 export default function Recorder() {
   const Recording = { events: [], startTime: -1 };
   const [rec, setrec] = useLocalStorage("recording", Recording);
@@ -15,6 +16,7 @@ export default function Recorder() {
       handler: function handleMouseMove(e) {
         Recording.events.push({
           type: "mousemove",
+          target: e.target.className,
           x: e.pageX,
           y: e.pageY,
           time: Date.now(),
@@ -75,13 +77,19 @@ export default function Recorder() {
   function stopRecording() {
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
-    setrec(Recording);
+    // console.log(Recording);
+    // console.log(rec)
+    localStorage.setItem("recording", JSON.stringify(Recording))
   }
 
   function handleStop(e) {
     e.preventDefault();
     stopRecording();
     console.log("Recording Stopped.");
+  }
+
+  function deleteLocalStroage() {
+    localStorage.removeItem("recording")
   }
 
   return (
@@ -92,6 +100,9 @@ export default function Recorder() {
       </button>
       <button onClick={handleStop} className="button" id="record">
         Stop Recording
+      </button>
+      <button onClick={deleteLocalStroage} className="button" id="record">
+        Delete localStroage
       </button>
     </>
   );

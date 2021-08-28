@@ -55,18 +55,18 @@ export default function Video() {
     function drawEvent(event, fakeCursor, documentReference) {
       if (event.type === "click" || event.type === "mousemove") {
         console.log("mouse");
-        document.getElementsByClassName("cursor")[0].style.top =
-          JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
+        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
+        fakeCursor.style.top = JSON.stringify(event.y) + "px";
       }
       if (event.type === "click") {
         console.log("mouseclick");
         flashClass(fakeCursor, "click");
         console.log(event.target);
         var tar = document.getElementsByClassName(event.target)[0];
-        if(tar !=  null){
+        //if(tar !=  null){
           flashClass(tar, "clicked");
-        }
+        //}
        
       }
       if (event.type === "keypress") {
