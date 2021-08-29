@@ -1,10 +1,18 @@
 import React, { useEffect, useState} from "react";
 import IDE from "./IDE";
 import { useSelector, useDispatch } from "react-redux";
+import { js, css, html } from '../actions'
+import files from "../assets/files";
+
 
 export default function Video() {
 
-  const [valueCode, setValue] = useState('');
+  const [value, setValue] = useState('');
+
+  const fileName = useSelector(state => state.fileName);
+  const dispatch = useDispatch();
+
+  const file = files[fileName];
    
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
@@ -64,6 +72,20 @@ export default function Video() {
         console.log(event.target);
         var tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
+          console.log(tar.className);
+          switch (tar.className) {
+            case "stylebutton":
+                 dispatch(css())
+              break;
+            case "htmlbutton":
+                 dispatch(html())
+              break;
+            case "scriptbutton":
+                 dispatch(js());
+              break;
+            default:
+              break;
+          }
           flashClass(tar, "clicked");
         }
        
