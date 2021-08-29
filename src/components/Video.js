@@ -2,7 +2,7 @@ import React, { useEffect, useState} from "react";
 import IDE from "./IDE";
 import { useSelector, useDispatch } from "react-redux";
 import { js, css, html } from '../actions'
-import files from "../editor/files";
+import files from "../assets/files";
 
 
 export default function Video() {
