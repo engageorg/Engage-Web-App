@@ -1,38 +1,43 @@
 import React, { useState } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
+import { js, css, html } from '../actions'
 import files from "./files";
 
 
 
 function TextEditor(props) {
-  const [fileName, setFileName] = useState("script.js");
+  
+  const fileName = useSelector(state => state.fileName);
+  const dispatch = useDispatch();
 
   const file = files[fileName];
 
   return (
     <div className = "texteditor">
+
       <button
-        className = "scriptbutton"
-        disabled={fileName === "script.js"}
-        onClick={() => setFileName("script.js")}
+        className = "htmlbutton"
+        disabled={fileName === "index.html"}
+        onClick={() => dispatch(html()) }
       >
-        script.js
+        index.html
       </button>
       <button
         className = "stylebutton"
         disabled={fileName === "style.css"}
-        onClick={() => setFileName("style.css")}
+        onClick={() => dispatch(css())}
       >
         style.css
       </button>
       <button
-        className = "htmlbutton"
-        disabled={fileName === "index.html"}
-        onClick={() => setFileName("index.html")}
+        className = "scriptbutton"
+        disabled={fileName === "script.js"}
+        onClick={() => dispatch(js())}
       >
-        index.html
+        script.js
       </button>
+
       <Editor
         height="80vh"
         theme="vs-dark"
