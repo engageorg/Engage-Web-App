@@ -204,17 +204,17 @@ const files = {
   "script.js": {
     name: "script.js",
     language: "javascript",
-    value: someJSCodeExample
+    // value: someJSCodeExample
   },
   "style.css": {
     name: "style.css",
     language: "css",
-    value: someCSSCodeExample
+    // value: someCSSCodeExample
   },
   "index.html": {
     name: "index.html",
     language: "html",
-    value: someHTMLCodeExample
+    // value: someHTMLCodeExample
   }
 };
 

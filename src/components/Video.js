@@ -1,10 +1,10 @@
 import React, { useEffect, useState} from "react";
 import IDE from "./IDE";
-
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Video() {
 
-  const [value, setValue] = useState('');
+  const [valueCode, setValue] = useState('');
    
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
@@ -69,14 +69,14 @@ export default function Video() {
        
       }
       if (event.type === "keypress") {
-        console.log("keypress");
+        // console.log("keypress");
+        // console.log(event.value)
         const path = event.target;
         var tar = document.getElementsByClassName(path)[0];
         if(tar != null){
           tar.focus();
-          setValue(event.value);
+          setValue(valueCode => valueCode+ String.fromCharCode(event.keyCode));
         }
-
       }
     }
 
@@ -90,7 +90,7 @@ export default function Video() {
 
   return (
     <>
-      <IDE val = {value}/>
+      <IDE val = {valueCode}/>
       <button className="record">Start Record</button>
       <button className="button" id="record">
         Stop Recording
