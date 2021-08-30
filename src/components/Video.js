@@ -58,6 +58,22 @@ export default function Video() {
         }
       })();
     });
+    
+    function handleButtonEvents(target) {
+      switch (target) {
+        case "stylebutton":
+             dispatch(css())
+          break;
+        case "htmlbutton":
+             dispatch(html())
+          break;
+        case "scriptbutton":
+             dispatch(js());
+          break;
+        default:
+          break;
+      }
+    }
 
     function drawEvent(event, fakeCursor, documentReference) {
       if (event.type === "click" || event.type === "mousemove") {
@@ -72,20 +88,7 @@ export default function Video() {
         console.log(event.target);
         var tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
-          console.log(tar.className);
-          switch (tar.className) {
-            case "stylebutton":
-                 dispatch(css())
-              break;
-            case "htmlbutton":
-                 dispatch(html())
-              break;
-            case "scriptbutton":
-                 dispatch(js());
-              break;
-            default:
-              break;
-          }
+          handleButtonEvents(tar.className);
           flashClass(tar, "clicked");
         }
        
