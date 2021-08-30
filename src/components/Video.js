@@ -12,16 +12,18 @@ export default function Video() {
   const dispatch = useDispatch();
 
   const file = files[fileName];
+  //fake cursor for playing
   const fakeCursor = document.createElement("div");
   document.getElementById("root").appendChild(fakeCursor);
-  fakeCursor.style.display='none'
+  fakeCursor.style.display = 'none'
+  
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
   const recordingJsonValue = localStorage.getItem("recording");
   if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
-  //console.log(recording);
+  
   let playLecture = 1;
-  let pauseLecture = 0;
+
   useEffect(() => {
     
     // fake cursor, declared outside, so it will scoped to all functions
