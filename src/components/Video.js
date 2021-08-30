@@ -1,13 +1,12 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import IDE from "./IDE";
 import { useSelector, useDispatch } from "react-redux";
-import { js, css, html } from '../actions'
+import { js, css, html } from "../actions";
 import files from "../assets/files";
-import volumeUp from "../assets/volumeUp.svg"
-import volumeDown from "../assets/volumeDown.svg"
-
 
 export default function Video() {
+  const [valueCode, setValue] = useState("");
+  const [previousValueCode, setPreviousValue] = useState("");
 
   const [keyCode, setKeycode] = useState('');
 
@@ -15,101 +14,125 @@ export default function Video() {
   const dispatch = useDispatch();
 
   const file = files[fileName];
-
+  const fakeCursor = document.createElement("div");
+  document.getElementById("root").appendChild(fakeCursor);
+  fakeCursor.style.display='none'
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
-  const recordingJsonValue = localStorage.getItem("recording")
-  if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue)
-      
-  function handleButtonEvents(target) {
-    switch (target) {
-      case "stylebutton":
-           dispatch(css())
-        break;
-      case "htmlbutton":
-           dispatch(html())
-        break;
-      case "scriptbutton":
-           dispatch(js());
-        break;
-      default:
-        break;
-    }
-  }
-
-  function drawEvent(event, fakeCursor, documentReference) {
-    if (event.type === "click" || event.type === "mousemove") {
-      fakeCursor.style.left = JSON.stringify(event.x) + "px";
-      //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
-      fakeCursor.style.top = JSON.stringify(event.y) + "px";
-    }
-    if (event.type === "click") {
-      flashClass(fakeCursor, "click");
-      var target = document.getElementsByClassName(event.target)[0];
-      if(target !=  null){
-        handleButtonEvents(target.className);
-        flashClass(target, "clicked");
-      }
-     
-    }
-    if (event.type === "keypress") {
-      const path = event.target;
-      var target = document.getElementsByClassName(path)[0];
-      if(target != null){
-        target.focus();
-        setKeycode(keyCode => keyCode + String.fromCharCode(event.keyCode));
-      }
-    }
-  }
-
-  function flashClass(el, className) {
-    el.classList.add(className);
-    setTimeout(function () {
-      el.classList.remove(className);
-    }, 200);
-  }
-
+  const recordingJsonValue = localStorage.getItem("recording");
+  if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
+  //console.log(recording);
+  let playLecture = 1;
+  let pauseLecture = 0;
   useEffect(() => {
-
-    console.log("useeffect ran!")
+    
     // fake cursor, declared outside, so it will scoped to all functions
-    const fakeCursor = document.createElement("div");
-    fakeCursor.className = "cursor";
+    fakeCursor.className = "customCursor";
 
     //when user clicked playbutton
-    var play = document.getElementById("play");
+    const play = document.getElementById("play");
+    const pause = document.getElementById("pause");
+    let i = 0;
+
+    pause.addEventListener("click", function () {
+      //setPlay(0)
+      console.log("Pause Button Clicked")
+      //playLecture !== 0 ? 0: 1;
+      //if(playLecture!==0){
+        playLecture = 0;
+        fakeCursor.style.display = 'none'
+      //}
+    });
 
     play.addEventListener("click", function () {
-      let i = 0;
+      //setPlay(1)
       //append fake cursor when user clicks play button
-      document.getElementById("root").appendChild(fakeCursor);
+      console.log("Play button click")
+      fakeCursor.style.display = 'block'
       const startPlay = Date.now();
-
+      playLecture = 1;
       //draw event to play all events in requestAnimationFrames
       var documentReference = document.documentElement;
+      //if(playLecture === 1){
       (function draw() {
-        //select an event and check if its empty
-        let event = recording.events[i];
-        if (!event) {
-          return;
-        }
-        // console.log(recording.events.length)
-        //To check if event is valid
-        let offsetRecording = event.time - recording.startTime;
-        let offsetPlay = (Date.now() - startPlay) * 1;
-        if (offsetPlay >= offsetRecording) {
-          //draws event amd matches with listner
-          drawEvent(event, fakeCursor, documentReference);
-          i++;
-        }
+        if (playLecture === 1) {
+          //select an event and check if its empty
+          let event = recording.events[i];
+          //console.log(event);
+          if (!event) {
+            return;
+          }
 
-        //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
-        if (i < recording.events.length) {
-          requestAnimationFrame(draw);
+          //To check if event is valid
+          let offsetRecording = event.time - recording.startTime;
+          let offsetPlay = (Date.now() - startPlay) * 1;
+          if (offsetPlay >= offsetRecording) {
+            //draws event amd matches with listner
+            //console.log(playLecture);
+            //console.log(pauseLecture);
+            drawEvent(event, fakeCursor, documentReference);
+            i++;
+          }
+
+          //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
+          if (i < recording.events.length) {
+            requestAnimationFrame(draw);
+          }
         }
       })();
+      //}
     });
-  });
+    
+    function handleButtonEvents(target) {
+      switch (target) {
+        case "stylebutton":
+             dispatch(css())
+          break;
+        case "htmlbutton":
+             dispatch(html())
+          break;
+        case "scriptbutton":
+             dispatch(js());
+          break;
+        default:
+          break;
+      }
+    }
+
+    function drawEvent(event, fakeCursor, documentReference) {
+      if (event.type === "click" || event.type === "mousemove") {
+        console.log("mouse");
+        fakeCursor.style.left = JSON.stringify(event.x) + "px";
+        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
+        fakeCursor.style.top = JSON.stringify(event.y) + "px";
+      }
+      if (event.type === "click") {
+        console.log("mouseclick");
+        flashClass(fakeCursor, "click");
+        //console.log(event.target);
+        var tar = document.getElementsByClassName(event.target)[0];
+        if(tar !=  null){
+          handleButtonEvents(tar.className);
+          flashClass(tar, "clicked");
+        }
+      }
+      if (event.type === "keypress") {
+        const path = event.target;
+        var tar = document.getElementsByClassName(path)[0];
+        if (tar != null) {
+          tar.focus();
+          setKeycode(keyCode => keyCode + String.fromCharCode(event.keyCode));
+        }
+      }
+    }
+
+    function flashClass(el, className) {
+      el.classList.add(className);
+      setTimeout(function () {
+        el.classList.remove(className);
+      }, 200);
+    }
+  }, []);
 
   return (
     <>
@@ -119,18 +142,11 @@ export default function Video() {
         Stop Recording
       </button>
       <button id="play">Play</button>
-      
-      <div class="seek-slider">
-        <div class="controller-wrapper">
-            <input type="range" class="controller" />
-        </div>
-    </div>
-    <div class="controller-timings">
-        <span class="left-time">00:00</span>
-        <span class="right-time">00:00</span>
-    </div>
+      <button id="pause">Pause</button>
+      {/* <button>{playLecture}</button>
+      <button>{pauseLecture}</button> */}
 
-      <div className="controls">
+       <div className="controls">
         <button className="icon repeat-icon">
             <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0.959146 14.2179C1.27115 14.2179 1.52335 13.9657 1.52335 13.6537C1.52335 10.2318 4.30769 7.44748 7.72957 7.44748H21.2704V12.505L29 6.88328L21.2704 1.26157V6.31908H7.72957C3.68537 6.31908 0.394943 9.6095 0.394943 13.6537C0.394943 13.9657 0.647142 14.2179 0.959146 14.2179Z"
@@ -161,31 +177,18 @@ export default function Video() {
                 </g>
             </svg>
         </button>
-        <button className="icon shuffle-icon">
-            <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g>
-                    <path d="M15.7545 8.0815H21.006V13.312L29 7.49799L21.006 1.68399V6.91449H15.7545C11.572 6.91449 8.16901 10.3175 8.16901 14.5C8.16901 18.0389 5.28944 20.9185 1.7505 20.9185H0.583501C0.260825 20.9185 0 21.1793 0 21.502C0 21.8247 0.260825 22.0855 0.583501 22.0855H1.7505C5.93304 22.0855 9.33602 18.6825 9.33602 14.5C9.33602 10.9611 12.2156 8.0815 15.7545 8.0815Z"
-                        fill="black" />
-                    <path d="M0.583501 8.08149H1.7505C3.33354 8.08149 4.85356 8.66149 6.03107 9.71471C6.14252 9.81449 6.28197 9.8635 6.42026 9.8635C6.58014 9.8635 6.74002 9.79815 6.85497 9.6692C7.0697 9.4288 7.04928 9.06002 6.80946 8.84529C5.41781 7.6001 3.62121 6.91449 1.7505 6.91449H0.583501C0.260825 6.91449 0 7.17531 0 7.49799C0 7.82067 0.260825 8.08149 0.583501 8.08149Z"
-                        fill="black" />
-                    <path d="M21.006 20.9185H15.7545C14.1878 20.9185 12.6795 20.349 11.5078 19.3151C11.268 19.1021 10.8986 19.1243 10.6845 19.367C10.4715 19.6086 10.4943 19.9773 10.7364 20.1903C12.1216 21.4127 13.9042 22.0855 15.7551 22.0855H21.0066V27.316L29.0006 21.502L21.006 15.688V20.9185Z"
-                        fill="black" />
-                </g>
-            </svg>
-        </button>
     </div>
     {/* <div className="volume-slider">
         <div className="volume-low-icon">
-        <img src = {volumeDown}/>
+            
         </div>
         <div className="controller-wrapper">
             <input type="range" min="0" max="100" className="controller" />
         </div>
         <div className="volume-up-icon">
-         <img src = {volumeUp}/>
+         <img src = {}/>
         </div>
     </div> */}
-	
     </>
   );
 }
