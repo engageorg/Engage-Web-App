@@ -1,10 +1,18 @@
 import React, { useEffect, useState} from "react";
 import IDE from "./IDE";
+import { useSelector, useDispatch } from "react-redux";
+import { js, css, html } from '../actions'
+import files from "../assets/files";
 
 
 export default function Video() {
 
-  const [value, setValue] = useState('');
+  const [keyCode, setKeycode] = useState('');
+
+  const fileName = useSelector(state => state.fileName);
+  const dispatch = useDispatch();
+
+  const file = files[fileName];
    
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
@@ -50,6 +58,22 @@ export default function Video() {
         }
       })();
     });
+    
+    function handleButtonEvents(target) {
+      switch (target) {
+        case "stylebutton":
+             dispatch(css())
+          break;
+        case "htmlbutton":
+             dispatch(html())
+          break;
+        case "scriptbutton":
+             dispatch(js());
+          break;
+        default:
+          break;
+      }
+    }
 
     function drawEvent(event, fakeCursor, documentReference) {
       if (event.type === "click" || event.type === "mousemove") {
@@ -64,19 +88,20 @@ export default function Video() {
         console.log(event.target);
         var tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
+          handleButtonEvents(tar.className);
           flashClass(tar, "clicked");
         }
        
       }
       if (event.type === "keypress") {
-        console.log("keypress");
+        // console.log("keypress");
+        // console.log(event.value)
         const path = event.target;
         var tar = document.getElementsByClassName(path)[0];
         if(tar != null){
           tar.focus();
-          setValue(event.value);
+          setKeycode(keyCode => keyCode + String.fromCharCode(event.keyCode));
         }
-
       }
     }
 
@@ -90,7 +115,7 @@ export default function Video() {
 
   return (
     <>
-      <IDE val = {value}/>
+      <IDE val = {keyCode}/>
       <button className="record">Start Record</button>
       <button className="button" id="record">
         Stop Recording

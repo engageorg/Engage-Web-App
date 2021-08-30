@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
 import { js, css, html } from '../actions'
-import files from "./files";
+import files from "../assets/files";
 
 
 
