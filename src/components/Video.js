@@ -32,7 +32,12 @@ export default function Video() {
     //when user clicked playbutton
     const play = document.getElementById("play");
     const pause = document.getElementById("pause");
-    let i = 0;
+    
+    var i = 0;
+    var valueHtml = "";
+    var valueCss = "";
+    var valueJs = "";
+    var curValue = "";
 
     pause.addEventListener("click", function () {
       //setPlay(0)
@@ -87,12 +92,15 @@ export default function Video() {
       switch (target) {
         case "stylebutton":
              dispatch(css())
+             curValue = valueCss
           break;
         case "htmlbutton":
              dispatch(html())
+             curValue = valueHtml
           break;
         case "scriptbutton":
              dispatch(js());
+             curValue = valueJs
           break;
         default:
           break;
@@ -121,7 +129,8 @@ export default function Video() {
         var tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
-          setKeycode(keyCode => keyCode + String.fromCharCode(event.keyCode));
+          curValue = curValue.concat(String.fromCharCode(event.keyCode));
+          setKeycode(curValue);
         }
       }
     }
@@ -143,8 +152,16 @@ export default function Video() {
       </button>
       <button id="play">Play</button>
       <button id="pause">Pause</button>
-      {/* <button>{playLecture}</button>
-      <button>{pauseLecture}</button> */}
+    
+      <div class="seek-slider">
+        <div class="controller-wrapper">
+            <input type="range" class="controller" />
+        </div>
+      </div>
+      <div class="controller-timings">
+          <span class="left-time">00:00</span>
+          <span class="right-time">00:00</span>
+      </div>
 
        <div className="controls">
         <button className="icon repeat-icon">
