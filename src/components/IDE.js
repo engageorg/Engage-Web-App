@@ -5,7 +5,6 @@ function App(props) {
   return (
     <TextEditor 
      value = {props.val}/>
-    
   )
 }
 
