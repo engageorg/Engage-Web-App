@@ -5,8 +5,6 @@ import { js, css, html } from "../actions";
 import files from "../assets/files";
 
 export default function Video() {
-  const [valueCode, setValue] = useState("");
-  const [previousValueCode, setPreviousValue] = useState("");
 
   const [keyCode, setKeycode] = useState('');
 
