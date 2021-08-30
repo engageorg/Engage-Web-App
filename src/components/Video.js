@@ -7,7 +7,7 @@ import files from "../assets/files";
 
 export default function Video() {
 
-  const [value, setValue] = useState('');
+  const [keyCode, setKeycode] = useState('');
 
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
@@ -97,7 +97,7 @@ export default function Video() {
         var tar = document.getElementsByClassName(path)[0];
         if(tar != null){
           tar.focus();
-          setValue(valueCode => valueCode+ String.fromCharCode(event.keyCode));
+          setKeycode(keyCode => keyCode + String.fromCharCode(event.keyCode));
         }
       }
     }
@@ -112,7 +112,7 @@ export default function Video() {
 
   return (
     <>
-      <IDE val = {valueCode}/>
+      <IDE val = {keyCode}/>
       <button className="record">Start Record</button>
       <button className="button" id="record">
         Stop Recording
