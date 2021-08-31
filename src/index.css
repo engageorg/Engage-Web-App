@@ -21,29 +21,7 @@
    border: 2px solid blue; 
 }
 
-.controls {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 29px;
-  margin-top: 20px;
-}
-.controls button.icon {
-  height: 62px;
-  width: 62px;
-  border: none;
-  background: transparent;
-  outline: none;
-  border-radius: 50%;
-}
-.controls button.icon svg {
-  cursor: pointer;
-}
 
-.flex-center, .volume-slider .volume-up-icon, .volume-slider .volume-low-icon, .controls button.icon, .song-info-wrapper, header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 .seek-slider {
   padding: 0 29px;
@@ -100,4 +78,11 @@
 .controller-timings .right-time {
   font-family: "Poppins", sans-serif;
   font-size: 15px;
+}
+
+.player {
+  width : 50px;
+  height: 50px;
+  margin-left: auto;
+  margin-right: auto 
 }
