@@ -23,6 +23,12 @@ export default function Video() {
   if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
   
   let playLecture = 1;
+  let offsetRecording;
+  let offsetPlay;
+
+  function deleteTimeStamp(){
+    localStorage.removeItem("lastSessionTimeStamp")
+  }
 
   useEffect(() => {
     
@@ -32,7 +38,7 @@ export default function Video() {
     //when user clicked playbutton
     const play = document.getElementById("play");
     const pause = document.getElementById("pause");
-    
+    // const startPlay = Date.now();
     var i = 0;
     var valueHtml = "";
     var valueCss = "";
@@ -40,25 +46,21 @@ export default function Video() {
     var curValue = "";
 
     pause.addEventListener("click", function () {
-      //setPlay(0)
       console.log("Pause Button Clicked")
-      //playLecture !== 0 ? 0: 1;
-      //if(playLecture!==0){
-        playLecture = 0;
-        fakeCursor.style.display = 'none'
-      //}
+      playLecture = 0;
+      fakeCursor.style.display = 'none'
+      //saves last value of offsetPlay
+      localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay))
     });
 
     play.addEventListener("click", function () {
-      //setPlay(1)
       //append fake cursor when user clicks play button
       console.log("Play button click")
       fakeCursor.style.display = 'block'
-      const startPlay = Date.now();
+      const startPlay = Date.now()
       playLecture = 1;
       //draw event to play all events in requestAnimationFrames
       var documentReference = document.documentElement;
-      //if(playLecture === 1){
       (function draw() {
         if (playLecture === 1) {
           //select an event and check if its empty
@@ -69,23 +71,23 @@ export default function Video() {
           }
 
           //To check if event is valid
-          let offsetRecording = event.time - recording.startTime;
-          let offsetPlay = (Date.now() - startPlay) * 1;
+          offsetRecording = event.time - recording.startTime;
+          if(localStorage.getItem("lastSessionTimeStamp") !== null){
+            offsetPlay = JSON.parse(localStorage.getItem("lastSessionTimeStamp"))+Date.now() - startPlay
+          }else{
+            offsetPlay = (Date.now() - startPlay) * 1;
+          }
           if (offsetPlay >= offsetRecording) {
             //draws event amd matches with listner
-            //console.log(playLecture);
-            //console.log(pauseLecture);
             drawEvent(event, fakeCursor, documentReference);
             i++;
           }
-
           //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
           if (i < recording.events.length) {
             requestAnimationFrame(draw);
           }
         }
       })();
-      //}
     });
     
     function handleButtonEvents(target) {
@@ -146,10 +148,7 @@ export default function Video() {
   return (
     <>
       <IDE val = {keyCode}/>
-      <button className="record">Start Record</button>
-      <button className="button" id="record">
-        Stop Recording
-      </button>
+      <button onClick={deleteTimeStamp}>Delete timeStamp</button>
       <button id="play">Play</button>
       <button id="pause">Pause</button>
     
