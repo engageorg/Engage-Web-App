@@ -27,7 +27,7 @@ const Play = ({onPlayerClick}) => {
 export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
-  const [playStatus, setplayStatus] = useState(false);
+  const [isPlaying, setisPlaying] = useState(false);
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
 
@@ -47,10 +47,10 @@ export default function Video() {
   let offsetPlay;
 
   const handlePlayerClick = () => {
-    if (!playStatus) {
-      setplayStatus(true)
+    if (!isPlaying) {
+      setisPlaying(true)
     } else {
-      setplayStatus(false)
+      setisPlaying(false)
     }
   }
 
@@ -201,7 +201,7 @@ export default function Video() {
       </div>
 
       <div className="player" >
-        {playStatus ? <Pause onPlayerClick= {handlePlayerClick} /> : <Play onPlayerClick = {handlePlayerClick} />}
+        {isPlaying ? <Pause onPlayerClick= {handlePlayerClick} /> : <Play onPlayerClick = {handlePlayerClick} />}
       </div>
 
     <button onClick={deleteTimeStamp}>Delete timeStamp</button>
