@@ -6,6 +6,9 @@ import IDE from "./IDE";
 export default function Recorder() {
   const Recording = { events: [], startTime: -1 };
   const [rec, setrec] = useLocalStorage("recording", Recording);
+  var lastMouse = {x : 0, y : 0};
+  var lastKey = "";
+  var lastKeyClass = "";
 
 
   // Record each type of event
@@ -13,11 +16,13 @@ export default function Recorder() {
     {
       eventName: "mousemove",
       handler: function handleMouseMove(e) {
+        lastMouse  = {x : e.pageX, y :e.pageY};
         Recording.events.push({
           type: "mousemove",
-          target: e.target.className,
+          target: lastKeyClass,
           x: e.pageX,
           y: e.pageY,
+          value: lastKey,
           time: Date.now(),
         });
       },
@@ -25,7 +30,6 @@ export default function Recorder() {
     {
       eventName: "click",
       handler: function handleClick(e) {
-        console.log(e);
         Recording.events.push({
           type: "click",
           target: e.target.className,
@@ -35,12 +39,48 @@ export default function Recorder() {
         });
       },
     },
-    {
-      eventName: "keypress",
-      handler: function handleKeyPress(e) {
+    { 
+      eventName: "keydown",
+      handler: function handkeydown(e) {
+        // let str
+        // switch (e.keyCode) {
+        //   case 37:
+        //       str = 'Left Key pressed!';
+        //       break;
+        //   case 38:
+        //       str = 'Up Key pressed!';
+        //       break;
+        //   case 39:
+        //       str = 'Right Key pressed!';
+        //       break;
+        //   case 40:
+        //       str = 'Down Key pressed!';
+        //       break;
+        // }
+        // console.log(e.keyCode ,str);
+        // link to how to move pointer : https://stackoverflow.com/questions/34968174/set-text-cursor-position-in-a-textarea
         Recording.events.push({
           type: "keypress",
           target: e.target.className,
+          x: lastMouse.x,
+          y: lastMouse.y,
+          value: e.target.value,
+          keyCode: e.keyCode,
+          time: Date.now(),
+        });
+
+      },
+    },
+    {
+      eventName: "keypress",
+      handler: function handleKeyPress(e) {
+        lastKey = e.target.value
+        lastKeyClass = e.target.className
+        Recording.events.push({
+          type: "keypress",
+          target: e.target.className,
+          x: lastMouse.x,
+          y: lastMouse.y,
           value: e.target.value,
           keyCode: e.keyCode,
           time: Date.now(),
