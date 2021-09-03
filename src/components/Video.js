@@ -27,7 +27,7 @@ const Play = ({onPlayerClick}) => {
 export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
-  const [isPlaying, setisPlaying] = useState(false);
+  const [playStatus, setplayStatus] = useState(false);
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
 
@@ -47,10 +47,10 @@ export default function Video() {
   let offsetPlay;
 
   const handlePlayerClick = () => {
-    if (!isPlaying) {
-      setisPlaying(true)
+    if (!playStatus) {
+      setplayStatus(true)
     } else {
-      setisPlaying(false)
+      setplayStatus(false)
     }
   }
 
@@ -69,65 +69,90 @@ export default function Video() {
     const seekSlider =  document.getElementById("seekSlider");
     
     var i = 0;
+    var paused = false;
     var valueHtml = "";
     var valueCss = "";
     var valueJs = "";
     var curValue = "";
+    var time = 0, timer;
     
     console.log(seekSlider)
     seekSlider.addEventListener("change" , function(e) {
+
+      pausefunction();
+
       let seekSliderValue = e.target.value;
-      let i = Math.floor((seekSliderValue * recording.events.length)/100);
-      console.log(i)
+      i = Math.floor((seekSliderValue * recording.events.length)/100);
+      setProgreeBar()
+
+      playfunction();
     })
 
-
-
-    pause.addEventListener("click", function () {
-      console.log("clicked pause")
+    function pausefunction() {
       playLecture = 0;
       fakeCursor.style.display = 'none'
       //saves last value of offsetPlay
-      localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay))
+      paused = true;
+      stopTimer();
+    }
+    function startTimer() {
+     timer =  setInterval(() => time++, 1)
+    }
+
+    function stopTimer() {
+      clearInterval(timer);
+    }
+
+    function playfunction() {
+       //append fake cursor when user clicks play button
+       fakeCursor.style.display = 'block'
+
+       startTimer();
+       var startTime = time;
+       paused = false;
+       //draw event to play all events in requestAnimationFrames
+       var documentReference = document.documentElement;
+       (function draw() {
+           //select an event and check if its empty
+           let event = recording.events[i];
+           //console.log(event);
+           if (!event) {
+             return;
+           }
+
+           if (event.time <= time) {
+             //draws event amd matches with listner
+             drawEvent(event, fakeCursor, documentReference);
+             i++;
+             setProgreeBar()
+           }
+
+           //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
+           if (i < recording.events.length && !paused) {
+             requestAnimationFrame(draw);
+           }
+         
+       })();
+    }
+
+    pause.addEventListener("click", function () {
+      console.log("clicked pause");
+      pausefunction();
 
     });
 
     play.addEventListener("click", function () {
-      console.log("clicked pause")
-      //append fake cursor when user clicks play button
-      fakeCursor.style.display = 'block'
-      const startPlay = Date.now()
-      playLecture = 1;
-      //draw event to play all events in requestAnimationFrames
-      var documentReference = document.documentElement;
-      (function draw() {
-        if (playLecture === 1) {
-          //select an event and check if its empty
-          let event = recording.events[i];
-          //console.log(event);
-          if (!event) {
-            return;
-          }
-
-          //To check if event is valid
-          offsetRecording = event.time - recording.startTime;
-          if(localStorage.getItem("lastSessionTimeStamp") !== null){
-            offsetPlay = JSON.parse(localStorage.getItem("lastSessionTimeStamp")) + Date.now() - startPlay;
-          }else{
-            offsetPlay = (Date.now() - startPlay) * 1;
-          }
-          if (offsetPlay >= offsetRecording) {
-            //draws event amd matches with listner
-            drawEvent(event, fakeCursor, documentReference);
-            i++;
-          }
-          //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
-          if (i < recording.events.length) {
-            requestAnimationFrame(draw);
-          }
-        }
-      })();
+      console.log(i);
+      console.log("clicked play")
+      playfunction();
     });
+
+    function setProgreeBar() {
+      const progress = (i/recording.events.length)*100;
+      console.log(progress);
+      seekSlider.value = progress;
+
+    }
     
     function handleButtonEvents(target) {
       switch (target) {
@@ -170,8 +195,7 @@ export default function Video() {
         var tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
-          curValue = curValue.concat(String.fromCharCode(event.keyCode));
-          setKeycode(curValue);
+          setKeycode(event.value);
         }
       }
     }
@@ -186,13 +210,13 @@ export default function Video() {
 
   return (
     <>
-      <IDE val = {keyCode}/>
+      <IDE val = {keyCode} />
       <button id="play">Play</button>
       <button id="pause">Pause</button>
     
       <div className="seek-slider">
         <div className="controller-wrapper">
-            <input type="range" min = "0" max = "100" className="controller" id = "seekSlider"/>
+            <input type="range" value = "0" min = "0" max = "100" className="controller" id = "seekSlider"/>
         </div>
       </div>
       <div className="controller-timings">
@@ -201,10 +225,9 @@ export default function Video() {
       </div>
 
       <div className="player" >
-        {isPlaying ? <Pause onPlayerClick= {handlePlayerClick} /> : <Play onPlayerClick = {handlePlayerClick} />}
+        {playStatus ? <Pause onPlayerClick= {handlePlayerClick} /> : <Play onPlayerClick = {handlePlayerClick} />}
       </div>
 
-    <button onClick={deleteTimeStamp}>Delete timeStamp</button>
     {/* <div className="volume-slider">
         <div className="volume-low-icon">
             

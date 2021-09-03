@@ -1,16 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import IDE from "./IDE";
 
 
 export default function Recorder() {
-  const Recording = { events: [], startTime: -1 };
+  const Recording = { events: [] };
   const [rec, setrec] = useLocalStorage("recording", Recording);
+  //const [childValue, setValue] = useState('')
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
+  let childValue;
   var lastKeyClass = "";
+  var curtime = 0, timer;
+  function startTimer() {
+    timer =  setInterval(() => curtime++, 1)
+   }
 
 
+  function callbackFunction(childData){
+    childValue = childData
+    console.log(childValue)
+  }
   // Record each type of event
   const handlers = [
     {
@@ -23,7 +33,7 @@ export default function Recorder() {
           x: e.pageX,
           y: e.pageY,
           value: lastKey,
-          time: Date.now(),
+          time: curtime,
         });
       },
     },
@@ -35,8 +45,10 @@ export default function Recorder() {
           target: e.target.className,
           x: e.pageX,
           y: e.pageY,
-          time: Date.now(),
+          time: curtime,
         });
+        
+        
       },
     },
     { 
@@ -66,7 +78,7 @@ export default function Recorder() {
           y: lastMouse.y,
           value: e.target.value,
           keyCode: e.keyCode,
-          time: Date.now(),
+          time: curtime,
         });
 
       },
@@ -74,16 +86,17 @@ export default function Recorder() {
     {
       eventName: "keypress",
       handler: function handleKeyPress(e) {
-        lastKey = e.target.value
+        console.log("THIS")
+        lastKey = childValue
         lastKeyClass = e.target.className
         Recording.events.push({
           type: "keypress",
           target: e.target.className,
           x: lastMouse.x,
           y: lastMouse.y,
-          value: e.target.value,
+          value: childValue,
           keyCode: e.keyCode,
-          time: Date.now(),
+          time: curtime,
         });
       },
     },
@@ -94,7 +107,7 @@ export default function Recorder() {
   }
 
   function startRecording() {
-    Recording.startTime = Date.now();
+    startTimer()
     Recording.events = [];
     handlers.map((x) => listen(x.eventName, x.handler));
   }
@@ -133,7 +146,9 @@ export default function Recorder() {
 
   return (
     <>
-      <IDE/>
+      <IDE
+      parentCallBack = {callbackFunction}
+      />
       <button onClick={handleClick} className="record">
         Start Record
       </button>

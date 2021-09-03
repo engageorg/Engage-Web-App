@@ -8,10 +8,17 @@ import files from "../assets/files";
 
 function TextEditor(props) {
   
+  
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
 
   const file = files[fileName];
+
+  function handleEditorChange(value, event) {
+    if(props.parentCallBack){
+      props.parentCallBack(value)
+    }
+  }
 
   return (
     <div className = "texteditor">
@@ -45,6 +52,7 @@ function TextEditor(props) {
         className = "editor"
         defaultLanguage={file.language}
         defaultValue={file.value}
+        onChange={handleEditorChange}
         value = {props.value}
       />
     </div>
