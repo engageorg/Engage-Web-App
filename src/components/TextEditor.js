@@ -53,7 +53,7 @@ function TextEditor(props) {
         defaultLanguage={file.language}
         defaultValue={file.value}
         onChange={handleEditorChange}
-        value = {props.value}
+        value = {(props.value) === undefined ? "" : props.value}
       />
     </div>
   );

@@ -75,23 +75,24 @@ export default function Video() {
     var valueJs = "";
     var curValue = "";
     var time = 0, timer;
-    
-    console.log(seekSlider)
+  
     seekSlider.addEventListener("change" , function(e) {
 
       pausefunction();
 
       let seekSliderValue = e.target.value;
+      console.log(seekSliderValue);
       i = Math.floor((seekSliderValue * recording.events.length)/100);
+      time = recording.events[i].time;
+
       setProgreeBar()
 
       playfunction();
     })
 
     function pausefunction() {
-      playLecture = 0;
       fakeCursor.style.display = 'none'
-      //saves last value of offsetPlay
+   
       paused = true;
       stopTimer();
     }
@@ -108,7 +109,7 @@ export default function Video() {
        fakeCursor.style.display = 'block'
 
        startTimer();
-       var startTime = time;
+
        paused = false;
        //draw event to play all events in requestAnimationFrames
        var documentReference = document.documentElement;
@@ -149,7 +150,6 @@ export default function Video() {
 
     function setProgreeBar() {
       const progress = (i/recording.events.length)*100;
-      console.log(progress);
       seekSlider.value = progress;
 
     }
@@ -216,7 +216,7 @@ export default function Video() {
     
       <div className="seek-slider">
         <div className="controller-wrapper">
-            <input type="range" value = "0" min = "0" max = "100" className="controller" id = "seekSlider"/>
+            <input type="range" min = "0" max = "100" className="controller" id = "seekSlider"/>
         </div>
       </div>
       <div className="controller-timings">
