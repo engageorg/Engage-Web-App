@@ -86,3 +86,11 @@
   margin-left: auto;
   margin-right: auto 
 }
+
+.IDE{
+  display: flex;
+}
+
+.outputiframe{
+  width: 50vw;
+}

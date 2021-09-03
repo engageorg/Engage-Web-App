@@ -21,22 +21,19 @@ function TextEditor(props) {
     if(props.parentCallBack){
       props.parentCallBack(value)
     }
+    files[fileName].value = value;
 
   }
 
-  useEffect(() => {
-    const timeout = setInterval(() => {
+  const handleOutput = () => {
       setSrcDoc(`
         <html>
           <body>${files["index.html"].value}</body>
           <style>${files["style.css"].value}</style>
           <script>${files["script.js"].value}</script>
         </html>
-      `)
-    }, 250)
-
-    return () => clearTimeout(timeout)
-  })
+      `)  
+  }
 
   return (
     <div className = "texteditor">
@@ -62,7 +59,7 @@ function TextEditor(props) {
       >
         script.js
       </button>
-
+      <div className = "IDE">
       <Editor
         height="80vh"
         width="50vw"
@@ -74,12 +71,15 @@ function TextEditor(props) {
         onChange={handleEditorChange}
         value = {(props.value) === undefined ? "" : props.value}
       />
-      {/* <iframe
+      <iframe
           srcDoc={srcDoc}
           title="output"
+          className = "outputiframe"
           sandbox="allow-scripts"
           frameBorder="0"
-      /> */}
+      />
+      </div>
+      <button onClick = {handleOutput}>See Output</button>
 
       
 
