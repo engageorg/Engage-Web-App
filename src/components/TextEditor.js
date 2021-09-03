@@ -74,12 +74,12 @@ function TextEditor(props) {
         onChange={handleEditorChange}
         value = {(props.value) === undefined ? "" : props.value}
       />
-      <iframe
+      {/* <iframe
           srcDoc={srcDoc}
           title="output"
           sandbox="allow-scripts"
           frameBorder="0"
-      />
+      /> */}
 
       
 
