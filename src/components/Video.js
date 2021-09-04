@@ -3,8 +3,7 @@ import IDE from "./IDE";
 import { useSelector, useDispatch } from "react-redux";
 import { js, css, html } from "../actions";
 import files from "../assets/files";
-import InputRange from 'react-input-range';
-import { func } from "prop-types";
+
 
 const Pause = ({onPlayerClick}) => {
   return (
@@ -42,9 +41,6 @@ export default function Video() {
   const recordingJsonValue = localStorage.getItem("recording");
   if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
   
-  let playLecture = 1;
-  let offsetRecording;
-  let offsetPlay;
 
   const handlePlayerClick = () => {
     if (!playStatus) {
@@ -52,10 +48,6 @@ export default function Video() {
     } else {
       setplayStatus(false)
     }
-  }
-
-  function deleteTimeStamp(){
-    localStorage.removeItem("lastSessionTimeStamp")
   }
 
   useEffect(() => {
@@ -76,7 +68,7 @@ export default function Video() {
     var curValue = "";
     var time = 0, timer;
   
-    seekSlider.addEventListener("change" , function(e) {
+    seekSlider.addEventListener("change", function(e) {
 
       pausefunction();
 
@@ -97,7 +89,10 @@ export default function Video() {
       stopTimer();
     }
     function startTimer() {
-     timer =  setInterval(() => time++, 1)
+     timer =  setInterval(() => {
+       time++
+       setProgreeBar();
+      }, 1)
     }
 
     function stopTimer() {
@@ -149,7 +144,7 @@ export default function Video() {
     });
 
     function setProgreeBar() {
-      const progress = (i/recording.events.length)*100;
+      const progress = (time/recording.events[recording.events.length - 1].time)*100;
       seekSlider.value = progress;
 
     }
@@ -216,7 +211,7 @@ export default function Video() {
     
       <div className="seek-slider">
         <div className="controller-wrapper">
-            <input type="range" min = "0" max = "100" className="controller" id = "seekSlider"/>
+            <input type="range" value = "0" min = "0" max = "100" className="controller" id = "seekSlider"/>
         </div>
       </div>
       <div className="controller-timings">
@@ -225,7 +220,7 @@ export default function Video() {
       </div>
 
       <div className="player" >
-        {playStatus ? <Pause onPlayerClick= {handlePlayerClick} /> : <Play onPlayerClick = {handlePlayerClick} />}
+        {playStatus ? <Pause onPlayerClick = {handlePlayerClick} /> : <Play onPlayerClick = {handlePlayerClick} />}
       </div>
 
     {/* <div className="volume-slider">
