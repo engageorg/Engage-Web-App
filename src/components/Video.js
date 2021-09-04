@@ -27,6 +27,7 @@ export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
   const [playStatus, setplayStatus] = useState(false);
+  const [rangeInput, setrangeInput] = useState(0);
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
 
@@ -51,7 +52,10 @@ export default function Video() {
   }
 
   useEffect(() => {
-    
+
+
+    console.log(recording.events[recording.events.length - 1].time/1000);
+    document.getElementsByClassName("right-time")[0].innerHTML = recording.events[recording.events.length - 1].time/1000;
     // fake cursor, declared outside, so it will scoped to all functions
     fakeCursor.className = "customCursor";
 
@@ -74,8 +78,10 @@ export default function Video() {
 
       let seekSliderValue = e.target.value;
       console.log(seekSliderValue);
-      i = Math.floor((seekSliderValue * recording.events.length)/100);
-      time = recording.events[i].time;
+      i = Math.ceil((seekSliderValue * (recording.events.length))/100);
+      if(time !== undefined){
+        time = recording.events[i].time;
+      }
 
       setProgreeBar()
 
@@ -83,8 +89,7 @@ export default function Video() {
     })
 
     function pausefunction() {
-      fakeCursor.style.display = 'none'
-   
+      fakeCursor.style.display = 'none';
       paused = true;
       stopTimer();
     }
@@ -146,7 +151,9 @@ export default function Video() {
     function setProgreeBar() {
       const progress = (time/recording.events[recording.events.length - 1].time)*100;
       seekSlider.value = progress;
-
+      var progtime = 0;
+  
+      document.getElementsByClassName("left-time")[0].innerHTML = time;
     }
     
     function handleButtonEvents(target) {
@@ -211,7 +218,7 @@ export default function Video() {
     
       <div className="seek-slider">
         <div className="controller-wrapper">
-            <input type="range" value = "0" min = "0" max = "100" className="controller" id = "seekSlider"/>
+            <input type="range" value = {rangeInput} onChange = {(value) => {setrangeInput(value)}}  min = "0" max = "100" className="controller" id = "seekSlider"/>
         </div>
       </div>
       <div className="controller-timings">
