@@ -7,8 +7,6 @@ import { Provider } from 'react-redux';
 import './index.css';
 import Recorder from './components/Recorder';
 import Video from './components/Video';
-import Player from './components/Player'
-
 import IDE from "./components/IDE";
 import allReducer from './reducers';
 
@@ -25,7 +23,6 @@ ReactDOM.render(
         <Route exact path = "/" component = {IDE} />
         <Route exact path = "/recorder" component = {Recorder} />
         <Route exact path = "/videoplayer" component = {Video} />
-        <Route exact path = "/player" component = {Player} />
       </Switch>
     </Router>
   </React.StrictMode>
