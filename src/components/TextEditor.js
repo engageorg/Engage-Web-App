@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactModal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
 import { js, css, html } from '../actions'
@@ -10,7 +11,7 @@ import files from "../assets/files";
 function TextEditor(props) {
  
   const [srcDoc, setSrcDoc] = useState('')
-  
+  const [modalActive, setmodalActive] = useState(false);
   
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
@@ -22,7 +23,6 @@ function TextEditor(props) {
       props.parentCallBack(value)
     }
     files[fileName].value = value;
-
   }
 
   const handleOutput = () => {
@@ -33,6 +33,11 @@ function TextEditor(props) {
           <script>${files["script.js"].value}</script>
         </html>
       `)  
+      setmodalActive(true);
+  }
+
+  function handleCloseModal () {
+    setmodalActive(false);
   }
 
   return (
@@ -62,7 +67,7 @@ function TextEditor(props) {
       <div className = "IDE">
       <Editor
         height="80vh"
-        width="50vw"
+        width="100vw"
         theme="vs-dark"
         path={file.name}
         className = "editor"
@@ -71,6 +76,13 @@ function TextEditor(props) {
         onChange={handleEditorChange}
         value = {(props.value) === undefined ? "" : props.value}
       />
+      <ReactModal 
+           isOpen={modalActive}
+           contentLabel="onRequestClose Example"
+           onRequestClose={handleCloseModal}
+           className="Modal"
+           overlayClassName="Overlay"
+        >
       <iframe
           srcDoc={srcDoc}
           title="output"
@@ -78,6 +90,7 @@ function TextEditor(props) {
           sandbox="allow-scripts"
           frameBorder="0"
       />
+      </ReactModal>
       </div>
       <button onClick = {handleOutput}>See Output</button>
 
