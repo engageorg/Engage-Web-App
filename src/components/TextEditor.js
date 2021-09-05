@@ -5,9 +5,6 @@ import Editor from "@monaco-editor/react";
 import { js, css, html } from '../actions'
 import files from "../assets/files";
 
-
-
-
 function TextEditor(props) {
  
   const [srcDoc, setSrcDoc] = useState('')
@@ -48,13 +45,15 @@ function TextEditor(props) {
         disabled={fileName === "index.html"}
         onClick={() => dispatch(html()) }
       >
+        <i class="fab fa-html5"></i>
         index.html
       </button>
       <button
         className = "stylebutton"
         disabled={fileName === "style.css"}
         onClick={() => dispatch(css())}
-      >
+      > 
+       <i class="fab fa-css3-alt"></i>
         style.css
       </button>
       <button
@@ -62,7 +61,7 @@ function TextEditor(props) {
         disabled={fileName === "script.js"}
         onClick={() => dispatch(js())}
       >
-        script.js
+        <i class="fab fa-js"></i> script.js
       </button>
       <div className = "IDE">
       <Editor
