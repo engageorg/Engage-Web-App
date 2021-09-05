@@ -51,38 +51,38 @@ export default function Recorder() {
         
       },
     },
-    { 
-      eventName: "keydown",
-      handler: function handkeydown(e) {
-        // let str
-        // switch (e.keyCode) {
-        //   case 37:
-        //       str = 'Left Key pressed!';
-        //       break;
-        //   case 38:
-        //       str = 'Up Key pressed!';
-        //       break;
-        //   case 39:
-        //       str = 'Right Key pressed!';
-        //       break;
-        //   case 40:
-        //       str = 'Down Key pressed!';
-        //       break;
-        // }
-        // console.log(e.keyCode ,str);
-        // link to how to move pointer : https://stackoverflow.com/questions/34968174/set-text-cursor-position-in-a-textarea
-        Recording.events.push({
-          type: "keypress",
-          target: e.target.className,
-          x: lastMouse.x,
-          y: lastMouse.y,
-          value: e.target.value,
-          keyCode: e.keyCode,
-          time: curtime,
-        });
+    // { 
+    //   eventName: "keydown",
+    //   handler: function handkeydown(e) {
+    //     // let str
+    //     // switch (e.keyCode) {
+    //     //   case 37:
+    //     //       str = 'Left Key pressed!';
+    //     //       break;
+    //     //   case 38:
+    //     //       str = 'Up Key pressed!';
+    //     //       break;
+    //     //   case 39:
+    //     //       str = 'Right Key pressed!';
+    //     //       break;
+    //     //   case 40:
+    //     //       str = 'Down Key pressed!';
+    //     //       break;
+    //     // }
+    //     // console.log(e.keyCode ,str);
+    //     // link to how to move pointer : https://stackoverflow.com/questions/34968174/set-text-cursor-position-in-a-textarea
+    //     Recording.events.push({
+    //       type: "keypress",
+    //       target: e.target.className,
+    //       x: lastMouse.x,
+    //       y: lastMouse.y,
+    //       value: e.target.value,
+    //       keyCode: e.keyCode,
+    //       time: curtime,
+    //     });
 
-      },
-    },
+    //   },
+    // },
     {
       eventName: "keypress",
       handler: function handleKeyPress(e) {

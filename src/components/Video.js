@@ -221,7 +221,7 @@ export default function Video() {
     
       <div className="seek-slider">
         <div className="controller-wrapper">
-            <input type="range"  min = "0" max = "100" setp = "1" className="controller" id = "seekSlider"/>
+            <input type="range" defaultValue="0" min = "0" max = "100" setp = "1" className="controller" id = "seekSlider"/>
         </div>
       </div>
       <div className="controller-timings">
