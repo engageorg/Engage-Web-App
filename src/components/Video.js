@@ -93,6 +93,7 @@ export default function Video() {
       paused = true;
       stopTimer();
     }
+
     function startTimer() {
      timer =  setInterval(() => {
        time++
@@ -114,6 +115,7 @@ export default function Video() {
        //draw event to play all events in requestAnimationFrames
        var documentReference = document.documentElement;
        (function draw() {
+         if(paused === false){
            //select an event and check if its empty
            let event = recording.events[i];
            //console.log(event);
@@ -129,10 +131,10 @@ export default function Video() {
            }
 
            //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
-           if (i < recording.events.length && !paused) {
+           if (i < recording.events.length) {
              requestAnimationFrame(draw);
            }
-         
+          }
        })();
     }
 
