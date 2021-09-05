@@ -1,3 +1,7 @@
+body{
+  margin: 0;
+  padding: 0;
+}
 .customCursor {
   border-radius: 50%;
   width: 30px;
@@ -113,4 +117,51 @@
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.8);;
   
+}
+
+
+.htmlbutton{
+  color: white;
+  background-color: #3e3e42;
+  font-size: medium;
+  border: none;
+  padding: 5px;
+}
+
+.stylebutton {
+  color: white;
+  background-color: #3e3e42;
+  font-size: medium;
+  border: none;
+  padding: 5px;
+}
+
+.scriptbutton {
+  color: white;
+  background-color: #3e3e42;
+  font-size: medium;
+  border: none;
+  padding: 5px;
+}
+
+
+.htmlbutton:disabled {
+  color: bisque;
+  background-color: #1e1e1e !important;
+  border: none;
+  padding: 5px;
+}
+
+.stylebutton:disabled {
+  color: bisque;
+  background-color: #1e1e1e !important;
+  border: none;
+  padding: 5px;
+}
+
+.scriptbutton:disabled {
+  color: bisque;
+  background-color: #1e1e1e !important;
+  border: none;
+  padding: 5px;
 }
