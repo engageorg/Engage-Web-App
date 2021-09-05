@@ -2,7 +2,7 @@ const someJSCodeExample = `//write your js code here`;
 
 const someCSSCodeExample = ` /* write your css code here */`;
 
-const someHTMLCodeExample = `<!-- write your html here -->`;
+const someHTMLCodeExample = `<div>write your html here!</div>`;
 
 const files = {
   "script.js": {

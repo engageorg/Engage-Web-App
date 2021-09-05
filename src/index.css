@@ -1,6 +1,4 @@
-
-
-.cursor {
+.customCursor {
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -21,4 +19,78 @@
 
 .clicked {
    border: 2px solid blue; 
+}
+
+
+
+.seek-slider {
+  padding: 0 29px;
+  margin-top: 60px;
+}
+.seek-slider .controller-wrapper {
+  margin-top: 0px;
+}
+.seek-slider .controller-wrapper input[type=range].controller {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #e5e5e5;
+  border-radius: 3px;
+  z-index: 1;
+  outline: none;
+  border: none !important;
+}
+.seek-slider .controller-wrapper input[type=range].controller:focus {
+  outline: none;
+}
+.seek-slider .controller-wrapper input[type=range].controller::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border: 0.25px solid #E5E5E5;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 0.5px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.seek-slider .controller-wrapper input[type=range].controller::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  background: #fff;
+  border: 0.25px solid #E5E5E5;
+  box-sizing: border-box;
+  box-shadow: 0px 1px 0.5px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.controller-timings {
+  margin-top: 0.5em;
+  padding: 0 29px;
+  display: flex;
+  justify-content: space-between;
+}
+.controller-timings .left-time {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+}
+.controller-timings .right-time {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+}
+
+.player {
+  width : 50px;
+  height: 50px;
+  margin-left: auto;
+  margin-right: auto 
+}
+
+.IDE{
+  display: flex;
+}
+
+.outputiframe{
+  width: 50vw;
 }
