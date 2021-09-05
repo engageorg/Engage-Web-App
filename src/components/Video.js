@@ -30,7 +30,7 @@ export default function Video() {
   const [rangeInput, setrangeInput] = useState(0);
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
-
+  //let seekSliderValue=0;
   const file = files[fileName];
   //fake cursor for playing
   const fakeCursor = document.createElement("div");
@@ -50,12 +50,9 @@ export default function Video() {
       setplayStatus(false)
     }
   }
-
   useEffect(() => {
-
-
-    console.log(recording.events[recording.events.length - 1].time/1000);
-    document.getElementsByClassName("right-time")[0].innerHTML = recording.events[recording.events.length - 1].time/1000;
+    //console.log(recording.events[recording.events.length - 1].time/1000);
+    document.getElementsByClassName("right-time")[0].innerHTML = (recording.events[recording.events.length - 1].time/1000).toPrecision(2)
     // fake cursor, declared outside, so it will scoped to all functions
     fakeCursor.className = "customCursor";
 
@@ -63,7 +60,8 @@ export default function Video() {
     const play = document.getElementById("play");
     const pause = document.getElementById("pause");
     const seekSlider =  document.getElementById("seekSlider");
-    
+    seekSlider.value=0
+    //console.log(seekSlider.value)
     var i = 0;
     var paused = false;
     var valueHtml = "";
@@ -71,21 +69,31 @@ export default function Video() {
     var valueJs = "";
     var curValue = "";
     var time = 0, timer;
-  
-    seekSlider.addEventListener("change", function(e) {
+    // if(rangeInput <= 101){
+    //   stopTimer()
+    // }
+    seekSlider.addEventListener("mousedown", function(e) {
 
       pausefunction();
-
-      let seekSliderValue = e.target.value;
+      console.log(e)
+      console.log("seekSlider change addEvent")
+      let seekSliderValue = e.target.value;//this is equal to where user has clicked on the slider from 0-100
       console.log(seekSliderValue);
-      i = Math.ceil((seekSliderValue * (recording.events.length))/100);
-      if(time !== undefined){
-        time = recording.events[i].time;
-      }
+      console.log("current i = ", i);
+      console.log("current event = ", recording.events[i]);
+      i = Math.ceil((seekSliderValue * (recording.events.length))/100);// this makes i equal to event we should skip to
+      console.log("current i = ", i);
+      // if(time !== undefined){
+      //   time = recording.events[i].time;
+      // }
+      //setProgreeBar()
+      //setProgreeBarOnChange(i)
+      //playfunction();
+    })
 
-      setProgreeBar()
 
-      playfunction();
+    seekSlider.addEventListener("mouseup", () => {
+      playfunction()
     })
 
     function pausefunction() {
@@ -94,10 +102,11 @@ export default function Video() {
       stopTimer();
     }
     function startTimer() {
+     //this is assigned to a variable so we can clear the interval
      timer =  setInterval(() => {
-       time++
+       time++//this value increases per milli second
        setProgreeBar();
-      }, 1)
+      }, 1000)
     }
 
     function stopTimer() {
@@ -108,8 +117,8 @@ export default function Video() {
        //append fake cursor when user clicks play button
        fakeCursor.style.display = 'block'
 
-       startTimer();
-
+       //startTimer();
+       setProgreeBar()
        paused = false;
        //draw event to play all events in requestAnimationFrames
        var documentReference = document.documentElement;
@@ -125,7 +134,6 @@ export default function Video() {
              //draws event amd matches with listner
              drawEvent(event, fakeCursor, documentReference);
              i++;
-             setProgreeBar()
            }
 
            //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
@@ -149,11 +157,29 @@ export default function Video() {
     });
 
     function setProgreeBar() {
+      //this value is changing continusly
       const progress = (time/recording.events[recording.events.length - 1].time)*100;
-      seekSlider.value = progress;
       var progtime = 0;
-  
-      document.getElementsByClassName("left-time")[0].innerHTML = time;
+      // let x = rangeInput;
+      // console.log("x ", x)
+      console.log("last event time = ",recording.events[recording.events.length - 1].time);
+      console.log("time value while calculating progress = ",time);
+      console.log("progress = ", progress);
+      seekSlider.value = progress
+      if(document.getElementsByClassName("left-time")[0].innerHTML<=document.getElementsByClassName("right-time")[0].innerHTML){
+        document.getElementsByClassName("left-time")[0].innerHTML =(time/1000).toPrecision(2)
+      }else{
+        // console.lgo
+        stopTimer()
+      }
+    }
+
+    function setProgreeBarOnChange(i){
+      const progress = (recording.events[i].time/recording.events[recording.events.length - 1].time)*100
+      //var documentReference = document.documentElement;
+      //drawEvent(recording.events[i], fakeCursor, documentReference);
+      playfunction()
+      seekSlider.value = progress
     }
     
     function handleButtonEvents(target) {
@@ -218,7 +244,7 @@ export default function Video() {
     
       <div className="seek-slider">
         <div className="controller-wrapper">
-            <input type="range" value = {rangeInput} onChange = {(value) => {setrangeInput(value)}}  min = "0" max = "100" className="controller" id = "seekSlider"/>
+            <input type="range" min = "0" max = "100" className="controller" id = "seekSlider"/>
         </div>
       </div>
       <div className="controller-timings">

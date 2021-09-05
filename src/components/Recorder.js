@@ -1,21 +1,16 @@
 import React, {useState} from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import IDE from "./IDE";
-
+import MicRecorder from 'mic-recorder-to-mp3';
 
 export default function Recorder() {
-  const Recording = { events: [] };
+  const Recording = { events: [], startTime: -1 };
   const [rec, setrec] = useLocalStorage("recording", Recording);
-  //const [childValue, setValue] = useState('')
+  const [blobURL, setblobURL] = useState('')
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
   let childValue;
   var lastKeyClass = "";
-  var curtime = 0, timer;
-  function startTimer() {
-    timer =  setInterval(() => curtime++, 1)
-   }
-
 
   function callbackFunction(childData){
     childValue = childData
@@ -33,7 +28,7 @@ export default function Recorder() {
           x: e.pageX,
           y: e.pageY,
           value: lastKey,
-          time: curtime,
+          time: Date.now()-Recording.startTime ,
         });
       },
     },
@@ -45,43 +40,43 @@ export default function Recorder() {
           target: e.target.className,
           x: e.pageX,
           y: e.pageY,
-          time: curtime,
+          time: Date.now()-Recording.startTime,
         });
         
         
       },
     },
     { 
-      eventName: "keydown",
-      handler: function handkeydown(e) {
-        // let str
-        // switch (e.keyCode) {
-        //   case 37:
-        //       str = 'Left Key pressed!';
-        //       break;
-        //   case 38:
-        //       str = 'Up Key pressed!';
-        //       break;
-        //   case 39:
-        //       str = 'Right Key pressed!';
-        //       break;
-        //   case 40:
-        //       str = 'Down Key pressed!';
-        //       break;
-        // }
-        // console.log(e.keyCode ,str);
-        // link to how to move pointer : https://stackoverflow.com/questions/34968174/set-text-cursor-position-in-a-textarea
-        Recording.events.push({
-          type: "keypress",
-          target: e.target.className,
-          x: lastMouse.x,
-          y: lastMouse.y,
-          value: e.target.value,
-          keyCode: e.keyCode,
-          time: curtime,
-        });
+      // eventName: "keydown",
+      // handler: function handkeydown(e) {
+      //   // let str
+      //   // switch (e.keyCode) {
+      //   //   case 37:
+      //   //       str = 'Left Key pressed!';
+      //   //       break;
+      //   //   case 38:
+      //   //       str = 'Up Key pressed!';
+      //   //       break;
+      //   //   case 39:
+      //   //       str = 'Right Key pressed!';
+      //   //       break;
+      //   //   case 40:
+      //   //       str = 'Down Key pressed!';
+      //   //       break;
+      //   // }
+      //   // console.log(e.keyCode ,str);
+      //   // link to how to move pointer : https://stackoverflow.com/questions/34968174/set-text-cursor-position-in-a-textarea
+      //   Recording.events.push({
+      //     type: "keypress",
+      //     target: e.target.className,
+      //     x: lastMouse.x,
+      //     y: lastMouse.y,
+      //     value: e.target.value,
+      //     keyCode: e.keyCode,
+      //     time: Date.now(),
+      //   });
 
-      },
+      // },
     },
     {
       eventName: "keypress",
@@ -96,20 +91,29 @@ export default function Recorder() {
           y: lastMouse.y,
           value: childValue,
           keyCode: e.keyCode,
-          time: curtime,
+          time: Date.now()-Recording.startTime,
         });
       },
     },
   ];
+
+  const Mp3Recorder = new MicRecorder({ 
+    bitRate: 128,
+    prefix: "data:audio/wav;base64,"
+  });
 
   function listen(eventName, handler) {
     return document.documentElement.addEventListener(eventName, handler, true);
   }
 
   function startRecording() {
-    startTimer()
+    Recording.startTime = Date.now();
     Recording.events = [];
     handlers.map((x) => listen(x.eventName, x.handler));
+    Mp3Recorder
+    .start()
+    .then(() => {
+    }).catch((e) => console.error(e));
   }
 
   function removeListener(eventName, handler) {
@@ -129,9 +133,19 @@ export default function Recorder() {
   function stopRecording() {
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
-    // console.log(Recording);
-    // console.log(rec)
     localStorage.setItem("recording", JSON.stringify(Recording))
+    localStorage.setItem("max", JSON.stringify(Recording.events[Recording.events.length-1].time))
+    localStorage.setItem("min", JSON.stringify(0))
+    Mp3Recorder
+    .stop()
+    .getMp3()
+    .then(([buffer, blob]) => {
+      //const blobURL = URL.createObjectURL(blob)
+      setblobURL(URL.createObjectURL(blob))
+      localStorage.setItem("audio", URL.createObjectURL(blob))
+      console.log({blobURL})
+      // const binaryString = btoa(blobURL)
+    }).catch((e) => console.log(e));
   }
 
   function handleStop(e) {
@@ -158,6 +172,8 @@ export default function Recorder() {
       <button onClick={deleteLocalStroage} className="button" id="record">
         Delete localStroage
       </button>
+      <audio src={blobURL} controls="controls" />
     </>
   );
 }
+
