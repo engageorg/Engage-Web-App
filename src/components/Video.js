@@ -154,8 +154,7 @@ export default function Video() {
 
     function setProgreeBar() {
       const progress = (time/recording.events[recording.events.length - 1].time)*100;
-      seekSlider.value = progress;
-      var progtime = 0;
+      //seekSlider.value = progress;
   
       document.getElementsByClassName("left-time")[0].innerHTML = time/1000;
     }
