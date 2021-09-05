@@ -5,18 +5,18 @@ import { js, css, html } from "../actions";
 import files from "../assets/files";
 
 
-const Pause = ({onPlayerClick}) => {
+const Pause = (props) => {
   return (
-    <svg className="button" id = "pause" viewBox="0 0 60 60" onClick={onPlayerClick}>
+    <svg className="button" style = {props.style} id = "pause" viewBox="0 0 60 60" onClick={props.onPlayerClick}>
       <polygon points="0,0 15,0 15,60 0,60" />
       <polygon points="25,0 40,0 40,60 25,60" />
     </svg>
   )
 }
 
-const Play = ({onPlayerClick}) => {
+const Play = (props) => {
   return (
-      <svg className="button" id = "play" viewBox="0 0 60 60" onClick={onPlayerClick}>
+      <svg className="button" style = {props.style}  id = "play" viewBox="0 0 60 60" onClick={props.onPlayerClick}>
         <polygon points="0,0 50,30 0,60" />
       </svg>
   )
@@ -27,15 +27,12 @@ export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
   const [playStatus, setplayStatus] = useState(false);
-  const [rangeInput, setrangeInput] = useState(0);
+  const [playStyle, setplayStyle] = useState({display : "block"});
+  const [pauseStyle, setpauseStyle] = useState({display : "none"});
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
 
   const file = files[fileName];
-  //fake cursor for playing
-  const fakeCursor = document.createElement("div");
-  document.getElementById("root").appendChild(fakeCursor);
-  fakeCursor.style.display = 'none'
   
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
@@ -44,17 +41,24 @@ export default function Video() {
   
 
   const handlePlayerClick = () => {
+    setplayStatus(!playStatus);
     if (!playStatus) {
-      setplayStatus(true)
+      setplayStyle({display : "none"});
+      setpauseStyle({display : "block"});
     } else {
-      setplayStatus(false)
+      setplayStyle({display : "block"});
+      setpauseStyle({display : "none"});
     }
   }
 
   useEffect(() => {
+      //fake cursor for playing
+  const fakeCursor = document.createElement("div");
+  document.getElementById("root").appendChild(fakeCursor);
+  fakeCursor.style.display = 'none'
 
 
-    console.log(recording.events[recording.events.length - 1].time/1000);
+    console.log(playStatus);
     document.getElementsByClassName("right-time")[0].innerHTML = recording.events[recording.events.length - 1].time/1000;
     // fake cursor, declared outside, so it will scoped to all functions
     fakeCursor.className = "customCursor";
@@ -82,8 +86,6 @@ export default function Video() {
       if(time !== undefined){
         time = recording.events[i].time;
       }
-
-      // setProgreeBar()
 
       playfunction();
     })
@@ -215,12 +217,12 @@ export default function Video() {
   return (
     <>
       <IDE val = {keyCode} />
-      <button id="play">Play</button>
-      <button id="pause">Pause</button>
+      {/* <button id="play">Play</button>
+      <button id="pause">Pause</button> */}
     
       <div className="seek-slider">
         <div className="controller-wrapper">
-            <input type="range"  min = "0" max = "100" className="controller" id = "seekSlider"/>
+            <input type="range"  min = "0" max = "100" setp = "1" className="controller" id = "seekSlider"/>
         </div>
       </div>
       <div className="controller-timings">
@@ -229,7 +231,8 @@ export default function Video() {
       </div>
 
       <div className="player" >
-        {playStatus ? <Pause onPlayerClick = {handlePlayerClick} /> : <Play onPlayerClick = {handlePlayerClick} />}
+        <Pause style = {pauseStyle} onPlayerClick = {handlePlayerClick} /> 
+        <Play style = {playStyle} onPlayerClick = {handlePlayerClick} />
       </div>
 
     {/* <div className="volume-slider">
