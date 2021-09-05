@@ -119,39 +119,49 @@ body{
   
 }
 
+
 .htmlbutton{
-  color: bisque;
+  color: white;
   background-color: #3e3e42;
+  font-size: medium;
+  border: none;
   padding: 5px;
 }
 
 .stylebutton {
-  color: bisque;
+  color: white;
   background-color: #3e3e42;
+  font-size: medium;
+  border: none;
   padding: 5px;
 }
 
 .scriptbutton {
-  color: bisque;
+  color: white;
   background-color: #3e3e42;
+  font-size: medium;
+  border: none;
   padding: 5px;
 }
 
 
-.htmlbutton :disabled {
+.htmlbutton:disabled {
   color: bisque;
   background-color: #1e1e1e !important;
+  border: none;
   padding: 5px;
 }
 
-.stylebutton :disabled {
+.stylebutton:disabled {
   color: bisque;
   background-color: #1e1e1e !important;
+  border: none;
   padding: 5px;
 }
 
-.scriptbutton :disabled {
+.scriptbutton:disabled {
   color: bisque;
   background-color: #1e1e1e !important;
+  border: none;
   padding: 5px;
 }
