@@ -169,10 +169,6 @@ export default function Recorder() {
 
   return (
     <>
-      <IDE
-      parentCallBack = {callbackFunction}
-      />
-
       <div className = "recorder-button">
       <button onClick={handleClick} className="record">
         Start Record
@@ -180,10 +176,8 @@ export default function Recorder() {
       <button onClick={handleStop} className="stop-record">
         Stop Recording
       </button>
-      <button onClick={deleteLocalStroage} className="delete-local">
-        Delete localStroage
-      </button>
       </div>
+      <IDE parentCallBack = {callbackFunction}/>
     </>
   );
 }

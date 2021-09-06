@@ -3,6 +3,7 @@ import IDE from "./IDE";
 import { useSelector, useDispatch } from "react-redux";
 import { js, css, html } from "../actions";
 import files from "../assets/files";
+import ReactPlayer from 'react-player'
 
 const Pause = (props) => {
   return (
@@ -31,6 +32,7 @@ export default function Video() {
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
   const file = files[fileName];
+  let blobURL;
   
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
@@ -50,15 +52,19 @@ export default function Video() {
     }
   }
 
+  
   useEffect(() => {
-  //fake cursor for playing
+      //fake cursor for playing
   const fakeCursor = document.createElement("div");
-  var blobURL = (localStorage.getItem("audio"))
+  blobURL = (localStorage.getItem("audio"))
   document.getElementById("root").appendChild(fakeCursor);
   fakeCursor.style.display = 'none'
   const audioPlayer = document.getElementById("audio_player")
-  console.log(audioPlayer)
-  // audioPlayer.src = URL.createObjectURL(audioValue);
+  
+  audioPlayer.addEventListener("onclick", (e) => {
+    console.log("Click on the audioPlayer")
+    console.log(e)
+  })
 
     console.log(playStatus);
     if(recording.events[recording.events.length - 1].time%1000 !==0){
@@ -250,7 +256,7 @@ export default function Video() {
         <Pause style = {pauseStyle} onPlayerClick = {handlePlayerClick} /> 
         <Play style = {playStyle} onPlayerClick = {handlePlayerClick} />
       </div>
-      <audio id="audio_player" style={{display:"none"}} controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+      <audio id="audio_player" style={{display:"none"}} controls="controls">
         <source src={audioValue}/>
       </audio>
       </div>

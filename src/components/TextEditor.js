@@ -40,7 +40,8 @@ function TextEditor(props) {
   return (
     <>
     <div className= "sidebar sidebar--expanded" >
-      <div className = "nav-heading">Explorer</div>
+    <div className = "nav-heading">
+    <div className="explorer">Explorer</div>
     <button
         className = "htmlbutton"
         disabled={fileName === "index.html"}
@@ -62,12 +63,10 @@ function TextEditor(props) {
       >
         <i class="fab fa-js"></i> script.js
       </button>
-        <span className="shape"></span>
-        <span className="shape"></span>
+      <span className="shape"></span>
+      <span className="shape"></span>
     </div>
-    <div className = "texteditor">
-      <button onClick = {handleOutput} className = "outputbutton">See Output</button>
-      <div className = "IDE">
+    <div>
       <Editor
         height="100vh"
         width="90vw"
@@ -79,6 +78,11 @@ function TextEditor(props) {
         onChange={handleEditorChange}
         value = {(props.value) === undefined ? "" : props.value}
       />
+    </div>
+    </div>
+    <div className = "texteditor">
+      <button onClick = {handleOutput} className = "outputbutton">See Output</button>
+      <div className = "IDE">
       <ReactModal 
            isOpen={modalActive}
            contentLabel="onRequestClose Example"
