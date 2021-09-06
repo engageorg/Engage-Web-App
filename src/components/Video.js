@@ -42,7 +42,7 @@ export default function Video() {
 
   const handlePlayerClick = () => {
     setplayStatus(!playStatus);
-    if (!playStatus) {
+    if (playStatus === false) {
       setplayStyle({display : "none"});
       setpauseStyle({display : "block"});
     } else {
@@ -78,6 +78,9 @@ export default function Video() {
   
     seekSlider.addEventListener("change", function(e) {
 
+
+      handlePlayerClick()
+
       pausefunction();
 
       let seekSliderValue = e.target.value;
@@ -86,6 +89,7 @@ export default function Video() {
       if(time !== undefined){
         time = recording.events[i].time;
       }
+      handlePlayerClick()
 
       playfunction();
     })

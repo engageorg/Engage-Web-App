@@ -1,6 +1,7 @@
 body{
   margin: 0;
   padding: 0;
+  background-color: #1e1e1e !important;
 }
 .customCursor {
   border-radius: 50%;
@@ -24,8 +25,6 @@ body{
 .clicked {
    border: 2px solid blue; 
 }
-
-
 
 .seek-slider {
   padding: 0 29px;
@@ -78,10 +77,12 @@ body{
 .controller-timings .left-time {
   font-family: "Poppins", sans-serif;
   font-size: 15px;
+  color:white;
 }
 .controller-timings .right-time {
   font-family: "Poppins", sans-serif;
   font-size: 15px;
+  color:white;
 }
 
 .player {
