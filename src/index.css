@@ -301,3 +301,9 @@ body{
   width: 100vw;
 
 }
+
+.recorder-button{
+  position: absolute;
+  z-index: 100000;
+  top: 85vh !important;
+}

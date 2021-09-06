@@ -3,7 +3,6 @@ import IDE from "./IDE";
 import { useSelector, useDispatch } from "react-redux";
 import { js, css, html } from "../actions";
 import files from "../assets/files";
-import ReactPlayer from 'react-player'
 
 const Pause = (props) => {
   return (
@@ -52,9 +51,9 @@ export default function Video() {
   }
 
   useEffect(() => {
-      //fake cursor for playing
+  //fake cursor for playing
   const fakeCursor = document.createElement("div");
-  blobURL = (localStorage.getItem("audio"))
+  var blobURL = (localStorage.getItem("audio"))
   document.getElementById("root").appendChild(fakeCursor);
   fakeCursor.style.display = 'none'
   const audioPlayer = document.getElementById("audio_player")
