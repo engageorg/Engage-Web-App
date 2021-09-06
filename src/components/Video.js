@@ -220,9 +220,8 @@ export default function Video() {
   return (
     <>
       <IDE val = {keyCode} />
-      {/* <button id="play">Play</button>
-      <button id="pause">Pause</button> */}
-    
+
+      <div className = "videoplayer">    
       <div className="seek-slider">
         <div className="controller-wrapper">
             <input type="range" defaultValue="0" min = "0" max = "100" setp = "1" className="controller" id = "seekSlider"/>
@@ -237,18 +236,7 @@ export default function Video() {
         <Pause style = {pauseStyle} onPlayerClick = {handlePlayerClick} /> 
         <Play style = {playStyle} onPlayerClick = {handlePlayerClick} />
       </div>
-
-    {/* <div className="volume-slider">
-        <div className="volume-low-icon">
-            
-        </div>
-        <div className="controller-wrapper">
-            <input type="range" min="0" max="100" className="controller" />
-        </div>
-        <div className="volume-up-icon">
-         <img src = {}/>
-        </div>
-    </div> */}
+      </div>
     </>
   );
 }
