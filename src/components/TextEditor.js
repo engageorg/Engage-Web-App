@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
@@ -14,6 +14,12 @@ function TextEditor(props) {
   const dispatch = useDispatch();
 
   const file = files[fileName];
+
+  function toggleSidebar() {
+    this.setState({
+      expanded: !this.state.expanded
+    })
+  }
 
   function handleEditorChange(value, event) {
     if(props.parentCallBack){
@@ -38,14 +44,15 @@ function TextEditor(props) {
   }
 
   return (
-    <div className = "texteditor">
-
-      <button
+    <>
+    <div className= "sidebar sidebar--expanded" >
+      <div className = "nav-heading">Explorer</div>
+    <button
         className = "htmlbutton"
         disabled={fileName === "index.html"}
         onClick={() => dispatch(html()) }
       >
-        <i class="fab fa-html5"></i> index.html
+        <i className ="fab fa-html5"></i> index.html
       </button>
       <button
         className = "stylebutton"
@@ -61,10 +68,15 @@ function TextEditor(props) {
       >
         <i class="fab fa-js"></i> script.js
       </button>
+        <span className="shape"></span>
+        <span className="shape"></span>
+    </div>
+    <div className = "texteditor">
+      <button onClick = {handleOutput} className = "outputbutton">See Output</button>
       <div className = "IDE">
       <Editor
-        height="80vh"
-        width="100vw"
+        height="100vh"
+        width="90vw"
         theme="vs-dark"
         path={file.name}
         className = "editor"
@@ -89,11 +101,8 @@ function TextEditor(props) {
       />
       </ReactModal>
       </div>
-      <button onClick = {handleOutput}>See Output</button>
-
-      
-
     </div>
+    </>
   );
 }
 
