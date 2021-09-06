@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import IDE from "./IDE";
-
+import MicRecorder from 'mic-recorder-to-mp3';
 
 export default function Recorder() {
   const Recording = { events: [] };
@@ -86,7 +86,6 @@ export default function Recorder() {
     {
       eventName: "keypress",
       handler: function handleKeyPress(e) {
-        console.log("THIS")
         lastKey = childValue
         lastKeyClass = e.target.className
         Recording.events.push({
@@ -102,6 +101,11 @@ export default function Recorder() {
     },
   ];
 
+  const Mp3Recorder = new MicRecorder({ 
+    bitRate: 128,
+    prefix: "data:audio/wav;base64,"
+  });
+
   function listen(eventName, handler) {
     return document.documentElement.addEventListener(eventName, handler, true);
   }
@@ -110,6 +114,10 @@ export default function Recorder() {
     startTimer()
     Recording.events = [];
     handlers.map((x) => listen(x.eventName, x.handler));
+    Mp3Recorder
+    .start()
+    .then(() => {
+    }).catch((e) => console.error(e));
   }
 
   function removeListener(eventName, handler) {
@@ -129,9 +137,24 @@ export default function Recorder() {
   function stopRecording() {
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
-    // console.log(Recording);
-    // console.log(rec)
     localStorage.setItem("recording", JSON.stringify(Recording))
+    Mp3Recorder
+    .stop()
+    .getMp3()
+    .then(([buffer, blob]) => {
+      const file = new File(buffer, 'me-at-thevoice.mp3', {
+        type: blob.type,
+        lastModified: Date.now()
+      });
+      console.log(file)
+      console.log(blob)
+      console.log(URL.createObjectURL(file))
+      var reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        localStorage.setItem("file", JSON.stringify(reader.result))
+      }
+    }).catch((e) => console.log(e));
   }
 
   function handleStop(e) {
