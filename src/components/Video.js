@@ -42,7 +42,7 @@ export default function Video() {
 
   const handlePlayerClick = () => {
     setplayStatus(!playStatus);
-    if (!playStatus) {
+    if (playStatus === false) {
       setplayStyle({display : "none"});
       setpauseStyle({display : "block"});
     } else {
@@ -85,7 +85,7 @@ export default function Video() {
     var time = 0, timer;
   
     seekSlider.addEventListener("change", function(e) {
-
+      handlePlayerClick()
       pausefunction();
       //this might be getting value different when the slider is moving
       let seekSliderValue = e.target.value;//this gives the current value so if slider is at 90 and you click on 10 then it will return 90
@@ -93,7 +93,7 @@ export default function Video() {
       if(time !== undefined){
         time = recording.events[i].time;
       }
-      audioPlayer.currentTime = recording.events[i].time
+      handlePlayerClick()
       playfunction();
     })
 
@@ -236,9 +236,7 @@ export default function Video() {
   return (
     <>
       <IDE val = {keyCode} />
-      {/* <button id="play">Play</button>
-      <button id="pause">Pause</button> */}
-    
+      <div className = "videoplayer">    
       <div className="seek-slider">
         <div className="controller-wrapper">
             <input type="range" defaultValue="0" min = "0" max = "100" setp = "1" className="controller" id = "seekSlider"/>
@@ -256,25 +254,7 @@ export default function Video() {
       <audio id="audio_player" style={{display:"none"}} controls="controls" autobuffer="autobuffer" autoplay="autoplay">
         <source src={audioValue}/>
       </audio>
-
-      {/* <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
-         
-      </audio> */}
-      {/* <ReactPlayer        width="400px"
-        height="50px"
-        playing={false}
-        controls={true} url="https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3"/> */}
-    {/* <div className="volume-slider">
-        <div className="volume-low-icon">
-            
-        </div>
-        <div className="controller-wrapper">
-            <input type="range" min="0" max="100" className="controller" />
-        </div>
-        <div className="volume-up-icon">
-         <img src = {}/>
-        </div>
-    </div> */}
+      </div>
     </>
   );
 }

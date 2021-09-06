@@ -1,7 +1,111 @@
 body{
-  margin: 0;
   padding: 0;
+  margin: 0;
+  font-family: 'Montserrat' !important;
 }
+
+.nav-heading{
+  font-size: 2.5em;
+  color: #a7a7b3;
+}
+
+.sidebar {
+  width: 10vw;
+  background-image: linear-gradient(#3e3e42, #070707);
+  background-size: 200%;
+  background-position: 0 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transform: translateX(-230px);
+  transition: 300ms ease-in-out;
+  z-index: 1;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sidebar--expanded {
+  background-size: 100%;
+  background-position: 0 0;
+  transform: translateX(0);
+  display: flex;
+  flex-direction: column;
+}
+.sidebar:hover {
+  background-position: 0 0;
+}
+
+.nav-heading {
+  margin-top: 1vh;
+}
+
+.shape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 360px;
+  background: linear-gradient(#00040c 80%, transparent);
+  height: 370px;
+  border-radius: 100%;
+  margin-left: -100px;
+  margin-top: -20px;
+  z-index: -1;
+  opacity: 0;
+  transform: scale(0.4) translateY(-400px) translateX(300px);
+  margin-left: 0;
+  margin-top: 0;
+  transition: 400ms ease;
+}
+.shape:nth-child(2) {
+  background: linear-gradient(#252c35 80%, transparent);
+  margin-top: 70px;
+  margin-left: 50px;
+  transform: scale(0.4) translateY(-400px);
+  margin-top: 0;
+}
+.sidebar--expanded .shape {
+  -webkit-animation: float 6s infinite alternate;
+          animation: float 6s infinite alternate;
+  margin-left: -100px;
+  margin-top: -20px;
+  opacity: 0.4;
+  transform: scale(1) translateY(0);
+}
+.sidebar--expanded .shape:nth-child(2) {
+  -webkit-animation: float 20s infinite alternate;
+          animation: float 20s infinite alternate;
+  transform: scale(1) translateY(100px) translateX(170px);
+}
+
+@-webkit-keyframes float {
+  20% {
+    top: 0;
+    left: -100px;
+  }
+  50% {
+    left: 0;
+  }
+  100% {
+    top: 500px;
+    left: -100px;
+  }
+}
+
+@keyframes float {
+  20% {
+    top: 0;
+    left: -100px;
+  }
+  50% {
+    left: 0;
+  }
+  100% {
+    top: 500px;
+    left: -100px;
+  }
+}
+
 .customCursor {
   border-radius: 50%;
   width: 30px;
@@ -24,8 +128,6 @@ body{
 .clicked {
    border: 2px solid blue; 
 }
-
-
 
 .seek-slider {
   padding: 0 29px;
@@ -78,10 +180,12 @@ body{
 .controller-timings .left-time {
   font-family: "Poppins", sans-serif;
   font-size: 15px;
+  color:white;
 }
 .controller-timings .right-time {
   font-family: "Poppins", sans-serif;
   font-size: 15px;
+  color:white;
 }
 
 .player {
@@ -107,6 +211,7 @@ body{
   right: 20vw;
   bottom: 20vh;
   background-color: #e5e5e5;
+  z-index: 100000;
 }
 
 .Overlay {
@@ -115,10 +220,23 @@ body{
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
   
 }
 
+.outputbutton {
+  position: absolute;
+  font-size: medium;
+  left: 11vw;
+  top: 80vh;
+  z-index: 100;
+  background-color: green;
+  border-radius: 10px;
+  color: white;
+  border: none;
+  padding: 5px;
+}
 
 .htmlbutton{
   color: white;
@@ -126,6 +244,7 @@ body{
   font-size: medium;
   border: none;
   padding: 5px;
+  text-align: left;
 }
 
 .stylebutton {
@@ -134,6 +253,7 @@ body{
   font-size: medium;
   border: none;
   padding: 5px;
+  text-align: left;
 }
 
 .scriptbutton {
@@ -142,6 +262,7 @@ body{
   font-size: medium;
   border: none;
   padding: 5px;
+  text-align: left;
 }
 
 
@@ -150,6 +271,7 @@ body{
   background-color: #1e1e1e !important;
   border: none;
   padding: 5px;
+  text-align: left;
 }
 
 .stylebutton:disabled {
@@ -157,6 +279,7 @@ body{
   background-color: #1e1e1e !important;
   border: none;
   padding: 5px;
+  text-align: left;
 }
 
 .scriptbutton:disabled {
@@ -164,4 +287,17 @@ body{
   background-color: #1e1e1e !important;
   border: none;
   padding: 5px;
+  text-align: left;
+}
+
+.texteditor{
+  margin-left: 10vw;
+}
+
+.videoplayer{
+  position: absolute;
+  z-index: 100000;
+  top: 85vh;
+  width: 100vw;
+
 }
