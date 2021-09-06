@@ -15,12 +15,6 @@ function TextEditor(props) {
 
   const file = files[fileName];
 
-  function toggleSidebar() {
-    this.setState({
-      expanded: !this.state.expanded
-    })
-  }
-
   function handleEditorChange(value, event) {
     if(props.parentCallBack){
       props.parentCallBack(value)

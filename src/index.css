@@ -1,8 +1,8 @@
 body{
   padding: 0;
   margin: 0;
+  font-family: 'Montserrat' !important;
 }
-
 
 .nav-heading{
   font-size: 2.5em;
@@ -44,7 +44,7 @@ body{
   top: 0;
   left: 0;
   width: 360px;
-  background: linear-gradient(#2c4d8a 80%, transparent);
+  background: linear-gradient(#00040c 80%, transparent);
   height: 370px;
   border-radius: 100%;
   margin-left: -100px;
@@ -57,7 +57,7 @@ body{
   transition: 400ms ease;
 }
 .shape:nth-child(2) {
-  background: linear-gradient(#FCBD78 80%, transparent);
+  background: linear-gradient(#252c35 80%, transparent);
   margin-top: 70px;
   margin-left: 50px;
   transform: scale(0.4) translateY(-400px);
