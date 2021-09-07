@@ -6,12 +6,8 @@ body{
 
 .nav-heading{
   font-size: 1em;
-  color: #a7a7b3;
-  margin-left: 5px;
-}
-
-.explorer{
-  text-align: center;
+  background-color: #2e2e2e;
+  width: 20%;
 }
 
 .sidebar {
@@ -30,13 +26,17 @@ body{
 .sidebar{
   justify-content: space-around;
 }
-
+.explorer{
+  margin-bottom: 10px;
+  color: #a7a7b3;
+  background-color: #2e2e2e;
+}
 .sidebar:hover {
   background-position: 0 0;
 }
 
 .nav-heading {
-  margin-top: 1vh;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -294,4 +294,21 @@ body{
   position: absolute;
   z-index: 100000;
   top: 85vh !important;
+}
+
+.fab{
+  font-size: 1rem;
+}
+
+.fa-html5{
+  color:#cc0000
+}
+
+.fa-css3-alt{
+  color: #0066ff;
+}
+
+.fa-js-square{
+  color: #ffd11a;
+  size: 2px;
 }

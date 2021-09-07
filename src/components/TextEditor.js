@@ -39,7 +39,8 @@ function TextEditor(props) {
 
   return (
     <>
-    <div className= "sidebar sidebar--expanded" >
+    <button onClick = {handleOutput} className = "outputbutton">See Output</button>
+    <div className= "sidebar" >
     <div className = "nav-heading">
     <div className="explorer">Explorer</div>
     <button
@@ -61,7 +62,7 @@ function TextEditor(props) {
         disabled={fileName === "script.js"}
         onClick={() => dispatch(js())}
       >
-        <i class="fab fa-js"></i> script.js
+        <i class="fab fa-js-square fa-1x"></i> script.js
       </button>
       <span className="shape"></span>
       <span className="shape"></span>
@@ -81,7 +82,7 @@ function TextEditor(props) {
     </div>
     </div>
     <div className = "texteditor">
-      <button onClick = {handleOutput} className = "outputbutton">See Output</button>
+    <button onClick = {handleOutput} className = "outputbutton">See Output</button>
       <div className = "IDE">
       <ReactModal 
            isOpen={modalActive}
