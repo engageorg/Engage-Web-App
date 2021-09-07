@@ -15,14 +15,13 @@ body{
 }
 
 .sidebar {
-  background-image: linear-gradient(#3e3e42, #070707);
+  background-color: #3e3e42;
   background-size: 200%;
   background-position: 0 100%;
   display: flex;
   top: 0;
   left: 0;
   height: 100%;
-  transition: 300ms ease-in-out;
   z-index: 1;
   overflow: hidden;
   cursor: pointer;
@@ -119,7 +118,8 @@ body{
 
 .seek-slider {
   padding: 0 29px;
-  margin-top: 60px;
+  margin-top: 12px;
+  width: 95vw;
 }
 .seek-slider .controller-wrapper {
   margin-top: 0px;
@@ -179,8 +179,8 @@ body{
 .player {
   width : 50px;
   height: 50px;
-  margin-left: auto;
-  margin-right: auto 
+  margin-left: 55px;
+
 }
 
 .IDE{
@@ -288,13 +288,16 @@ body{
 .videoplayer{
   position: absolute;
   z-index: 100000;
-  top: 85vh;
+  top: 95.7vh;
   width: 100vw;
-
+  display: flex;
+  flex-direction: row;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .recorder-button{
   position: absolute;
   z-index: 100000;
   top: 85vh !important;
+  width: 70vw;
 }
