@@ -233,6 +233,7 @@ body{
   border: none;
   padding: 5px;
   text-align: left;
+  width: 10vw;
 }
 
 .stylebutton {
@@ -242,6 +243,7 @@ body{
   border: none;
   padding: 5px;
   text-align: left;
+  width: 10vw;
 }
 
 .scriptbutton {
@@ -251,6 +253,7 @@ body{
   border: none;
   padding: 5px;
   text-align: left;
+  width: 10vw;
 }
 
 
