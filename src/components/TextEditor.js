@@ -55,7 +55,7 @@ function TextEditor(props) {
         disabled={fileName === "style.css"}
         onClick={() => dispatch(css())}
       > 
-       <i class="fab fa-css3-alt"></i> style.css
+       <i className = "fab fa-css3-alt"></i> style.css
       </button>
       <button
         className = "scriptbutton"

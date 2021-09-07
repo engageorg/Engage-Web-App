@@ -67,11 +67,11 @@ export default function Video() {
   })
 
     console.log(playStatus);
-    if(recording.events[recording.events.length - 1].time%1000 !==0){
-      document.getElementsByClassName("right-time")[0].innerHTML = (Math.floor(recording.events[recording.events.length - 1].time+1000)/1000).toPrecision(1);
-    }else{
-      document.getElementsByClassName("right-time")[0].innerHTML = recording.events[recording.events.length - 1].time/1000;
-    }
+    // if(recording.events[recording.events.length - 1].time%1000 !==0){
+    //   document.getElementsByClassName("right-time")[0].innerHTML = (Math.floor(recording.events[recording.events.length - 1].time+1000)/1000).toPrecision(1);
+    // }else{
+    //   document.getElementsByClassName("right-time")[0].innerHTML = recording.events[recording.events.length - 1].time/1000;
+    // }
     // fake cursor, declared outside, so it will scoped to all functions
     fakeCursor.className = "customCursor";
 
@@ -174,9 +174,9 @@ export default function Video() {
     function setProgreeBar() {
       const progress = (time/recording.events[recording.events.length - 1].time)*100;
       //seekSlider.value = progress;
-      if(parseFloat(document.getElementsByClassName("left-time")[0].innerHTML) <= parseFloat(document.getElementsByClassName("right-time")[0].innerHTML)){
-        document.getElementsByClassName("left-time")[0].innerHTML = (time/1000).toPrecision(1);
-      }
+      // if(parseFloat(document.getElementsByClassName("left-time")[0].innerHTML) <= parseFloat(document.getElementsByClassName("right-time")[0].innerHTML)){
+      //   document.getElementsByClassName("left-time")[0].innerHTML = (time/1000).toPrecision(1);
+      // }
     }
     
     function handleButtonEvents(target) {
@@ -241,21 +241,22 @@ export default function Video() {
   return (
     <>
       <IDE val = {keyCode} />
-      <div className = "videoplayer">    
+      <div className = "videoplayer"> 
+      <div className="player" >
+        <Pause style = {pauseStyle} onPlayerClick = {handlePlayerClick} /> 
+        <Play style = {playStyle} onPlayerClick = {handlePlayerClick} />
+      </div>   
       <div className="seek-slider">
         <div className="controller-wrapper">
             <input type="range" defaultValue="0" min = "0" max = "100" setp = "1" className="controller" id = "seekSlider"/>
         </div>
       </div>
-      <div className="controller-timings">
+      {/* <div className="controller-timings">
           <span className="left-time">00:00</span>
           <span className="right-time">00:00</span>
-      </div>
+      </div> */}
 
-      <div className="player" >
-        <Pause style = {pauseStyle} onPlayerClick = {handlePlayerClick} /> 
-        <Play style = {playStyle} onPlayerClick = {handlePlayerClick} />
-      </div>
+      
       <audio id="audio_player" style={{display:"none"}} controls="controls">
         <source src={audioValue}/>
       </audio>
