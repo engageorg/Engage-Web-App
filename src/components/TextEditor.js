@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
@@ -38,33 +38,38 @@ function TextEditor(props) {
   }
 
   return (
-    <div className = "texteditor">
-
-      <button
+    <>
+    <div className= "sidebar sidebar--expanded" >
+    <div className = "nav-heading">
+    <div className="explorer">Explorer</div>
+    <button
         className = "htmlbutton"
         disabled={fileName === "index.html"}
         onClick={() => dispatch(html()) }
       >
-        <i class="fab fa-html5"></i> index.html
+        <i className ="fab fa-html5"></i> index.html
       </button>
       <button
         className = "stylebutton"
         disabled={fileName === "style.css"}
         onClick={() => dispatch(css())}
       > 
-       <i class="fab fa-css3-alt"></i> style.css
+       <i className = "fab fa-css3-alt"></i> style.css
       </button>
       <button
         className = "scriptbutton"
         disabled={fileName === "script.js"}
         onClick={() => dispatch(js())}
       >
-        <i class="fab fa-js"></i> script.js
+        <i className ="fab fa-js"></i> script.js
       </button>
-      <div className = "IDE">
+      <span className="shape"></span>
+      <span className="shape"></span>
+    </div>
+    <div>
       <Editor
-        height="80vh"
-        width="100vw"
+        height="100vh"
+        width="90vw"
         theme="vs-dark"
         path={file.name}
         className = "editor"
@@ -73,6 +78,11 @@ function TextEditor(props) {
         onChange={handleEditorChange}
         value = {(props.value) === undefined ? "" : props.value}
       />
+    </div>
+    </div>
+    <div className = "texteditor">
+      <button onClick = {handleOutput} className = "outputbutton">See Output</button>
+      <div className = "IDE">
       <ReactModal 
            isOpen={modalActive}
            contentLabel="onRequestClose Example"
@@ -89,11 +99,8 @@ function TextEditor(props) {
       />
       </ReactModal>
       </div>
-      <button onClick = {handleOutput}>See Output</button>
-
-      
-
     </div>
+    </>
   );
 }
 

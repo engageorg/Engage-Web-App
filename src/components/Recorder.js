@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import IDE from "./IDE";
-
+import MicRecorder from 'mic-recorder-to-mp3';
 
 export default function Recorder() {
   const Recording = { events: [] };
@@ -51,42 +51,41 @@ export default function Recorder() {
         
       },
     },
-    { 
-      eventName: "keydown",
-      handler: function handkeydown(e) {
-        // let str
-        // switch (e.keyCode) {
-        //   case 37:
-        //       str = 'Left Key pressed!';
-        //       break;
-        //   case 38:
-        //       str = 'Up Key pressed!';
-        //       break;
-        //   case 39:
-        //       str = 'Right Key pressed!';
-        //       break;
-        //   case 40:
-        //       str = 'Down Key pressed!';
-        //       break;
-        // }
-        // console.log(e.keyCode ,str);
-        // link to how to move pointer : https://stackoverflow.com/questions/34968174/set-text-cursor-position-in-a-textarea
-        Recording.events.push({
-          type: "keypress",
-          target: e.target.className,
-          x: lastMouse.x,
-          y: lastMouse.y,
-          value: e.target.value,
-          keyCode: e.keyCode,
-          time: curtime,
-        });
+    // { 
+    //   eventName: "keydown",
+    //   handler: function handkeydown(e) {
+    //     // let str
+    //     // switch (e.keyCode) {
+    //     //   case 37:
+    //     //       str = 'Left Key pressed!';
+    //     //       break;
+    //     //   case 38:
+    //     //       str = 'Up Key pressed!';
+    //     //       break;
+    //     //   case 39:
+    //     //       str = 'Right Key pressed!';
+    //     //       break;
+    //     //   case 40:
+    //     //       str = 'Down Key pressed!';
+    //     //       break;
+    //     // }
+    //     // console.log(e.keyCode ,str);
+    //     // link to how to move pointer : https://stackoverflow.com/questions/34968174/set-text-cursor-position-in-a-textarea
+    //     Recording.events.push({
+    //       type: "keypress",
+    //       target: e.target.className,
+    //       x: lastMouse.x,
+    //       y: lastMouse.y,
+    //       value: e.target.value,
+    //       keyCode: e.keyCode,
+    //       time: curtime,
+    //     });
 
-      },
-    },
+    //   },
+    // },
     {
       eventName: "keypress",
       handler: function handleKeyPress(e) {
-        console.log("THIS")
         lastKey = childValue
         lastKeyClass = e.target.className
         Recording.events.push({
@@ -102,6 +101,11 @@ export default function Recorder() {
     },
   ];
 
+  const Mp3Recorder = new MicRecorder({ 
+    bitRate: 128,
+    prefix: "data:audio/wav;base64,"
+  });
+
   function listen(eventName, handler) {
     return document.documentElement.addEventListener(eventName, handler, true);
   }
@@ -110,6 +114,10 @@ export default function Recorder() {
     startTimer()
     Recording.events = [];
     handlers.map((x) => listen(x.eventName, x.handler));
+    Mp3Recorder
+    .start()
+    .then(() => {
+    }).catch((e) => console.error(e));
   }
 
   function removeListener(eventName, handler) {
@@ -129,9 +137,24 @@ export default function Recorder() {
   function stopRecording() {
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
-    // console.log(Recording);
-    // console.log(rec)
     localStorage.setItem("recording", JSON.stringify(Recording))
+    Mp3Recorder
+    .stop()
+    .getMp3()
+    .then(([buffer, blob]) => {
+      const file = new File(buffer, 'me-at-thevoice.mp3', {
+        type: blob.type,
+        lastModified: Date.now()
+      });
+      console.log(file)
+      console.log(blob)
+      console.log(URL.createObjectURL(file))
+      var reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        localStorage.setItem("file", JSON.stringify(reader.result))
+      }
+    }).catch((e) => console.log(e));
   }
 
   function handleStop(e) {
@@ -146,18 +169,15 @@ export default function Recorder() {
 
   return (
     <>
-      <IDE
-      parentCallBack = {callbackFunction}
-      />
+      <div className = "recorder-button">
       <button onClick={handleClick} className="record">
         Start Record
       </button>
-      <button onClick={handleStop} className="button" id="record">
+      <button onClick={handleStop} className="stop-record">
         Stop Recording
       </button>
-      <button onClick={deleteLocalStroage} className="button" id="record">
-        Delete localStroage
-      </button>
+      </div>
+      <IDE parentCallBack = {callbackFunction}/>
     </>
   );
 }
