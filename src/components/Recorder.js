@@ -2,6 +2,9 @@ import React, {useState} from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import IDE from "./IDE";
 import MicRecorder from 'mic-recorder-to-mp3';
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/storage';
 
 export default function Recorder() {
   const Recording = { events: [] };
@@ -138,11 +141,13 @@ export default function Recorder() {
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
     localStorage.setItem("recording", JSON.stringify(Recording))
+    let audioString
+    let file
     Mp3Recorder
     .stop()
     .getMp3()
     .then(([buffer, blob]) => {
-      const file = new File(buffer, 'me-at-thevoice.mp3', {
+      file = new File(buffer, 'me-at-thevoice.mp3', {
         type: blob.type,
         lastModified: Date.now()
       });
@@ -152,9 +157,22 @@ export default function Recorder() {
       var reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = () => {
-        localStorage.setItem("file", JSON.stringify(reader.result))
+        audioString =(reader.result).slice(23, reader.result.length)
+          var storageRef = firebase.storage().ref();
+          var audioRef = storageRef.child('audio');
+          audioRef.putString(audioString, 'base64').then((snapshot) => {
+            console.log('Uploaded a base64 string!');
+          }).catch((e) => {
+            console.log(e)
+          })
       }
     }).catch((e) => console.log(e));
+    const recordingString = JSON.stringify(Recording)
+    firebase.firestore().collection("events").add({
+      recordingString
+    }).then((result) => {
+      console.log("events succesfully added")
+    })
   }
 
   function handleStop(e) {
