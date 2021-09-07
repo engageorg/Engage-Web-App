@@ -216,8 +216,8 @@ body{
 .outputbutton {
   position: absolute;
   font-size: medium;
-  left: 11vw;
-  top: 80vh;
+  left: 2vw;
+  top: 90vh;
   z-index: 100;
   background-color: green;
   border-radius: 10px;
