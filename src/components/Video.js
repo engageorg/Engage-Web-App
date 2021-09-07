@@ -89,9 +89,11 @@ export default function Video() {
     var curValue = "";
     var time = 0, timer;
   
-    seekSlider.addEventListener("change", function(e) {
-      handlePlayerClick()
-      pausefunction();
+    seekSlider.addEventListener("mouseup", function(e) {
+      stopTimer();
+      console.log("you asshole!")
+      // handlePlayerClick()
+      // pausefunction();
       //this might be getting value different when the slider is moving
       let seekSliderValue = e.target.value;//this gives the current value so if slider is at 90 and you click on 10 then it will return 90
       i = Math.ceil((seekSliderValue * (recording.events.length))/100);
@@ -102,10 +104,10 @@ export default function Video() {
       playfunction();
     })
 
-    // seekSlider.addEventListener("mouseup", () => {
-    //   console.log("mouseup")
-    //   playfunction();
-    // })
+    seekSlider.addEventListener("mousdown", () => {
+      handlePlayerClick()
+      pausefunction();
+    })
     
     function pausefunction() {
       fakeCursor.style.display = 'none';
@@ -131,7 +133,6 @@ export default function Video() {
 
        paused = false;
        //draw event to play all events in requestAnimationFrames
-       var documentReference = document.documentElement;
        (function draw() {
            //select an event and check if its empty
            let event = recording.events[i];
@@ -142,7 +143,7 @@ export default function Video() {
 
            if (event.time <= time) {
              //draws event amd matches with listner
-             drawEvent(event, fakeCursor, documentReference);
+             drawEvent(event, fakeCursor);
              i++;
            }
 
@@ -165,18 +166,21 @@ export default function Video() {
     });
 
     play.addEventListener("click", function () {
-      console.log(i);
-      console.log("clicked play")
+      // console.log(i);
+      // console.log("clicked play")
       audioPlayer.play();
       playfunction();
     });
 
     function setProgreeBar() {
       const progress = (time/recording.events[recording.events.length - 1].time)*100;
-      //seekSlider.value = progress;
+      seekSlider.value = progress;
       // if(parseFloat(document.getElementsByClassName("left-time")[0].innerHTML) <= parseFloat(document.getElementsByClassName("right-time")[0].innerHTML)){
       //   document.getElementsByClassName("left-time")[0].innerHTML = (time/1000).toPrecision(1);
       // }
+
+      // console.log(audioPlayer.currentTime);
+      // console.log(time/1000);
     }
     
     function handleButtonEvents(target) {
@@ -198,7 +202,7 @@ export default function Video() {
       }
     }
 
-    function drawEvent(event, fakeCursor, documentReference) {
+    function drawEvent(event, fakeCursor) {
       if (event.type === "click" || event.type === "mousemove") {
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
