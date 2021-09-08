@@ -133,6 +133,37 @@ export default function Video() {
       playfunction();
     })
 
+    audioPlayer.addEventListener("play", () => {
+      audioPlayer.play();
+      playfunction();
+      console.log("audio play")
+    })
+
+    audioPlayer.addEventListener("pause", () => {
+      console.log("clicked pause");
+      audioPlayer.pause();
+      pausefunction();
+      // console.log(recording.events[i].time)
+      // console.log(audioPlayer.currentTime)
+    })
+
+    audioPlayer.addEventListener("seeked", () => {
+      pausefunction()
+      //returns the time at which the audio is after seeking it
+      const curTime = audioPlayer.currentTime
+      //returns total duration of the audio
+      const dur = audioPlayer.duration
+      console.log(curTime)
+      console.log(recording.events[i].time)
+      i = Math.ceil((curTime/dur)*recording.events.length)
+      console.log(i)
+      time = recording.events[i].time
+      //console.log((audioPlayer.currentTime/audioPlayer.duration)*recording.events.length)
+      handlePlayerClick()
+      playfunction();
+    })
+
+    
     seekSlider.addEventListener("mousdown", () => {
       handlePlayerClick()
       pausefunction();
