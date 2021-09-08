@@ -2,16 +2,13 @@ body{
   padding: 0;
   margin: 0;
   font-family: 'Montserrat' !important;
+  overflow: hidden;
 }
 
 .nav-heading{
   font-size: 1em;
-  color: #a7a7b3;
-  margin-left: 5px;
-}
-
-.explorer{
-  text-align: center;
+  background-color: #3e3e42;
+  width: 20%;
 }
 
 .sidebar {
@@ -29,13 +26,17 @@ body{
 .sidebar{
   justify-content: space-around;
 }
-
+.explorer{
+  margin-bottom: 10px;
+  color: #a7a7b3;
+  background-color: #3e3e42;
+}
 .sidebar:hover {
   background-position: 0 0;
 }
 
 .nav-heading {
-  margin-top: 1vh;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -300,4 +301,36 @@ body{
   z-index: 100000;
   top: 85vh !important;
   width: 70vw;
+}
+
+.fab{
+  font-size: 1rem;
+}
+
+.fa-html5{
+  color:#cc0000
+}
+
+.fa-css3-alt{
+  color: #0066ff;
+}
+
+.fa-js-square{
+  color: #ffd11a;
+  size: 2px;
+}
+
+.loading {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000000000;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.loading-hide{
+  display: none;
 }

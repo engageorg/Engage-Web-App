@@ -3,7 +3,10 @@ import IDE from "./IDE";
 import { useSelector, useDispatch } from "react-redux";
 import { js, css, html } from "../actions";
 import files from "../assets/files";
-import ReactPlayer from 'react-player'
+import Loader from "react-loader-spinner";
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/storage';
 
 const Pause = (props) => {
   return (
@@ -11,6 +14,20 @@ const Pause = (props) => {
       <polygon points="0,0 15,0 15,60 0,60" />
       <polygon points="25,0 40,0 40,60 25,60" />
     </svg>
+  )
+}
+
+const LoaderDiv = (props) => {
+  return (
+    <div className = {props.status}>
+      <Loader
+        type="Puff"
+        color="#3e3e42"
+        height={100}
+        width={100}
+        timeout={3000} //3 secs
+      />
+    </div>
   )
 }
 
@@ -22,24 +39,33 @@ const Play = (props) => {
   )
 }
 
-
 export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
   const [playStatus, setplayStatus] = useState(false);
   const [playStyle, setplayStyle] = useState({display : "block"});
   const [pauseStyle, setpauseStyle] = useState({display : "none"});
+  const [loaderStatus,setloaderStatus] = useState("loading");
   const fileName = useSelector(state => state.fileName);
+  let audioValue
   const dispatch = useDispatch();
   const file = files[fileName];
   let blobURL;
-  
+
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
   const recordingJsonValue = localStorage.getItem("recording");
-  const audioValue = JSON.parse(localStorage.getItem("file"));
+  //const audioValue = JSON.parse(localStorage.getItem("file"));
+  firebase.firestore().collection('events').orderBy('createdAt', 'desc').limit(1).get()
+  .then((snap) => {
+      snap.forEach((doc) => {
+        recording = JSON.parse(doc.data().recordingString)
+      })
+      setloaderStatus("loading-hide");
+  })
+
   if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
-  
+  console.log(recording)  
 
   const handlePlayerClick = () => {
     setplayStatus(!playStatus);
@@ -54,7 +80,16 @@ export default function Video() {
 
   
   useEffect(() => {
-      //fake cursor for playing
+    var storageRef = firebase.storage().ref();
+    storageRef.child('audio&amp').getDownloadURL().then((url) => {
+      audioValue = url
+      localStorage.setItem("url", url)
+      console.log(audioValue)
+    }).catch((e) => {
+      console.log(e)
+    })
+
+  //fake cursor for playing
   const fakeCursor = document.createElement("div");
   blobURL = (localStorage.getItem("audio"))
   document.getElementById("root").appendChild(fakeCursor);
@@ -244,6 +279,7 @@ export default function Video() {
 
   return (
     <>
+      <LoaderDiv status = {loaderStatus}/>
       <IDE val = {keyCode} />
       <div className = "videoplayer"> 
       <div className="player" >
@@ -261,9 +297,7 @@ export default function Video() {
       </div> */}
 
       
-      <audio id="audio_player" style={{display:"none"}} controls="controls">
-        <source src={audioValue}/>
-      </audio>
+      <audio id="audio_player" controls="controls"  style={{display:"none"}} src={localStorage.getItem("url")}></audio>
       </div>
     </>
   );
