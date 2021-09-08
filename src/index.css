@@ -342,8 +342,18 @@ audio{
   height: 30px;
 }
 
+#mobileview{
+  display: none;
+}
+
 @media screen and (max-width: 750px) {
   #root{
       display: none;
+  }
+  #mobileview{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
   }
 }
