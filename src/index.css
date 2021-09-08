@@ -28,7 +28,9 @@ body{
 }
 .explorer{
   margin-bottom: 10px;
+  margin-left: 8px;
   color: #a7a7b3;
+  font-size: 1.5rem;
   background-color: #3e3e42;
 }
 .sidebar:hover {
@@ -289,11 +291,12 @@ body{
 .videoplayer{
   position: absolute;
   z-index: 100000;
-  top: 95.7vh;
+  top: 93vh;
   width: 100vw;
   display: flex;
   flex-direction: row;
   background-color: rgba(0, 0, 0, 0.3);
+  padding: 1rem;
 }
 
 .recorder-button{

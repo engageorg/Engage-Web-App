@@ -65,7 +65,7 @@ export default function Video() {
   })
 
   if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
-  console.log(recording)  
+
 
   const handlePlayerClick = () => {
     setplayStatus(!playStatus);
@@ -126,7 +126,6 @@ export default function Video() {
   
     seekSlider.addEventListener("mouseup", function(e) {
       stopTimer();
-      console.log("you asshole!")
       // handlePlayerClick()
       // pausefunction();
       //this might be getting value different when the slider is moving
@@ -246,13 +245,11 @@ export default function Video() {
         var tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
-          setKeycode(event.value);
         }
       }
       if (event.type === "click") {
         
         flashClass(fakeCursor, "click");
-        //console.log(event.target);
         var tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
           handleButtonEvents(tar.className);

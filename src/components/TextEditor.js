@@ -10,18 +10,19 @@ function TextEditor(props) {
   const [srcDoc, setSrcDoc] = useState('')
   const [modalActive, setmodalActive] = useState(false);
   
+  
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
 
   const file = files[fileName];
-
+ 
   function handleEditorChange(value, event) {
     if(props.parentCallBack){
       props.parentCallBack(value)
     }
     files[fileName].value = value;
   }
-
+  console.log(props.value)
   const handleOutput = () => {
       setSrcDoc(`
         <html>
@@ -76,7 +77,7 @@ function TextEditor(props) {
         defaultValue={file.value}
         saveViewState={true}
         onChange={handleEditorChange}
-        value = {(props.value) === undefined ? "" : props.value}
+        value = {props.value}
       />
     </div>
     </div>
