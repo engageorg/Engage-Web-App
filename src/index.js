@@ -20,7 +20,6 @@ const firebaseConfig = {
   messagingSenderId: "27842359842",
   appId: "1:27842359842:web:e8f5b15f6a86ac66fa507b",
   measurementId: "G-EVEY2DP36T",
-  storageBucket: "gs://engage-6ef42.appspot.com/"
 };
 
 if (firebase.apps.length===0){

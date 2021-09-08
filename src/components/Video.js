@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import IDE from "./IDE";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { js, css, html } from "../actions";
-import files from "../assets/files";
 import Loader from "react-loader-spinner";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -38,7 +37,7 @@ const Play = (props) => {
       </svg>
   )
 }
-
+let audioValue;
 export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
@@ -46,40 +45,41 @@ export default function Video() {
   const [playStyle, setplayStyle] = useState({display : "block"});
   const [pauseStyle, setpauseStyle] = useState({display : "none"});
   const [loaderStatus,setloaderStatus] = useState("loading");
-  const fileName = useSelector(state => state.fileName);
-  let audioValue
   const dispatch = useDispatch();
-  const file = files[fileName];
-  let blobURL;
 
-  // fetch recording from local storage
-  let recording = { events: [], startTime: -1 };
-  const recordingJsonValue = localStorage.getItem("recording");
-  //const audioValue = JSON.parse(localStorage.getItem("file"));
-  firebase.firestore().collection('events').orderBy('createdAt', 'desc').limit(1).get()
-  .then((snap) => {
-      snap.forEach((doc) => {
-        recording = JSON.parse(doc.data().recordingString)
-      })
-      setloaderStatus("loading-hide");
-  })
-
-  if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
-
-
-  const handlePlayerClick = () => {
-    setplayStatus(!playStatus);
-    if (playStatus === false) {
-      setplayStyle({display : "none"});
-      setpauseStyle({display : "block"});
-    } else {
-      setplayStyle({display : "block"});
-      setpauseStyle({display : "none"});
-    }
-  }
+  const handlePlayerClick = useCallback(
+    () => {
+      setplayStatus(!playStatus);
+      if (playStatus === false) {
+        setplayStyle({display : "none"});
+        setpauseStyle({display : "block"});
+      } else {
+        setplayStyle({display : "block"});
+        setpauseStyle({display : "none"});
+      }
+    },
+    [playStatus],
+  ) 
 
   
   useEffect(() => {
+
+    // fetch recording from local storage
+    let recording = { events: [], startTime: -1 };
+    const recordingJsonValue = localStorage.getItem("recording");
+    //const audioValue = JSON.parse(localStorage.getItem("file"));
+    firebase.firestore().collection('events').orderBy('createdAt', 'desc').limit(1).get()
+    .then((snap) => {
+        snap.forEach((doc) => {
+          recording = JSON.parse(doc.data().recordingString)
+        })
+        setloaderStatus("loading-hide");
+    })
+
+    if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
+
+    
+
     var storageRef = firebase.storage().ref();
     storageRef.child('audio&amp').getDownloadURL().then((url) => {
       audioValue = url
@@ -91,7 +91,6 @@ export default function Video() {
 
   //fake cursor for playing
   const fakeCursor = document.createElement("div");
-  blobURL = (localStorage.getItem("audio"))
   document.getElementById("root").appendChild(fakeCursor);
   fakeCursor.style.display = 'none'
   const audioPlayer = document.getElementById("audio_player")
@@ -118,10 +117,6 @@ export default function Video() {
     
     var i = 0;
     var paused = false;
-    var valueHtml = "";
-    var valueCss = "";
-    var valueJs = "";
-    var curValue = "";
     var time = 0, timer;
   
     seekSlider.addEventListener("mouseup", function(e) {
@@ -220,16 +215,13 @@ export default function Video() {
     function handleButtonEvents(target) {
       switch (target) {
         case "stylebutton":
-             dispatch(css())
-             curValue = valueCss
+             dispatch(css())        
           break;
         case "htmlbutton":
-             dispatch(html())
-             curValue = valueHtml
+             dispatch(html())     
           break;
         case "scriptbutton":
              dispatch(js());
-             curValue = valueJs
           break;
         default:
           break;
@@ -250,7 +242,7 @@ export default function Video() {
       if (event.type === "click") {
         
         flashClass(fakeCursor, "click");
-        var tar = document.getElementsByClassName(event.target)[0];
+        tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
           handleButtonEvents(tar.className);
           flashClass(tar, "clicked");
@@ -258,7 +250,7 @@ export default function Video() {
       }
       if (event.type === "keypress") {
         const path = event.target;
-        var tar = document.getElementsByClassName(path)[0];
+        tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
           setKeycode(event.value);
@@ -272,7 +264,7 @@ export default function Video() {
         el.classList.remove(className);
       }, 200);
     }
-  }, []);
+  }, [dispatch, handlePlayerClick, playStatus]);
 
   return (
     <>

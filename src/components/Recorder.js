@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
+import React from "react";
 import IDE from "./IDE";
 import MicRecorder from 'mic-recorder-to-mp3';
 import firebase from 'firebase/app'
@@ -8,7 +7,6 @@ import 'firebase/storage';
 
 export default function Recorder() {
   const Recording = { events: [] };
-  const [rec, setrec] = useLocalStorage("recording", Recording);
   //const [childValue, setValue] = useState('')
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
@@ -107,6 +105,7 @@ export default function Recorder() {
   }
 
   function stopRecording() {
+    clearInterval(timer)
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
     localStorage.setItem("recording", JSON.stringify(Recording))
@@ -149,10 +148,6 @@ export default function Recorder() {
     e.preventDefault();
     stopRecording();
     console.log("Recording Stopped.");
-  }
-
-  function deleteLocalStroage() {
-    localStorage.removeItem("recording")
   }
 
   return (
