@@ -337,3 +337,7 @@ body{
 .loading-hide{
   display: none;
 }
+audio{
+  width: 1000px;
+  height: 30px;
+}
