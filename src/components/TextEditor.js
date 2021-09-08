@@ -62,7 +62,7 @@ function TextEditor(props) {
         disabled={fileName === "script.js"}
         onClick={() => dispatch(js())}
       >
-        <i class="fab fa-js-square fa-1x"></i> script.js
+        <i className="fab fa-js-square fa-1x"></i> script.js
       </button>
       <span className="shape"></span>
       <span className="shape"></span>
