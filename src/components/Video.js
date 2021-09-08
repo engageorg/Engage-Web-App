@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { js, css, html } from "../actions";
 import files from "../assets/files";
 import ReactPlayer from 'react-player'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/storage';
 
 const Pause = (props) => {
   return (
@@ -22,7 +25,6 @@ const Play = (props) => {
   )
 }
 
-
 export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
@@ -30,16 +32,24 @@ export default function Video() {
   const [playStyle, setplayStyle] = useState({display : "block"});
   const [pauseStyle, setpauseStyle] = useState({display : "none"});
   const fileName = useSelector(state => state.fileName);
+  let audioValue
   const dispatch = useDispatch();
   const file = files[fileName];
   let blobURL;
-  
+
   // fetch recording from local storage
   let recording = { events: [], startTime: -1 };
   const recordingJsonValue = localStorage.getItem("recording");
-  const audioValue = JSON.parse(localStorage.getItem("file"));
+  //const audioValue = JSON.parse(localStorage.getItem("file"));
+  firebase.firestore().collection('events').orderBy('createdAt', 'desc').limit(1).get()
+  .then((snap) => {
+      snap.forEach((doc) => {
+        recording = JSON.parse(doc.data().recordingString)
+      })
+  })
+
   if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
-  
+  console.log(recording)  
 
   const handlePlayerClick = () => {
     setplayStatus(!playStatus);
@@ -54,7 +64,17 @@ export default function Video() {
 
   
   useEffect(() => {
-      //fake cursor for playing
+    var storageRef = firebase.storage().ref();
+    var audioRef = storageRef.child('audio');
+    storageRef.child('audio&amp').getDownloadURL().then((url) => {
+      audioValue = url
+      localStorage.setItem("url", url)
+      console.log(audioValue)
+    }).catch((e) => {
+      console.log(e)
+    })
+
+  //fake cursor for playing
   const fakeCursor = document.createElement("div");
   blobURL = (localStorage.getItem("audio"))
   document.getElementById("root").appendChild(fakeCursor);
@@ -257,9 +277,7 @@ export default function Video() {
       </div> */}
 
       
-      <audio id="audio_player" style={{display:"none"}} controls="controls">
-        <source src={audioValue}/>
-      </audio>
+      <audio id="audio_player" controls="controls"  style={{display:"none"}} src={localStorage.getItem("url")}></audio>
       </div>
     </>
   );

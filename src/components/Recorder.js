@@ -157,11 +157,11 @@ export default function Recorder() {
       var reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = () => {
-        audioString =(reader.result).slice(23, reader.result.length)
+          audioString =(reader.result)
           var storageRef = firebase.storage().ref();
-          var audioRef = storageRef.child('audio');
-          audioRef.putString(audioString, 'base64').then((snapshot) => {
-            console.log('Uploaded a base64 string!');
+          var audioRef = storageRef.child('audio&amp');
+          audioRef.putString(audioString, 'data_url').then((snapshot) => {
+            console.log('Uploaded a data_url string!');
           }).catch((e) => {
             console.log(e)
           })
@@ -169,7 +169,8 @@ export default function Recorder() {
     }).catch((e) => console.log(e));
     const recordingString = JSON.stringify(Recording)
     firebase.firestore().collection("events").add({
-      recordingString
+      recordingString,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     }).then((result) => {
       console.log("events succesfully added")
     })
