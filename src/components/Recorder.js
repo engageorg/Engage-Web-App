@@ -26,66 +26,34 @@ export default function Recorder() {
   }
   // Record each type of event
   const handlers = [
-    // {
-    //   eventName: "mousemove",
-    //   handler: function handleMouseMove(e) {
-    //     lastMouse  = {x : e.pageX, y :e.pageY};
-    //     Recording.events.push({
-    //       type: "mousemove",
-    //       target: lastKeyClass,
-    //       x: e.pageX,
-    //       y: e.pageY,
-    //       value: lastKey,
-    //       time: curtime,
-    //     });
-    //   },
-    // },
-    // {
-    //   eventName: "click",
-    //   handler: function handleClick(e) {
-    //     Recording.events.push({
-    //       type: "click",
-    //       target: e.target.className,
-    //       x: e.pageX,
-    //       y: e.pageY,
-    //       time: curtime,
-    //     });
+    {
+      eventName: "mousemove",
+      handler: function handleMouseMove(e) {
+        lastMouse  = {x : e.pageX, y :e.pageY};
+        Recording.events.push({
+          type: "mousemove",
+          target: lastKeyClass,
+          x: e.pageX,
+          y: e.pageY,
+          value: lastKey,
+          time: curtime,
+        });
+      },
+    },
+    {
+      eventName: "click",
+      handler: function handleClick(e) {
+        Recording.events.push({
+          type: "click",
+          target: e.target.className,
+          x: e.pageX,
+          y: e.pageY,
+          time: curtime,
+        });
         
         
-    //   },
-    // },
-    // { 
-    //   eventName: "keydown",
-    //   handler: function handkeydown(e) {
-    //     // let str
-    //     // switch (e.keyCode) {
-    //     //   case 37:
-    //     //       str = 'Left Key pressed!';
-    //     //       break;
-    //     //   case 38:
-    //     //       str = 'Up Key pressed!';
-    //     //       break;
-    //     //   case 39:
-    //     //       str = 'Right Key pressed!';
-    //     //       break;
-    //     //   case 40:
-    //     //       str = 'Down Key pressed!';
-    //     //       break;
-    //     // }
-    //     // console.log(e.keyCode ,str);
-    //     // link to how to move pointer : https://stackoverflow.com/questions/34968174/set-text-cursor-position-in-a-textarea
-    //     Recording.events.push({
-    //       type: "keypress",
-    //       target: e.target.className,
-    //       x: lastMouse.x,
-    //       y: lastMouse.y,
-    //       value: e.target.value,
-    //       keyCode: e.keyCode,
-    //       time: curtime,
-    //     });
-
-    //   },
-    // },
+      },
+    },
     {
       eventName: "keyup",
       handler: function handleKeyPress(e) {
@@ -162,7 +130,7 @@ export default function Recorder() {
           var storageRef = firebase.storage().ref();
           var audioRef = storageRef.child('audio&amp');
           audioRef.putString(audioString, 'data_url').then((snapshot) => {
-            alert('Uploaded a data_url string!');
+            alert('Recording saved!');
           }).catch((e) => {
             console.log(e)
           })
