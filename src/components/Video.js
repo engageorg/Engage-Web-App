@@ -3,7 +3,7 @@ import IDE from "./IDE";
 import { useSelector, useDispatch } from "react-redux";
 import { js, css, html } from "../actions";
 import files from "../assets/files";
-import ReactPlayer from 'react-player'
+import Loader from "react-loader-spinner";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
@@ -14,6 +14,20 @@ const Pause = (props) => {
       <polygon points="0,0 15,0 15,60 0,60" />
       <polygon points="25,0 40,0 40,60 25,60" />
     </svg>
+  )
+}
+
+const LoaderDiv = (props) => {
+  return (
+    <div className = {props.status}>
+      <Loader
+        type="Puff"
+        color="#3e3e42"
+        height={100}
+        width={100}
+        timeout={3000} //3 secs
+      />
+    </div>
   )
 }
 
@@ -31,6 +45,7 @@ export default function Video() {
   const [playStatus, setplayStatus] = useState(false);
   const [playStyle, setplayStyle] = useState({display : "block"});
   const [pauseStyle, setpauseStyle] = useState({display : "none"});
+  const [loaderStatus,setloaderStatus] = useState("loading");
   const fileName = useSelector(state => state.fileName);
   let audioValue
   const dispatch = useDispatch();
@@ -46,6 +61,7 @@ export default function Video() {
       snap.forEach((doc) => {
         recording = JSON.parse(doc.data().recordingString)
       })
+      setloaderStatus("loading-hide");
   })
 
   if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
@@ -65,7 +81,6 @@ export default function Video() {
   
   useEffect(() => {
     var storageRef = firebase.storage().ref();
-    var audioRef = storageRef.child('audio');
     storageRef.child('audio&amp').getDownloadURL().then((url) => {
       audioValue = url
       localStorage.setItem("url", url)
@@ -260,6 +275,7 @@ export default function Video() {
 
   return (
     <>
+      <LoaderDiv status = {loaderStatus}/>
       <IDE val = {keyCode} />
       <div className = "videoplayer"> 
       <div className="player" >

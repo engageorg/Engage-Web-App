@@ -2,11 +2,12 @@ body{
   padding: 0;
   margin: 0;
   font-family: 'Montserrat' !important;
+  overflow: hidden;
 }
 
 .nav-heading{
   font-size: 1em;
-  background-color: #2e2e2e;
+  background-color: #3e3e42;
   width: 20%;
 }
 
@@ -28,7 +29,7 @@ body{
 .explorer{
   margin-bottom: 10px;
   color: #a7a7b3;
-  background-color: #2e2e2e;
+  background-color: #3e3e42;
 }
 .sidebar:hover {
   background-position: 0 0;
@@ -317,4 +318,19 @@ body{
 .fa-js-square{
   color: #ffd11a;
   size: 2px;
+}
+
+.loading {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000000000;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.loading-hide{
+  display: none;
 }
