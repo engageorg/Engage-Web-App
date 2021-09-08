@@ -22,38 +22,38 @@ export default function Recorder() {
 
   function callbackFunction(childData){
     childValue = childData
-    console.log(childValue)
+    // console.log(childValue)
   }
   // Record each type of event
   const handlers = [
-    {
-      eventName: "mousemove",
-      handler: function handleMouseMove(e) {
-        lastMouse  = {x : e.pageX, y :e.pageY};
-        Recording.events.push({
-          type: "mousemove",
-          target: lastKeyClass,
-          x: e.pageX,
-          y: e.pageY,
-          value: lastKey,
-          time: curtime,
-        });
-      },
-    },
-    {
-      eventName: "click",
-      handler: function handleClick(e) {
-        Recording.events.push({
-          type: "click",
-          target: e.target.className,
-          x: e.pageX,
-          y: e.pageY,
-          time: curtime,
-        });
+    // {
+    //   eventName: "mousemove",
+    //   handler: function handleMouseMove(e) {
+    //     lastMouse  = {x : e.pageX, y :e.pageY};
+    //     Recording.events.push({
+    //       type: "mousemove",
+    //       target: lastKeyClass,
+    //       x: e.pageX,
+    //       y: e.pageY,
+    //       value: lastKey,
+    //       time: curtime,
+    //     });
+    //   },
+    // },
+    // {
+    //   eventName: "click",
+    //   handler: function handleClick(e) {
+    //     Recording.events.push({
+    //       type: "click",
+    //       target: e.target.className,
+    //       x: e.pageX,
+    //       y: e.pageY,
+    //       time: curtime,
+    //     });
         
         
-      },
-    },
+    //   },
+    // },
     // { 
     //   eventName: "keydown",
     //   handler: function handkeydown(e) {
@@ -87,7 +87,7 @@ export default function Recorder() {
     //   },
     // },
     {
-      eventName: "keypress",
+      eventName: "keyup",
       handler: function handleKeyPress(e) {
         lastKey = childValue
         lastKeyClass = e.target.className
@@ -100,6 +100,7 @@ export default function Recorder() {
           keyCode: e.keyCode,
           time: curtime,
         });
+        console.log("recording",childValue)
       },
     },
   ];
@@ -161,7 +162,7 @@ export default function Recorder() {
           var storageRef = firebase.storage().ref();
           var audioRef = storageRef.child('audio&amp');
           audioRef.putString(audioString, 'data_url').then((snapshot) => {
-            console.log('Uploaded a data_url string!');
+            alert('Uploaded a data_url string!');
           }).catch((e) => {
             console.log(e)
           })

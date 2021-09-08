@@ -64,8 +64,6 @@ function TextEditor(props) {
       >
         <i className="fab fa-js-square fa-1x"></i> script.js
       </button>
-      <span className="shape"></span>
-      <span className="shape"></span>
     </div>
     <div>
       <Editor
@@ -76,6 +74,7 @@ function TextEditor(props) {
         className = "editor"
         defaultLanguage={file.language}
         defaultValue={file.value}
+        saveViewState={true}
         onChange={handleEditorChange}
         value = {(props.value) === undefined ? "" : props.value}
       />
