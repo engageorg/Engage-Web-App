@@ -306,7 +306,7 @@ export default function Video() {
         <Pause style = {pauseStyle} onPlayerClick = {handlePlayerClick} /> 
         <Play style = {playStyle} onPlayerClick = {handlePlayerClick} />
       </div>   
-      <div className="seek-slider">
+      <div className="seek-slider" style={{display:"none"}}>
         <div className="controller-wrapper">
             <input type="range" defaultValue="0" min = "0" max = "100" setp = "1" className="controller" id = "seekSlider"/>
         </div>
@@ -317,7 +317,7 @@ export default function Video() {
       </div> */}
 
       
-      <audio id="audio_player" controls="controls"  style={{display:"none"}} src={localStorage.getItem("url")}></audio>
+      <audio id="audio_player" controls="controls" src={localStorage.getItem("url")}></audio>
       </div>
     </>
   );
