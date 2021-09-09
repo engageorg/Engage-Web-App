@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import IDE from "./IDE";
 import { useDispatch } from "react-redux";
 import { js, css, html } from "../actions";
@@ -6,15 +6,6 @@ import Loader from "react-loader-spinner";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
-
-const Pause = (props) => {
-  return (
-    <svg className="button" style = {props.style} id = "pause" viewBox="0 0 60 60" onClick={props.onPlayerClick}>
-      <polygon points="0,0 15,0 15,60 0,60" />
-      <polygon points="25,0 40,0 40,60 25,60" />
-    </svg>
-  )
-}
 
 const LoaderDiv = (props) => {
   return (
@@ -30,42 +21,21 @@ const LoaderDiv = (props) => {
   )
 }
 
-const Play = (props) => {
-  return (
-      <svg className="button" style = {props.style}  id = "play" viewBox="0 0 60 60" onClick={props.onPlayerClick}>
-        <polygon points="0,0 50,30 0,60" />
-      </svg>
-  )
-}
-let audioValue;
 export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
-  const [playStatus, setplayStatus] = useState(false);
-  const [playStyle, setplayStyle] = useState({display : "block"});
-  const [pauseStyle, setpauseStyle] = useState({display : "none"});
   const [loaderStatus,setloaderStatus] = useState("loading");
   const dispatch = useDispatch();
-
-  const handlePlayerClick = useCallback(
-    () => {
-      setplayStatus(!playStatus);
-      if (playStatus === false) {
-        setplayStyle({display : "none"});
-        setpauseStyle({display : "block"});
-      } else {
-        setplayStyle({display : "block"});
-        setpauseStyle({display : "none"});
-      }
-    },
-    [playStatus],
-  ) 
 
   
   useEffect(() => {
 
+    let audioValue;
+    let offsetPlay = 0;
+    localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
+
     // fetch recording from local storage
-    let recording = { events: [], startTime: -1 };
+    let recording = { events: [] };
     const recordingJsonValue = localStorage.getItem("recording");
     //const audioValue = JSON.parse(localStorage.getItem("file"));
     firebase.firestore().collection('events').orderBy('createdAt', 'desc').limit(1).get()
@@ -78,7 +48,7 @@ export default function Video() {
 
     if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
 
-    
+    console.log(recording);
 
     var storageRef = firebase.storage().ref();
     storageRef.child('audio&amp').getDownloadURL().then((url) => {
@@ -94,45 +64,18 @@ export default function Video() {
   document.getElementById("root").appendChild(fakeCursor);
   fakeCursor.style.display = 'none'
   const audioPlayer = document.getElementById("audio_player")
+  var startPlay;
   
   audioPlayer.addEventListener("onclick", (e) => {
     console.log("Click on the audioPlayer")
     console.log(e)
   })
 
-    console.log(playStatus);
-    // if(recording.events[recording.events.length - 1].time%1000 !==0){
-    //   document.getElementsByClassName("right-time")[0].innerHTML = (Math.floor(recording.events[recording.events.length - 1].time+1000)/1000).toPrecision(1);
-    // }else{
-    //   document.getElementsByClassName("right-time")[0].innerHTML = recording.events[recording.events.length - 1].time/1000;
-    // }
-    // fake cursor, declared outside, so it will scoped to all functions
     fakeCursor.className = "customCursor";
-
-    //when user clicked playbutton
-    const play = document.getElementById("play");
-    const pause = document.getElementById("pause");
-    const seekSlider =  document.getElementById("seekSlider");
-    
     
     var i = 0;
     var paused = false;
-    var time = 0, timer;
   
-    seekSlider.addEventListener("mouseup", function(e) {
-      stopTimer();
-      // handlePlayerClick()
-      // pausefunction();
-      //this might be getting value different when the slider is moving
-      let seekSliderValue = e.target.value;//this gives the current value so if slider is at 90 and you click on 10 then it will return 90
-      i = Math.ceil((seekSliderValue * (recording.events.length))/100);
-      if(time !== undefined){
-        time = recording.events[i].time;
-      }
-      handlePlayerClick()
-      playfunction();
-    })
-
     audioPlayer.addEventListener("play", () => {
       audioPlayer.play();
       playfunction();
@@ -147,50 +90,36 @@ export default function Video() {
       // console.log(audioPlayer.currentTime)
     })
 
-    audioPlayer.addEventListener("seeked", () => {
-      pausefunction()
+    audioPlayer.addEventListener("input", () => {
+      fakeCursor.style.display = 'none';
+      paused = true;
+      audioPlayer.pause()
       //returns the time at which the audio is after seeking it
       const curTime = audioPlayer.currentTime
       //returns total duration of the audio
       const dur = audioPlayer.duration
-      console.log(curTime)
-      console.log(recording.events[i].time)
       i = Math.ceil((curTime/dur)*recording.events.length)
       console.log(i)
-      time = recording.events[i].time
-      //console.log((audioPlayer.currentTime/audioPlayer.duration)*recording.events.length)
-      handlePlayerClick()
-      playfunction();
+      console.log(recording.events[i].time)
+      console.log(curTime)
+      //localStorage.setItem("lastSessionTimeStamp", JSON.stringify(recording.events[i].time))
+      localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay))
+      //handlePlayerClick()
+      //playfunction();
     })
 
-    
-    seekSlider.addEventListener("mousdown", () => {
-      handlePlayerClick()
-      pausefunction();
-    })
     
     function pausefunction() {
       fakeCursor.style.display = 'none';
       paused = true;
-      stopTimer();
-    }
-    function startTimer() {
-     timer =  setInterval(() => {
-       time++
-       setProgreeBar();
-      }, 1)
+      localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
     }
 
-    function stopTimer() {
-      clearInterval(timer);
-    }
 
     function playfunction() {
        //append fake cursor when user clicks play button
-       fakeCursor.style.display = 'block'
-
-       startTimer();
-
+       fakeCursor.style.display = 'block';
+       startPlay = Date.now()
        paused = false;
        //draw event to play all events in requestAnimationFrames
        (function draw() {
@@ -201,47 +130,30 @@ export default function Video() {
              return;
            }
 
-           if (event.time <= time) {
-             //draws event amd matches with listner
-             drawEvent(event, fakeCursor);
-             i++;
-           }
-
-           //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
-           if (i < recording.events.length && !paused) {
-             requestAnimationFrame(draw);
+           if(localStorage.getItem("lastSessionTimeStamp") !== null){
+             console.log(JSON.parse(localStorage.getItem("lastSessionTimeStamp")));
+            offsetPlay = JSON.parse(localStorage.getItem("lastSessionTimeStamp")) + Date.now() - startPlay;
            }
            else{
-             stopTimer();
+            offsetPlay = (Date.now() - startPlay) * 1;
            }
-         
-       })();
+
+         if (event.time <= offsetPlay) {
+           //draws event amd matches with listner
+           console.log(event)
+           drawEvent(event, fakeCursor);
+           i++;
+         }
+
+         //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
+         if (i < recording.events.length && !paused) {
+           requestAnimationFrame(draw);
+         }
+        
+       
+     })();
     }
 
-    pause.addEventListener("click", function () {
-      console.log("clicked pause");
-      audioPlayer.pause();
-      pausefunction();
-      //console.log(audioPlayer.currentTime)
-    });
-
-    play.addEventListener("click", function () {
-      // console.log(i);
-      // console.log("clicked play")
-      audioPlayer.play();
-      playfunction();
-    });
-
-    function setProgreeBar() {
-      const progress = (time/recording.events[recording.events.length - 1].time)*100;
-      seekSlider.value = progress;
-      // if(parseFloat(document.getElementsByClassName("left-time")[0].innerHTML) <= parseFloat(document.getElementsByClassName("right-time")[0].innerHTML)){
-      //   document.getElementsByClassName("left-time")[0].innerHTML = (time/1000).toPrecision(1);
-      // }
-
-      // console.log(audioPlayer.currentTime);
-      // console.log(time/1000);
-    }
     
     function handleButtonEvents(target) {
       switch (target) {
@@ -279,7 +191,7 @@ export default function Video() {
           flashClass(tar, "clicked");
         }
       }
-      if (event.type === "keypress") {
+      if (event.type === "keyup") {
         const path = event.target;
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
@@ -295,28 +207,13 @@ export default function Video() {
         el.classList.remove(className);
       }, 200);
     }
-  }, [dispatch, handlePlayerClick, playStatus]);
+  }, [dispatch]);
 
   return (
     <>
       <LoaderDiv status = {loaderStatus}/>
       <IDE val = {keyCode} />
       <div className = "videoplayer"> 
-      <div className="player" >
-        <Pause style = {pauseStyle} onPlayerClick = {handlePlayerClick} /> 
-        <Play style = {playStyle} onPlayerClick = {handlePlayerClick} />
-      </div>   
-      <div className="seek-slider" style={{display:"none"}}>
-        <div className="controller-wrapper">
-            <input type="range" defaultValue="0" min = "0" max = "100" setp = "1" className="controller" id = "seekSlider"/>
-        </div>
-      </div>
-      {/* <div className="controller-timings">
-          <span className="left-time">00:00</span>
-          <span className="right-time">00:00</span>
-      </div> */}
-
-      
       <audio id="audio_player" controls="controls" src={localStorage.getItem("url")}></audio>
       </div>
     </>

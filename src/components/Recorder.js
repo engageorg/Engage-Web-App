@@ -5,6 +5,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
 
+var startTime;
 export default function Recorder() {
   const Recording = { events: [] };
   //const [childValue, setValue] = useState('')
@@ -12,11 +13,6 @@ export default function Recorder() {
   var lastKey = "";
   let childValue;
   var lastKeyClass = "";
-  var curtime = 0, timer;
-  function startTimer() {
-    timer =  setInterval(() => curtime++, 1)
-   }
-
 
   function callbackFunction(childData){
     childValue = childData
@@ -34,7 +30,7 @@ export default function Recorder() {
           x: e.pageX,
           y: e.pageY,
           value: lastKey,
-          time: curtime,
+          time: Date.now() - startTime,
         });
       },
     },
@@ -46,7 +42,7 @@ export default function Recorder() {
           target: e.target.className,
           x: e.pageX,
           y: e.pageY,
-          time: curtime,
+          time: Date.now() - startTime,
         });
         
         
@@ -58,13 +54,13 @@ export default function Recorder() {
         lastKey = childValue
         lastKeyClass = e.target.className
         Recording.events.push({
-          type: "keypress",
+          type: "keyup",
           target: e.target.className,
           x: lastMouse.x,
           y: lastMouse.y,
           value: childValue,
           keyCode: e.keyCode,
-          time: curtime,
+          time: Date.now() - startTime,
         });
         console.log("recording",childValue)
       },
@@ -81,12 +77,12 @@ export default function Recorder() {
   }
 
   function startRecording() {
-    startTimer()
     Recording.events = [];
     handlers.map((x) => listen(x.eventName, x.handler));
     Mp3Recorder
     .start()
     .then(() => {
+      startTime = Date.now()
     }).catch((e) => console.error(e));
   }
 
@@ -105,7 +101,6 @@ export default function Recorder() {
   }
 
   function stopRecording() {
-    clearInterval(timer)
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
     localStorage.setItem("recording", JSON.stringify(Recording))
