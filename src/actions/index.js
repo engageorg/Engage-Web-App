@@ -15,3 +15,22 @@ export const html = () => {
         type: "html"
     };
 };
+
+export const outputModalTrue = () => {
+    return {
+        type: "outputtrue"
+    };
+};
+
+export const outputModalFalse = () => {
+    return {
+        type: "outputfalse"
+    };
+};
+
+export const setSrcDocs = (filedata) => {
+    return {
+        type : "setSrcdoc",
+        payload : filedata
+    }
+}

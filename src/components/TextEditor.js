@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import ReactModal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
-import { js, css, html } from '../actions'
+import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '../actions'
 import files from "../assets/files";
 
 function TextEditor(props) {
  
-  const [srcDoc, setSrcDoc] = useState('')
-  const [modalActive, setmodalActive] = useState(false);
+  const srcDoc = useSelector(state => state.srcDocs);
+  const modalActive = useSelector(state => state.outputModal);
   
   
   const fileName = useSelector(state => state.fileName);
@@ -22,20 +22,20 @@ function TextEditor(props) {
     }
     files[fileName].value = value;
   }
-  console.log(props.value)
+ 
   const handleOutput = () => {
-      setSrcDoc(`
+      dispatch(setSrcDocs(`
         <html>
           <body>${files["index.html"].value}</body>
           <style>${files["style.css"].value}</style>
           <script>${files["script.js"].value}</script>
         </html>
-      `)  
-      setmodalActive(true);
+      `));
+      dispatch(outputModalTrue());
   }
 
   function handleCloseModal () {
-    setmodalActive(false);
+     dispatch(outputModalFalse());
   }
 
   return (
@@ -90,7 +90,9 @@ function TextEditor(props) {
            onRequestClose={handleCloseModal}
            className="Modal"
            overlayClassName="Overlay"
+           ariaHideApp={false}
         >
+        <button onClick={handleCloseModal}>Close</button>
       <iframe
           srcDoc={srcDoc}
           title="output"

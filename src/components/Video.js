@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IDE from "./IDE";
-import { useDispatch } from "react-redux";
-import { js, css, html } from "../actions";
+import { useDispatch, useSelector } from "react-redux";
+import { js, css, html, outputModalTrue, outputModalFalse } from "../actions";
 import Loader from "react-loader-spinner";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -25,6 +25,7 @@ export default function Video() {
 
   const [keyCode, setKeycode] = useState('');
   const [loaderStatus,setloaderStatus] = useState("loading");
+  const modalActive = useSelector(state => state.outputModal);
   const dispatch = useDispatch();
 
   
@@ -131,7 +132,6 @@ export default function Video() {
            }
 
            if(localStorage.getItem("lastSessionTimeStamp") !== null){
-             console.log(JSON.parse(localStorage.getItem("lastSessionTimeStamp")));
             offsetPlay = JSON.parse(localStorage.getItem("lastSessionTimeStamp")) + Date.now() - startPlay;
            }
            else{
@@ -140,7 +140,6 @@ export default function Video() {
 
          if (event.time <= offsetPlay) {
            //draws event amd matches with listner
-           console.log(event)
            drawEvent(event, fakeCursor);
            i++;
          }
@@ -156,17 +155,24 @@ export default function Video() {
 
     
     function handleButtonEvents(target) {
+      console.log(target)
       switch (target) {
         case "stylebutton":
-             dispatch(css())        
+             dispatch(css());        
           break;
         case "htmlbutton":
-             dispatch(html())     
+             dispatch(html());     
           break;
         case "scriptbutton":
              dispatch(js());
           break;
+        case "outputbutton":
+             dispatch(outputModalTrue());
+          break;
         default:
+             if(modalActive === true){
+               dispatch(outputModalFalse());
+             }
           break;
       }
     }
