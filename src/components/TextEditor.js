@@ -39,9 +39,7 @@ function TextEditor(props) {
      dispatch(outputModalFalse());   
   }
   
-  console.log("last:", lastFileName);
-  console.log("file:", fileName);
-  if(files[fileName].value !== props.value && lastFileName === fileName){
+  if(props.value !== undefined && files[fileName].value !== props.value && lastFileName === fileName){
     files[fileName].value = props.value;
     dispatch(setSrcDocs(`
     <html>

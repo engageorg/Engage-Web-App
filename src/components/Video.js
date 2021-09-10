@@ -23,7 +23,7 @@ const LoaderDiv = (props) => {
 
 export default function Video() {
 
-  const [keyCode, setKeycode] = useState('');
+  const [keyCode, setKeycode] = useState(undefined);
   const [loaderStatus,setloaderStatus] = useState("loading");
   const modalActive = useSelector(state => state.outputModal);
   const dispatch = useDispatch();
