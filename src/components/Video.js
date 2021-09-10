@@ -96,9 +96,8 @@ export default function Video() {
       audioPlayer.pause()
       //returns the time at which the audio is after seeking it
       const curTime = audioPlayer.currentTime
-      //returns total duration of the audio
-      //const dur = audioPlayer.duration
-
+     
+      //TODO: Implement binary search or lower bound
       for(let x=0;x<recording.events.length;x++){
         if(recording.events[x].time>curTime*1000){
           i=x;
@@ -138,8 +137,6 @@ export default function Video() {
        (function draw() {
            //select an event and check if its empty
            let event = recording.events[i];
-           console.log(event);
-           console.log(i);
            if (!event) {
              return;
            }

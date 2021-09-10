@@ -5,8 +5,9 @@ import Editor from "@monaco-editor/react";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '../actions'
 import files from "../assets/files";
 
+var lastFileName = "index.html"
 function TextEditor(props) {
- 
+  console.log("running")
   const srcDoc = useSelector(state => state.srcDocs);
   const modalActive = useSelector(state => state.outputModal);
   
@@ -16,7 +17,7 @@ function TextEditor(props) {
 
   const file = files[fileName];
  
-  function handleEditorChange(value, event) {
+  function handleEditorChange(value) {
     if(props.parentCallBack){
       props.parentCallBack(value)
     }
@@ -35,8 +36,25 @@ function TextEditor(props) {
   }
 
   function handleCloseModal () {
-     dispatch(outputModalFalse());
+     dispatch(outputModalFalse());   
   }
+  
+  console.log("last:", lastFileName);
+  console.log("file:", fileName);
+  if(files[fileName].value !== props.value && lastFileName === fileName){
+    files[fileName].value = props.value;
+    dispatch(setSrcDocs(`
+    <html>
+      <body>${files["index.html"].value}</body>
+      <style>${files["style.css"].value}</style>
+      <script>${files["script.js"].value}</script>
+    </html>
+  `));
+  }
+  else{
+    lastFileName = fileName;
+  }
+    
 
   return (
     <>
@@ -68,16 +86,16 @@ function TextEditor(props) {
     </div>
     <div>
       <Editor
-        height="100vh"
-        width="90vw"
-        theme="vs-dark"
+        height = "100vh"
+        width = "90vw"
+        theme = "vs-dark"
         path={file.name}
         className = "editor"
         defaultLanguage={file.language}
         defaultValue={file.value}
         saveViewState={true}
         onChange={handleEditorChange}
-        value = {props.value}
+        value = {files[fileName].value}
       />
     </div>
     </div>
