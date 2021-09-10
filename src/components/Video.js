@@ -234,7 +234,7 @@ export default function Video() {
       <LoaderDiv status = {loaderStatus}/>
       <IDE val = {keyCode} />
       <div className = "videoplayer"> 
-      <audio id="audio_player" controls="controls" src={localStorage.getItem("url")}></audio>
+      <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
       </div>
     </>
   );

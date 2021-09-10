@@ -158,9 +158,6 @@ export default function Recorder() {
         <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
         {/* Start Recording
       </button> */}
-      {/* <button onClick={handleStop} className="stop-record">
-        Stop Recording
-      </button> */}
       </div>
       <IDE parentCallBack = {callbackFunction}/>
       </div>
