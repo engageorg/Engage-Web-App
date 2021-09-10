@@ -41,6 +41,7 @@ body{
   margin-top: 10px;
   display: flex;
   flex-direction: column;
+  padding-left: 15px;
 }
 
 .shape {
@@ -157,9 +158,9 @@ body{
 
 .outputbutton {
   position: absolute;
-  font-size: medium;
-  left: 2vw;
-  top: 90vh;
+  font-size: small;
+  right: 2vw;
+  top: 2vh;
   z-index: 100;
   background-color: green;
   border-radius: 10px;
@@ -229,20 +230,24 @@ body{
 
 .videoplayer{
   position: absolute;
-  z-index: 100000;
-  top: 93vh;
+  z-index: 100;
+  top: 90vh;
   width: 100vw;
   display: flex;
-  flex-direction: row;
-  background-color: rgba(0, 0, 0, 0.3);
   padding: 1rem;
+  justify-content: center;
 }
 
 .recorder-button{
   position: absolute;
-  z-index: 100000;
-  top: 85vh !important;
-  width: 70vw;
+  z-index: 100;
+  top: 2vh;
+  right: 7vw;
+  cursor: pointer;
+}
+
+.record{
+  background: none;
 }
 
 .fab{
@@ -262,6 +267,17 @@ body{
   size: 2px;
 }
 
+.fa-microphone{
+  font-size: 1.5rem;
+  color: whitesmoke;
+}
+
+.fa-microphone-slash{
+  font-size: 1.3rem;
+  display: none;
+  color: red;
+}
+
 .loading {
   height: 100vh;
   width: 100vw;
@@ -276,9 +292,20 @@ body{
 .loading-hide{
   display: none;
 }
+
 audio{
-  width: 1000px;
-  height: 30px;
+  width:90%;
+  height: 60px;
+  border-radius: 5px;
+  background-color: whitesmoke;
+}
+
+audio::-webkit-media-controls-enclosure{
+  background: none;
+}
+
+audio::-webkit-media-controls-play-button{
+  background-size: 40px;
 }
 
 #mobileview{

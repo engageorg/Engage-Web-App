@@ -80,6 +80,7 @@ export default function Video() {
     audioPlayer.addEventListener("play", () => {
       audioPlayer.play();
       playfunction();
+      console.log(audioPlayer.duration)
       console.log("audio play")
     })
 
@@ -87,26 +88,37 @@ export default function Video() {
       console.log("clicked pause");
       audioPlayer.pause();
       pausefunction();
-      // console.log(recording.events[i].time)
-      // console.log(audioPlayer.currentTime)
     })
 
-    audioPlayer.addEventListener("input", () => {
+    audioPlayer.addEventListener("seeking", () => {
       fakeCursor.style.display = 'none';
       paused = true;
       audioPlayer.pause()
       //returns the time at which the audio is after seeking it
       const curTime = audioPlayer.currentTime
       //returns total duration of the audio
-      const dur = audioPlayer.duration
-      i = Math.ceil((curTime/dur)*recording.events.length)
+      //const dur = audioPlayer.duration
+
+      for(let x=0;x<recording.events.length;x++){
+        if(recording.events[x].time>curTime*1000){
+          i=x;
+          break;
+        }
+      }
+
+      //i = Math.floor((curTime/dur)*recording.events.length)
       console.log(i)
       console.log(recording.events[i].time)
       console.log(curTime)
       //localStorage.setItem("lastSessionTimeStamp", JSON.stringify(recording.events[i].time))
-      localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay))
+      if( recording.events[i].time>(curTime*1000)){
+        localStorage.setItem("lastSessionTimeStamp", recording.events[i].time)
+      }else{
+        localStorage.setItem("lastSessionTimeStamp", curTime*1000)
+      }
       //handlePlayerClick()
       //playfunction();
+      audioPlayer.pause()
     })
 
     
@@ -126,7 +138,8 @@ export default function Video() {
        (function draw() {
            //select an event and check if its empty
            let event = recording.events[i];
-           //console.log(event);
+           console.log(event);
+           console.log(i);
            if (!event) {
              return;
            }
@@ -138,7 +151,7 @@ export default function Video() {
             offsetPlay = (Date.now() - startPlay) * 1;
            }
 
-         if (event.time <= offsetPlay) {
+         if (event.time <= offsetPlay && event.time<=audioPlayer.currentTime*1000) {
            //draws event amd matches with listner
            drawEvent(event, fakeCursor);
            i++;
@@ -178,7 +191,7 @@ export default function Video() {
     }
 
     function drawEvent(event, fakeCursor) {
-      if (event.type === "click" || event.type === "mousemove") {
+      if (event.type === "mousemove") {
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
         fakeCursor.style.top = JSON.stringify(event.y) + "px";
@@ -186,6 +199,7 @@ export default function Video() {
         var tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
+          setKeycode(event.value);
         }
       }
       if (event.type === "click") {
@@ -213,7 +227,7 @@ export default function Video() {
         el.classList.remove(className);
       }, 200);
     }
-  }, [dispatch]);
+  }, [dispatch,modalActive]);
 
   return (
     <>

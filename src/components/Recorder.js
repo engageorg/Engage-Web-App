@@ -37,6 +37,7 @@ export default function Recorder() {
     {
       eventName: "click",
       handler: function handleClick(e) {
+        console.log(e)
         Recording.events.push({
           type: "click",
           target: e.target.className,
@@ -44,13 +45,12 @@ export default function Recorder() {
           y: e.pageY,
           time: Date.now() - startTime,
         });
-        
-        
       },
     },
     {
       eventName: "keyup",
       handler: function handleKeyPress(e) {
+        console.log(e)
         lastKey = childValue
         lastKeyClass = e.target.className
         Recording.events.push({
@@ -96,6 +96,8 @@ export default function Recorder() {
 
   function handleClick(e) {
     e.preventDefault();
+    document.getElementsByClassName("record")[0].style.display="none"
+    document.getElementsByClassName("stop-record")[0].style.display="block"
     startRecording();
     console.log("The Button was clicked.");
   }
@@ -104,6 +106,8 @@ export default function Recorder() {
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
     localStorage.setItem("recording", JSON.stringify(Recording))
+    document.getElementsByClassName("stop-record")[0].style.display="none"
+    document.getElementsByClassName("record")[0].style.display="block"
     let audioString
     let file
     Mp3Recorder
@@ -147,15 +151,19 @@ export default function Recorder() {
 
   return (
     <>
+      <div className="recorder">
       <div className = "recorder-button">
-      <button onClick={handleClick} className="record">
-        Start Record
-      </button>
-      <button onClick={handleStop} className="stop-record">
+      {/* <button onClick={handleClick} className="record"> */}
+        <i className="fas fa-microphone record" onClick={handleClick}></i>
+        <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
+        {/* Start Recording
+      </button> */}
+      {/* <button onClick={handleStop} className="stop-record">
         Stop Recording
-      </button>
+      </button> */}
       </div>
       <IDE parentCallBack = {callbackFunction}/>
+      </div>
     </>
   );
 }
