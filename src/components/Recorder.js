@@ -30,7 +30,7 @@ export default function Recorder() {
           type: "mousemove",
           target: lastKeyClass,
           x: e.pageX,
-          file : fileName,
+          fileName : fileName,
           y: e.pageY,
           value: lastKey,
           time: Date.now() - startTime,
@@ -47,7 +47,7 @@ export default function Recorder() {
           type: "click",
           target: e.target.className,
           x: e.pageX,
-          file :fileName,
+          fileName :fileName,
           y: e.pageY,
           time: Date.now() - startTime,
         });
@@ -123,12 +123,11 @@ export default function Recorder() {
       console.log("Recording Saved")
     })
     let audioString
-    let file
     Mp3Recorder
     .stop()
     .getMp3()
     .then(([buffer, blob]) => {
-      file = new File(buffer, 'me-at-thevoice.mp3', {
+      new File(buffer, 'me-at-thevoice.mp3', {
         type: blob.type,
         lastModified: Date.now()
       })

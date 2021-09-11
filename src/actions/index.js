@@ -28,9 +28,8 @@ export const outputModalFalse = () => {
     };
 };
 
-export const setSrcDocs = (filedata) => {
+export const setSrcDocs = () => {
     return {
         type : "setSrcdoc",
-        payload : filedata
     }
 }

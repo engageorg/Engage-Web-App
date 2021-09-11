@@ -10,7 +10,6 @@ function TextEditor(props) {
   const srcDoc = useSelector(state => state.srcDocs);
   const modalActive = useSelector(state => state.outputModal);
   
-  var refresh = props.refresh
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
 
@@ -21,13 +20,7 @@ function TextEditor(props) {
   }
  
   const handleOutput = () => {
-      dispatch(setSrcDocs(`
-        <html>
-          <body>${files["index.html"].value}</body>
-          <style>${files["style.css"].value}</style>
-          <script>${files["script.js"].value}</script>
-        </html>
-      `));
+      dispatch(setSrcDocs());
       dispatch(outputModalTrue());
   }
 

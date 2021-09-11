@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import IDE from "./IDE";
 import files from "../assets/files";
 import { useDispatch, useSelector } from "react-redux";
-import { js, css, html, outputModalTrue, outputModalFalse } from "../actions";
+import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
 import Loader from "react-loader-spinner";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
@@ -187,12 +187,12 @@ export default function Video() {
              dispatch(js());
           break;
         case "outputbutton":
+             dispatch(setSrcDocs());
              dispatch(outputModalTrue());
           break;
         default:
-             if(modalActive === true){
-               dispatch(outputModalFalse());
-             }
+             dispatch(outputModalFalse());
+            
           break;
       }
     }
