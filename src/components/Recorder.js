@@ -73,7 +73,6 @@ export default function Recorder() {
     prefix: "data:audio/wav;base64,"
   });
 
-
   function listen(eventName, handler) {
     return document.documentElement.addEventListener(eventName, handler, true);
   }
