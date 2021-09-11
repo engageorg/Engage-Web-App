@@ -190,9 +190,10 @@ export default function Video() {
              dispatch(setSrcDocs());
              dispatch(outputModalTrue());
           break;
-        default:
+        case "closeoutput":
              dispatch(outputModalFalse());
-            
+          break;
+        default: 
           break;
       }
     }

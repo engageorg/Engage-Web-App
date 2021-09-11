@@ -84,7 +84,7 @@ function TextEditor(props) {
            overlayClassName="Overlay"
            ariaHideApp={false}
         >
-        <button onClick={handleCloseModal}>Close</button>
+        <button className = "closeoutput" onClick={handleCloseModal}>Close</button>
       <iframe
           srcDoc={srcDoc}
           title="output"
