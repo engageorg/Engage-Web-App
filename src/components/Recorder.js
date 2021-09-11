@@ -1,6 +1,7 @@
 import React from "react";
 import IDE from "./IDE";
 import MicRecorder from 'mic-recorder-to-mp3';
+import { useSelector} from "react-redux";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
@@ -72,17 +73,19 @@ export default function Recorder() {
     prefix: "data:audio/wav;base64,"
   });
 
+
   function listen(eventName, handler) {
     return document.documentElement.addEventListener(eventName, handler, true);
   }
 
   function startRecording() {
+    startTime = Date.now()
     Recording.events = [];
     handlers.map((x) => listen(x.eventName, x.handler));
     Mp3Recorder
     .start()
     .then(() => {
-      startTime = Date.now()
+      console.log("Started recording")
     }).catch((e) => console.error(e));
   }
 
@@ -108,6 +111,13 @@ export default function Recorder() {
     localStorage.setItem("recording", JSON.stringify(Recording))
     document.getElementsByClassName("stop-record")[0].style.display="none"
     document.getElementsByClassName("record")[0].style.display="block"
+    const recordingString = JSON.stringify(Recording)
+    firebase.firestore().collection("events").add({
+      recordingString,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }).then((result) => {
+      console.log("Recording Saved")
+    })
     let audioString
     let file
     Mp3Recorder
@@ -117,10 +127,7 @@ export default function Recorder() {
       file = new File(buffer, 'me-at-thevoice.mp3', {
         type: blob.type,
         lastModified: Date.now()
-      });
-      console.log(file)
-      console.log(blob)
-      console.log(URL.createObjectURL(file))
+      })
       var reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = () => {
@@ -128,19 +135,12 @@ export default function Recorder() {
           var storageRef = firebase.storage().ref();
           var audioRef = storageRef.child('audio&amp');
           audioRef.putString(audioString, 'data_url').then((snapshot) => {
-            alert('Recording saved!');
+            alert('Audio saved!');
           }).catch((e) => {
             console.log(e)
           })
       }
     }).catch((e) => console.log(e));
-    const recordingString = JSON.stringify(Recording)
-    firebase.firestore().collection("events").add({
-      recordingString,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    }).then((result) => {
-      console.log("events succesfully added")
-    })
   }
 
   function handleStop(e) {
@@ -148,16 +148,13 @@ export default function Recorder() {
     stopRecording();
     console.log("Recording Stopped.");
   }
-
+  console.log(Recording)
   return (
     <>
       <div className="recorder">
       <div className = "recorder-button">
-      {/* <button onClick={handleClick} className="record"> */}
         <i className="fas fa-microphone record" onClick={handleClick}></i>
         <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
-        {/* Start Recording
-      </button> */}
       </div>
       <IDE parentCallBack = {callbackFunction}/>
       </div>
