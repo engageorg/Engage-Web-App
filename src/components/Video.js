@@ -89,6 +89,11 @@ export default function Video() {
       audioPlayer.pause();
       pausefunction();
     })
+    
+    audioPlayer.addEventListener("ended", () => {
+      pausefunction();
+      console.log("ended audio")
+    })
 
     audioPlayer.addEventListener("seeking", () => {
       fakeCursor.style.display = 'none';
@@ -133,8 +138,9 @@ export default function Video() {
        fakeCursor.style.display = 'block';
        startPlay = Date.now()
        paused = false;
+       var frames;
        //draw event to play all events in requestAnimationFrames
-       (function draw() {
+       function draw() {
            //select an event and check if its empty
            let event = recording.events[i];
            if (!event) {
@@ -154,13 +160,15 @@ export default function Video() {
            i++;
          }
 
-         //animates in avg frame rate (60 fps mostly) of display, so motion is smooth(tells the browser that animation needs to happen)
-         if (i < recording.events.length && !paused) {
-           requestAnimationFrame(draw);
-         }
-        
-       
-     })();
+         
+         if (i >= recording.events.length || paused) {
+           clearInterval(frames);
+         } 
+     };
+
+     frames = setInterval(() => {
+       if(!paused) draw();
+     }, 1)
     }
 
     
@@ -189,6 +197,7 @@ export default function Video() {
 
     function drawEvent(event, fakeCursor) {
       if (event.type === "mousemove") {
+        console.log("mousemove");
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
         fakeCursor.style.top = JSON.stringify(event.y) + "px";
