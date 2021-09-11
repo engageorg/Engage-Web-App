@@ -12,6 +12,7 @@ export default function Recorder() {
   //const [childValue, setValue] = useState('')
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
+  let fileName="index.html"
   let childValue;
   var lastKeyClass = "";
 
@@ -29,6 +30,7 @@ export default function Recorder() {
           type: "mousemove",
           target: lastKeyClass,
           x: e.pageX,
+          fileName:fileName,
           y: e.pageY,
           value: lastKey,
           time: Date.now() - startTime,
@@ -38,11 +40,14 @@ export default function Recorder() {
     {
       eventName: "click",
       handler: function handleClick(e) {
-        console.log(e)
+        if(e.target.className === "stylebutton") fileName = "style.css"
+        if(e.target.className === "scriptbutton")fileName = "script.js" 
+        if(e.target.className === "htmlbutton") fileName = "index.html"
         Recording.events.push({
           type: "click",
           target: e.target.className,
           x: e.pageX,
+          fileName:fileName,
           y: e.pageY,
           time: Date.now() - startTime,
         });
@@ -51,7 +56,6 @@ export default function Recorder() {
     {
       eventName: "keyup",
       handler: function handleKeyPress(e) {
-        console.log(e)
         lastKey = childValue
         lastKeyClass = e.target.className
         Recording.events.push({
@@ -59,6 +63,7 @@ export default function Recorder() {
           target: e.target.className,
           x: lastMouse.x,
           y: lastMouse.y,
+          fileName:fileName,
           value: childValue,
           keyCode: e.keyCode,
           time: Date.now() - startTime,
