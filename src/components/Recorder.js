@@ -1,7 +1,7 @@
 import React from "react";
 import IDE from "./IDE";
+import files from "../assets/files";
 import MicRecorder from 'mic-recorder-to-mp3';
-import { useSelector} from "react-redux";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
@@ -30,7 +30,7 @@ export default function Recorder() {
           type: "mousemove",
           target: lastKeyClass,
           x: e.pageX,
-          fileName:fileName,
+          file : fileName,
           y: e.pageY,
           value: lastKey,
           time: Date.now() - startTime,
@@ -47,7 +47,7 @@ export default function Recorder() {
           type: "click",
           target: e.target.className,
           x: e.pageX,
-          fileName:fileName,
+          file :fileName,
           y: e.pageY,
           time: Date.now() - startTime,
         });
@@ -63,8 +63,8 @@ export default function Recorder() {
           target: e.target.className,
           x: lastMouse.x,
           y: lastMouse.y,
-          fileName:fileName,
-          value: childValue,
+          fileName: fileName,
+          value: files[fileName].value,
           keyCode: e.keyCode,
           time: Date.now() - startTime,
         });

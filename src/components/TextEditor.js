@@ -5,23 +5,19 @@ import Editor from "@monaco-editor/react";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '../actions'
 import files from "../assets/files";
 
-var lastFileName = "index.html"
 function TextEditor(props) {
   console.log("running")
   const srcDoc = useSelector(state => state.srcDocs);
   const modalActive = useSelector(state => state.outputModal);
   
-  
+  var refresh = props.refresh
   const fileName = useSelector(state => state.fileName);
   const dispatch = useDispatch();
 
   const file = files[fileName];
  
   function handleEditorChange(value) {
-    if(props.parentCallBack){
-      props.parentCallBack(value)
-    }
-    files[fileName].value = value;
+    file.value = value;
   }
  
   const handleOutput = () => {
@@ -39,19 +35,6 @@ function TextEditor(props) {
      dispatch(outputModalFalse());   
   }
   
-  if(props.value !== undefined && files[fileName].value !== props.value && lastFileName === fileName){
-    files[fileName].value = props.value;
-    dispatch(setSrcDocs(`
-    <html>
-      <body>${files["index.html"].value}</body>
-      <style>${files["style.css"].value}</style>
-      <script>${files["script.js"].value}</script>
-    </html>
-  `));
-  }
-  else{
-    lastFileName = fileName;
-  }
     
 
   return (
@@ -93,7 +76,7 @@ function TextEditor(props) {
         defaultValue={file.value}
         saveViewState={true}
         onChange={handleEditorChange}
-        value = {files[fileName].value}
+        value = {file.value}
       />
     </div>
     </div>

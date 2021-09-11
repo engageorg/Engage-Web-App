@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IDE from "./IDE";
+import files from "../assets/files";
 import { useDispatch, useSelector } from "react-redux";
 import { js, css, html, outputModalTrue, outputModalFalse } from "../actions";
 import Loader from "react-loader-spinner";
@@ -23,7 +24,7 @@ const LoaderDiv = (props) => {
 
 export default function Video() {
 
-  const [keyCode, setKeycode] = useState(undefined);
+  const [refresh, setRefresh] = useState("");
   const [loaderStatus,setloaderStatus] = useState("loading");
   const modalActive = useSelector(state => state.outputModal);
   const dispatch = useDispatch();
@@ -176,7 +177,8 @@ export default function Video() {
       console.log(target)
       switch (target) {
         case "stylebutton":
-             dispatch(css());        
+             dispatch(css());   
+                  
           break;
         case "htmlbutton":
              dispatch(html());     
@@ -205,7 +207,6 @@ export default function Video() {
         var tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
-          setKeycode(event.value);
         }
       }
       if (event.type === "click") {
@@ -222,7 +223,8 @@ export default function Video() {
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
-          setKeycode(event.value);
+          files[event.fileName].value = event.value;
+          setRefresh(event.value);
         }
       }
     }
@@ -238,7 +240,7 @@ export default function Video() {
   return (
     <>
       <LoaderDiv status = {loaderStatus}/>
-      <IDE val = {keyCode} />
+      <IDE refresh = {refresh}/>
       <div className = "videoplayer"> 
       <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
       </div>
