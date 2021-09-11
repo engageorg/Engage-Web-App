@@ -164,7 +164,11 @@ export default function Video() {
          
          if (i >= recording.events.length || paused) {
            clearInterval(frames);
+           if(i >= (recording.events.length - 1)){
+             i = 0
+           }
          } 
+
      };
 
      frames = setInterval(() => {
@@ -236,7 +240,7 @@ export default function Video() {
         el.classList.remove(className);
       }, 200);
     }
-  }, [dispatch,modalActive]);
+  }, [dispatch, modalActive]);
 
   return (
     <>
