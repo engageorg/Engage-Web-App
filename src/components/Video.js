@@ -35,7 +35,7 @@ export default function Video() {
     let audioValue;
     let offsetPlay = 0;
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
-
+    const videoPlayer = document.getElementsByClassName('videoplayer')[0]
     // fetch recording from local storage
     let recording = { events: [] };
     const recordingJsonValue = localStorage.getItem("recording");
@@ -46,7 +46,8 @@ export default function Video() {
           recording = JSON.parse(doc.data().recordingString)
         })
         setloaderStatus("loading-hide");
-    })
+        videoPlayer.style.display="flex"
+      })
 
     if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
 
@@ -246,8 +247,8 @@ export default function Video() {
   return (
     <>
       <LoaderDiv status = {loaderStatus}/>
+      {loaderStatus==="loading-hide" ? <i className="far fa-play-circle"></i> :''}
       <IDE refresh = {refresh}/>
-      <i className="far fa-play-circle"></i>
       <div className = "videoplayer"> 
       <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
       </div>
