@@ -36,9 +36,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route exact path = "/" component = {IDE} />
+        <Route exact path = "/videoplayer" component = {IDE} />
         <Route exact path = "/recorder" component = {Recorder} />
-        <Route exact path = "/videoplayer" component = {Video} />
+        <Route exact path = "/" component = {Video}/>
       </Switch>
     </Router>
   </React.StrictMode>

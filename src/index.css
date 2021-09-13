@@ -14,62 +14,12 @@ body{
   margin-bottom: 10px;
   margin-left: 8px;
   color: #a7a7b3;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   background-color: #3e3e42;
+  padding: 2px;
+  border-bottom-color: #faf5f5;
 }
 
-.shape {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 360px;
-  background: linear-gradient(#00040c 80%, transparent);
-  height: 370px;
-  border-radius: 100%;
-  margin-left: -100px;
-  margin-top: -20px;
-  z-index: -1;
-  opacity: 0;
-  transform: scale(0.4) translateY(-400px) translateX(300px);
-  margin-left: 0;
-  margin-top: 0;
-  transition: 400ms ease;
-}
-.shape:nth-child(2) {
-  background: linear-gradient(#252c35 80%, transparent);
-  margin-top: 70px;
-  margin-left: 50px;
-  transform: scale(0.4) translateY(-400px);
-  margin-top: 0;
-}
-
-@-webkit-keyframes float {
-  20% {
-    top: 0;
-    left: -100px;
-  }
-  50% {
-    left: 0;
-  }
-  100% {
-    top: 500px;
-    left: -100px;
-  }
-}
-
-@keyframes float {
-  20% {
-    top: 0;
-    left: -100px;
-  }
-  50% {
-    left: 0;
-  }
-  100% {
-    top: 500px;
-    left: -100px;
-  }
-}
 
 .customCursor {
   border-radius: 50%;

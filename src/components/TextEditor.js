@@ -81,11 +81,10 @@ function TextEditor(props) {
         <button onClick={handleOutput} className="outputbutton">See Output</button>
         <div className="IDE">
           <ReactModal
-            className="outputModal"
+            className="outputModal Modal"
             isOpen={modalActive}
             contentLabel="onRequestClose Example"
             onRequestClose={handleCloseModal}
-            className="Modal"
             overlayClassName="Overlay"
             ariaHideApp={false}
           >
