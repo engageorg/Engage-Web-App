@@ -1,7 +1,6 @@
 import React from "react";
 import ReactModal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
-import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Editor from "@monaco-editor/react";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '../actions'
