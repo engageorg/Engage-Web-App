@@ -244,13 +244,20 @@ body{
 }
 
 .fa-play-circle{
+  position: relative;
   position: absolute;
-  top: 45vh;
-  left: 50vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 6rem;
   color: skyblue;
   z-index:2;
   opacity: 0.8;
+}
+
+.fa-play-circle:hover{
+  transition: 200ms;
+  font-size: 8rem;
 }
 
 .loading {
@@ -283,8 +290,9 @@ audio::-webkit-media-controls-enclosure{
   background: none;
 }
 
-audio::-webkit-media-controls-play-button{
-  background-size: 40px;
+
+audio::-webkit-media-controls-play-button {
+  background-size: 50px;
 }
 
 #mobileview{
