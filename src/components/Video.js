@@ -196,7 +196,7 @@ export default function Video() {
              dispatch(setSrcDocs());
              dispatch(outputModalTrue());
           break;
-        case "closeoutput":
+        case "closeButton":
              dispatch(outputModalFalse());
           break;
         default: 
