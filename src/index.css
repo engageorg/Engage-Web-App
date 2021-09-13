@@ -115,10 +115,30 @@ body{
 }
 
 .scriptbutton {
-  color: white;
-  background-color: #3e3e42;
+  background-color: #d9d9e2;
   font-size: medium;
   border: none;
+  padding: 5px;
+  font-weight: 550;
+  text-align: left;
+  width: 11vw;
+}
+
+.stylebutton {
+  background-color: #d9d9e2;
+  font-size: medium;
+  border: none;
+  font-weight: 550;
+  padding: 5px;
+  text-align: left;
+  width: 11vw;
+}
+
+.htmlbutton {
+  background-color: #d9d9e2;
+  font-size: medium;
+  border: none;
+  font-weight: 550;
   padding: 5px;
   text-align: left;
   width: 11vw;
@@ -130,7 +150,23 @@ body{
 
 .scriptbutton:disabled {
   color: bisque;
-  background-color: #1e1e1e !important;
+  background-color: rgb(154, 152, 153) !important;
+  border: none;
+  padding: 5px;
+  text-align: left;
+}
+
+.stylebutton:disabled {
+  color: bisque;
+  background-color: rgb(154, 152, 153) !important;
+  border: none;
+  padding: 5px;
+  text-align: left;
+}
+
+.htmlbutton:disabled {
+  color: bisque;
+  background-color: rgb(154, 152, 153) !important;
   border: none;
   padding: 5px;
   text-align: left;

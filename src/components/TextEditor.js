@@ -39,26 +39,31 @@ function TextEditor(props) {
           <div className="explorer">Explorer</div>
           <Grid container direction="column" justifyContent="center">
           <Grid className="file">
-          <Button
-            disabled={fileName === "index.html"}
-            onClick={() => dispatch(html())}
-          ><i className="fab fa-html5"></i> index.html</Button>
+          <button
+        className = "htmlbutton"
+        disabled={fileName === "index.html"}
+        onClick={() => dispatch(html()) }
+      >
+        <i className ="fab fa-html5"></i> index.html
+      </button>
           </Grid>
           <Grid className="file">
-          <Button
-            className="stylebutton"
-            disabled={fileName === "style.css"}
-            onClick={() => dispatch(css())}
-          ><i className="fab fa-css3-alt"></i> style.css
-          </Button>
+          <button
+        className = "stylebutton"
+        disabled={fileName === "style.css"}
+        onClick={() => dispatch(css())}
+      > 
+       <i className = "fab fa-css3-alt"></i> style.css
+      </button>
           </Grid>
           <Grid className="file">
-          <Button
-            disabled={fileName === "script.js"}
-            onClick={() => dispatch(js())}
-          >
-              <i className="fab fa-js-square fa-1x"></i> script.js
-            </Button>
+          <button
+        className = "scriptbutton"
+        disabled={fileName === "script.js"}
+        onClick={() => dispatch(js())}
+      >
+        <i className="fab fa-js-square fa-1x"></i> script.js
+      </button>
           </Grid>
           </Grid>
         </Grid>
