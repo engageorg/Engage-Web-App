@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import IDE from "./IDE";
 import files from "../assets/files";
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import { useDispatch, useSelector } from "react-redux";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
 import Loader from "react-loader-spinner";
@@ -230,6 +233,7 @@ export default function Video() {
           tar.focus();
           files[event.fileName].value = event.value;
           setRefresh(event.value);
+          console.log(refresh)
         }
       }
     }
@@ -246,6 +250,7 @@ export default function Video() {
     <>
       <LoaderDiv status = {loaderStatus}/>
       <IDE refresh = {refresh}/>
+      <i class="far fa-play-circle"></i>
       <div className = "videoplayer"> 
       <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
       </div>
