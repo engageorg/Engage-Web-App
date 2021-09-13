@@ -187,8 +187,7 @@ export default function Video() {
       console.log(target)
       switch (target) {
         case "stylebutton":
-             dispatch(css());   
-                  
+             dispatch(css());             
           break;
         case "htmlbutton":
              dispatch(html());     
@@ -203,6 +202,15 @@ export default function Video() {
         case "closeButton":
              dispatch(outputModalFalse());
           break;
+        case "style.css":
+            dispatch(css());             
+         break;
+        case "index.html":
+            dispatch(html());     
+         break;
+        case "script.js":
+            dispatch(js());
+         break;
         default: 
           break;
       }
@@ -235,6 +243,7 @@ export default function Video() {
         if (tar != null) {
           tar.focus();
           files[event.fileName].value = event.value;
+          handleButtonEvents(event.fileName);
           setRefresh(event.value);
           console.log(refresh)
         }
@@ -247,7 +256,7 @@ export default function Video() {
         el.classList.remove(className);
       }, 200);
     }
-  }, [dispatch, modalActive, refresh]);
+  }, []);
 
   return (
     <>
