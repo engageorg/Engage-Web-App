@@ -40,6 +40,7 @@ function TextEditor(props) {
           <Grid container direction="column" justifyContent="center">
           <Grid className="file">
           <Button
+            className = "htmlbutton"
             disabled={fileName === "index.html"}
             onClick={() => dispatch(html())}
           ><i className="fab fa-html5"></i> index.html</Button>
@@ -54,6 +55,7 @@ function TextEditor(props) {
           </Grid>
           <Grid className="file">
           <Button
+            className = "scriptbutton"
             disabled={fileName === "script.js"}
             onClick={() => dispatch(js())}
           >

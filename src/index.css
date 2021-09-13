@@ -83,8 +83,8 @@ body{
 
 .outputbutton {
   position: absolute;
-  font-size: small;
-  left: 2vw;
+  font-size: medium;
+  left: 1vw;
   top: 87vh;
   background-color: green;
   border-radius: 10px;
@@ -110,19 +110,6 @@ body{
   background-color: #a19f9f !important;
 }
 
-.file:disabled{
-  background-color: #1e1e1e !important;
-}
-
-.scriptbutton {
-  color: white;
-  background-color: #3e3e42;
-  font-size: medium;
-  border: none;
-  padding: 5px;
-  text-align: left;
-  width: 11vw;
-}
 
 .MuiButton-root.Mui-disabled {
   color: red;
@@ -130,10 +117,26 @@ body{
 
 .scriptbutton:disabled {
   color: bisque;
-  background-color: #1e1e1e !important;
+  background-color: whitesmoke !important;
   border: none;
-  padding: 5px;
   text-align: left;
+  width: 11vw;
+}
+
+.stylebutton:disabled {
+  color: bisque;
+  background-color: whitesmoke !important;
+  border: none;
+  text-align: left;
+  width: 11vw;
+}
+
+.htmlbutton:disabled {
+  color: bisque;
+  background-color: whitesmoke !important;
+  border: none;
+  text-align: left;
+  width: 11vw;
 }
 
 .texteditor{
@@ -184,7 +187,7 @@ body{
 
 .fa-microphone{
   font-size: 1.5rem;
-  color: whitesmoke;
+  color: rgb(7, 1, 1);
 }
 
 .fa-microphone-slash{
