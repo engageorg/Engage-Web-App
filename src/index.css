@@ -255,6 +255,15 @@ body{
   opacity: 0.8;
 }
 
+.fa-circle{
+  color: rgb(239, 57, 61);
+  padding-left: 1px;
+}
+
+.closeButton:hover{
+  opacity: 0.8;
+}
+
 .fa-play-circle:hover{
   transition: 200ms;
   font-size: 8rem;
@@ -293,6 +302,12 @@ audio::-webkit-media-controls-enclosure{
 
 audio::-webkit-media-controls-play-button {
   background-size: 50px;
+}
+
+.closeButton{
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
+  background-color: rgb(242, 248, 247);
+  border-bottom: 1px solid rgb(163, 167, 166);
 }
 
 #mobileview{

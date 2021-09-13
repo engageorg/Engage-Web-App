@@ -77,11 +77,11 @@ function TextEditor(props) {
           />
         </Grid>
       </Grid>
-      <button onClick={handleOutput} className="outputbutton">See Output</button>
       <div className="texteditor">
         <button onClick={handleOutput} className="outputbutton">See Output</button>
         <div className="IDE">
           <ReactModal
+            className="outputModal"
             isOpen={modalActive}
             contentLabel="onRequestClose Example"
             onRequestClose={handleCloseModal}
@@ -89,7 +89,8 @@ function TextEditor(props) {
             overlayClassName="Overlay"
             ariaHideApp={false}
           >
-            <button className="closeoutput" onClick={handleCloseModal}>Close</button>
+            <Grid container xs={12} sm={12} direction="column"> 
+            <div className="closeButton"><i className="fas fa-circle" onClick={handleCloseModal}></i></div>
             <iframe
               srcDoc={srcDoc}
               title="output"
@@ -97,6 +98,7 @@ function TextEditor(props) {
               sandbox="allow-scripts"
               frameBorder="0"
             />
+            </Grid>
           </ReactModal>
         </div>
       </div>
