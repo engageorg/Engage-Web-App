@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IDE from "./IDE";
 import files from "../assets/files";
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import { useDispatch, useSelector } from "react-redux";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
 import Loader from "react-loader-spinner";
@@ -244,13 +241,13 @@ export default function Video() {
         el.classList.remove(className);
       }, 200);
     }
-  }, [dispatch, modalActive]);
+  }, [dispatch, modalActive, refresh]);
 
   return (
     <>
       <LoaderDiv status = {loaderStatus}/>
       <IDE refresh = {refresh}/>
-      <i class="far fa-play-circle"></i>
+      <i className="far fa-play-circle"></i>
       <div className = "videoplayer"> 
       <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
       </div>

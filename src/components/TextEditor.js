@@ -35,27 +35,34 @@ function TextEditor(props) {
   return (
     <>
       <Grid container direction="row">
-        <Grid className="sidebar" xs={12} sm={1}>
+        <Grid className="sidebar" item xs={12} sm={1}>
           <div className="explorer">Explorer</div>
+          <Grid container direction="column" justifyContent="center">
+          <Grid className="file">
           <Button
-            size="medium"
             disabled={fileName === "index.html"}
             onClick={() => dispatch(html())}
           ><i className="fab fa-html5"></i> index.html</Button>
+          </Grid>
+          <Grid className="file">
           <Button
+            className="stylebutton"
             disabled={fileName === "style.css"}
             onClick={() => dispatch(css())}
           ><i className="fab fa-css3-alt"></i> style.css
           </Button>
+          </Grid>
+          <Grid className="file">
           <Button
             disabled={fileName === "script.js"}
             onClick={() => dispatch(js())}
           >
-            <span className="scriptButton">
               <i className="fab fa-js-square fa-1x"></i> script.js
-            </span></Button>
+            </Button>
+          </Grid>
+          </Grid>
         </Grid>
-        <Grid xs={12} sm={11}>
+        <Grid xs={12} item sm={11}>
           <Editor
             height="100vh"
             width="100vw"
