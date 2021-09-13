@@ -219,9 +219,11 @@ export default function Video() {
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
         fakeCursor.style.top = JSON.stringify(event.y) + "px";
         const path = event.target;
+        handleButtonEvents(event.fileName);
         var tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
+
         }
       }
       if (event.type === "click") {

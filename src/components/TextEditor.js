@@ -7,7 +7,6 @@ import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '..
 import files from "../assets/files";
 
 function TextEditor(props) {
-  console.log("running")
   const srcDoc = useSelector(state => state.srcDocs);
   const modalActive = useSelector(state => state.outputModal);
 
