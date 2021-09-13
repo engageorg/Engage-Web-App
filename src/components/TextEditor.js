@@ -66,7 +66,7 @@ function TextEditor(props) {
           <Editor
             height="100vh"
             width="100vw"
-            theme="vs-dark"
+            theme="vs-light"
             path={file.name}
             className="editor"
             defaultLanguage={file.language}
@@ -88,7 +88,7 @@ function TextEditor(props) {
             overlayClassName="Overlay"
             ariaHideApp={false}
           >
-            <Grid container xs={12} sm={12} direction="column"> 
+            <Grid container direction="column"> 
             <div className="closeButton"><i className="fas fa-circle" onClick={handleCloseModal}></i></div>
             <iframe
               srcDoc={srcDoc}
