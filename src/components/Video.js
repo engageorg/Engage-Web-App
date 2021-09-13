@@ -80,15 +80,12 @@ export default function Video() {
     var paused = false;
   
     audioPlayer.addEventListener("play", () => {
-      audioPlayer.play();
       playfunction();
-      console.log(audioPlayer.duration)
       console.log("audio play")
     })
 
     audioPlayer.addEventListener("pause", () => {
       console.log("clicked pause");
-      audioPlayer.pause();
       pausefunction();
     })
     
@@ -99,7 +96,7 @@ export default function Video() {
 
     audioPlayer.addEventListener("seeking", () => {
       fakeCursor.style.display = 'none';
-      paused = true;
+      pausefunction()
       audioPlayer.pause()
       //returns the time at which the audio is after seeking it
       const curTime = audioPlayer.currentTime
@@ -112,7 +109,6 @@ export default function Video() {
         }
       }
 
-      //i = Math.floor((curTime/dur)*recording.events.length)
       console.log(i)
       console.log(recording.events[i].time)
       console.log(curTime)
@@ -123,8 +119,6 @@ export default function Video() {
         localStorage.setItem("lastSessionTimeStamp", curTime*1000)
       }
       //handlePlayerClick()
-      //playfunction();
-      audioPlayer.pause()
     })
 
     playButton.addEventListener("click", () => {
@@ -133,6 +127,7 @@ export default function Video() {
       audioPlayer.play();
       playfunction();
     })
+
     function pausefunction() {
       fakeCursor.style.display = 'none';
       paused = true;
@@ -148,6 +143,7 @@ export default function Video() {
        var frames;
        //draw event to play all events in requestAnimationFrames
        function draw() {
+           console.log("WORKING")
            //select an event and check if its empty
            let event = recording.events[i];
            if (!event) {
@@ -161,7 +157,7 @@ export default function Video() {
             offsetPlay = (Date.now() - startPlay) * 1;
            }
 
-         if (event.time <= offsetPlay && event.time<=audioPlayer.currentTime*1000) {
+         if (event.time <= offsetPlay) {
            //draws event amd matches with listner
            drawEvent(event, fakeCursor);
            i++;
@@ -247,7 +243,7 @@ export default function Video() {
         el.classList.remove(className);
       }, 200);
     }
-  }, [dispatch, modalActive, refresh]);
+  }, []);
 
   return (
     <>

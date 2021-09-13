@@ -145,14 +145,6 @@ body{
   width: 11vw;
 }
 
-.stylebutton:disabled {
-  color: bisque;
-  background-color: whitesmoke !important;
-  border: none;
-  text-align: left;
-  width: 11vw;
-}
-
 .htmlbutton:disabled {
   color: bisque;
   background-color: rgb(154, 152, 153) !important;
@@ -169,7 +161,7 @@ body{
   text-align: left;
 }
 
-.htmlbutton:disabled {
+.scriptbutton:disabled {
   color: bisque;
   background-color: rgb(154, 152, 153) !important;
   border: none;
@@ -269,7 +261,6 @@ body{
   z-index: 10000000000;
   background-color: rgba(0, 0, 0, 0.3);
 }
-
 
 .loading-hide{
   display: none;
