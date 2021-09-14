@@ -174,9 +174,17 @@ export default function Video() {
         case "script":
              dispatch(js());
           break;
-        case "output":
+        case "outputbutton output":
              dispatch(setSrcDocs());
              dispatch(outputModalTrue());
+          break;
+        case "buttontext output":
+            dispatch(setSrcDocs());
+            dispatch(outputModalTrue());
+         break;
+        case "fas fa-play":
+          dispatch(setSrcDocs());
+          dispatch(outputModalTrue());
           break;
         case "fas fa-circle":
              dispatch(outputModalFalse());
