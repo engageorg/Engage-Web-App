@@ -68,7 +68,7 @@ function TextEditor(props) {
         <Grid xs={12} item sm={11}>
           <Editor
             height="100vh"
-            width="100vw"
+            width="94vw"
             theme="vs-light"
             path={file.name}
             className="editor"
