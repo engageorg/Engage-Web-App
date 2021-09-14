@@ -144,24 +144,24 @@ body{
 }
 
 .htmlbutton:disabled {
-  color: bisque;
-  background-color: rgb(154, 152, 153) !important;
+  color: black;
+  background-color: #fffffe !important;
   border: none;
   padding: 5px;
   text-align: left;
 }
 
 .stylebutton:disabled {
-  color: bisque;
-  background-color: rgb(154, 152, 153) !important;
+  color: black;
+  background-color: #fffffe !important;
   border: none;
   padding: 5px;
   text-align: left;
 }
 
 .scriptbutton:disabled {
-  color: bisque;
-  background-color: rgb(154, 152, 153) !important;
+  color: black;
+  background-color: #fffffe !important;
   border: none;
   padding: 5px;
   text-align: left;
