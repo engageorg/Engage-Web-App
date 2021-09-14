@@ -8,25 +8,10 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
 
-const LoaderDiv = (props) => {
-  return (
-    <div className = {props.status}>
-      <Loader
-        type="Puff"
-        color="#3e3e42"
-        height={100}
-        width={100}
-        timeout={3000} //3 secs
-      />
-    </div>
-  )
-}
 
 export default function Video() {
 
   const [refresh, setRefresh] = useState("");
-  const [loaderStatus,setloaderStatus] = useState("loading");
-  const modalActive = useSelector(state => state.outputModal);
   const dispatch = useDispatch();
 
   
@@ -46,7 +31,7 @@ export default function Video() {
         snap.forEach((doc) => {
           recording = JSON.parse(doc.data().recordingString)
         })
-        setloaderStatus("loading-hide");
+        // setloaderStatus("loading-hide");
       })
 
     if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
@@ -180,7 +165,6 @@ export default function Video() {
 
     
     function handleButtonEvents(target) {
-      console.log(target)
       switch (target) {
         case "style":
              dispatch(css());             
@@ -257,8 +241,7 @@ export default function Video() {
   }, []);
 
   return (
-    <>
-      <LoaderDiv status = {loaderStatus}/>
+    <div>
       <IDE refresh = {refresh}/>
       <div className="playButton">
         <i className="far fa-play-circle"></i> 
@@ -266,6 +249,6 @@ export default function Video() {
       <div className = "videoplayer"> 
       <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
       </div>
-    </>
+    </div>
   );
 }
