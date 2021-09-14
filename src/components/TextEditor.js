@@ -38,29 +38,29 @@ function TextEditor(props) {
           <Grid container direction="column" justifyContent="center">
           <Grid className="file">
           <button
-        className = "htmlbutton"
+        className = "htmlbutton html"
         disabled={fileName === "index.html"}
         onClick={() => dispatch(html()) }
       >
-        <i className ="fab fa-html5"></i> <span className = "buttontext" > index.html  </span>
+        <i className ="fab fa-html5"></i> <span className = "buttontext html" > index.html  </span>
       </button>
           </Grid>
           <Grid className="file">
           <button
-        className = "stylebutton"
+        className = "stylebutton style"
         disabled={fileName === "style.css"}
         onClick={() => dispatch(css())}
       > 
-       <i className = "fab fa-css3-alt"></i> <span className = "buttontext" >style.css  </span>
+       <i className = "fab fa-css3-alt"></i> <span className = "buttontext style" >style.css  </span>
       </button>
           </Grid>
           <Grid className="file">
           <button
-        className = "scriptbutton"
+        className = "scriptbutton script"
         disabled={fileName === "script.js"}
         onClick={() => dispatch(js())}
       >
-        <i className="fab fa-js-square fa-1x"></i> <span className = "buttontext" > script.js </span>
+        <i className="fab fa-js-square fa-1x"></i> <span className = "buttontext script" > script.js </span>
       </button>
           </Grid>
           </Grid>
@@ -81,7 +81,7 @@ function TextEditor(props) {
         </Grid>
       </Grid>
       <div className="texteditor">
-        <button onClick={handleOutput} className="outputbutton"><i class="fas fa-play"></i><span className = "buttontext"> See Output</span></button>
+        <button onClick={handleOutput} className="outputbutton output"><i className="fas fa-play"></i><span className = "buttontext output"> See Output</span></button>
         <div className="IDE">
           <ReactModal
             className="outputModal Modal"
