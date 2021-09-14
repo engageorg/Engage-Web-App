@@ -1,10 +1,11 @@
 import React from "react";
-import IDE from "./IDE";
-import files from "../assets/files";
+import IDE from "../IDE";
+import files from "../../assets/files";
 import MicRecorder from 'mic-recorder-to-mp3';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
+import './style.css'
 
 var startTime;
 export default function Recorder() {

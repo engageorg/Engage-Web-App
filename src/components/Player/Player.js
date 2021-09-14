@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import IDE from "./IDE";
-import files from "../assets/files";
+import IDE from "../IDE";
+import files from "../../assets/files";
 import { useDispatch } from "react-redux";
-import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
+import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../../actions";
 import firebase from 'firebase/app'
-import 'firebase/firestore'
+import 'firebase/firestore';
 import 'firebase/storage';
-
+import "./style.css";
+import Playbutton from "../../assets/playbutton.svg"
 
 export default function Video() {
 
@@ -64,6 +65,7 @@ export default function Video() {
     var paused = false;
   
     audioPlayer.addEventListener("play", () => {
+      playButton.style.display="none"
       playfunction();
       console.log("audio play")
     })
@@ -120,6 +122,8 @@ export default function Video() {
 
 
     function playfunction() {
+       
+      if( document.getElementsByClassName("videoscreen")[0] != null) document.getElementsByClassName("videoscreen")[0].className = "visiblescreen";
        //append fake cursor when user clicks play button
        fakeCursor.style.display = 'block';
        startPlay = Date.now()
@@ -173,7 +177,7 @@ export default function Video() {
         case "script":
              dispatch(js());
           break;
-        case "outputbutton output":
+        case "outputtext":
              dispatch(setSrcDocs());
              dispatch(outputModalTrue());
           break;
@@ -248,7 +252,9 @@ export default function Video() {
 
   return (
     <div>
+      <div className = "videoscreen">
       <IDE refresh = {refresh}/>
+      </div>
       <div className="playButton">
       <div className="container"><a className="button button-play"></a></div>
       </div>

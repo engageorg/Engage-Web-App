@@ -3,24 +3,14 @@ body{
   margin: 0;
   font-family: 'Space Mono', monospace;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
-.sidebar {
-  background-color: #d9d9e2;
-
+button {
+  background-color: transparent;
+  border: none;
 }
 
-.explorer{
-    padding: 24px;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 14px;
-    letter-spacing: 1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  
-}
 
 
 .customCursor {
@@ -43,6 +33,31 @@ body{
 }
 
 
+/* 
+
+Old CSS
+
+.sidebar {
+  background-color: #d9d9e2;
+
+}
+
+.explorer{
+    padding: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  
+}
+
+
+
+
+
 
 .player {
   width : 50px;
@@ -55,41 +70,12 @@ body{
   display: flex;
 }
 
-.outputiframe{
-  width: 60vw;
-  height: 57.2vh;
-}
 
 
-.Modal {
-  position: absolute;
-  top: 20vh;
-  left: 20vw;
-  right: 20vw;
-  bottom: 20vh;
-  background-color: #e5e5e5;
-  z-index: 1000000;
-  display: flex;
-}
 
-.Overlay {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-  
-}
 
 .outputbutton {
-  position: absolute;
   font-size: medium;
-  left: 0.2vw;
-  top: 87vh;
   background-color: green;
   border-radius: 10px;
   color: white;
@@ -170,9 +156,7 @@ body{
   text-align: left;
 }
 
-.editor{
-  margin-top: 0.2vw;
-}
+
 
 .videoplayer{
   position: absolute;
@@ -451,6 +435,14 @@ audio::-webkit-media-controls-play-button {
   }
 }
 
+.outputbuttondiv{
+  min-width: 8.35vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
 @media screen and (max-width: 1300px) {
 
   .explorer{
@@ -554,9 +546,6 @@ audio::-webkit-media-controls-play-button {
     width: 100vw;
   }
 
-  .editor{
-    width: 100vw;
-  }
  
 }
-
+ */
