@@ -2,8 +2,9 @@ import React from "react";
 import ReactModal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
-import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '../actions'
-import files from "../assets/files";
+import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '../../actions'
+import files from "../../assets/files";
+import "./style.css"
 
 function TextEditor(props) {
   const srcDoc = useSelector(state => state.srcDocs);
@@ -35,7 +36,9 @@ function TextEditor(props) {
     <div className = "editor-sidebar">
     <div className = "sidebar-heading">
       <span id = "explorer-spam" >Explorer</span>
-      <button className = "sidebar-add-file"><i className = "fas fa-plus" style = {{color : "#fffffe" }}></i> </button>
+      <button className = "sidebar-add-file">
+        {/* <i className = "fas fa-plus" style = {{color : "#fffffe" }}></i>  */}
+      </button>
     </div>
     <div className = "sidebar-navbutton">
 
