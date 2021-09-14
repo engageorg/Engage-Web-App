@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import IDE from "./IDE";
 import files from "../assets/files";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
-import Loader from "react-loader-spinner";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
@@ -47,17 +46,17 @@ export default function Video() {
       console.log(e)
     })
 
-  //fake cursor for playing
-  const fakeCursor = document.createElement("div");
-  document.getElementById("root").appendChild(fakeCursor);
-  fakeCursor.style.display = 'none'
-  const audioPlayer = document.getElementById("audio_player")
-  var startPlay;
-  console.log(playButton)
-  audioPlayer.addEventListener("onclick", (e) => {
-    console.log("Click on the audioPlayer")
-    console.log(e)
-  })
+    //fake cursor for playing
+    const fakeCursor = document.createElement("div");
+    document.getElementById("root").appendChild(fakeCursor);
+    fakeCursor.style.display = 'none'
+    const audioPlayer = document.getElementById("audio_player")
+    var startPlay;
+    console.log(playButton)
+    audioPlayer.addEventListener("onclick", (e) => {
+      console.log("Click on the audioPlayer")
+      console.log(e)
+    })
 
     fakeCursor.className = "customCursor";
     

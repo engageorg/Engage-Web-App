@@ -233,13 +233,9 @@ body{
 }
 
 .fa-play-circle{
-  position: relative;
-  position: absolute;
-  top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
   font-size: 6rem;
-  color: skyblue;
+  color: rgb(2, 25, 34);
   z-index:2;
   opacity: 0.8;
 }
@@ -306,6 +302,20 @@ audio::-webkit-media-controls-play-button {
   border-bottom: 1px solid rgb(163, 167, 166);
 }
 
+.playButton{
+ position: absolute;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 100vw;
+ height: 100vh;
+ left: 0;
+ right: 0;
+ top:0;
+ bottom: 0;
+ background-color: rgba(0, 0, 0, 0.3);
+
+}
 
 @media screen and (max-width: 1300px) {
 
@@ -321,7 +331,7 @@ audio::-webkit-media-controls-play-button {
   }
   
   .outputbutton{
-    left:0vw;
+    left:1vw;
     background-color: transparent;
   }
   .buttontext{
