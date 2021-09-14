@@ -4,9 +4,10 @@ import files from "../../assets/files";
 import { useDispatch } from "react-redux";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../../actions";
 import firebase from 'firebase/app'
-import 'firebase/firestore'
+import 'firebase/firestore';
 import 'firebase/storage';
-import "./style.css"
+import "./style.css";
+import Playbutton from "../../assets/playbutton.svg"
 
 export default function Video() {
 
