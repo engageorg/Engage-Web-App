@@ -283,7 +283,6 @@ button:hover{
 audio{
   width:80%;
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.5);;
   display: flex;
 }
 
@@ -313,8 +312,7 @@ audio::-webkit-media-controls-play-button {
  right: 0;
  top:0;
  bottom: 0;
- background-color: rgba(0, 0, 0, 0.5);
-
+ background-color: rgba(0, 0, 0, 0.8);
 }
 
 .container {
@@ -346,8 +344,8 @@ audio::-webkit-media-controls-play-button {
   position: relative;
   width: 112px;
   height: 112px;
-  background: grey;
-  background-image: linear-gradient(120deg, rgba(166, 166, 166, 0.3) 50%, grey 51%);
+  background: rgb(54, 67, 92);
+
   border-radius: 50%;
   transition: all 0.2s cubic-bezier(0.68, -0.55, 0.465, 1.55) 0.2s, border-width 0.4s cubic-bezier(0.68, -0.55, 0.465, 1.55);
 }
