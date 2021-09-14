@@ -127,7 +127,6 @@ export default function Video() {
        var frames;
        //draw event to play all events in requestAnimationFrames
        function draw() {
-           console.log("WORKING")
            //select an event and check if its empty
            let event = recording.events[i];
            if (!event) {
@@ -205,7 +204,6 @@ export default function Video() {
 
     function drawEvent(event, fakeCursor) {
       if (event.type === "mousemove") {
-        console.log("mousemove");
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
         fakeCursor.style.top = JSON.stringify(event.y) + "px";
@@ -223,7 +221,7 @@ export default function Video() {
         tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
           handleButtonEvents(event.fileName);
-          handleButtonEvents(tar);
+          handleButtonEvents(event.target);
           flashClass(tar, "clicked");
         }
       }
@@ -252,7 +250,7 @@ export default function Video() {
     <div>
       <IDE refresh = {refresh}/>
       <div className="playButton">
-      <div class="container"><a class="button button-play"></a></div>
+      <div className="container"><a className="button button-play"></a></div>
       </div>
       <div className = "videoplayer"> 
       <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
