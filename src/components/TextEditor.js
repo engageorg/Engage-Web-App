@@ -81,7 +81,7 @@ function TextEditor(props) {
         </Grid>
       </Grid>
       <div className="texteditor">
-        <button onClick={handleOutput} className="outputbutton">See Output</button>
+        <button onClick={handleOutput} className="outputbutton"><i class="fas fa-play"></i><span className = "buttontext"> See Output</span></button>
         <div className="IDE">
           <ReactModal
             className="outputModal Modal"
