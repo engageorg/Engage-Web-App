@@ -223,6 +223,7 @@ export default function Video() {
         tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
           handleButtonEvents(event.fileName);
+          handleButtonEvents(tar);
           flashClass(tar, "clicked");
         }
       }
