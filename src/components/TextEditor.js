@@ -42,7 +42,7 @@ function TextEditor(props) {
         disabled={fileName === "index.html"}
         onClick={() => dispatch(html()) }
       >
-        <i className ="fab fa-html5"></i> index.html
+        <i className ="fab fa-html5"></i> <span className = "buttontext" > index.html  </span>
       </button>
           </Grid>
           <Grid className="file">
@@ -51,7 +51,7 @@ function TextEditor(props) {
         disabled={fileName === "style.css"}
         onClick={() => dispatch(css())}
       > 
-       <i className = "fab fa-css3-alt"></i> style.css
+       <i className = "fab fa-css3-alt"></i> <span className = "buttontext" >style.css  </span>
       </button>
           </Grid>
           <Grid className="file">
@@ -60,7 +60,7 @@ function TextEditor(props) {
         disabled={fileName === "script.js"}
         onClick={() => dispatch(js())}
       >
-        <i className="fab fa-js-square fa-1x"></i> script.js
+        <i className="fab fa-js-square fa-1x"></i> <span className = "buttontext" > script.js </span>
       </button>
           </Grid>
           </Grid>
