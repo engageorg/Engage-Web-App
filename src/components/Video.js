@@ -195,7 +195,7 @@ export default function Video() {
              dispatch(setSrcDocs());
              dispatch(outputModalTrue());
           break;
-        case "closeButton":
+        case "fas fa-circle":
              dispatch(outputModalFalse());
           break;
         case "style.css":
