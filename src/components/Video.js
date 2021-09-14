@@ -243,7 +243,7 @@ export default function Video() {
     <div>
       <IDE refresh = {refresh}/>
       <div className="playButton">
-        <i className="far fa-play-circle"></i> 
+      <div class="container"><a class="button button-play"></a></div>
       </div>
       <div className = "videoplayer"> 
       <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
