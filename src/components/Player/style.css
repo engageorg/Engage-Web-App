@@ -156,6 +156,10 @@
     justify-content: center;
   }
 
+.videoscreen{
+  filter: blur(10px);
+}
+
 audio{
     width:80%;
     border-radius: 5px;

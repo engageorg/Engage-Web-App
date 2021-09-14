@@ -43,25 +43,34 @@
   
   .jsfile, .cssfile, .htmlfile {
     color: #fffffe;
+    border: none;
+    text-align: left;
+    padding: 20px;
   }
   
-  
+  .buttontext {
+    font-size: medium;
+    width: 100%;
+  }
   
   .fa-html5{
     color:#cc0000;
-    margin-right: 5px; 
+    margin-right: 5px;
+    font-size: 1vw; 
   }
   
   
   .fa-css3-alt{
     color: #0066ff;
     margin-right: 5px;
+    font-size: 1vw; 
    
   }
   
   .fa-js-square{
     color: #ffd11a;
     margin-right: 5px;
+    font-size: 1vw; 
   }
   
   .sidebar-footer{
@@ -104,4 +113,13 @@
   .outputiframe{
     width: 60vw;
     height: 57.2vh;
+  }
+
+  .output{
+    transition: 0.5s;
+  }
+
+  .output:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
