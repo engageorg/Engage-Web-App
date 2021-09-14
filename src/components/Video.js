@@ -214,7 +214,7 @@ export default function Video() {
         flashClass(fakeCursor, "click");
         tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
-          handleButtonEvents(tar.className);
+          handleButtonEvents(event.fileName);
           flashClass(tar, "clicked");
         }
       }
