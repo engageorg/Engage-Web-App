@@ -205,9 +205,6 @@ body{
 }
 
 
-.buttontext{
-  font-size: ;
-}
 .fa-css3-alt{
   color: #0066ff;
   margin-right: 5px;
@@ -275,6 +272,14 @@ body{
 
 .videoplayer{
   display: none;
+}
+
+button{
+  transition: 50ms;
+}
+
+button:hover{
+  transform: scale(1.1);
 }
 
 audio{
