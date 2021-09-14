@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import IDE from "./IDE";
-import files from "../assets/files";
+import IDE from "../IDE";
+import files from "../../assets/files";
 import { useDispatch } from "react-redux";
-import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
+import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../../actions";
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
-
+import "./style.css"
 
 export default function Video() {
 

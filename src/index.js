@@ -5,8 +5,8 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import './index.css';
-import Recorder from './components/Recorder';
-import Video from './components/Video';
+import Recorder from './components/Recorder/Recorder';
+import Video from './components/Player/Player';
 import IDE from "./components/IDE";
 import allReducer from './reducers';
 
