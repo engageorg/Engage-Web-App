@@ -168,15 +168,6 @@ export default function Video() {
     
     function handleButtonEvents(target) {
       switch (target) {
-        case "style":
-             dispatch(css());             
-          break;
-        case "html":
-             dispatch(html());     
-          break;
-        case "script":
-             dispatch(js());
-          break;
         case "outputtext":
              dispatch(setSrcDocs());
              dispatch(outputModalTrue());
