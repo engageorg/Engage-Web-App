@@ -98,7 +98,7 @@ function TextEditor(props) {
             ariaHideApp={false}
           >
            
-            <div className="closeButton"><i className="fas fa-circle" onClick={handleCloseModal}></i></div>
+            <div className="closeButton"><i className="fas fa-window-close" onClick={handleCloseModal}></i></div>
             <iframe
               srcDoc={srcDoc}
               title="output"
