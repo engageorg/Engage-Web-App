@@ -148,7 +148,7 @@
 
 .videoplayer{
     position: absolute;
-    z-index: 100;
+    z-index: 1;
     top: 90vh;
     width: 100vw;
     display: none;

@@ -21,15 +21,15 @@ button {
   top: 220px;
   left: 220px;
   background: url(./assets/cursor.svg);
-  z-index: 10000;
+  z-index: 3;
 }
 
 .click {
   border-radius: 50%;
   background: url(./assets/cursor.svg);
   position: fixed;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 
 
@@ -53,11 +53,6 @@ Old CSS
     white-space: nowrap;
   
 }
-
-
-
-
-
 
 .player {
   width : 50px;

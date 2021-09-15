@@ -133,6 +133,7 @@
 
   .output{
     transition: 0.5s;
+    z-index: 2;
   }
 
   .output:hover {
