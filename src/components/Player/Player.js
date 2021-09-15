@@ -88,16 +88,7 @@ export default function Video() {
       const curTime = audioPlayer.currentTime
      
       //TODO: Implement binary search or lower bound
-      let l, h,mid;
-      l =0;
-      h = recording.events.length-1;
-      mid = (l+h)/2;
-      if(recording.events[mid].time>curTime){
-        h = mid  
-      }else{
-        l = mid
-      }
-      for(let x=l;x<h;x++){
+      for(let x=0;x<recording.events.length;x++){
         if(recording.events[x].time>curTime*1000){
           i=x;
           break;

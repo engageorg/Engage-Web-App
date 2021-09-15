@@ -42,7 +42,7 @@ export default function Recorder() {
       eventName: "click",
       handler: function handleClick(e) {
         if(e.target.className === "cssfile") fileName = "style.css"
-        if(e.target.className === "jsfile")fileName = "script.js" 
+        if(e.target.className === "jsfile") fileName = "script.js" 
         if(e.target.className === "htmlfile") fileName = "index.html"
         console.log(e.target.className);
         Recording.events.push({
