@@ -8,6 +8,7 @@ import './index.css';
 import Recorder from './components/Recorder/Recorder';
 import Video from './components/Player/Player';
 import IDE from "./components/IDE";
+import MultiFile from './components/MultilanguageEditor/multiFile';
 import allReducer from './reducers';
 
 import firebase from 'firebase/app';
@@ -39,6 +40,7 @@ ReactDOM.render(
         <Route exact path = "/videoplayer" component = {IDE} />
         <Route exact path = "/recorder" component = {Recorder} />
         <Route exact path = "/" component = {Video}/>
+        <Route exact path = "/file" component = {MultiFile}/>
       </Switch>
     </Router>
   </React.StrictMode>
