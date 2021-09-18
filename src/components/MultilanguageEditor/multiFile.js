@@ -1,82 +1,32 @@
 import React, { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import axios from 'axios'
-
+import files from "../../assets/files";
+import { c, c99, cpp, cpp14, cpp17, python2, python3 } from '../../actions'
+import { useSelector, useDispatch } from "react-redux";
 
 function MultiFile(){
-
-    const [file,setFileValue] = useState('')
     const [language, setLanguage] = useState('')
 
+    const fileName = useSelector(state => state.language);
+    const dispatch = useDispatch();
+  
+    const file = files[fileName];
+  
+    function handleEditorChange(value) {
+      console.log(fileName)
+      console.log(value)
+      file.value = value;
+    }
+
     const languageList = {
-        C: "c",
+        "C": "c",
         "C-99": "c99",
         "C++": "cpp",
         "C++ 14": "cpp14",
         "C++ 17": "cpp17",
-        PHP: "php",
-        Perl: "perl",
         "Python 2": "python2",
         "Python 3": "python3",
-        Ruby: "ruby",
-        "GO Lang": "go",
-        Scala: "scala",
-        "Bash Shell": "bash",
-        SQL: "sql",
-        Pascal: "pascal",
-        "C#": "csharp",
-        "VB.Net": "vbn",
-        Haskell: "haskell",
-        "Objective C": "objc",
-        Swift: "swift",
-        Groovy: "groovy",
-        Fortran: "fortran",
-        Lua: "lua",
-        TCL: "tcl",
-        Hack: "hack",
-        RUST: "rust",
-        D: "d",
-        Ada: "ada",
-        Java: "java",
-        "R Language": "r",
-        "FREE BASIC": "freebasic",
-        VERILOG: "verilog",
-        COBOL: "cobol",
-        Dart: "dart",
-        YaBasic: "yabasic",
-        Clojure: "clojure",
-        NodeJS: "nodejs",
-        Scheme: "scheme",
-        Forth: "forth",
-        Prolog: "prolog",
-        Octave: "octave",
-        CoffeeScript: "coffeescript",
-        Icon: "icon",
-        "F#": "fsharp",
-        "Assembler - NASM": "nasm",
-        "Assembler - GCC": "gccasm",
-        Intercal: "intercal",
-        Nemerle: "nemerle",
-        Ocaml: "ocaml",
-        Unlambda: "unlambda",
-        Picolisp: "picolisp",
-        SpiderMonkey: "spidermonkey",
-        "Rhino JS": "rhino",
-        CLISP: "clisp",
-        Elixir: "elixir",
-        Factor: "factor",
-        Falcon: "falcon",
-        Fantom: "fantom",
-        Nim: "nim",
-        Pike: "pike",
-        SmallTalk: "smalltalk",
-        "OZ Mozart": "mozart",
-        LOLCODE: "lolcode",
-        Racket: "racket",
-        Kotlin: "kotlin",
-        Whitespace: "whitespace",
-        Erlang: "erlang",
-        J: "jlang"
       };
 
     useEffect(() => {
@@ -90,24 +40,45 @@ function MultiFile(){
 
         select.addEventListener("change", (e) => {
           setLanguage(select.value)
-          //console.log(language)
+          if(select.value === "c"){
+            dispatch(c())
+          }
+          if(select.value === "c99"){
+            dispatch(c99())
+          }
+          if(select.value === "cpp"){
+            dispatch(cpp())
+          }
+          if(select.value === "cpp"){
+            dispatch(cpp())
+          }
+          if(select.value === "cpp14"){
+            dispatch(cpp14())
+          }
+          if(select.value === "cpp17"){
+            dispatch(cpp17())
+          }
+          if(select.value === "python2"){
+            dispatch(python2())
+          }
+          if(select.value === "python3"){
+            dispatch(python3())
+          }
         })
     }, [])
 
     async function handleOutput(){
-
-    const words = file.split('\r');
+    const words = file.value.split('\r');
     console.log(words)
     let code=''
     for(let i=0;i<words.length;i++){
         code = code+words[i];
     }
     console.log(code)
-    console.log(language)
     await axios.post('/', {
         clientId: "92ed4b582caf3c545e22d2c5ab336568",
         clientSecret: "b530d3b1ce3b93a0ac4f745f074c8f0ea3c86a04e72ba4ddd62e36516acff521",
-        language: language,
+        language: language, 
         versionIndex: "0",
         script:code
         }).then((e) => {
@@ -117,20 +88,16 @@ function MultiFile(){
     }) 
 }
 
-    function handleEditorChange(value) {
-       setFileValue(value)
-    }
-
-    function handleLanguageChange(lang){
-        console.log(lang)
-    }
+    // function handleEditorChange(value) {
+    //     file.value = value;
+    // }
 
     return (
     <>
         <button>
         main.cpp
         </button>
-        <select onChange={handleLanguageChange} name="language" id="language">
+        <select name="language" id="language">
         </select>
         <Editor
         height="90vh"
@@ -138,7 +105,7 @@ function MultiFile(){
         defaultLanguage="C++"
         theme="vs-dark"
         onChange={handleEditorChange}
-        value={file}
+        value={file.value}
         />
         <button style = {{color : "white",cursor:"pointer", backgroundColor: "green", padding: "5px", borderRadius: "5px"}} onClick={handleOutput}>
             Run

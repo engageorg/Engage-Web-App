@@ -13,13 +13,14 @@ export default function Recorder() {
   //const [childValue, setValue] = useState('')
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
-  let fileName="index.html"
+  //Now we have to setup it when we startRecording manually 
+  let fileName="c"
   let childValue;
   var lastKeyClass = "";
 
   function callbackFunction(childData){
     childValue = childData
-    // console.log(childValue)
+    console.log(childValue)
   }
   // Record each type of event
   const handlers = [
@@ -38,26 +39,28 @@ export default function Recorder() {
         });
       },
     },
-    {
-      eventName: "click",
-      handler: function handleClick(e) {
-        if(e.target.className === "cssfile") fileName = "style.css"
-        if(e.target.className === "jsfile") fileName = "script.js" 
-        if(e.target.className === "htmlfile") fileName = "index.html"
-        console.log(e.target.className);
-        Recording.events.push({
-          type: "click",
-          target: e.target.className,
-          x: e.pageX,
-          fileName :fileName,
-          y: e.pageY,
-          time: Date.now() - startTime,
-        });
-      },
-    },
+    // {
+    //   eventName: "click",
+    //   handler: function handleClick(e) {
+    //     if(e.target.className === "cssfile") fileName = "style.css"
+    //     if(e.target.className === "jsfile") fileName = "script.js" 
+    //     if(e.target.className === "htmlfile") fileName = "index.html"
+    //     if(fileName === "script.js" || fileName === "style.css" || fileName === "index.html"){
+    //       Recording.events.push({
+    //         type: "click",
+    //         target: e.target.className,
+    //         x: e.pageX,
+    //         fileName :fileName,
+    //         y: e.pageY,
+    //         time: Date.now() - startTime,
+    //       });
+    //     }
+    //   },
+    // },
     {
       eventName: "keyup",
       handler: function handleKeyPress(e) {
+        console.log("KEYUP")
         lastKey = childValue
         lastKeyClass = e.target.className
         Recording.events.push({
@@ -70,9 +73,32 @@ export default function Recorder() {
           keyCode: e.keyCode,
           time: Date.now() - startTime,
         });
-        console.log("recording",childValue)
+        console.log("recording",files[fileName].value)
       },
     },
+    {
+      eventName: "click",
+      handler: function handleClick(e) {
+        if(e.target.value  === "c" || 
+        e.target.value === "c99" || 
+        e.target.value === "cpp" || 
+        e.target.value === "cpp14" || 
+        e.target.value === "cpp17" || 
+        e.target.value === "python2" || 
+        e.target.value === "python3"){
+          fileName = e.target.value
+        }
+        console.log(e.target.value);
+        Recording.events.push({
+          type: "click",
+          target: e.target.className,
+          x: e.pageX,
+          fileName :fileName,
+          y: e.pageY,
+          time: Date.now() - startTime,
+        });
+      },
+    }
   ];
 
   const Mp3Recorder = new MicRecorder({ 
