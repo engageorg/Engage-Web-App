@@ -4,6 +4,7 @@ import axios from 'axios'
 import files from "../../assets/files";
 import { c, c99, cpp, cpp14, cpp17, python2, python3 } from '../../actions'
 import { useSelector, useDispatch } from "react-redux";
+import {runCode} from '../../actions/outputAction'
 
 function MultiFile(){
     const [language, setLanguage] = useState('')
@@ -71,26 +72,22 @@ function MultiFile(){
     const words = file.value.split('\r');
     console.log(words)
     let code=''
-    for(let i=0;i<words.length;i++){
+    for(let i=0;i<words.length;i++) {
         code = code+words[i];
     }
-    console.log(code)
-    await axios.post('/', {
-        clientId: "92ed4b582caf3c545e22d2c5ab336568",
-        clientSecret: "b530d3b1ce3b93a0ac4f745f074c8f0ea3c86a04e72ba4ddd62e36516acff521",
-        language: language, 
-        versionIndex: "0",
-        script:code
-        }).then((e) => {
-        console.log(e)
-    }).catch((error) => {
-        console.log(error)
-    }) 
+    dispatch(runCode(language, code))
+    // await axios.post('/', {
+    //     clientId: "92ed4b582caf3c545e22d2c5ab336568",
+    //     clientSecret: "b530d3b1ce3b93a0ac4f745f074c8f0ea3c86a04e72ba4ddd62e36516acff521",
+    //     language: language, 
+    //     versionIndex: "0",
+    //     script:code
+    //     }).then((e) => {
+    //     console.log(e)
+    // }).catch((error) => {
+    //     console.log(error)
+    // }) 
 }
-
-    // function handleEditorChange(value) {
-    //     file.value = value;
-    // }
 
     return (
     <>

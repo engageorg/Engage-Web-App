@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware} from 'redux';
 import { Provider } from 'react-redux';
 
 import './index.css';
@@ -10,7 +10,7 @@ import Video from './components/Player/Player';
 import IDE from "./components/IDE";
 import MultiFile from './components/MultilanguageEditor/multiFile';
 import allReducer from './reducers';
-
+import thunk from 'redux-thunk'
 import firebase from 'firebase/app';
 
 const firebaseConfig = {
@@ -27,9 +27,13 @@ if (firebase.apps.length===0){
   firebase.initializeApp(firebaseConfig);
 }
 
+const middleware = [thunk]
+
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
   allReducer, 
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancer(applyMiddleware(...middleware)),
 );
 
 ReactDOM.render(
