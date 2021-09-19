@@ -8,13 +8,17 @@ import 'firebase/storage';
 import './style.css'
 
 var startTime;
-export default function Recorder() {
+export default function Recorder(props) {
+  const name = window.location.pathname.split('/')[2]
   const Recording = { events: [] };
-  //const [childValue, setValue] = useState('')
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
-  //Now we have to setup it when we startRecording manually 
-  let fileName="c"
+  let fileName
+  if(name === "other"){
+    fileName="c"
+  }else if(name=== "ide"){
+    fileName="index.html"
+  }
   let childValue;
   var lastKeyClass = "";
 
@@ -39,24 +43,24 @@ export default function Recorder() {
         });
       },
     },
-    // {
-    //   eventName: "click",
-    //   handler: function handleClick(e) {
-    //     if(e.target.className === "cssfile") fileName = "style.css"
-    //     if(e.target.className === "jsfile") fileName = "script.js" 
-    //     if(e.target.className === "htmlfile") fileName = "index.html"
-    //     if(fileName === "script.js" || fileName === "style.css" || fileName === "index.html"){
-    //       Recording.events.push({
-    //         type: "click",
-    //         target: e.target.className,
-    //         x: e.pageX,
-    //         fileName :fileName,
-    //         y: e.pageY,
-    //         time: Date.now() - startTime,
-    //       });
-    //     }
-    //   },
-    // },
+    {
+      eventName: "click",
+      handler: function handleClick(e) {
+        if(e.target.className === "cssfile") fileName = "style.css"
+        if(e.target.className === "jsfile") fileName = "script.js" 
+        if(e.target.className === "htmlfile") fileName = "index.html"
+        if(fileName === "script.js" || fileName === "style.css" || fileName === "index.html"){
+          Recording.events.push({
+            type: "click",
+            target: e.target.className,
+            x: e.pageX,
+            fileName :fileName,
+            y: e.pageY,
+            time: Date.now() - startTime,
+          });
+        }
+      },
+    },
     {
       eventName: "keyup",
       handler: function handleKeyPress(e) {
@@ -88,7 +92,7 @@ export default function Recorder() {
         e.target.value === "python3"){
           fileName = e.target.value
         }
-        console.log(e.target.value);
+        if(fileName !== "script.js" || fileName !== "style.css" || fileName !== "index.html")
         Recording.events.push({
           type: "click",
           target: e.target.className,
@@ -187,7 +191,7 @@ export default function Recorder() {
         <i className="fas fa-microphone record" onClick={handleClick}></i>
         <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
       </div>
-      <IDE parentCallBack = {callbackFunction}/>
+      <IDE name={name} parentCallBack = {callbackFunction}/>
       </div>
     </>
   );

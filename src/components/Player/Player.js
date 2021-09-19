@@ -10,7 +10,7 @@ import "./style.css";
 import Playbutton from "../../assets/playbutton.svg"
 
 export default function Video() {
-
+  const name = window.location.pathname.split('/')[2]
   const [refresh, setRefresh] = useState("");
   const dispatch = useDispatch();
 
@@ -243,7 +243,7 @@ export default function Video() {
   return (
     <div>
       <div className = "videoscreen">
-      <IDE refresh = {refresh}/>
+      <IDE name={name} refresh = {refresh}/>
       </div>
       <div className="playButton">
       <div className="container"><a className="button button-play"></a></div>

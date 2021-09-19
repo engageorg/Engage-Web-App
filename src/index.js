@@ -12,6 +12,7 @@ import MultiFile from './components/MultilanguageEditor/multiFile';
 import allReducer from './reducers';
 import thunk from 'redux-thunk'
 import firebase from 'firebase/app';
+import StartingComponent from './components/StartingComponent/startingCompoent';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAp2cQvNNp8fUKOv6kO_7wR5IsKROCoh14",
@@ -41,11 +42,10 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route exact path = "/videoplayer" component = {IDE} />
-        <Route exact path = "/recorder" component = {Recorder} />
-        <Route exact path = "/" component = {Video}/>
-        <Route exact path = "/file" component = {MultiFile}/>
-      </Switch>
+        <Route exact path = "/videoplayer/:id" component = {Video} />
+        <Route exact path = "/recorder/:id" component = {Recorder} ide="web"/>
+        <Route exact path = "/" component = {StartingComponent}/>
+    </Switch>
     </Router>
   </React.StrictMode>
   </Provider>,
