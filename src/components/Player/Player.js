@@ -8,6 +8,7 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
 import Playbutton from "../../assets/playbutton.svg"
+let audioValue;
 
 export default function Video() {
 
@@ -17,7 +18,6 @@ export default function Video() {
   
   useEffect(() => {
 
-    let audioValue;
     let offsetPlay = 0;
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
     const videoPlayer = document.getElementsByClassName('videoplayer')[0]
@@ -63,6 +63,10 @@ export default function Video() {
     
     var i = 0;
     var paused = false;
+
+    audioPlayer.addEventListener("canplaythrough", () => {
+      console.log("loaded")
+    })
   
     audioPlayer.addEventListener("play", () => {
       playButton.style.display="none"
@@ -255,7 +259,7 @@ export default function Video() {
       <div className="container"><a className="button button-play"></a></div>
       </div>
       <div className = "videoplayer"> 
-      <audio preload = "auto" id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
+      <audio preload = "auto" id="audio_player" controls="controls" controlsList="nodownload" src={audioValue}></audio>
       </div>
     </div>
   );
