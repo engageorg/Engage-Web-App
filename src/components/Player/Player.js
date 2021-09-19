@@ -186,10 +186,16 @@ export default function Video() {
         case "style.css":
             dispatch(css());             
          break;
+        case "buttontext style":
+          dispatch(css());             
+         break;
         case "index.html":
             dispatch(html());     
          break;
         case "script.js":
+            dispatch(js());
+         break;
+        case "buttontext script":
             dispatch(js());
          break;
         default: 
@@ -249,7 +255,7 @@ export default function Video() {
       <div className="container"><a className="button button-play"></a></div>
       </div>
       <div className = "videoplayer"> 
-      <audio id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
+      <audio preload = "auto" id="audio_player" controls="controls" controlsList="nodownload" src={localStorage.getItem("url")}></audio>
       </div>
     </div>
   );
