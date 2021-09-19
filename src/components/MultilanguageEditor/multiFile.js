@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
-import axios from 'axios'
 import files from "../../assets/files";
 import { c, c99, cpp, cpp14, cpp17, python2, python3 } from '../../actions'
 import { useSelector, useDispatch } from "react-redux";
 import {runCode} from '../../actions/outputAction'
-
+import "./style.css"
 function MultiFile(){
     const [language, setLanguage] = useState('')
 
@@ -76,17 +75,6 @@ function MultiFile(){
         code = code+words[i];
     }
     dispatch(runCode(language, code))
-    // await axios.post('/', {
-    //     clientId: "92ed4b582caf3c545e22d2c5ab336568",
-    //     clientSecret: "b530d3b1ce3b93a0ac4f745f074c8f0ea3c86a04e72ba4ddd62e36516acff521",
-    //     language: language, 
-    //     versionIndex: "0",
-    //     script:code
-    //     }).then((e) => {
-    //     console.log(e)
-    // }).catch((error) => {
-    //     console.log(error)
-    // }) 
 }
 
     return (
@@ -104,6 +92,16 @@ function MultiFile(){
         onChange={handleEditorChange}
         value={file.value}
         />
+        <div className="inputOutput">
+          <h3>Input</h3>
+          <textarea className="inputArea"></textarea>
+          <h3>Output</h3>
+          <textarea className="outputArea"></textarea>
+        </div>
+        {/* <div>
+          <h3>Output</h3>
+          <textarea></textarea>
+          </div> */}
         <button style = {{color : "white",cursor:"pointer", backgroundColor: "green", padding: "5px", borderRadius: "5px"}} onClick={handleOutput}>
             Run
         </button>

@@ -225,9 +225,13 @@ export default function Video() {
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
-          files[event.fileName].value = event.value;
-          handleButtonEvents(event.fileName);
-          setRefresh(event.value);
+          if(path==="inputArea"){
+            tar.value = event.value
+            }else{
+              files[event.fileName].value = event.value;
+              handleButtonEvents(event.fileName);
+              setRefresh(event.value);
+            }
         }
       }
     }

@@ -18,6 +18,10 @@ const somePython2CodeExample = ``
 
 const somePython3CodeExample = ``
 
+const someinputExample = ``
+
+const someoutputExample = ``
+
 const files = {
   "script.js": {
     name: "script.js",
@@ -68,6 +72,16 @@ const files = {
     name: "python",
     language: "python",
     value: somePython3CodeExample
+  },
+  "inputArea": {
+    name: "python",
+    language: "python",
+    value: someinputExample
+  },
+  "outputArea": {
+    name: "python",
+    language: "python",
+    value: someoutputExample
   }
 };
 

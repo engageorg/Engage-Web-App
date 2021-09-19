@@ -1,0 +1,4 @@
+.inputOutput{
+    display: flex;
+    flex-direction: row;
+}

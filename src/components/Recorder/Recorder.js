@@ -64,16 +64,16 @@ export default function Recorder(props) {
     {
       eventName: "keyup",
       handler: function handleKeyPress(e) {
-        console.log("KEYUP")
         lastKey = childValue
         lastKeyClass = e.target.className
+
         Recording.events.push({
           type: "keyup",
           target: e.target.className,
           x: lastMouse.x,
           y: lastMouse.y,
           fileName: fileName,
-          value: files[fileName].value,
+          value: (e.target.className === "inputArea") ? e.target.value :files[fileName].value,
           keyCode: e.keyCode,
           time: Date.now() - startTime,
         });
