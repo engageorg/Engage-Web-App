@@ -225,12 +225,24 @@ export default function Video() {
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
-          if(path==="inputArea"){
+          if(path==="userInputArea"){
             tar.value = event.value
             }else{
               files[event.fileName].value = event.value;
               handleButtonEvents(event.fileName);
               setRefresh(event.value);
+            }
+        }
+      }
+      if(event.type === "output") {
+        console.log(event)
+        const path = event.target;
+        tar = document.getElementsByClassName(path)[0];
+        console.log(tar)
+        if (tar != null) {
+          tar.focus();
+          if(path==="userOutputArea"){
+            tar.value = event.value
             }
         }
       }

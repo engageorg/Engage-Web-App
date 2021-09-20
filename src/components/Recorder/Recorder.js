@@ -15,7 +15,7 @@ export default function Recorder(props) {
   var lastKey = "";
   let fileName
   if(name === "other"){
-    fileName="c"
+    fileName="python2"
   }else if(name=== "ide"){
     fileName="index.html"
   }
@@ -73,7 +73,7 @@ export default function Recorder(props) {
           x: lastMouse.x,
           y: lastMouse.y,
           fileName: fileName,
-          value: (e.target.className === "inputArea") ? e.target.value :files[fileName].value,
+          value: (e.target.className === "userInputArea") ? e.target.value :files[fileName].value,
           keyCode: e.keyCode,
           time: Date.now() - startTime,
         });
@@ -99,9 +99,22 @@ export default function Recorder(props) {
           x: e.pageX,
           fileName :fileName,
           y: e.pageY,
+          value:files[fileName].value,
           time: Date.now() - startTime,
         });
       },
+      },
+    {
+      eventName:"output",
+      handler:function handleChange(e){
+        console.log()
+        Recording.events.push({
+          type:"output",
+          target:"userOutputArea",
+          time:Date.now() - startTime,
+          value:e.detail.output
+        })
+      }
     }
   ];
 

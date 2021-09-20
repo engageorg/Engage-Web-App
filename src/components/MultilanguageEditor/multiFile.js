@@ -7,15 +7,12 @@ import {runCode} from '../../actions/outputAction'
 import "./style.css"
 function MultiFile(){
     const [language, setLanguage] = useState('')
-
     const fileName = useSelector(state => state.language);
     const dispatch = useDispatch();
-  
+    const [outputValue, setOutputValue] = useState('')
     const file = files[fileName];
   
     function handleEditorChange(value) {
-      console.log(fileName)
-      console.log(value)
       file.value = value;
     }
 
@@ -67,15 +64,21 @@ function MultiFile(){
         })
     }, [])
 
-    async function handleOutput(){
+    function handleOutput(){
     const words = file.value.split('\r');
-    console.log(words)
     let code=''
     for(let i=0;i<words.length;i++) {
         code = code+words[i];
     }
-    dispatch(runCode(language, code))
-}
+    dispatch(runCode(language, code)).then((e) => { 
+      setOutputValue(e.data.output)
+      const data={
+        output:e.data.output
+      }
+      const event = new CustomEvent("output", {detail:data});
+      document.documentElement.dispatchEvent(event);
+    })
+  }
 
     return (
     <>
@@ -85,26 +88,20 @@ function MultiFile(){
         <select name="language" id="language">
         </select>
         <Editor
-        height="90vh"
+        height="70vh"
         width="100vw"
-        defaultLanguage="cpp"
+        defaultLanguage="python"
         theme="vs-dark"
-        colorDecorators="true"
-        cursorSmoothCaretAnimation = "true"
         onChange={handleEditorChange}
         value={file.value}
         />
         <div className="inputOutput">
           <h3>Input</h3>
-          <textarea className="inputArea"></textarea>
+          <textarea className="userInputArea"></textarea>
           <h3>Output</h3>
-          <textarea className="outputArea"></textarea>
+          <textarea className="userOutputArea" value={outputValue}></textarea>
         </div>
-        {/* <div>
-          <h3>Output</h3>
-          <textarea></textarea>
-          </div> */}
-        <button style = {{color : "white",cursor:"pointer", backgroundColor: "green", padding: "5px", borderRadius: "5px"}} onClick={handleOutput}>
+        <button className="showCodeOutput" style = {{color : "white",cursor:"pointer", backgroundColor: "green", padding: "5px", borderRadius: "5px"}} onClick={handleOutput}>
             Run
         </button>
     </>
