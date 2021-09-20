@@ -7,12 +7,62 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
-import Playbutton from "../../assets/playbutton.svg"
-let audioValue;
+
+function Preloader(){
+  return(
+    <div class = "loader">
+    <div class="preloader">
+	<div class="box">
+		<div class="box__inner">
+			<div class="box__back-flap"></div>
+			<div class="box__right-flap"></div>
+			<div class="box__front-flap"></div>
+			<div class="box__left-flap"></div>
+			<div class="box__front"></div>
+		</div>
+	</div>
+	<div class="box">
+		<div class="box__inner">
+			<div class="box__back-flap"></div>
+			<div class="box__right-flap"></div>
+			<div class="box__front-flap"></div>
+			<div class="box__left-flap"></div>
+			<div class="box__front"></div>
+		</div>
+	</div>
+	<div class="line">
+		<div class="line__inner"></div>
+	</div>
+	<div class="line">
+		<div class="line__inner"></div>
+	</div>
+	<div class="line">
+		<div class="line__inner"></div>
+	</div>
+	<div class="line">
+		<div class="line__inner"></div>
+	</div>
+	<div class="line">
+		<div class="line__inner"></div>
+	</div>
+	<div class="line">
+		<div class="line__inner"></div>
+	</div>
+	<div class="line">
+		<div class="line__inner"></div>
+	</div>
+</div>
+</div>
+  )
+}
+
+
+
 
 export default function Video() {
 
   const [refresh, setRefresh] = useState("");
+  const [loading, setLoading] = useState("loading");
   const dispatch = useDispatch();
 
   
@@ -31,7 +81,6 @@ export default function Video() {
         snap.forEach((doc) => {
           recording = JSON.parse(doc.data().recordingString)
         })
-        // setloaderStatus("loading-hide");
       })
 
     if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
@@ -40,9 +89,8 @@ export default function Video() {
 
     var storageRef = firebase.storage().ref();
     storageRef.child('audio&amp').getDownloadURL().then((url) => {
-      audioValue = url
+      audioPlayer.src = url
       localStorage.setItem("url", url)
-      console.log(audioValue)
     }).catch((e) => {
       console.log(e)
     })
@@ -64,7 +112,9 @@ export default function Video() {
     var i = 0;
     var paused = false;
 
-    audioPlayer.addEventListener("canplaythrough", () => {
+    audioPlayer.addEventListener("canplay", () => {
+      document.getElementsByClassName("player-content")[0].style.display = "block";
+      document.getElementsByClassName("loader")[0].style.display = "none";
       console.log("loaded")
     })
   
@@ -252,6 +302,8 @@ export default function Video() {
 
   return (
     <div>
+      <Preloader/>
+      <div className = "player-content">
       <div className = "videoscreen">
       <IDE refresh = {refresh}/>
       </div>
@@ -259,8 +311,10 @@ export default function Video() {
       <div className="container"><a className="button button-play"></a></div>
       </div>
       <div className = "videoplayer"> 
-      <audio preload = "auto" id="audio_player" controls="controls" controlsList="nodownload" src={audioValue}></audio>
+      <audio id="audio_player" controls="controls" controlsList="nodownload"></audio>
       </div>
+      </div>
+
     </div>
   );
 }
