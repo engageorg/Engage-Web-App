@@ -8,7 +8,7 @@
 :root {
 	--dur: 2s;
 	--bg: #e3e4e8;
-	--fg: #17181c;
+	--fg: #494a4e;
 	font-size: calc(12px + (24 - 12)*(100vw - 320px)/(2560 - 320));
 }
 .loader {
@@ -258,7 +258,7 @@
     position: relative;
     width: 112px;
     height: 112px;
-    background: rgb(54, 67, 92);
+    background: var(--fg);
   
     border-radius: 50%;
     transition: all 0.2s cubic-bezier(0.68, -0.55, 0.465, 1.55) 0.2s, border-width 0.4s cubic-bezier(0.68, -0.55, 0.465, 1.55);
@@ -381,7 +381,7 @@ audio{
     width:80%;
     border-radius: 5px;
     display: flex;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.3);
     border: 1px solid rgba( 255, 255, 255, 0.18 );
     border-radius: 10px;
     backdrop-filter: blur(2px);

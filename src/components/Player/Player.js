@@ -10,46 +10,46 @@ import "./style.css";
 
 function Preloader(){
   return(
-    <div class = "loader">
-    <div class="preloader">
-	<div class="box">
-		<div class="box__inner">
-			<div class="box__back-flap"></div>
-			<div class="box__right-flap"></div>
-			<div class="box__front-flap"></div>
-			<div class="box__left-flap"></div>
-			<div class="box__front"></div>
+    <div className = "loader">
+    <div className ="preloader">
+	<div className ="box">
+		<div className ="box__inner">
+			<div className ="box__back-flap"></div>
+			<div className ="box__right-flap"></div>
+			<div className ="box__front-flap"></div>
+			<div className ="box__left-flap"></div>
+			<div className ="box__front"></div>
 		</div>
 	</div>
-	<div class="box">
-		<div class="box__inner">
-			<div class="box__back-flap"></div>
-			<div class="box__right-flap"></div>
-			<div class="box__front-flap"></div>
-			<div class="box__left-flap"></div>
-			<div class="box__front"></div>
+	<div className ="box">
+		<div className ="box__inner">
+			<div className ="box__back-flap"></div>
+			<div className ="box__right-flap"></div>
+			<div className ="box__front-flap"></div>
+			<div className ="box__left-flap"></div>
+			<div className ="box__front"></div>
 		</div>
 	</div>
-	<div class="line">
-		<div class="line__inner"></div>
+	<div className ="line">
+		<div className ="line__inner"></div>
 	</div>
-	<div class="line">
-		<div class="line__inner"></div>
+	<div className ="line">
+		<div className ="line__inner"></div>
 	</div>
-	<div class="line">
-		<div class="line__inner"></div>
+	<div className ="line">
+		<div className ="line__inner"></div>
 	</div>
-	<div class="line">
-		<div class="line__inner"></div>
+	<div className ="line">
+		<div className ="line__inner"></div>
 	</div>
-	<div class="line">
-		<div class="line__inner"></div>
+	<div className ="line">
+		<div className ="line__inner"></div>
 	</div>
-	<div class="line">
-		<div class="line__inner"></div>
+	<div className ="line">
+		<div className ="line__inner"></div>
 	</div>
-	<div class="line">
-		<div class="line__inner"></div>
+	<div className ="line">
+		<div className ="line__inner"></div>
 	</div>
 </div>
 </div>

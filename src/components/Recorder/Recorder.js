@@ -38,12 +38,13 @@ export default function Recorder() {
         });
       },
     },
+    
     {
       eventName: "click",
       handler: function handleClick(e) {
-        if(e.target.className === "cssfile") fileName = "style.css"
-        if(e.target.className === "jsfile") fileName = "script.js" 
-        if(e.target.className === "htmlfile") fileName = "index.html"
+        if(e.target.className === "cssfile" || e.target.className === "buttontext style" || e.target.className === "fab fa-css3-alt") fileName = "style.css"
+        if(e.target.className === "jsfile" || e.target.className === "buttontext script" || e.target.className === " fa-js-square") fileName = "script.js" 
+        if(e.target.className === "htmlfile" || e.target.className === "buttontext html" || e.target.className === "fab fa-html5fab") fileName = "index.html"
         console.log(e.target.className);
         Recording.events.push({
           type: "click",
