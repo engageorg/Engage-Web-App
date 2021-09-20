@@ -1,4 +1,4 @@
-/* preloader */
+
 * {
 	border: 0;
 	box-sizing: border-box;
@@ -43,7 +43,7 @@
 .box__inner div, .line__inner {
 	background: var(--fg);
 }
-/* Boxes */
+
 .box, .box__inner {
 	width: 100%;
 	height: 50%;
@@ -110,7 +110,6 @@
 	left: 3em;
 	transform: rotateX(-90deg) translateY(50%) translateZ(3em);
 }
-/* Lines */
 .line, .line__inner {
 	border-radius: 0.1em;
 }
@@ -159,14 +158,14 @@
 	animation-name: landing;
 	transform: translateY(-100%);
 }
-/* Dark Mode */
+
 @media (prefers-color-scheme: dark) {
 	:root {
 		--bg: #17181c;
 		--fg: #e3e4e8;
 	}
 }
-/* Animations */
+
 @keyframes backFlap {
 	from, 33% { transform: rotateX(-180deg); }
 	41% { transform: rotateX(10deg); }
@@ -209,7 +208,7 @@
 	from, 17% { transform: translateY(-100%); }
 	41%, to { transform: translateY(100%); }
 }
-/* preloader end */
+
 
 .player-content{
   display: none;
