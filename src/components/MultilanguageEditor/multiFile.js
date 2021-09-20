@@ -90,6 +90,7 @@ function MultiFile(){
         defaultLanguage="cpp"
         theme="vs-dark"
         colorDecorators="true"
+        cursorSmoothCaretAnimation = "true"
         onChange={handleEditorChange}
         value={file.value}
         />
