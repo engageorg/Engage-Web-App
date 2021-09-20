@@ -10,6 +10,7 @@ function MultiFile(){
     const fileName = useSelector(state => state.language);
     const dispatch = useDispatch();
     const [outputValue, setOutputValue] = useState('')
+    const [inputValue, setInputValue] = useState('')
     const file = files[fileName];
   
     function handleEditorChange(value) {
@@ -68,13 +69,17 @@ function MultiFile(){
       console.log(e)
     }
 
+    function handleInput(e){
+      setInputValue(e.target.value)
+    }
+
     function handleOutput(){
     const words = file.value.split('\r');
     let code=''
     for(let i=0;i<words.length;i++) {
         code = code+words[i];
     }
-    dispatch(runCode(language, code)).then((e) => { 
+    dispatch(runCode(language, code, inputValue)).then((e) => { 
       setOutputValue(e.data.output)
       const data={
         output:e.data.output
@@ -103,7 +108,7 @@ function MultiFile(){
         />
         <div className="inputOutput">
           <h3>Input</h3>
-          <textarea className="userInputArea"></textarea>
+          <textarea className="userInputArea" onChange={handleInput} ></textarea>
           <h3>Output</h3>
           <textarea className="userOutputArea" onChange={userOutput} value={outputValue}></textarea>
         </div>

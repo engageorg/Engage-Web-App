@@ -15,7 +15,7 @@ export default function Recorder(props) {
   var lastKey = "";
   let fileName
   if(name === "other"){
-    fileName="python2"
+    fileName="c"
   }else if(name=== "ide"){
     fileName="index.html"
   }
