@@ -235,10 +235,8 @@ export default function Video() {
         }
       }
       if(event.type === "output") {
-        console.log(event)
         const path = event.target;
         tar = document.getElementsByClassName(path)[0];
-        console.log(tar)
         if (tar != null) {
           tar.focus();
           if(path==="userOutputArea"){

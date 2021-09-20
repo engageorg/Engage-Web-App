@@ -64,6 +64,10 @@ function MultiFile(){
         })
     }, [])
 
+    function userOutput(e) {
+      console.log(e)
+    }
+
     function handleOutput(){
     const words = file.value.split('\r');
     let code=''
@@ -75,7 +79,9 @@ function MultiFile(){
       const data={
         output:e.data.output
       }
+      //creating a custom like predefined events like click or mousemove and more
       const event = new CustomEvent("output", {detail:data});
+      //dispatching the event in document.documentElement where we listen for it in while recording
       document.documentElement.dispatchEvent(event);
     })
   }
@@ -99,7 +105,7 @@ function MultiFile(){
           <h3>Input</h3>
           <textarea className="userInputArea"></textarea>
           <h3>Output</h3>
-          <textarea className="userOutputArea" value={outputValue}></textarea>
+          <textarea className="userOutputArea" onChange={userOutput} value={outputValue}></textarea>
         </div>
         <button className="showCodeOutput" style = {{color : "white",cursor:"pointer", backgroundColor: "green", padding: "5px", borderRadius: "5px"}} onClick={handleOutput}>
             Run

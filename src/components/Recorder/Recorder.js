@@ -107,7 +107,7 @@ export default function Recorder(props) {
     {
       eventName:"output",
       handler:function handleChange(e){
-        console.log()
+        //recording the custom output event
         Recording.events.push({
           type:"output",
           target:"userOutputArea",
