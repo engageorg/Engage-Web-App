@@ -87,8 +87,9 @@ function MultiFile(){
         <Editor
         height="90vh"
         width="100vw"
-        defaultLanguage="C++"
+        defaultLanguage="cpp"
         theme="vs-dark"
+        colorDecorators="true"
         onChange={handleEditorChange}
         value={file.value}
         />

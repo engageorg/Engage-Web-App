@@ -40,27 +40,27 @@ const files = {
   },
   "c": {
     name: "main.c",
-    language: "c++",
+    language: "cpp",
     value: someCCodeExample
   },
   "c99": {
     name: "main.cpp",
-    language: "c++",
+    language: "cpp",
     value: someCpp99CodeExample
   },
   "cpp": {
     name: "main.cpp",
-    language: "c++",
+    language: "cpp",
     value: someCppCodeExample
   },
   "cpp14": {
     name: "main.cpp",
-    language: "c++",
+    language: "cpp",
     value: someCpp14CodeExample
   },
   "cpp17": {
     name: "main.cpp",
-    language: "c++",
+    language: "cpp",
     value: someCpp17CodeExample
   },
   "python2": {
