@@ -226,6 +226,10 @@ export default function Video() {
              dispatch(setSrcDocs());
              dispatch(outputModalTrue());
           break;
+        case "output":
+            dispatch(setSrcDocs());
+            dispatch(outputModalTrue());
+         break;
         case "buttontext output":
             dispatch(setSrcDocs());
             dispatch(outputModalTrue());
