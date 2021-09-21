@@ -71,4 +71,9 @@ textarea{
 
 #language{
     margin-right: 10px;
+    color: white;
+    background-color:#1E1E1E;
+    padding: 2px;
+    border: 1px solid white;
+
 }
