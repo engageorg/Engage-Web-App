@@ -33,6 +33,7 @@ function MultiFile(){
             var option = document.createElement("option");
             option.text = key;
             option.value = languageList[key];
+            option.className = languageList[key]
             select.add(option);
           }
 
@@ -93,28 +94,39 @@ function MultiFile(){
 
     return (
     <>
-        <button>
-        main.cpp
-        </button>
-        <select name="language" id="language">
-        </select>
+        <div className="multilanguageIde">
+        <div className="navEdi">
+          <div className="navbar">
+            <span className="fileName">main.cpp</span>
+            <div className="optionButton">
+            <select name="language" id="language"></select>
+            <button className="showCodeOutput" style = {{color : "white",cursor:"pointer", backgroundColor: "green", borderRadius: "5px"}} onClick={handleOutput}>
+              Run
+            </button>
+            </div>
+          </div>
+        <div className="editor">
         <Editor
-        height="70vh"
-        width="100vw"
+        height="100vh"
+        width="80vw"
         defaultLanguage="python"
         theme="vs-dark"
         onChange={handleEditorChange}
         value={file.value}
         />
-        <div className="inputOutput">
-          <h3>Input</h3>
-          <textarea className="userInputArea" onChange={handleInput} ></textarea>
-          <h3>Output</h3>
-          <textarea className="userOutputArea" onChange={userOutput} value={outputValue}></textarea>
         </div>
-        <button className="showCodeOutput" style = {{color : "white",cursor:"pointer", backgroundColor: "green", padding: "5px", borderRadius: "5px"}} onClick={handleOutput}>
-            Run
-        </button>
+        </div>
+        <div className="inputOutput">
+          <div className="inputArea">
+          <h3>Input</h3>
+          <textarea rows="18" cols="50" className="userInputArea" onChange={handleInput} placeholder="Enter Input"></textarea>
+          </div>
+          <div className="outputArea">
+            <h3>Output</h3>
+          <textarea rows="20" cols="50"  className="userOutputArea" onChange={userOutput} value={outputValue}></textarea>
+          </div>
+        </div>
+        </div>
     </>
     )
 }  
