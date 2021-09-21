@@ -5,17 +5,17 @@
     align-items: center;
 }
 
-.multilanguageIde{
+.editor{
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 .userInputArea, .userOutputArea{
     resize: none;
     width: 100%;
     height: 100%;
-    border: 2px white solid;
-    background-color: #1E1E1E;
+    background-color: #202020;
 }
 
 textarea{
@@ -31,13 +31,13 @@ textarea{
 
 .inputArea{
     color: white;
-    background-color: #333333;
+    background-color: #1E1E1E;
     flex: 1;
 }
 
 .outputArea{
     color: white;
-    background-color: #333333;
+    background-color: #1E1E1E;
     flex: 1;
 }
 
@@ -55,8 +55,20 @@ textarea{
     flex-direction: row;
     background-color: #1E1E1E;
     border-bottom: 1px solid #818181;
+    /* justify-content: space-around; */
 }
 
 .fileName{
     color: white;
+    background-color: #202020;
+    padding: 4px;
+}
+
+.optionButton{
+    padding: 4px;
+    justify-content: flex-end;
+}
+
+#language{
+    margin-right: 10px;
 }
