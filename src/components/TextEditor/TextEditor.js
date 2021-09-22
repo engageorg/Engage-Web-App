@@ -84,6 +84,7 @@ function TextEditor(props) {
             defaultValue={file.value}
             saveViewState={true}
             onChange={handleEditorChange}
+            cursorSmoothCaretAnimation = "true"
             value={file.value}
           />
     </div>

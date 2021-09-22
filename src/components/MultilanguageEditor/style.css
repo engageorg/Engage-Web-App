@@ -1,0 +1,79 @@
+.inputOutput{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+
+.editor{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.userInputArea, .userOutputArea{
+    resize: none;
+    width: 100%;
+    height: 100%;
+    background-color: #202020;
+}
+
+textarea{
+    border: none;
+    overflow: auto;
+    outline: none;
+    color: white;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    background-color: black;
+}
+
+.inputArea{
+    color: white;
+    background-color: #1E1E1E;
+    flex: 1;
+}
+
+.outputArea{
+    color: white;
+    background-color: #1E1E1E;
+    flex: 1;
+}
+
+.inputArea h3{
+    padding-top: 20px;
+    margin: 0;
+}
+
+.outputArea h3{
+    margin: 0;
+}
+
+.navbar{
+    display: flex;
+    flex-direction: row;
+    background-color: #1E1E1E;
+    border-bottom: 1px solid #818181;
+    /* justify-content: space-around; */
+}
+
+.fileName{
+    color: white;
+    background-color: #202020;
+    padding: 4px;
+}
+
+.optionButton{
+    padding: 4px;
+    justify-content: flex-end;
+}
+
+#language{
+    margin-right: 10px;
+    color: white;
+    background-color:#1E1E1E;
+    padding: 2px;
+    border: 1px solid white;
+
+}

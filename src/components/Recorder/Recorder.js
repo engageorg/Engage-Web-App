@@ -8,18 +8,23 @@ import 'firebase/storage';
 import './style.css'
 
 var startTime;
-export default function Recorder() {
+export default function Recorder(props) {
+  const name = window.location.pathname.split('/')[2]
   const Recording = { events: [] };
-  //const [childValue, setValue] = useState('')
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
-  let fileName="index.html"
+  let fileName
+  if(name === "other"){
+    fileName="c"
+  }else if(name=== "ide"){
+    fileName="index.html"
+  }
   let childValue;
   var lastKeyClass = "";
 
   function callbackFunction(childData){
     childValue = childData
-    // console.log(childValue)
+    console.log(childValue)
   }
   // Record each type of event
   const handlers = [
@@ -42,18 +47,19 @@ export default function Recorder() {
     {
       eventName: "click",
       handler: function handleClick(e) {
-        if(e.target.className === "cssfile" || e.target.className === "buttontext style" || e.target.className === "fab fa-css3-alt") fileName = "style.css"
-        if(e.target.className === "jsfile" || e.target.className === "buttontext script" || e.target.className === " fa-js-square") fileName = "script.js" 
-        if(e.target.className === "htmlfile" || e.target.className === "buttontext html" || e.target.className === "fab fa-html5fab") fileName = "index.html"
-        console.log(e.target.className);
-        Recording.events.push({
-          type: "click",
-          target: e.target.className,
-          x: e.pageX,
-          fileName :fileName,
-          y: e.pageY,
-          time: Date.now() - startTime,
-        });
+        if(e.target.className === "cssfile") fileName = "style.css"
+        if(e.target.className === "jsfile") fileName = "script.js" 
+        if(e.target.className === "htmlfile") fileName = "index.html"
+        if(fileName === "script.js" || fileName === "style.css" || fileName === "index.html"){
+          Recording.events.push({
+            type: "click",
+            target: e.target.className,
+            x: e.pageX,
+            fileName :fileName,
+            y: e.pageY,
+            time: Date.now() - startTime,
+          });
+        }
       },
     },
     {
@@ -61,19 +67,56 @@ export default function Recorder() {
       handler: function handleKeyPress(e) {
         lastKey = childValue
         lastKeyClass = e.target.className
+
         Recording.events.push({
           type: "keyup",
           target: e.target.className,
           x: lastMouse.x,
           y: lastMouse.y,
           fileName: fileName,
-          value: files[fileName].value,
+          value: (e.target.className === "userInputArea") ? e.target.value :files[fileName].value,
           keyCode: e.keyCode,
           time: Date.now() - startTime,
         });
-        console.log("recording",childValue)
+        console.log("recording",files[fileName].value)
       },
     },
+    {
+      eventName: "click",
+      handler: function handleClick(e) {
+        if(e.target.value  === "c" || 
+        e.target.value === "c99" || 
+        e.target.value === "cpp" || 
+        e.target.value === "cpp14" || 
+        e.target.value === "cpp17" || 
+        e.target.value === "python2" || 
+        e.target.value === "python3"){
+          fileName = e.target.value
+        }
+        if(fileName !== "script.js" || fileName !== "style.css" || fileName !== "index.html")
+        Recording.events.push({
+          type: "click",
+          target: e.target.className,
+          x: e.pageX,
+          fileName :fileName,
+          y: e.pageY,
+          value:files[fileName].value,
+          time: Date.now() - startTime,
+        });
+      },
+      },
+    {
+      eventName:"output",
+      handler:function handleChange(e){
+        //recording the custom output event
+        Recording.events.push({
+          type:"output",
+          target:"userOutputArea",
+          time:Date.now() - startTime,
+          value:e.detail.output
+        })
+      }
+    }
   ];
 
   const Mp3Recorder = new MicRecorder({ 
@@ -162,7 +205,7 @@ export default function Recorder() {
         <i className="fas fa-microphone record" onClick={handleClick}></i>
         <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
       </div>
-      <IDE parentCallBack = {callbackFunction}/>
+      <IDE name={name} parentCallBack = {callbackFunction}/>
       </div>
     </>
   );

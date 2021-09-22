@@ -33,3 +33,45 @@ export const setSrcDocs = () => {
         type : "setSrcdoc",
     }
 }
+
+export const c = () => {
+    return {
+        type : "c",
+    }
+}
+
+export const c99 = () => {
+    return {
+        type : "c99",
+    }
+}
+
+export const cpp = () => {
+    return {
+        type : "cpp",
+    }
+}
+
+export const cpp14 = () => {
+    return {
+        type : "cpp14",
+    }
+}
+
+export const cpp17 = () => {
+    return {
+        type : "cpp17",
+    }
+}
+
+export const python2 = () => {
+    return {
+        type : "python2",
+    }
+}
+
+export const python3 = () => {
+    return {
+        type : "python3",
+    }
+}

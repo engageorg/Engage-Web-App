@@ -60,7 +60,7 @@ function Preloader(){
 
 
 export default function Video() {
-
+  const name = window.location.pathname.split('/')[2]
   const [refresh, setRefresh] = useState("");
   const [loading, setLoading] = useState("loading");
   const dispatch = useDispatch();
@@ -289,9 +289,23 @@ export default function Video() {
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();
-          files[event.fileName].value = event.value;
-          handleButtonEvents(event.fileName);
-          setRefresh(event.value);
+          if(path==="userInputArea"){
+            tar.value = event.value
+            }else{
+              files[event.fileName].value = event.value;
+              handleButtonEvents(event.fileName);
+              setRefresh(event.value);
+            }
+        }
+      }
+      if(event.type === "output") {
+        const path = event.target;
+        tar = document.getElementsByClassName(path)[0];
+        if (tar != null) {
+          tar.focus();
+          if(path==="userOutputArea"){
+            tar.value = event.value
+            }
         }
       }
     }
@@ -309,7 +323,7 @@ export default function Video() {
       <Preloader/>
       <div className = "player-content">
       <div className = "videoscreen">
-      <IDE refresh = {refresh}/>
+      <IDE name={name} refresh = {refresh}/>
       </div>
       <div className="playButton">
       <div className="container"><a className="button button-play"></a></div>

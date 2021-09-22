@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { createStore } from 'redux';
+import { createStore, compose, applyMiddleware} from 'redux';
 import { Provider } from 'react-redux';
 import './index.css';
 import Recorder from './components/Recorder/Recorder';
 import Video from './components/Player/Player';
 import IDE from "./components/IDE";
+import MultiFile from './components/MultilanguageEditor/multiFile';
 import allReducer from './reducers';
-
+import thunk from 'redux-thunk'
 import firebase from 'firebase/app';
+import StartingComponent from './components/StartingComponent/startingCompoent';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAp2cQvNNp8fUKOv6kO_7wR5IsKROCoh14",
@@ -25,9 +27,13 @@ if (firebase.apps.length===0){
   firebase.initializeApp(firebaseConfig);
 }
 
+const middleware = [thunk]
+
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
   allReducer, 
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancer(applyMiddleware(...middleware)),
 );
 
 ReactDOM.render(
@@ -35,10 +41,10 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route exact path = "/videoplayer" component = {IDE} />
-        <Route exact path = "/recorder" component = {Recorder} />
-        <Route exact path = "/" component = {Video}/>
-      </Switch>
+        <Route exact path = "/videoplayer/:id" component = {Video} />
+        <Route exact path = "/recorder/:id" component = {Recorder} ide="web"/>
+        <Route exact path = "/" component = {StartingComponent}/>
+    </Switch>
     </Router>
   </React.StrictMode>
   </Provider>,
