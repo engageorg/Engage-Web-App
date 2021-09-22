@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { runCode } from "../../actions/outputAction";
 import "./style.css";
 function MultiFile() {
-  const [language, setLanguage] = useState("");
+  const [language, setLanguage] = useState("python2");
   const fileName = useSelector((state) => state.language);
   const dispatch = useDispatch();
   const [outputValue, setOutputValue] = useState("");
@@ -17,13 +17,22 @@ function MultiFile() {
     file.value = value;
   }
 
+  function handleEditorWillMount(monaco) {
+    monaco.editor.defineTheme("my-cool-theme", {
+      base: "vs-dark",
+      inherit: true,
+      rules: [],
+      colors: { "editor.background": "#293738" }
+    });
+  }
+
   const languageList = {
+    "Python 2": "python2", 
     C: "c",
     "C-99": "c99",
     "C++": "cpp",
     "C++ 14": "cpp14",
     "C++ 17": "cpp17",
-    "Python 2": "python2",
     "Python 3": "python3",
   };
 
@@ -118,10 +127,12 @@ function MultiFile() {
           <Editor
             height="100vh"
             width="80vw"
-            defaultLanguage="python"
             theme="vs-dark"
+            defaultLanguage="python"
+            options={{ fontSize: 18, fontWeight: 400, fontFamily: "cursive" }}
             onChange={handleEditorChange}
             value={file.value}
+            beforeMount={handleEditorWillMount}
           />
           <div className="inputOutput">
             <div className="inputArea">
