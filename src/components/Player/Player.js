@@ -79,6 +79,7 @@ export default function Video() {
     firebase.firestore().collection('events').orderBy('createdAt', 'desc').limit(1).get()
     .then((snap) => {
         snap.forEach((doc) => {
+          console.log(doc.data().recordingString)
           recording = JSON.parse(doc.data().recordingString)
         })
       })
