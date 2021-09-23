@@ -43,23 +43,21 @@ export default function Recorder(props) {
         });
       },
     },
-    
     {
       eventName: "click",
       handler: function handleClick(e) {
-        if(e.target.className === "cssfile") fileName = "style.css"
-        if(e.target.className === "jsfile") fileName = "script.js" 
-        if(e.target.className === "htmlfile") fileName = "index.html"
-        if(fileName === "script.js" || fileName === "style.css" || fileName === "index.html"){
-          Recording.events.push({
-            type: "click",
-            target: e.target.className,
-            x: e.pageX,
-            fileName :fileName,
-            y: e.pageY,
-            time: Date.now() - startTime,
-          });
-        }
+        if(e.target.className === "cssfile" || e.target.className === "buttontext style" || e.target.className === "fab fa-css3-alt") fileName = "style.css"
+        if(e.target.className === "jsfile" || e.target.className === "buttontext script" || e.target.className === " fa-js-square") fileName = "script.js" 
+        if(e.target.className === "htmlfile" || e.target.className === "buttontext html" || e.target.className === "fab fa-html5fab") fileName = "index.html"
+        console.log(e.target.className);
+        Recording.events.push({
+          type: "click",
+          target: e.target.className,
+          x: e.pageX,
+          fileName :fileName,
+          y: e.pageY,
+          time: Date.now() - startTime,
+        });
       },
     },
     {
@@ -78,7 +76,7 @@ export default function Recorder(props) {
           keyCode: e.keyCode,
           time: Date.now() - startTime,
         });
-        console.log("recording",files[fileName].value)
+        //console.log("recording",files[fileName].value)
       },
     },
     {
@@ -108,7 +106,6 @@ export default function Recorder(props) {
     {
       eventName:"output",
       handler:function handleChange(e){
-        //recording the custom output event
         Recording.events.push({
           type:"output",
           target:"userOutputArea",
@@ -162,6 +159,11 @@ export default function Recorder(props) {
     document.getElementsByClassName("stop-record")[0].style.display="none"
     document.getElementsByClassName("record")[0].style.display="block"
     const recordingString = JSON.stringify(Recording)
+    // console.log(sizeof(recordingString))
+    // data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(Recording));
+    // console.log(data)
+    // console.log(sizeof(recordingString))
+    console.log(recordingString)
     firebase.firestore().collection("events").add({
       recordingString,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -181,6 +183,7 @@ export default function Recorder(props) {
       reader.readAsDataURL(blob);
       reader.onloadend = () => {
           audioString =(reader.result)
+          // console.log(sizeof(audioString))
           var storageRef = firebase.storage().ref();
           var audioRef = storageRef.child('audio&amp');
           audioRef.putString(audioString, 'data_url').then((snapshot) => {
