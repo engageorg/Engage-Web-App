@@ -11,9 +11,9 @@ export default function StartingComponent() {
     return (
         <>
         <button className = "recordWebD" onClick={navigateToRecorderWeb}>Recorder with webD</button>
-        <button className = "recordOther" onClick={navigateToRecorderOther}>Recorder with Other</button>
+        {/* <button className = "recordOther" onClick={navigateToRecorderOther}>Recorder with Other</button> */}
         <button className = "playWebD" onClick={navigateToPlayerWeb}>Player with webD </button>
-        <button className = "playOther" onClick={navigateToPlayerOther}>Player with Other</button>
+        {/* <button className = "playOther" onClick={navigateToPlayerOther}>Player with Other</button> */}
         </>
     )
 }
