@@ -8,12 +8,14 @@ export default function StartingComponent() {
     const navigateToRecorderOther = () => history.push('/recorder/other');
     const navigateToPlayerWeb = () => history.push('/videoplayer/ide');
     const navigateToPlayerOther = () => history.push('/videoplayer/other');
+    const navigateToExcali = () => history.push('/excali')
     return (
         <>
         <button className = "recordWebD" onClick={navigateToRecorderWeb}>Recorder with webD</button>
         {/* <button className = "recordOther" onClick={navigateToRecorderOther}>Recorder with Other</button> */}
         <button className = "playWebD" onClick={navigateToPlayerWeb}>Player with webD </button>
         {/* <button className = "playOther" onClick={navigateToPlayerOther}>Player with Other</button> */}
+        <button onClick={navigateToExcali}>Excali Clone</button>
         </>
     )
 }

@@ -7,7 +7,8 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
-
+import ExcaliClonePlayer from "../excaliClone/excaliClonePlayer";
+//else{rectangle.click()}
 function Preloader(){
   return(
     <div className = "loader">
@@ -56,18 +57,15 @@ function Preloader(){
   )
 }
 
-
-
-
 export default function Video() {
   const name = window.location.pathname.split('/')[2]
   const [refresh, setRefresh] = useState("");
   const [loading, setLoading] = useState("loading");
   const dispatch = useDispatch();
-
+  let drawingEvent=''
+  const [drawing, setDrawing] = useState('')
   
   useEffect(() => {
-
     let offsetPlay = 0;
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
     const videoPlayer = document.getElementsByClassName('videoplayer')[0]
@@ -79,14 +77,14 @@ export default function Video() {
     firebase.firestore().collection('events').orderBy('createdAt', 'desc').limit(1).get()
     .then((snap) => {
         snap.forEach((doc) => {
-          console.log(doc.data().recordingString)
+          // console.log(doc.data().recordingString)
           recording = JSON.parse(doc.data().recordingString)
         })
       })
 
     if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
 
-    console.log(recording);
+    // console.log(recording);
 
     var storageRef = firebase.storage().ref();
     storageRef.child('audio&amp').getDownloadURL().then((url) => {
@@ -102,7 +100,7 @@ export default function Video() {
     fakeCursor.style.display = 'none'
     const audioPlayer = document.getElementById("audio_player")
     var startPlay;
-    console.log(playButton)
+    // console.log(playButton)
     audioPlayer.addEventListener("onclick", (e) => {
       console.log("Click on the audioPlayer")
       console.log(e)
@@ -208,11 +206,10 @@ export default function Video() {
          
          if (i >= recording.events.length || paused) {
            clearInterval(frames);
-           if(i >= (recording.events.length - 1)){
-             i = 0
-           }
+          //  if(i >= (recording.events.length - 1)){
+          //    paused = true
+          //  }
          } 
-
      };
 
      frames = setInterval(() => {
@@ -309,6 +306,9 @@ export default function Video() {
             }
         }
       }
+      else{
+        setDrawing(event)
+      }
     }
 
     function flashClass(el, className) {
@@ -324,7 +324,8 @@ export default function Video() {
       <Preloader/>
       <div className = "player-content">
       <div className = "videoscreen">
-      <IDE name={name} refresh = {refresh}/>
+      {/* <IDE name={name} refresh = {refresh}/> */}
+      <ExcaliClonePlayer event={drawing}/>
       </div>
       <div className="playButton">
       <div className="container"><a className="button button-play"></a></div>
