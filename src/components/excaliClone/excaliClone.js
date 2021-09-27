@@ -63,7 +63,7 @@ function ExcaliClone() {
       const a = {x:x1, y:y1}
       const b = {x:x2, y:y2}
       const diameter = distance(a,b)
-      console.log(diameter)
+      //console.log(diameter)
       roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter)
     }
     return {id, x1, y1, x2, y2, type,roughElement}
@@ -102,10 +102,22 @@ function ExcaliClone() {
       const inside = x >= x1 && x <= x2 && y >= y1 && y <= y2 ? "inside" : null;
       return topLeft || topRight || bottomLeft || bottomRight || inside;
     }
-
+    else if(type==="circle"){
+      const a = {x:x1, y:y1}
+      const b = {x:x2, y:y2}
+      const radius = distance(a,b)/2
+      const c = {x:(x1+x2)/2, y:(y1+y2)/2}
+      const d = {x, y}
+      const offset = distance(c,d)
+      if(offset<radius){
+        return "inside"
+      }else{
+        return null
+      }
+    }
   }
 
-  //return the element on which mousedown event was performed and map position of the  cursor within the element like inside on near the corner
+  //return the element on which mousedown event was performed and map position of the cursor within the element like inside on near the corner
   function getElementAtPosition(x,y,elements){
     return elements
     .map(element => ({...element, position:positionWithinElement(x,y,element)}))
@@ -139,14 +151,14 @@ function ExcaliClone() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     const roughCanvas = rough.canvas(canvas)
   
-    if(elementType !== "freedraw"){
+//    if(elementType !== "freedraw"){
       elements.forEach(({roughElement}) => roughCanvas.draw(roughElement))
-    }
-    else{
-      var p = new Path2D(pathData);
-      ctx.stroke(p);
-      ctx.fill(p);
-    }
+    // }
+    // else{
+    //   var p = new Path2D(pathData);
+    //   ctx.stroke(p);
+    //   ctx.fill(p);
+    // }
   }, [elements])
 
   const handleMouseDown = (event) => {
@@ -252,7 +264,7 @@ function ExcaliClone() {
     //if the action is 
     if(elementType === "selection"){
       const element = getElementAtPosition(clientX, clientY, elements)
-      event.target.style.cursor = element ? cursorForPosition(element.position) : "default"
+      event.target.style.cursor = element ? "move" : "default"
     }
  
     if(action === "drawing"){
