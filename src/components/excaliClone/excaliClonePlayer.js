@@ -111,6 +111,7 @@ function ExcaliClonePlayer(props) {
       const line = document.getElementById("line")
       const rectangle = document.getElementById("rectangle")
       const circle = document.getElementById("circle")
+      const selection = document.getElementById("selection")
       if(props.event.type === "drawStart") {
         if(props.event.value.type === "line"){
             line.click()
@@ -157,6 +158,21 @@ function ExcaliClonePlayer(props) {
         // //add new element in the elements state
         //setElementState(prevState => [...prevState, element])
       }
+
+      if(props.event.type === "movingStart"){
+        selection.click()
+      }
+
+      if(props.event.type === "moving"){
+        const id = props.event.value.id
+        const newX1= props.event.value.newX1
+        const newY1 = props.event.value.newY1
+        const newX2 = props.event.value.newX2
+        const newY2 = props.event.value.newY2
+        const type = props.event.value.type
+        updateElement(id ,newX1, newY1,newX2, newY2, type)
+      }
+
 
       if(props.event.type === "drawEnd"){
         setAction('none')
@@ -286,9 +302,6 @@ function ExcaliClonePlayer(props) {
         <label htmlFor="circle">Circle</label>
       </div>
       <canvas id="canvas" 
-      onClick = {() => {
-          callFunctions()
-      }}
       width={window.innerWidth} 
       height={window.innerHeight}
       onMouseDown = {handleMouseDown}

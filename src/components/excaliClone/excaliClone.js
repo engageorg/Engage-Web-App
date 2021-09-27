@@ -109,18 +109,26 @@ function ExcaliClone() {
 
       //return the element at the position we we clicked
       const element = getElementAtPosition(clientX, clientY, elements)
-      
+      //console.log(element)
       //if there is a element as the clicked position
       if(element){
         const offsetX = clientX - element.x1
         const offsetY = clientY - element.y1
         setSelectedElement({...element, offsetX, offsetY})
 
-        if(element.position === 'inside'){
+        if(element.position === 'inside') {
           setAction("moving")
-        }else{
-          setAction('resize')
+          const data = {
+            element:element
+          };
+          //creating a custom like predefined events like click or mousemove and more
+          const event = new CustomEvent("movingStart", { detail: data });
+          //dispatching the event in document.documentElement where we listen for it in while recording
+          document.documentElement.dispatchEvent(event);
         }
+        // else{
+        //   setAction('resize')
+        // }
       }
     }else{
       const id = elements.length
@@ -213,6 +221,19 @@ function ExcaliClone() {
       const newX1 = clientX - offsetX
       const newY1 = clientY - offsetY
       updateElement(id ,newX1, newY1,newX1 + width, newY1+height, type)
+      const data = {
+        id:id,
+        newX1:newX1,
+        newY1:newY1,
+        newX2:newX1+width,
+        newY2:newY1+height,
+        type:type
+      };
+      //creating a custom like predefined events like click or mousemove and more
+      const event = new CustomEvent("moving", { detail: data });
+      //dispatching the event in document.documentElement where we listen for it in while recording
+      document.documentElement.dispatchEvent(event);
+
     }else if(action === "resize"){
       const  {id ,type,position, ...coordiantes} = selectedElement
       const {x1,y1,x2,y2} = resizedCoordinates(clientX, clientY, position, coordiantes)
