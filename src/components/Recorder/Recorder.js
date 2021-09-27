@@ -118,7 +118,6 @@ export default function Recorder(props) {
     {
       eventName:"drawStart", 
       handler:function handleChange(e){
-      console.log("DRAWING EVENT RECORDING")
       Recording.events.push({
         type:"drawStart",
         time:Date.now() - startTime,
@@ -129,7 +128,6 @@ export default function Recorder(props) {
     {
       eventName:"drawEnd", 
       handler:function handleChange(e){
-      console.log("DRAWING EVENT ENDING")
       Recording.events.push({
         type:"drawEnd",
         time:Date.now() - startTime,
@@ -140,11 +138,30 @@ export default function Recorder(props) {
     {
       eventName:"drawing", 
       handler:function handleChange(e){
-      console.log("DRAWING EVENT ENDING")
       Recording.events.push({
         type:"drawing",
         time:Date.now() - startTime,
         value:e.detail
+        })
+      }
+    },
+    {
+      eventName:"movingStart",
+      handler:function handleChange(e){
+        Recording.events.push({
+          type:"movingStart",
+          time:Date.now() - startTime,
+          value:e.detail.element
+        })
+      }
+    },
+    {
+      eventName:"moving",
+      handler:function handleChange(e){
+        Recording.events.push({
+          type:"moving",
+          time:Date.now()-startTime,
+          value:e.detail
         })
       }
     }

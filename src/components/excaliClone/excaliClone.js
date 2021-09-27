@@ -52,7 +52,20 @@ function ExcaliClone() {
 
 
   function createElement(id, x1,y1,x2,y2, type) {
-    const roughElement = type === "line" ? generator.line(x1,y1,x2,y2) : generator.rectangle(x1,y1,x2-x1,y2-y1)  
+    let roughElement
+    if(type === "line"){
+      roughElement = generator.line(x1,y1,x2,y2)
+    }
+    else if(type==="rectangle"){
+      roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1)
+    }
+    else if(type === "circle"){
+      const a = {x:x1, y:y1}
+      const b = {x:x2, y:y2}
+      const diameter = distance(a,b)
+      console.log(diameter)
+      roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter)
+    }
     return {id, x1, y1, x2, y2, type,roughElement}
   }
 
@@ -144,21 +157,30 @@ function ExcaliClone() {
 
       //return the element at the position we we clicked
       const element = getElementAtPosition(clientX, clientY, elements)
-      
+      //console.log(element)
       //if there is a element as the clicked position
       if(element){
         const offsetX = clientX - element.x1
         const offsetY = clientY - element.y1
         setSelectedElement({...element, offsetX, offsetY})
 
-        if(element.position === 'inside'){
+        if(element.position === 'inside') {
           setAction("moving")
-        }else{
-          setAction('resize')
+          const data = {
+            element:element
+          };
+          //creating a custom like predefined events like click or mousemove and more
+          const event = new CustomEvent("movingStart", { detail: data });
+          //dispatching the event in document.documentElement where we listen for it in while recording
+          document.documentElement.dispatchEvent(event);
         }
+        // else{
+        //   setAction('resize')
+        // }
       }
     }else{
       const id = elements.length
+      console.log(elementType)
       const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
       
       //add new element in the elements state
@@ -258,6 +280,19 @@ function ExcaliClone() {
       const newX1 = clientX - offsetX
       const newY1 = clientY - offsetY
       updateElement(id ,newX1, newY1,newX1 + width, newY1+height, type)
+      const data = {
+        id:id,
+        newX1:newX1,
+        newY1:newY1,
+        newX2:newX1+width,
+        newY2:newY1+height,
+        type:type
+      };
+      //creating a custom like predefined events like click or mousemove and more
+      const event = new CustomEvent("moving", { detail: data });
+      //dispatching the event in document.documentElement where we listen for it in while recording
+      document.documentElement.dispatchEvent(event);
+
     }else if(action === "resize"){
       const  {id ,type,position, ...coordiantes} = selectedElement
       const {x1,y1,x2,y2} = resizedCoordinates(clientX, clientY, position, coordiantes)
@@ -301,6 +336,8 @@ function ExcaliClone() {
         <label htmlFor="rectangle">Rectangle</label>
         <input type="radio" id="freedraw" checked = {elementType==="freedraw"} onChange={() => setTool("freedraw")}/>
         <label htmlFor="freedraw">Free Draw</label>
+        <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
+        <label htmlFor="circle">Circle</label>
       </div>
       <canvas id="canvas" 
       width={window.innerWidth} 
