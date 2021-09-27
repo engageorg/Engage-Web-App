@@ -19,9 +19,23 @@ function ExcaliClonePlayer(props) {
   }
 
   function createElement(id, x1,y1,x2,y2, type) {
-    const roughElement = type === "line" ? generator.line(x1,y1,x2,y2) : generator.rectangle(x1,y1,x2-x1,y2-y1)  
+    let roughElement
+    if(type === "line"){
+      roughElement = generator.line(x1,y1,x2,y2)
+    }
+    else if(type==="rectangle"){
+      roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1)
+    }
+    else if(type === "circle"){
+      const a = {x:x1, y:y1}
+      const b = {x:x2, y:y2}
+      const diameter = distance(a,b)
+      console.log(diameter)
+      roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter)
+    }
     return {id, x1, y1, x2, y2, type,roughElement}
   }
+
 
   const updateElement = (id,x1,y1, x2, y2, type) => {
     const updatedElement = createElement(id,x1,y1, x2,y2, type)
@@ -93,19 +107,23 @@ function ExcaliClonePlayer(props) {
   }, [elements])
 
   useEffect(() => {
-      console.log(props.event)
+    console.log(props.event)
       const line = document.getElementById("line")
       const rectangle = document.getElementById("rectangle")
+      const circle = document.getElementById("circle")
       if(props.event.type === "drawStart") {
         if(props.event.value.type === "line"){
             line.click()
-            //const id = elements.length
-            const {id,clientX,clientY, elementType} = props.event.value
+            const id = props.event.value.id
+            const clientX = props.event.value.clientX
+            const clientY = props.event.value.clientY
+            const elementType = props.event.value.type
             console.log(id,clientX,clientY,clientX, clientY, elementType)
-            const element = createElement({...props.event.value});
+            const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
             //add new element in the elements state
             setElementState(prevState => [...prevState, element])
-        }else{
+        }
+        if(props.event.value.type === "rectangle"){
             rectangle.click()
             const id = props.event.value.id
             const clientX = props.event.value.clientX
@@ -116,11 +134,20 @@ function ExcaliClonePlayer(props) {
             //add new element in the elements state
             setElementState(prevState => [...prevState, element])
         }
+        if(props.event.value.type === "circle"){
+          circle.click()
+          const id = props.event.value.id
+          const clientX = props.event.value.clientX
+          const clientY = props.event.value.clientY
+          const elementType = props.event.value.type
+          console.log(id,clientX,clientY,clientX, clientY, elementType)
+          const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
+          //add new element in the elements state
+          setElementState(prevState => [...prevState, element])
+        }
       }
       if(props.event.type === "drawing"){
         const index = elements.length-1
-        //const {x1,y1} = elements[index]
-        const id = props.event.value.id
         const x1 = props.event.value.x1
         const y1 = props.event.value.y1
         const clientX = props.event.value.clientX
@@ -128,7 +155,7 @@ function ExcaliClonePlayer(props) {
         const elementType = props.event.value.type
         updateElement(index,x1,y1, clientX, clientY, elementType)
         // //add new element in the elements state
-        // setElementState(prevState => [...prevState, element])
+        //setElementState(prevState => [...prevState, element])
       }
 
       if(props.event.type === "drawEnd"){
@@ -255,6 +282,8 @@ function ExcaliClonePlayer(props) {
         <label htmlFor="line">line</label>
         <input type="radio" id="rectangle" checked={elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
         <label htmlFor="rectangle">Rectangle</label>
+        <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
+        <label htmlFor="circle">Circle</label>
       </div>
       <canvas id="canvas" 
       onClick = {() => {
