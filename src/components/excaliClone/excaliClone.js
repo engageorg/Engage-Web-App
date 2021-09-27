@@ -234,12 +234,14 @@ function ExcaliClone() {
   return (
     <div>
       <div style={{position:"fixed"}}>
-        <input type="radio" id="selection" checked={elementType==="selection"} onChange={() => setTool("selection")}/>
+        <input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
         <label htmlFor="selection">Selection</label>
-        <input type="radio" id="line" checked={elementType==="line"} onChange={() => setTool("line")}/>
+        <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/>
         <label htmlFor="line">line</label>
-        <input type="radio" id="rectangle" checked={elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
+        <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
         <label htmlFor="rectangle">Rectangle</label>
+        <input type="radio" id="freedraw" checked = {elementType==="freedraw"} onChange={() => setTool("freedraw")}/>
+        <label htmlFor="freedraw">Free Draw</label>
       </div>
       <canvas id="canvas" 
       width={window.innerWidth} 
