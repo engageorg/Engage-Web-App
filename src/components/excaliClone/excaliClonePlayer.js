@@ -1,46 +1,8 @@
 import React, {useLayoutEffect, useEffect, useState} from 'react';
 import rough from 'roughjs/bundled/rough.esm'
-import { getStroke } from "perfect-freehand";
 
 //A generator is a readonly property that lets you create a drawable object for a shape that can be later used with the draw method.
 const generator = rough.generator()
-
-// options for path and pencil of free draw
-const options = {
-  size: 5,
-  thinning: 0.5,
-  smoothing: 0.8,
-  streamline: 0.8,
-  easing: (t) => t,
-  start: {
-    taper: 1,
-    easing: (t) => t,
-    cap: true
-  },
-  end: {
-    taper: 100,
-    easing: (t) => t,
-    cap: true
-  }
-};
-
-
-// turns mouse x and y co-ordinates to svg path for drawing 
-function getSvgPathFromStroke(stroke) {
-  if (!stroke.length) return ""
-
-  const d = stroke.reduce(
-    (acc, [x0, y0], i, arr) => {
-      const [x1, y1] = arr[(i + 1) % arr.length]
-      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
-      return acc
-    },
-    ["M", ...stroke[0], "Q"]
-  )
-
-  d.push("Z")
-  return d.join(" ")
-}
 
 function ExcaliClonePlayer(props) {
   const [elements, setElementState] = useState([])
@@ -121,9 +83,7 @@ function ExcaliClonePlayer(props) {
     }
   }
   
-  const stroke = getStroke(points, options);
-  const pathData = getSvgPathFromStroke(stroke);
-  
+
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas")
     const ctx = canvas.getContext("2d")
