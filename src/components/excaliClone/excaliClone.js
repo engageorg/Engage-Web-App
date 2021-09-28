@@ -150,15 +150,7 @@ function ExcaliClone() {
     //The clearRect() method clears the specified pixels within a given rectangle.
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     const roughCanvas = rough.canvas(canvas)
-  
-//    if(elementType !== "freedraw"){
-      elements.forEach(({roughElement}) => roughCanvas.draw(roughElement))
-    // }
-    // else{
-    //   var p = new Path2D(pathData);
-    //   ctx.stroke(p);
-    //   ctx.fill(p);
-    // }
+    elements.forEach(({roughElement}) => roughCanvas.draw(roughElement))
   }, [elements])
 
   const handleMouseDown = (event) => {
@@ -169,7 +161,7 @@ function ExcaliClone() {
 
       //return the element at the position we we clicked
       const element = getElementAtPosition(clientX, clientY, elements)
-      //console.log(element)
+      console.log(element)
       //if there is a element as the clicked position
       if(element){
         const offsetX = clientX - element.x1
@@ -181,14 +173,17 @@ function ExcaliClone() {
           const data = {
             element:element
           };
-          //creating a custom like predefined events like click or mousemove and more
           const event = new CustomEvent("movingStart", { detail: data });
-          //dispatching the event in document.documentElement where we listen for it in while recording
           document.documentElement.dispatchEvent(event);
         }
-        // else{
-        //   setAction('resize')
-        // }
+        else{
+          setAction('resize')
+          const data = {
+            element:element
+          }
+          const event = new CustomEvent("resizeStart", { detail: data });
+          document.documentElement.dispatchEvent(event);
+        }
       }
     }else{
       const id = elements.length
@@ -264,7 +259,7 @@ function ExcaliClone() {
     //if the action is 
     if(elementType === "selection"){
       const element = getElementAtPosition(clientX, clientY, elements)
-      event.target.style.cursor = element ? "move" : "default"
+      event.target.style.cursor = element ? cursorForPosition(element.position) : "default"
     }
  
     if(action === "drawing"){
@@ -308,6 +303,17 @@ function ExcaliClone() {
     }else if(action === "resize"){
       const  {id ,type,position, ...coordiantes} = selectedElement
       const {x1,y1,x2,y2} = resizedCoordinates(clientX, clientY, position, coordiantes)
+      const data = {
+        id:id,
+        x1:x1,
+        y1:y1,
+        x2:x2,
+        y2:y2,
+        type:type
+      }
+
+      const event = new CustomEvent("resizing", {detail:data})
+      document.documentElement.dispatchEvent(event)
       updateElement(id,x1,y1,x2,y2,type)
     }
   }

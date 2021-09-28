@@ -173,7 +173,19 @@ function ExcaliClonePlayer(props) {
         const type = props.event.value.type
         updateElement(id ,newX1, newY1,newX2, newY2, type)
       }
+      if(props.event.type === "resizeStart") {
+        selection.click()
+      }
 
+      if(props.event.type==="resizing"){
+        const id = props.event.value.id
+        const x1 = props.event.value.x1
+        const y1 = props.event.value.y1
+        const x2 = props.event.value.x2
+        const y2 = props.event.value.y2
+        const type = props.event.value.type
+        updateElement(id,x1,y1,x2,y2,type)
+      }
 
       if(props.event.type === "drawEnd"){
         setAction('none')

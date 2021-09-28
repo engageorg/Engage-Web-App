@@ -164,6 +164,26 @@ export default function Recorder(props) {
           value:e.detail
         })
       }
+    },
+    {
+      eventName:"resizeStart",
+      handler:function handleChange(e){
+        Recording.events.push({
+          type:"resizeStart",
+          time:Date.now() - startTime,
+          value:e.detail
+        })
+      }
+    },
+    {
+      eventName:"resizing",
+      handler:function handleChange(e){
+        Recording.events.push({
+          type:"resizing",
+          time:Date.now()-startTime,
+          value:e.detail
+        })
+      }
     }
   ];
 
