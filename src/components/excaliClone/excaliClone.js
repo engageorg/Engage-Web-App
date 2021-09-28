@@ -111,6 +111,9 @@ function ExcaliClone() {
       const offset = distance(c,d)
       if(offset<radius){
         return "inside"
+      }else if(offset>radius && offset-radius<3){
+        console.log(offset, radius)
+        return "circumference"
       }else{
         return null
       }
@@ -220,6 +223,8 @@ function ExcaliClone() {
       case "br":
       case "end":
         return { x1, y1, x2: clientX, y2: clientY };
+      case "circumference":
+        return {x1:clientX,y1:clientY,x2, y2}
       default:
         return null; //should not really get here...
     }
@@ -236,6 +241,8 @@ function ExcaliClone() {
       case "tr":
       case "bl":
         return "nesw-resize";
+      case "circumference":
+        return "nesw-resize"
       default:
         return "move";
     }
