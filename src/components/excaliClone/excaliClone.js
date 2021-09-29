@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import rough from 'roughjs/bundled/rough.esm'
 import { getStroke } from "perfect-freehand";
 
@@ -45,32 +45,35 @@ function getSvgPathFromStroke(stroke) {
 function ExcaliClone() {
 
   const [elements, setElementState] = useState([])
+  const [fill, setFill] = useState('transparent')
+  const [fillStyle, setFillStyle] = useState('hachure')
+  const [strokeColor, setStrokeColor] = useState('black')
+  const [strokeWidth ,setStrokeWidth] = useState('1')
   const [elementType ,setTool] = useState('')
   const [action, setAction] = useState('none')
   const [selectedElement, setSelectedElement] =useState('none')
   const [points, setPoints] = useState([]);
 
 
-  function createElement(id, x1,y1,x2,y2, type) {
+  function createElement(id, x1,y1,x2,y2,type, fill="transparent", fillStyle="solid", stroke="black", strokeWidth=2) {
     let roughElement
     if(type === "line"){
-      roughElement = generator.line(x1,y1,x2,y2)
+      roughElement = generator.line(x1,y1,x2,y2, {strokeWidth:strokeWidth, stroke:stroke})
     }
     else if(type==="rectangle"){
-      roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1)
+      roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1, {fill: fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth })
     }
     else if(type === "circle"){
       const a = {x:x1, y:y1}
       const b = {x:x2, y:y2}
       const diameter = distance(a,b)
-      //console.log(diameter)
-      roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter)
+      roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
     }
     return {id, x1, y1, x2, y2, type,roughElement}
   }
 
-  const updateElement = (id,x1,y1, x2, y2, type) => {
-    const updatedElement = createElement(id,x1,y1, x2,y2, type)
+  const updateElement = (id,x1,y1, x2, y2, type, fill, fillStyle, stroke,strokeWidth) => {
+    const updatedElement = createElement(id,x1,y1,x2,y2,type, fill, fillStyle, stroke,strokeWidth)
     
     const elementsCopy = [...elements]
     elementsCopy[id] = updatedElement
@@ -155,6 +158,29 @@ function ExcaliClone() {
     const roughCanvas = rough.canvas(canvas)
     elements.forEach(({roughElement}) => roughCanvas.draw(roughElement))
   }, [elements])
+  
+  useEffect(() => {
+    const fill = document.getElementById("fill")
+    const stroke = document.getElementById("stroke")
+    const strokeWidth = document.getElementById("strokeWidth")
+    const fillStyle = document.getElementById("fillStyle")
+    //const fillStyle = document.getElementById("fillStyle")
+     fill.addEventListener("change", () => {
+       setFill(fill.value)
+     })
+
+     fillStyle.addEventListener("change", () => {
+       setFillStyle(fillStyle.value)
+     })
+
+     stroke.addEventListener("change", () => {
+       setStrokeColor(stroke.value)
+     })
+
+     strokeWidth.addEventListener("change", () => {
+       setStrokeWidth(strokeWidth.value)
+     })
+  },[])
 
   const handleMouseDown = (event) => {
     //starting coordinates of the line 
@@ -174,7 +200,11 @@ function ExcaliClone() {
         if(element.position === 'inside') {
           setAction("moving")
           const data = {
-            element:element
+            element:element,
+            fill:fill,
+            fillStyle:fillStyle,
+            strokeColor:strokeColor,
+            strokeWidth:strokeWidth
           };
           const event = new CustomEvent("movingStart", { detail: data });
           document.documentElement.dispatchEvent(event);
@@ -182,7 +212,11 @@ function ExcaliClone() {
         else{
           setAction('resize')
           const data = {
-            element:element
+            element:element,
+            fill:fill,
+            fillStyle:fillStyle,
+            strokeColor:strokeColor,
+            strokeWidth:strokeWidth
           }
           const event = new CustomEvent("resizeStart", { detail: data });
           document.documentElement.dispatchEvent(event);
@@ -199,7 +233,11 @@ function ExcaliClone() {
         id:id,
         clientX:clientX,
         clientY:clientY,
-        type:elementType
+        type:elementType,
+        fill:fill,
+        fillStyle:fillStyle,
+        strokeColor:strokeColor,
+        strokeWidth:strokeWidth
       };
       //creating a custom like predefined events like click or mousemove and more
       const event = new CustomEvent("drawStart", { detail: data });
@@ -272,14 +310,18 @@ function ExcaliClone() {
     if(action === "drawing"){
     const index = elements.length-1
     const {x1,y1} = elements[index]
-    updateElement(index,x1,y1, clientX, clientY, elementType)
+    updateElement(index,x1,y1, clientX, clientY, elementType, fill, fillStyle, strokeColor,strokeWidth)
     const data = {
         id:index,
         x1:x1,
         y1:y1,
         clientX:clientX,
         clientY:clientY,
-        type:elementType
+        type:elementType,
+        fill:fill,
+        fillStyle:fillStyle,
+        strokeColor:strokeColor,
+        strokeWidth:strokeWidth
       };
       //creating a custom like predefined events like click or mousemove and more
       const event = new CustomEvent("drawing", { detail: data });
@@ -293,14 +335,18 @@ function ExcaliClone() {
       //this is done to make sure x1 and y1 don't get changed to where mousedown event was performed
       const newX1 = clientX - offsetX
       const newY1 = clientY - offsetY
-      updateElement(id ,newX1, newY1,newX1 + width, newY1+height, type)
+      updateElement(id ,newX1, newY1,newX1 + width, newY1+height, type, fill, fillStyle, strokeColor,strokeWidth)
       const data = {
         id:id,
         newX1:newX1,
         newY1:newY1,
         newX2:newX1+width,
         newY2:newY1+height,
-        type:type
+        type:type,
+        fill:fill,
+        fillStyle:fillStyle,
+        strokeColor:strokeColor,
+        strokeWidth:strokeWidth
       };
       //creating a custom like predefined events like click or mousemove and more
       const event = new CustomEvent("moving", { detail: data });
@@ -316,12 +362,16 @@ function ExcaliClone() {
         y1:y1,
         x2:x2,
         y2:y2,
-        type:type
+        type:type,
+        fill:fill,
+        fillStyle:fillStyle,
+        strokeColor:strokeColor,
+        strokeWidth:strokeWidth
       }
 
       const event = new CustomEvent("resizing", {detail:data})
       document.documentElement.dispatchEvent(event)
-      updateElement(id,x1,y1,x2,y2,type)
+      updateElement(id,x1,y1,x2,y2,type, fill, fillStyle, stroke,strokeWidth)
     }
   }
 
@@ -331,14 +381,18 @@ function ExcaliClone() {
       const {id, type} = elements[index]
       if(action === "drawing"){
         const {x1,y1,x2,y2} = adjustElementCorrdinates(elements[index])
-        updateElement(id, x1,y1,x2,y2,type)
+        updateElement(id, x1,y1,x2,y2,type, fill, fillStyle, strokeColor,strokeWidth)
         const data = {
             id:index,
             x1:x1,
             y1:y1,
             x2:x2,
             y2:y2,
-            type:type
+            type:type,
+            fill:fill,
+            fillStyle:fillStyle,
+            strokeColor:strokeColor,
+            strokeWidth:strokeWidth
           };
           //creating a custom like predefined events like click or mousemove and more
           const event = new CustomEvent("drawEnd", { detail: data });
@@ -359,10 +413,37 @@ function ExcaliClone() {
         <label htmlFor="line">line</label>
         <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
         <label htmlFor="rectangle">Rectangle</label>
-        <input type="radio" id="freedraw" checked = {elementType==="freedraw"} onChange={() => setTool("freedraw")}/>
-        <label htmlFor="freedraw">Free Draw</label>
         <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
-        <label htmlFor="circle">Circle</label>
+        <label htmlFor="circle">Circle </label>
+        Fill
+        <select id="fill">
+          <option>Red</option>
+          <option>Green</option>
+          <option>Yellow</option>
+          <option>Coral</option>
+        </select>
+        FillStyle
+        <select id="fillStyle">
+          <option>solid</option>
+          <option>hachure</option>
+          <option>dashed</option>
+          <option>ZigZag</option>
+        </select>
+
+        Stroke 
+        <select id="stroke">
+          <option>Black</option>
+          <option>Red</option>
+          <option>Green</option>
+          <option>Blue</option>
+          <option>Yello</option>
+        </select>
+        strokeWidth
+        <select id="strokeWidth">
+          <option>2</option>
+          <option>6</option>
+          <option>10</option>
+        </select>
       </div>
       <canvas id="canvas" 
       width={window.innerWidth} 

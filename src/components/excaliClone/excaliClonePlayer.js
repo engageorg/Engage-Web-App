@@ -18,27 +18,26 @@ function ExcaliClonePlayer(props) {
     }
   }
 
-  function createElement(id, x1,y1,x2,y2, type) {
+  function createElement(id, x1,y1,x2,y2,type, fill="transparent", fillStyle="solid", stroke="black", strokeWidth=2) {
     let roughElement
     if(type === "line"){
-      roughElement = generator.line(x1,y1,x2,y2)
+      roughElement = generator.line(x1,y1,x2,y2, {strokeWidth:strokeWidth, stroke:stroke})
     }
     else if(type==="rectangle"){
-      roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1)
+      roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1, {fill: fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth })
     }
     else if(type === "circle"){
       const a = {x:x1, y:y1}
       const b = {x:x2, y:y2}
       const diameter = distance(a,b)
-      console.log(diameter)
-      roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter)
+      roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
     }
     return {id, x1, y1, x2, y2, type,roughElement}
   }
 
 
-  const updateElement = (id,x1,y1, x2, y2, type) => {
-    const updatedElement = createElement(id,x1,y1, x2,y2, type)
+  const updateElement = (id,x1,y1, x2, y2, type,fill, fillStyle, stroke,strokeWidth) => {
+    const updatedElement = createElement(id,x1,y1, x2,y2, type, fill, fillStyle, stroke,strokeWidth)
     
     const elementsCopy = [...elements]
     elementsCopy[id] = updatedElement
@@ -101,14 +100,12 @@ function ExcaliClonePlayer(props) {
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas")
     const ctx = canvas.getContext("2d")
-    const line = document.getElementById("line")
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     const roughCanvas = rough.canvas(canvas)
     elements.forEach(({roughElement}) => roughCanvas.draw(roughElement))
   }, [elements])
 
   useEffect(() => {
-    console.log(props.event)
       const line = document.getElementById("line")
       const rectangle = document.getElementById("rectangle")
       const circle = document.getElementById("circle")
@@ -120,8 +117,12 @@ function ExcaliClonePlayer(props) {
             const clientX = props.event.value.clientX
             const clientY = props.event.value.clientY
             const elementType = props.event.value.type
+            const fill = props.event.value.fill
+            const fillStyle = props.event.value.fillStyle
+            const strokeColor = props.event.value.strokeColor
+            const strokeWidth = props.event.value.strokeWidth
             console.log(id,clientX,clientY,clientX, clientY, elementType)
-            const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
+            const element = createElement(id,clientX,clientY,clientX,clientY, elementType, fill, fillStyle, strokeColor, strokeWidth);
             //add new element in the elements state
             setElementState(prevState => [...prevState, element])
         }
@@ -131,8 +132,12 @@ function ExcaliClonePlayer(props) {
             const clientX = props.event.value.clientX
             const clientY = props.event.value.clientY
             const elementType = props.event.value.type
+            const fill = props.event.value.fill
+            const fillStyle = props.event.value.fillStyle
+            const strokeColor = props.event.value.strokeColor
+            const strokeWidth = props.event.value.strokeWidth
             console.log(id,clientX,clientY,clientX, clientY, elementType)
-            const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
+            const element = createElement(id,clientX,clientY,clientX,clientY, elementType,fill, fillStyle, strokeColor, strokeWidth);
             //add new element in the elements state
             setElementState(prevState => [...prevState, element])
         }
@@ -142,8 +147,12 @@ function ExcaliClonePlayer(props) {
           const clientX = props.event.value.clientX
           const clientY = props.event.value.clientY
           const elementType = props.event.value.type
+          const fill = props.event.value.fill
+          const fillStyle = props.event.value.fillStyle
+          const strokeColor = props.event.value.strokeColor
+          const strokeWidth = props.event.value.strokeWidth
           console.log(id,clientX,clientY,clientX, clientY, elementType)
-          const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
+          const element = createElement(id,clientX,clientY,clientX,clientY, elementType,fill, fillStyle, strokeColor, strokeWidth);
           //add new element in the elements state
           setElementState(prevState => [...prevState, element])
         }
@@ -155,7 +164,11 @@ function ExcaliClonePlayer(props) {
         const clientX = props.event.value.clientX
         const clientY = props.event.value.clientY
         const elementType = props.event.value.type
-        updateElement(index,x1,y1, clientX, clientY, elementType)
+        const fill = props.event.value.fill
+        const fillStyle = props.event.value.fillStyle
+        const strokeColor = props.event.value.strokeColor
+        const strokeWidth = props.event.value.strokeWidth
+        updateElement(index,x1,y1, clientX, clientY, elementType,fill, fillStyle, strokeColor, strokeWidth)
         // //add new element in the elements state
         //setElementState(prevState => [...prevState, element])
       }
@@ -184,6 +197,10 @@ function ExcaliClonePlayer(props) {
         const x2 = props.event.value.x2
         const y2 = props.event.value.y2
         const type = props.event.value.type
+        const fill = props.event.value.fill
+        const fillStyle = props.event.value.fillStyle
+        const strokeColor = props.event.value.strokeColor
+        const strokeWidth = props.event.value.strokeColor
         updateElement(id,x1,y1,x2,y2,type)
       }
 
