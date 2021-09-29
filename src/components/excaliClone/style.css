@@ -1,0 +1,9 @@
+.styleCard{
+    border: 2px coral solid;
+}
+
+select{
+    margin-left: 5px;
+    font-size: 20px;
+    padding-left: 2px;
+}

@@ -1,6 +1,7 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import rough from 'roughjs/bundled/rough.esm'
 import { getStroke } from "perfect-freehand";
+import "./style.css";
 
 //A generator is a readonly property that lets you create a drawable object for a shape that can be later used with the draw method.
 const generator = rough.generator()
@@ -46,7 +47,7 @@ function ExcaliClone() {
 
   const [elements, setElementState] = useState([])
   const [fill, setFill] = useState('transparent')
-  const [fillStyle, setFillStyle] = useState('hachure')
+  const [fillStyle, setFillStyle] = useState('solid')
   const [strokeColor, setStrokeColor] = useState('black')
   const [strokeWidth ,setStrokeWidth] = useState('1')
   const [elementType ,setTool] = useState('')
@@ -68,6 +69,12 @@ function ExcaliClone() {
       const b = {x:x2, y:y2}
       const diameter = distance(a,b)
       roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
+    }else if(type==="ellipse"){
+      const a = {x:x1, y:y1}
+      const b = {x:x2, y:y2}
+      const height = distance(a,b)
+      const width = height/2
+      roughElement = generator.ellipse((x1+x2)/2,(y1+y2)/2, height,width )
     }
     return {id, x1, y1, x2, y2, type,roughElement}
   }
@@ -415,13 +422,21 @@ function ExcaliClone() {
         <label htmlFor="rectangle">Rectangle</label>
         <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
         <label htmlFor="circle">Circle </label>
+        {/*ELLIPSE NOT IMPLEMENTED NOW WILL BE IMPLEMENTED IN FUTURE*/}
+        {/* <input type="radio" id="ellipse" checked={elementType==="ellipse"} onChange={() => setTool("ellipse")}/>
+        <label htmlFor="arrow">Ellipse </label> */}
+        <div className="styleCard">
+        <div>
         Fill
         <select id="fill">
-          <option>Red</option>
-          <option>Green</option>
-          <option>Yellow</option>
-          <option>Coral</option>
+          <option>transparent</option>
+          <option>red</option>
+          <option>green</option>
+          <option>yellow</option>
+          <option>coral</option>
         </select>
+        </div>
+        <div>
         FillStyle
         <select id="fillStyle">
           <option>solid</option>
@@ -429,21 +444,26 @@ function ExcaliClone() {
           <option>dashed</option>
           <option>ZigZag</option>
         </select>
-
+        </div>
+        <div>
         Stroke 
         <select id="stroke">
-          <option>Black</option>
-          <option>Red</option>
-          <option>Green</option>
-          <option>Blue</option>
-          <option>Yello</option>
+          <option>black</option>
+          <option>red</option>
+          <option>green</option>
+          <option>blue</option>
+          <option>yellow</option>
         </select>
+        </div>
+        <div>
         strokeWidth
         <select id="strokeWidth">
           <option>2</option>
           <option>6</option>
           <option>10</option>
         </select>
+        </div>
+        </div>
       </div>
       <canvas id="canvas" 
       width={window.innerWidth} 
