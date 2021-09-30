@@ -159,7 +159,7 @@ function ExcaliClonePlayer(props) {
         case "pencil":
           //getStroke returns an array of points representing the outline of a stroke
           const stroke = getSvgPathFromStroke(getStroke(element.points, {
-            size:5
+            size:8
           }))
           //The Path2D interface of the Canvas 2D API is used to declare a path that can then be used on a CanvasRenderingContext2D object
           context.fill(new Path2D(stroke))
