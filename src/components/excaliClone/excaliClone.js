@@ -76,19 +76,6 @@ function ExcaliClone() {
       default:
         throw new Error(`Type not recognised`)
       }
-    // if(type === "line"){
-    //   roughElement = generator.line(x1,y1,x2,y2, {strokeWidth:strokeWidth, stroke:stroke})
-    // }
-    // else if(type==="rectangle"){
-    //   roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1, {fill: fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth })
-    // }
-    // else if(type === "circle"){
-    //   const a = {x:x1, y:y1}
-    //   const b = {x:x2, y:y2}
-    //   const diameter = distance(a,b)
-    //   roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
-    // }
-    // return {id, x1, y1, x2, y2, type,roughElement}
   }
 
   const updateElement = (id,x1,y1, x2, y2, type, fill, fillStyle, stroke,strokeWidth) => {
@@ -307,13 +294,15 @@ function ExcaliClone() {
     }else{
       const id = elements.length
       const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
-      const elementFirstInstance = element
       //add new element in the elements state
       setElementState(prevState => [...prevState, element])
       let data
       if(element.type === "pencil"){
         data = {
-          element:elementFirstInstance
+          id:id,
+          clientX:clientX,
+          clientY:clientY,
+          type:elementType,
         }
       }else{
         data = {
@@ -327,17 +316,6 @@ function ExcaliClone() {
           strokeWidth:strokeWidth
         };
       }
-      // console.log(element)
-      // const data = {
-      //   id:id,
-      //   clientX:clientX,
-      //   clientY:clientY,
-      //   type:elementType,
-      //   fill:fill,
-      //   fillStyle:fillStyle,
-      //   strokeColor:strokeColor,
-      //   strokeWidth:strokeWidth
-      // };
       //creating a custom like predefined events like click or mousemove and more
       const event = new CustomEvent("drawStart", { detail: data });
       //dispatching the event in document.documentElement where we listen for it in while recording
@@ -407,11 +385,16 @@ function ExcaliClone() {
     if(action === "drawing"){
     const index = elements.length-1
     const {x1,y1} = elements[index]
+    //console.log(x1,y1) undefined in case of pencil element
     updateElement(index,x1,y1, clientX, clientY, elementType, fill, fillStyle, strokeColor,strokeWidth)
     let data
     if(elements[index].type === "pencil"){
+     // console.log(elements[index])
       data={
-        element:elements[index]
+        id:index,
+        clientX:clientX,
+        clientY:clientY,
+        type:elementType
       }
     }else{
       data = {
@@ -427,12 +410,12 @@ function ExcaliClone() {
         strokeWidth:strokeWidth
       }
     }
-    if(elements[index].type !== "pencil"){
+    //if(elements[index].type !== "pencil"){
       //creating a custom like predefined events like click or mousemove and more
       const event = new CustomEvent("drawing", { detail: data });
       //dispatching the event in document.documentElement where we listen for it in while recording
       document.documentElement.dispatchEvent(event);
-    }
+    //}
     }else if(action==="moving"){
       if(selectedElement.type === "pencil"){
         const newPoints = selectedElement.points.map((_, index) => ({

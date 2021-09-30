@@ -1,5 +1,6 @@
 import React, {useLayoutEffect, useEffect, useState} from 'react';
 import rough from 'roughjs/bundled/rough.esm'
+import getStroke from 'perfect-freehand';
 
 //A generator is a readonly property that lets you create a drawable object for a shape that can be later used with the draw method.
 const generator = rough.generator()
@@ -7,6 +8,10 @@ const generator = rough.generator()
 function ExcaliClonePlayer(props) {
   const [elements, setElementState] = useState([])
   const [elementType ,setTool] = useState('')
+  const [fill, setFill] = useState('transparent')
+  const [fillStyle, setFillStyle] = useState('solid')
+  const [strokeColor, setStrokeColor] = useState('black')
+  const [strokeWidth ,setStrokeWidth] = useState('1')
   const [action, setAction] = useState('none')
   const [selectedElement, setSelectedElement] =useState('none')
   const [points, setPoints] = useState([]);
@@ -20,27 +25,57 @@ function ExcaliClonePlayer(props) {
 
   function createElement(id, x1,y1,x2,y2,type, fill="transparent", fillStyle="solid", stroke="black", strokeWidth=2) {
     let roughElement
-    if(type === "line"){
-      roughElement = generator.line(x1,y1,x2,y2, {strokeWidth:strokeWidth, stroke:stroke})
-    }
-    else if(type==="rectangle"){
-      roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1, {fill: fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth })
-    }
-    else if(type === "circle"){
-      const a = {x:x1, y:y1}
-      const b = {x:x2, y:y2}
-      const diameter = distance(a,b)
-      roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
-    }
-    return {id, x1, y1, x2, y2, type,roughElement}
+    switch (type) {
+      case "line":
+        roughElement = generator.line(x1,y1,x2,y2, {strokeWidth:strokeWidth, stroke:stroke})
+        return {id, x1, y1, x2, y2, type,roughElement}
+        case "rectangle":
+        roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1, {fill: fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth })
+        return {id, x1, y1, x2, y2, type,roughElement}
+        case "circle":
+        const a = {x:x1, y:y1}
+        const b = {x:x2, y:y2}
+        const diameter = distance(a,b)
+        roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
+        return {id, x1, y1, x2, y2, type,roughElement}
+        case "pencil":
+        return {id,type, points:[{x:x1,y:y1}]}
+      default:
+        throw new Error(`Type not recognised`)
+      }
+    // if(type === "line"){
+    //   roughElement = generator.line(x1,y1,x2,y2, {strokeWidth:strokeWidth, stroke:stroke})
+    // }
+    // else if(type==="rectangle"){
+    //   roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1, {fill: fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth })
+    // }
+    // else if(type === "circle"){
+    //   const a = {x:x1, y:y1}
+    //   const b = {x:x2, y:y2}
+    //   const diameter = distance(a,b)
+    //   roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
+    // }
+    // return {id, x1, y1, x2, y2, type,roughElement}
   }
 
-
-  const updateElement = (id,x1,y1, x2, y2, type,fill, fillStyle, stroke,strokeWidth) => {
-    const updatedElement = createElement(id,x1,y1, x2,y2, type, fill, fillStyle, stroke,strokeWidth)
-    
+  const updateElement = (id,x1,y1, x2, y2, type, fill, fillStyle, stroke,strokeWidth) => {
+    // const updatedElement = createElement(id,x1,y1,x2,y2,type, fill, fillStyle, stroke,strokeWidth)
+    console.log(type)
     const elementsCopy = [...elements]
-    elementsCopy[id] = updatedElement
+    switch(type){
+      case "line":
+      case "rectangle":
+      case "circle":
+        const updatedElement = createElement(id,x1,y1,x2,y2,type, fill, fillStyle, stroke,strokeWidth)
+        elementsCopy[id] = updatedElement
+        break;
+      case "pencil":
+        //when updating for pencil copy the previous points and add new ones to assign them to points object
+        elementsCopy[id].points  = [...elementsCopy[id].points, {x:x2,y:y2}]
+        break;
+      default:
+        throw new Error('Type not recognised') 
+    }
     setElementState(elementsCopy)
   }
 
@@ -97,19 +132,56 @@ function ExcaliClonePlayer(props) {
   }
   
 
+    //The function below will turn the points returned by getStroke into SVG path data.
+    const getSvgPathFromStroke = (stroke) => {
+      if (!stroke.length) return ''
+    
+      const d = stroke.reduce(
+        (acc, [x0, y0], i, arr) => {
+          const [x1, y1] = arr[(i + 1) % arr.length]
+          acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
+          return acc
+        },
+        ['M', ...stroke[0], 'Q']
+      )
+    
+      d.push('Z')
+      return d.join(' ')
+    }
+
+  function drawElement(roughCanvas, context, element) {
+    switch (element.type) {
+      case "line":
+      case "rectangle":
+      case "circle":
+        roughCanvas.draw(element.roughElement)
+        break
+        case "pencil":
+          //getStroke returns an array of points representing the outline of a stroke
+          const stroke = getSvgPathFromStroke(getStroke(element.points, {
+            size:5
+          }))
+          //The Path2D interface of the Canvas 2D API is used to declare a path that can then be used on a CanvasRenderingContext2D object
+          context.fill(new Path2D(stroke))
+          break;
+          default:
+        throw new Error (`Type not recognised ${element.type}`)
+    }
+  }
+  
   useLayoutEffect(() => {
     const canvas = document.getElementById("canvas")
-    const ctx = canvas.getContext("2d")
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    const context = canvas.getContext("2d");
+    context.clearRect(0, 0, canvas.width, canvas.height);
     const roughCanvas = rough.canvas(canvas)
-    elements.forEach(({roughElement}) => roughCanvas.draw(roughElement))
-  }, [elements])
-
+    elements.forEach(element => drawElement(roughCanvas, context, element))
+  }, [elements])//run if elements state changes
   useEffect(() => {
       const line = document.getElementById("line")
       const rectangle = document.getElementById("rectangle")
       const circle = document.getElementById("circle")
       const selection = document.getElementById("selection")
+      const pencil = document.getElementById("pencil")
       if(props.event.type === "drawStart") {
         if(props.event.value.type === "line"){
             line.click()
@@ -156,6 +228,17 @@ function ExcaliClonePlayer(props) {
           //add new element in the elements state
           setElementState(prevState => [...prevState, element])
         }
+        if(props.event.value.type === "pencil"){
+          pencil.click()
+          const id = props.event.value.id
+          const clientX = props.event.value.clientX
+          const clientY = props.event.value.clientY
+          const elementType = props.event.value.type
+          //console.log(id,clientX,clientY,clientX, clientY, elementType)
+          const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
+          //add new element in the elements state
+          setElementState(prevState => [...prevState, element])
+        }
       }
       if(props.event.type === "drawing"){
         const index = elements.length-1
@@ -164,11 +247,7 @@ function ExcaliClonePlayer(props) {
         const clientX = props.event.value.clientX
         const clientY = props.event.value.clientY
         const elementType = props.event.value.type
-        const fill = props.event.value.fill
-        const fillStyle = props.event.value.fillStyle
-        const strokeColor = props.event.value.strokeColor
-        const strokeWidth = props.event.value.strokeWidth
-        updateElement(index,x1,y1, clientX, clientY, elementType,fill, fillStyle, strokeColor, strokeWidth)
+        updateElement(index,x1,y1, clientX, clientY, elementType)
         // //add new element in the elements state
         //setElementState(prevState => [...prevState, element])
       }
@@ -299,7 +378,7 @@ function ExcaliClonePlayer(props) {
     if(action === "drawing"){
     const index = elements.length-1
     const {x1,y1} = elements[index]
-    updateElement(index,x1,y1, clientX, clientY, elementType)
+    updateElement(index,x1,y1, clientX, clientY, elementType, fill, fillStyle, strokeColor,strokeWidth)
     }else if(action==="moving"){
       const  {id ,x1, x2, y1, y2, type, offsetX, offsetY} = selectedElement
       const width = x2-x1
@@ -316,11 +395,13 @@ function ExcaliClonePlayer(props) {
     }
   }
 
+  const adjustmentRequired = type => ["line", "rectangle","circle"].includes(type);
+
   const handleMouseUp = () => {
     if(selectedElement){
       const index = selectedElement.id
       const {id, type} = elements[index]
-      if(action === "drawing"){
+      if((action === "drawing" || action === "resizing") && adjustmentRequired(type)){
         const {x1,y1,x2,y2} = adjustElementCorrdinates(elements[index])
         updateElement(id, x1,y1,x2,y2,type)
       }
@@ -340,6 +421,8 @@ function ExcaliClonePlayer(props) {
         <label htmlFor="rectangle">Rectangle</label>
         <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
         <label htmlFor="circle">Circle</label>
+        <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
+        <label htmlFor="circle">Pencil</label>
       </div>
       <canvas id="canvas" 
       width={window.innerWidth} 
