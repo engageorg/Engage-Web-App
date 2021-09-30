@@ -26,22 +26,6 @@ const options = {
 };
 
 
-// turns mouse x and y co-ordinates to svg path for drawing 
-function getSvgPathFromStroke(stroke) {
-  if (!stroke.length) return ""
-
-  const d = stroke.reduce(
-    (acc, [x0, y0], i, arr) => {
-      const [x1, y1] = arr[(i + 1) % arr.length]
-      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2)
-      return acc
-    },
-    ["M", ...stroke[0], "Q"]
-  )
-
-  d.push("Z")
-  return d.join(" ")
-}
 
 function ExcaliClone() {
 
@@ -251,7 +235,7 @@ function ExcaliClone() {
     const {clientX, clientY} = event
 
     if(elementType === "selection"){
-
+      if(elements.length !== 0){
       //return the element at the position we we clicked
       const element = getElementAtPosition(clientX, clientY, elements)
       //if there is a element as the clicked position
@@ -291,6 +275,7 @@ function ExcaliClone() {
           document.documentElement.dispatchEvent(event);
         }
       }
+    }
     }else{
       const id = elements.length
       const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
@@ -378,8 +363,10 @@ function ExcaliClone() {
     //coordinates while the mouse is moving
     const {clientX, clientY} = event
     if(elementType === "selection"){
-      const element = getElementAtPosition(clientX, clientY, elements)
-      event.target.style.cursor = element ? cursorForPosition(element.position) : "default"
+      if(elements.length !== 0){
+        const element = getElementAtPosition(clientX, clientY, elements)
+        event.target.style.cursor = element ? cursorForPosition(element.position) : "default"
+      }
     }
  
     if(action === "drawing"){
@@ -476,6 +463,7 @@ function ExcaliClone() {
   const adjustmentRequired = type => ["line", "rectangle","circle"].includes(type);
 
   const handleMouseUp = () => {
+    if(elements.length !== 0){
     if(selectedElement){
       const index = selectedElement.id
       const {id, type} = elements[index]
@@ -500,6 +488,7 @@ function ExcaliClone() {
           document.documentElement.dispatchEvent(event);
       }
     }
+  }
     setAction('none')
     setSelectedElement(null)
   }
