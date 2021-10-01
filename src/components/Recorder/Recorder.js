@@ -279,8 +279,7 @@ export default function Recorder(props) {
         <i className="fas fa-microphone record" onClick={handleClick}></i>
         <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
       </div>
-      {/* <IDE name={name} parentCallBack = {callbackFunction}/> */}
-      <ExcaliClone/>
+      {name === "drawboard" ?<ExcaliClone/>:<IDE name={name} parentCallBack = {callbackFunction}/>}
       </div>
     </>
   );

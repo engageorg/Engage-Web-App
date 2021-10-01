@@ -9,6 +9,8 @@ export default function StartingComponent() {
     const navigateToPlayerWeb = () => history.push('/videoplayer/ide');
     const navigateToPlayerOther = () => history.push('/videoplayer/other');
     const navigateToExcali = () => history.push('/excali')
+    const navigateToRecorderDraw = () => history.push('/recorder/drawboard');
+    const navigateToPlayerDraw = () => history.push('/videoplayer/drawboard');
     return (
         <>
         <button className = "recordWebD" onClick={navigateToRecorderWeb}>Recorder with webD</button>
@@ -16,6 +18,9 @@ export default function StartingComponent() {
         <button className = "playWebD" onClick={navigateToPlayerWeb}>Player with webD </button>
         {/* <button className = "playOther" onClick={navigateToPlayerOther}>Player with Other</button> */}
         <button onClick={navigateToExcali}>Excali Clone</button>
+        <button className = "recordWebD" onClick={navigateToRecorderDraw}>Recorder with Drawing Board</button>
+        {/* <button className = "recordOther" onClick={navigateToRecorderOther}>Recorder with Other</button> */}
+        <button className = "playWebD" onClick={navigateToPlayerDraw}>Player with Drawing Board</button>
         </>
     )
 }
