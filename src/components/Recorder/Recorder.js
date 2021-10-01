@@ -29,21 +29,21 @@ export default function Recorder(props) {
   }
   // Record each type of event
   const handlers = [
-    // {
-    //   eventName: "mousemove",
-    //   handler: function handleMouseMove(e) {
-    //     lastMouse  = {x : e.pageX, y :e.pageY};
-    //     Recording.events.push({
-    //       type: "mousemove",
-    //       target: lastKeyClass,
-    //       x: e.pageX,
-    //       fileName : fileName,
-    //       y: e.pageY,
-    //       value: lastKey,
-    //       time: Date.now() - startTime,
-    //     });
-    //   },
-    // },
+    {
+      eventName: "mousemove",
+      handler: function handleMouseMove(e) {
+        lastMouse  = {x : e.pageX, y :e.pageY};
+        Recording.events.push({
+          type: "mousemove",
+          target: lastKeyClass,
+          x: e.pageX,
+          fileName : fileName,
+          y: e.pageY,
+          value: lastKey,
+          time: Date.now() - startTime,
+        });
+      },
+    },
     // {
     //   eventName: "click",
     //   handler: function handleClick(e) {
