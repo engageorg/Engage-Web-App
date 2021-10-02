@@ -325,6 +325,7 @@ export default function Video() {
       <div className = "player-content">
       <div className = "videoscreen">
       {/* <IDE name={name} refresh = {refresh}/> */}
+      {name==="drawboard" ? <ExcaliClonePlayer event={drawing}/>: <IDE name={name} refresh={refresh}/>}
       <ExcaliClonePlayer event={drawing}/>
       </div>
       <div className="playButton">
