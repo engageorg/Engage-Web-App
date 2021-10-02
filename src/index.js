@@ -7,6 +7,7 @@ import './index.css';
 import Recorder from './components/Recorder/Recorder';
 import Video from './components/Player/Player';
 import IDE from "./components/IDE";
+import RecorderForm from './components/RecorderForm/recorderForm';
 import MultiFile from './components/MultilanguageEditor/multiFile';
 import DrawingBoard from './components/DrawingBoard/drawBoard';
 import allReducer from './reducers';
@@ -44,6 +45,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path = "/videoplayer/:id" component = {Video} />
         <Route exact path = "/drawboard" component = {DrawingBoard}/>
+        <Route exact path = "/recordform" component = {RecorderForm}/>
         <Route exact path = "/recorder/:id" component = {Recorder} ide="web"/>
         <Route exact path = "/" component = {StartingComponent}/>
     </Switch>

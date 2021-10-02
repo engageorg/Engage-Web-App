@@ -10,10 +10,11 @@ export default function StartingComponent() {
     const navigateToPlayerOther = () => history.push('/videoplayer/other');
     const navigateToDrawBoard = () => history.push('/drawboard')
     const navigateToRecorderDraw = () => history.push('/recorder/drawboard');
+    const navigateToRecordForm = () => history.push('/recordform');
     const navigateToPlayerDraw = () => history.push('/videoplayer/drawboard');
     return (
         <>
-        <button className = "recordWebD" onClick={navigateToRecorderWeb}>Recorder with webD</button>
+        <button className = "recordWebD" onClick={navigateToRecordForm}>Recorder A Lecture</button>
         {/* <button className = "recordOther" onClick={navigateToRecorderOther}>Recorder with Other</button> */}
         <button className = "playWebD" onClick={navigateToPlayerWeb}>Player with webD </button>
         {/* <button className = "playOther" onClick={navigateToPlayerOther}>Player with Other</button> */}

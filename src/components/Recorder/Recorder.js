@@ -10,7 +10,7 @@ import './style.css'
 
 var startTime;
 export default function Recorder(props) {
-  const name = window.location.pathname.split('/')[2]
+  const name = props.location.state.lectureType
   const Recording = { events: [] };
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
@@ -238,6 +238,8 @@ export default function Recorder(props) {
     firebase.firestore().collection("events").add({
       recordingString,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      name:props.location.state.lectureName,
+      type:props.location.state.lectureType
     }).then((result) => {
       console.log("Recording Saved")
     })
