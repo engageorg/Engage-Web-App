@@ -7,7 +7,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
-import ExcaliClonePlayer from "../excaliClone/excaliClonePlayer";
+import DrawingBoardPlayer from "../DrawingBoard/drawBoardPlayer";
 //else{rectangle.click()}
 function Preloader(){
   return(
@@ -325,8 +325,7 @@ export default function Video() {
       <div className = "player-content">
       <div className = "videoscreen">
       {/* <IDE name={name} refresh = {refresh}/> */}
-      {name==="drawboard" ? <ExcaliClonePlayer event={drawing}/>: <IDE name={name} refresh={refresh}/>}
-      <ExcaliClonePlayer event={drawing}/>
+      {name==="drawboard" ? <DrawingBoardPlayer event={drawing}/>: <IDE name={name} refresh={refresh}/>}
       </div>
       <div className="playButton">
       <div className="container"><a className="button button-play"></a></div>

@@ -1,6 +1,6 @@
 import React from "react";
 import IDE from "../IDE";
-import ExcaliClone from "../excaliClone/excaliClone";
+import DrawingBoard from "../DrawingBoard/drawBoard";
 import files from "../../assets/files";
 import MicRecorder from 'mic-recorder-to-mp3';
 import firebase from 'firebase/app'
@@ -279,7 +279,7 @@ export default function Recorder(props) {
         <i className="fas fa-microphone record" onClick={handleClick}></i>
         <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
       </div>
-      {name === "drawboard" ?<ExcaliClone/>:<IDE name={name} parentCallBack = {callbackFunction}/>}
+      {name === "drawboard" ?<DrawingBoard/>:<IDE name={name} parentCallBack = {callbackFunction}/>}
       </div>
     </>
   );

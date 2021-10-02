@@ -27,7 +27,7 @@ const options = {
 
 
 
-function ExcaliClone() {
+function DrawingBoard() {
 
   const [elements, setElementState] = useState([])
   const [fill, setFill] = useState('transparent')
@@ -561,4 +561,4 @@ function ExcaliClone() {
   );
 }
 
-export default ExcaliClone;
+export default DrawingBoard;

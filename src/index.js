@@ -8,7 +8,7 @@ import Recorder from './components/Recorder/Recorder';
 import Video from './components/Player/Player';
 import IDE from "./components/IDE";
 import MultiFile from './components/MultilanguageEditor/multiFile';
-import ExcaliClone from './components/excaliClone/excaliClone';
+import DrawingBoard from './components/DrawingBoard/drawBoard';
 import allReducer from './reducers';
 import thunk from 'redux-thunk'
 import firebase from 'firebase/app';
@@ -43,7 +43,7 @@ ReactDOM.render(
     <Router>
       <Switch>
         <Route exact path = "/videoplayer/:id" component = {Video} />
-        <Route exact path = "/excali" component = {ExcaliClone}/>
+        <Route exact path = "/drawboard" component = {DrawingBoard}/>
         <Route exact path = "/recorder/:id" component = {Recorder} ide="web"/>
         <Route exact path = "/" component = {StartingComponent}/>
     </Switch>

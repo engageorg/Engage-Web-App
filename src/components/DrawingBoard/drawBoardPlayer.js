@@ -5,7 +5,7 @@ import getStroke from 'perfect-freehand';
 //A generator is a readonly property that lets you create a drawable object for a shape that can be later used with the draw method.
 const generator = rough.generator()
 
-function ExcaliClonePlayer(props) {
+function DrawingBoardPlayer(props) {
   const [elements, setElementState] = useState([])
   const [elementType ,setTool] = useState('')
   const [fill, setFill] = useState('transparent')
@@ -435,4 +435,4 @@ function ExcaliClonePlayer(props) {
   );
 }
 
-export default ExcaliClonePlayer;
+export default DrawingBoardPlayer;
