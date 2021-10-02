@@ -46,7 +46,7 @@ ReactDOM.render(
         <Route exact path = "/videoplayer/:id" component = {Video} />
         <Route exact path = "/drawboard" component = {DrawingBoard}/>
         <Route exact path = "/recordform" component = {RecorderForm}/>
-        <Route exact path = "/recorder/:id" component = {Recorder} ide="web"/>
+        <Route exact path = "/recorder" component = {Recorder} ide="web"/>
         <Route exact path = "/" component = {StartingComponent}/>
     </Switch>
     </Router>

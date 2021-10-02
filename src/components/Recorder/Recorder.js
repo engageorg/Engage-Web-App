@@ -47,61 +47,65 @@ export default function Recorder(props) {
     {
       eventName: "click",
       handler: function handleClick(e) {
-        if(e.target.className === "cssfile" || e.target.className === "buttontext style" || e.target.className === "fab fa-css3-alt") fileName = "style.css"
-        if(e.target.className === "jsfile" || e.target.className === "buttontext script" || e.target.className === " fa-js-square") fileName = "script.js" 
-        if(e.target.className === "htmlfile" || e.target.className === "buttontext html" || e.target.className === "fab fa-html5fab") fileName = "index.html"
-        console.log(e.target.className);
-        Recording.events.push({
-          type: "click",
-          target: e.target.className,
-          x: e.pageX,
-          fileName :fileName,
-          y: e.pageY,
-          time: Date.now() - startTime,
-        });
+        if(name === "ide" || name === "other"){
+          if(e.target.className === "cssfile" || e.target.className === "buttontext style" || e.target.className === "fab fa-css3-alt") fileName = "style.css"
+          if(e.target.className === "jsfile" || e.target.className === "buttontext script" || e.target.className === " fa-js-square") fileName = "script.js" 
+          if(e.target.className === "htmlfile" || e.target.className === "buttontext html" || e.target.className === "fab fa-html5fab") fileName = "index.html"
+          console.log(e.target.className);
+          Recording.events.push({
+            type: "click",
+            target: e.target.className,
+            x: e.pageX,
+            fileName :fileName,
+            y: e.pageY,
+            time: Date.now() - startTime,
+          });
+        }
       },
     },
     {
       eventName: "keyup",
       handler: function handleKeyPress(e) {
-        lastKey = childValue
-        lastKeyClass = e.target.className
-
-        Recording.events.push({
-          type: "keyup",
-          target: e.target.className,
-          x: lastMouse.x,
-          y: lastMouse.y,
-          fileName: fileName,
-          value: (e.target.className === "userInputArea") ? e.target.value :files[fileName].value,
-          keyCode: e.keyCode,
-          time: Date.now() - startTime,
-        });
-        //console.log("recording",files[fileName].value)
+        if(name === "ide" || name === "other"){
+          lastKey = childValue
+          lastKeyClass = e.target.className
+          Recording.events.push({
+            type: "keyup",
+            target: e.target.className,
+            x: lastMouse.x,
+            y: lastMouse.y,
+            fileName: fileName,
+            value: (e.target.className === "userInputArea") ? e.target.value :files[fileName].value,
+            keyCode: e.keyCode,
+            time: Date.now() - startTime,
+          });
+        }
       },
     },
     {
       eventName: "click",
       handler: function handleClick(e) {
-        if(e.target.value  === "c" || 
-        e.target.value === "c99" || 
-        e.target.value === "cpp" || 
-        e.target.value === "cpp14" || 
-        e.target.value === "cpp17" || 
-        e.target.value === "python2" || 
-        e.target.value === "python3"){
-          fileName = e.target.value
+        if(name === "ide" || name === "other"){
+          if(e.target.value  === "c" || 
+          e.target.value === "c99" || 
+          e.target.value === "cpp" || 
+          e.target.value === "cpp14" || 
+          e.target.value === "cpp17" || 
+          e.target.value === "python2" || 
+          e.target.value === "python3"){
+            fileName = e.target.value
+          }
+          if(fileName !== "script.js" || fileName !== "style.css" || fileName !== "index.html")
+          Recording.events.push({
+            type: "click",
+            target: e.target.className,
+            x: e.pageX,
+            fileName :fileName,
+            y: e.pageY,
+            value:files[fileName].value,
+            time: Date.now() - startTime,
+          });
         }
-        if(fileName !== "script.js" || fileName !== "style.css" || fileName !== "index.html")
-        Recording.events.push({
-          type: "click",
-          target: e.target.className,
-          x: e.pageX,
-          fileName :fileName,
-          y: e.pageY,
-          value:files[fileName].value,
-          time: Date.now() - startTime,
-        });
       },
       },
     {
@@ -241,6 +245,14 @@ export default function Recorder(props) {
       name:props.location.state.lectureName,
       type:props.location.state.lectureType
     }).then((result) => {
+      firebase.firestore().collection("recordIndex").add({
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        name:props.location.state.lectureName,
+        type:props.location.state.lectureType,
+        id:result.id
+      }).then((result) => {
+        console.log("Recording Tally Saved")
+      })
       console.log("Recording Saved")
     })
     let audioString

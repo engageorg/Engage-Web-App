@@ -8,9 +8,8 @@ function RecorderForm() {
     const [lectureName, setLectureName] = useState('')
     const [lectureType, setLectureType] = useState('')
     const navigateToRecorderWeb = () => history.push({
-        pathname:'/recorder/ide',
+        pathname:'/recorder',
         state:{lectureType,lectureName}}
-        //state:{lectureName, lectureType}
     );
     useEffect(() => {
         const type = document.getElementById("lectureType")
