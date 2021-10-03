@@ -1,5 +1,4 @@
-import React from "react";
-import ReactModal from "react-modal";
+import React,{ useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '../../actions'
@@ -21,13 +20,27 @@ function TextEditor(props) {
 
   const handleOutput = () => {
     dispatch(setSrcDocs());
-    dispatch(outputModalTrue());
-    console.log("l")
   }
 
-  function handleCloseModal() {
-    dispatch(outputModalFalse());
-  }
+
+
+  useEffect( () => {
+  
+      var frame = document.getElementsByClassName("outputiframe")[0].contentDocument;
+
+      frame.open()
+      frame.write(srcDoc);
+      frame.close()
+      var fra = document.getElementsByClassName("outputiframe")[0].contentDocument;
+      fra.addEventListener("click", function() {
+        console.log("clicked!")
+      })
+  
+      fra.addEventListener("mousemove", function() {
+        console.log("mousemove")
+      })
+   
+  });
 
   return (
     <div className = "text-editor">
@@ -77,7 +90,7 @@ function TextEditor(props) {
     <div className = "editor">
     <Editor
             height="100vh"
-            width="94vw"
+            width="47vw"
             theme="vs-light"
             path={file.name}
             defaultLanguage={file.language}
@@ -87,29 +100,20 @@ function TextEditor(props) {
             cursorSmoothCaretAnimation = "true"
             value={file.value}
           />
+    <iframe
+              height="100vh"
+              width="47vw"
+              src= "./output/output.html"
+              title="output"
+              className="outputiframe"
+              frameBorder="0"
+    />
     </div>
 
 
-    <ReactModal
-            className="outputModal Modal"
-            isOpen={modalActive}
-            contentLabel="onRequestClose Example"
-            onRequestClose={handleCloseModal}
-            overlayClassName="Overlay"
-            ariaHideApp={false}
-          >
-           
-            <div className="closeButton"><i className="fas fa-window-close" onClick={handleCloseModal}></i></div>
-            <iframe
-              srcDoc={srcDoc}
-              title="output"
-              className="outputiframe"
-              sandbox="allow-scripts"
-              frameBorder="0"
-            />
-          
-          </ReactModal>
 
+          
+      
     </div>
   );
 }
