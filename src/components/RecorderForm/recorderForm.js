@@ -1,24 +1,25 @@
-import React, {useState, useEffect, Component} from 'react'
+import React, { useEffect} from 'react'
 import {useHistory} from "react-router-dom";
 import "./style.css"
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import Recorder from '../Recorder/Recorder';
 function RecorderForm() {
     const history = useHistory();
-    const [lectureName, setLectureName] = useState('')
-    const [lectureType, setLectureType] = useState('')
+    let lectureName;
+    let lectureType;
+    let lectureCreator;
     const navigateToRecorderWeb = () => history.push({
         pathname:'/recorder',
-        state:{lectureType,lectureName}}
+        state:{lectureType,lectureName, lectureCreator}}
     );
     useEffect(() => {
         const type = document.getElementById("lectureType")
         const name = document.getElementById("lectureName")
+        const creator = document.getElementById("creator")
         const button = document.getElementById("submit")
 
         button.addEventListener("click", () => {
-            setLectureType(type.value)
-            setLectureName(name.value)
+            lectureType = type.value
+            lectureName = name.value
+            lectureCreator = creator.value
         })
     },[])
 
@@ -26,6 +27,7 @@ function RecorderForm() {
         <>
         <form>
             <input id="lectureName" placeholder="Lecture Title"/>
+            <input id="creator" placeholder="Creator"/>
             <select id="lectureType">
                 <option value="ide">Web Developerment</option>
                 <option value="other">DSA</option>

@@ -6,27 +6,6 @@ import "./style.css";
 //A generator is a readonly property that lets you create a drawable object for a shape that can be later used with the draw method.
 const generator = rough.generator()
 
-// options for path and pencil of free draw
-const options = {
-  size: 5,
-  thinning: 0.5,
-  smoothing: 0.8,
-  streamline: 0.8,
-  easing: (t) => t,
-  start: {
-    taper: 1,
-    easing: (t) => t,
-    cap: true
-  },
-  end: {
-    taper: 100,
-    easing: (t) => t,
-    cap: true
-  }
-};
-
-
-
 function DrawingBoard() {
 
   const [elements, setElementState] = useState([])
@@ -154,7 +133,7 @@ function DrawingBoard() {
       const maxY = Math.max(y1,y2)
       return {x1:minX, y1:minY, x2:maxX ,y2:maxY }
     }else {
-      if(x1<x2 || x1 === x2 && y1<y2){
+      if((x1<x2 || x1 === x2 )&& y1<y2){
         return {x1,y1,x2,y2}
       }else{
         return {x1:x2,y1:y2,x2:x1,y2:y1}
@@ -511,6 +490,7 @@ function DrawingBoard() {
         <label htmlFor="pencil">Pencil </label>
         <div className="styleCard">
         <div>
+        Fill
         <select id="fill">
           <option>transparent</option>
           <option>red</option>

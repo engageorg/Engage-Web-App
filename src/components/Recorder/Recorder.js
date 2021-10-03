@@ -25,7 +25,7 @@ export default function Recorder(props) {
 
   function callbackFunction(childData){
     childValue = childData
-    console.log(childValue)
+    //console.log(childValue)
   }
   // Record each type of event
   const handlers = [
@@ -51,7 +51,7 @@ export default function Recorder(props) {
           if(e.target.className === "cssfile" || e.target.className === "buttontext style" || e.target.className === "fab fa-css3-alt") fileName = "style.css"
           if(e.target.className === "jsfile" || e.target.className === "buttontext script" || e.target.className === " fa-js-square") fileName = "script.js" 
           if(e.target.className === "htmlfile" || e.target.className === "buttontext html" || e.target.className === "fab fa-html5fab") fileName = "index.html"
-          console.log(e.target.className);
+          //console.log(e.target.className);
           Recording.events.push({
             type: "click",
             target: e.target.className,
@@ -234,50 +234,51 @@ export default function Recorder(props) {
     document.getElementsByClassName("stop-record")[0].style.display="none"
     document.getElementsByClassName("record")[0].style.display="block"
     const recordingString = JSON.stringify(Recording)
-    // console.log(sizeof(recordingString))
-    // data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(Recording));
-    // console.log(data)
-    // console.log(sizeof(recordingString))
     console.log(Recording)
     firebase.firestore().collection("events").add({
       recordingString,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       name:props.location.state.lectureName,
+      creator:props.location.state.lectureCreator,
       type:props.location.state.lectureType
     }).then((result) => {
+      localStorage.setItem("recordingId", JSON.stringify(result.id))
       firebase.firestore().collection("recordIndex").add({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         name:props.location.state.lectureName,
         type:props.location.state.lectureType,
+        creator:props.location.state.lectureCreator,
         id:result.id
       }).then((result) => {
         console.log("Recording Tally Saved")
       })
       console.log("Recording Saved")
+      let audioString
+      Mp3Recorder
+      .stop()
+      .getMp3()
+      .then(([buffer, blob]) => {
+        new File(buffer, 'me-at-thevoice.mp3', {
+          type: blob.type,
+          lastModified: Date.now()
+        })
+        var reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            audioString =(reader.result)
+            var storageRef = firebase.storage().ref();
+              const id = JSON.parse(localStorage.getItem("recordingId"))
+              //console.log(id)
+              localStorage.removeItem('recordingId');
+              var audioRef = storageRef.child(id);
+              audioRef.putString(audioString, 'data_url').then((snapshot) => {
+                alert('Audio saved!');
+              }).catch((e) => {
+                console.log(e)
+              })
+          }
+      }).catch((e) => console.log(e));
     })
-    let audioString
-    Mp3Recorder
-    .stop()
-    .getMp3()
-    .then(([buffer, blob]) => {
-      new File(buffer, 'me-at-thevoice.mp3', {
-        type: blob.type,
-        lastModified: Date.now()
-      })
-      var reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-          audioString =(reader.result)
-          // console.log(sizeof(audioString))
-          var storageRef = firebase.storage().ref();
-          var audioRef = storageRef.child('audio&amp');
-          audioRef.putString(audioString, 'data_url').then((snapshot) => {
-            alert('Audio saved!');
-          }).catch((e) => {
-            console.log(e)
-          })
-      }
-    }).catch((e) => console.log(e));
   }
 
   function handleStop(e) {
@@ -285,7 +286,7 @@ export default function Recorder(props) {
     stopRecording();
     console.log("Recording Stopped.");
   }
-  console.log(Recording)
+  //console.log(Recording)
   return (
     <>
       <div className="recorder">

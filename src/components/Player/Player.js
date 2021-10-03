@@ -57,8 +57,8 @@ function Preloader(){
   )
 }
 
-export default function Video() {
-  const name = window.location.pathname.split('/')[2]
+export default function Video(props) {
+  const name = props.location.state.type
   const [refresh, setRefresh] = useState("");
   const [loading, setLoading] = useState("loading");
   const dispatch = useDispatch();
@@ -74,12 +74,15 @@ export default function Video() {
     let recording = { events: [] };
     const recordingJsonValue = localStorage.getItem("recording");
     //const audioValue = JSON.parse(localStorage.getItem("file"));
-    firebase.firestore().collection('events').orderBy('createdAt', 'desc').limit(1).get()
+    const id = (props.location.state.id)
+    firebase.firestore().collection('events').where(firebase.firestore.FieldPath.documentId(), '==', id).get()
     .then((snap) => {
         snap.forEach((doc) => {
-          console.log(doc.data().recordingString)
-          recording = JSON.parse(doc.data().recordingString)
+             console.log(doc.data())
+             recording = JSON.parse(doc.data().recordingString)
         })
+      }).catch((err) => {
+        console.log(err)
       })
 
     if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
@@ -87,7 +90,7 @@ export default function Video() {
     // console.log(recording);
 
     var storageRef = firebase.storage().ref();
-    storageRef.child('audio&amp').getDownloadURL().then((url) => {
+    storageRef.child((id)).getDownloadURL().then((url) => {
       audioPlayer.src = url
       localStorage.setItem("url", url)
     }).catch((e) => {

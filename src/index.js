@@ -6,14 +6,13 @@ import { Provider } from 'react-redux';
 import './index.css';
 import Recorder from './components/Recorder/Recorder';
 import Video from './components/Player/Player';
-import IDE from "./components/IDE";
 import RecorderForm from './components/RecorderForm/recorderForm';
-import MultiFile from './components/MultilanguageEditor/multiFile';
 import DrawingBoard from './components/DrawingBoard/drawBoard';
 import allReducer from './reducers';
 import thunk from 'redux-thunk'
 import firebase from 'firebase/app';
 import StartingComponent from './components/StartingComponent/startingCompoent';
+import AllLectures from './components/Lectures/allLectures';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAp2cQvNNp8fUKOv6kO_7wR5IsKROCoh14",
@@ -43,10 +42,11 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route exact path = "/videoplayer/:id" component = {Video} />
+        <Route exact path = "/lectures" component = {AllLectures} />
         <Route exact path = "/drawboard" component = {DrawingBoard}/>
         <Route exact path = "/recordform" component = {RecorderForm}/>
         <Route exact path = "/recorder" component = {Recorder} ide="web"/>
+        <Route exact path = "/videoplayer" component = {Video}/>
         <Route exact path = "/" component = {StartingComponent}/>
     </Switch>
     </Router>

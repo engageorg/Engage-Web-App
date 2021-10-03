@@ -4,10 +4,7 @@ import {useHistory} from "react-router-dom";
 export default function StartingComponent() {
 
     const history = useHistory();
-    const navigateToRecorderWeb = () => history.push('/recorder/ide');
-    const navigateToRecorderOther = () => history.push('/recorder/other');
-    const navigateToPlayerWeb = () => history.push('/videoplayer/ide');
-    const navigateToPlayerOther = () => history.push('/videoplayer/other');
+    const navigateToLectureScreen = () => history.push('/lectures')
     const navigateToDrawBoard = () => history.push('/drawboard')
     const navigateToRecorderDraw = () => history.push('/recorder/drawboard');
     const navigateToRecordForm = () => history.push('/recordform');
@@ -16,7 +13,7 @@ export default function StartingComponent() {
         <>
         <button className = "recordWebD" onClick={navigateToRecordForm}>Recorder A Lecture</button>
         {/* <button className = "recordOther" onClick={navigateToRecorderOther}>Recorder with Other</button> */}
-        <button className = "playWebD" onClick={navigateToPlayerWeb}>Player with webD </button>
+        <button className = "playWebD" onClick={navigateToLectureScreen}>Watch lectures </button>
         {/* <button className = "playOther" onClick={navigateToPlayerOther}>Player with Other</button> */}
         <button onClick={navigateToDrawBoard}>Drawing Board</button>
         <button className = "recordWebD" onClick={navigateToRecorderDraw}>Recorder with Drawing Board</button>
