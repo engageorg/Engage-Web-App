@@ -247,7 +247,11 @@ function DrawingBoardPlayer(props) {
         const clientX = props.event.value.clientX
         const clientY = props.event.value.clientY
         const elementType = props.event.value.type
-        updateElement(index,x1,y1, clientX, clientY, elementType)
+        const fill = props.event.value.fill
+        const fillStyle = props.event.value.fillStyle
+        const strokeColor = props.event.value.strokeColor
+        const strokeWidth = props.event.value.strokeWidth
+        updateElement(index,x1,y1, clientX, clientY, elementType,fill, fillStyle, strokeColor, strokeWidth)
         // //add new element in the elements state
         //setElementState(prevState => [...prevState, element])
       }
@@ -263,7 +267,11 @@ function DrawingBoardPlayer(props) {
         const newX2 = props.event.value.newX2
         const newY2 = props.event.value.newY2
         const type = props.event.value.type
-        updateElement(id ,newX1, newY1,newX2, newY2, type)
+        const fill = props.event.value.fill
+        const fillStyle = props.event.value.fillStyle
+        const strokeColor = props.event.value.strokeColor
+        const strokeWidth = props.event.value.strokeColor
+        updateElement(id ,newX1, newY1,newX2, newY2, type, fill, fillStyle, strokeColor, strokeWidth)
       }
       if(props.event.type === "resizeStart") {
         selection.click()
@@ -280,7 +288,7 @@ function DrawingBoardPlayer(props) {
         const fillStyle = props.event.value.fillStyle
         const strokeColor = props.event.value.strokeColor
         const strokeWidth = props.event.value.strokeColor
-        updateElement(id,x1,y1,x2,y2,type)
+        updateElement(id,x1,y1,x2,y2,type, fill, fillStyle, strokeColor, strokeWidth)
       }
 
       if(props.event.type === "drawEnd"){
