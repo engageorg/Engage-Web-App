@@ -30,6 +30,31 @@ export default function Recorder(props) {
   // Record each type of event
   const handlers = [
     {
+      eventName: "iframekeyup",
+      handler: function handleMouseMove(e) {
+        console.log(e);
+        Recording.events.push({
+          type: "iframekeyup",
+          target: e.detail.target,
+          value: e.target.value,
+          time: Date.now() - startTime,
+        });
+      },
+    },
+    {
+      eventName: "iframeclick",
+      handler: function handleMouseMove(e) {
+        console.log(e);
+        Recording.events.push({
+          type: "iframeclick",
+          target: e.detail.target,
+          x: e.detail.x,
+          y: e.detail.y,
+          time: Date.now() - startTime,
+        });
+      },
+    },
+    {
       eventName: "mousemove",
       handler: function handleMouseMove(e) {
         lastMouse  = {x : e.pageX, y :e.pageY};

@@ -32,12 +32,23 @@ function TextEditor(props) {
       frame.write(srcDoc);
       frame.close()
       var fra = document.getElementsByClassName("outputiframe")[0].contentDocument;
-      fra.addEventListener("click", function() {
-        console.log("clicked!")
+      fra.addEventListener("click", function(e) {
+        const event = new CustomEvent("iframeclick", { detail: {
+          type: "click",
+          target: e.target,
+          x: e.pageX,
+          y: e.pageY
+        }});
+        document.documentElement.dispatchEvent(event);
       })
   
-      fra.addEventListener("mousemove", function() {
-        console.log("mousemove")
+      fra.addEventListener("keyup", function(e) {
+        const event = new CustomEvent("iframekeyup", { detail: {
+          type: "keyup",
+          target: e.target,
+          value: e.target.value,
+        }});
+        document.documentElement.dispatchEvent(event)
       })
    
   });
