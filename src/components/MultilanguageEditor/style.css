@@ -18,6 +18,10 @@
     background-color: #292929;
 }
 
+.multilanguageIde{
+    overflow: hidden;
+}
+
 textarea{
     border: none;
     overflow: auto;

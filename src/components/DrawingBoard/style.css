@@ -1,9 +1,30 @@
-.styleCard{
-    border: 2px coral solid;
+.drawOptions{
+    border: 3px black solid;
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 5px;
 }
 
 select{
     margin-left: 5px;
     font-size: 20px;
     padding-left: 2px;
+}
+
+.lineBox label{
+    border: 2px solid black;
+}
+
+.allOptions{
+    display: grid;
+    overflow: hidden;
+}
+
+.drawOptions{
+    position:absolute
+}
+
+.shapesOptions{
+    display: flex;
+    flex-direction: column;
 }

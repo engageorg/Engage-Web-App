@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, { useEffect, useLayoutEffect, useState} from 'react';
 import rough from 'roughjs/bundled/rough.esm'
 import getStroke from 'perfect-freehand';
 import "./style.css";
@@ -25,14 +25,17 @@ function DrawingBoard() {
       case "line":
         roughElement = generator.line(x1,y1,x2,y2, {strokeWidth:strokeWidth, stroke:stroke})
         return {id, x1, y1, x2, y2, type,roughElement}
+        case "arrow":
+          roughElement = generator.line(x1,y1,x2,y2, {strokeWidth:strokeWidth, stroke:stroke})
+          return {id, x1, y1, x2, y2, type,roughElement}  
         case "rectangle":
         roughElement = generator.rectangle(x1,y1,x2-x1,y2-y1, {fill: fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth })
         return {id, x1, y1, x2, y2, type,roughElement}
         case "circle":
         const a = {x:x1, y:y1}
         const b = {x:x2, y:y2}
-        const diameter = distance(a,b)
-        roughElement = generator.circle((x1+x2)/2,(y1+y2)/2,diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
+        const diameter = Math.round(distance(a,b))
+        roughElement = generator.circle(Math.round((x1+x2)/2),Math.round((y1+y2)/2),diameter, {fill:fill, fillStyle:fillStyle, stroke:stroke, strokeWidth:strokeWidth})
         return {id, x1, y1, x2, y2, type,roughElement}
         case "pencil":
         return {id,type, points:[{x:x1,y:y1}]}
@@ -43,12 +46,13 @@ function DrawingBoard() {
 
   const updateElement = (id,x1,y1, x2, y2, type, fill, fillStyle, stroke,strokeWidth) => {
     // const updatedElement = createElement(id,x1,y1,x2,y2,type, fill, fillStyle, stroke,strokeWidth)
-    console.log(type)
+    //console.log(type)
     const elementsCopy = [...elements]
     switch(type){
       case "line":
       case "rectangle":
       case "circle":
+      case "arrow":
         const updatedElement = createElement(id,x1,y1,x2,y2,type, fill, fillStyle, stroke,strokeWidth)
         elementsCopy[id] = updatedElement
         break;
@@ -101,7 +105,7 @@ function DrawingBoard() {
       if(offset<radius){
         return "inside"
       }else if(offset>radius && offset-radius<3){
-        console.log(offset, radius)
+        //console.log(offset, radius)
         return "circumference"
       }else{
         return null
@@ -164,17 +168,40 @@ function DrawingBoard() {
       case "rectangle":
       case "circle":
         roughCanvas.draw(element.roughElement)
-        break
-        case "pencil":
-          //getStroke returns an array of points representing the outline of a stroke
-          const stroke = getSvgPathFromStroke(getStroke(element.points, {
-            size:5
-          }))
-          //The Path2D interface of the Canvas 2D API is used to declare a path that can then be used on a CanvasRenderingContext2D object
-          context.fill(new Path2D(stroke))
-          break;
-          default:
-        throw new Error (`Type not recognised ${element.type}`)
+      break
+      case "pencil":
+        //getStroke returns an array of points representing the outline of a stroke
+        const stroke = getSvgPathFromStroke(getStroke(element.points, {
+          size:5
+        }))
+        //The Path2D interface of the Canvas 2D API is used to declare a path that can then be used on a CanvasRenderingContext2D object
+        context.fill(new Path2D(stroke))
+        break;
+      case "arrow":
+        roughCanvas.draw(element.roughElement)
+        //console.log(element)
+        if(element.x1 !== element.x2 || element.y1 !== element.y2)
+        if(element.y2>element.y1+10){
+          roughCanvas.line(element.x2,element.y2, element.x2-20, element.y2-30, {strokeWidth:strokeWidth})
+          roughCanvas.line(element.x2,element.y2, element.x2+20, element.y2-30, {strokeWidth:strokeWidth})
+        }
+        else if(element.y2<element.y1){
+          roughCanvas.line(element.x2,element.y2, element.x2-20, element.y2+30, {strokeWidth:strokeWidth})
+          roughCanvas.line(element.x2,element.y2, element.x2+20, element.y2+30, {strokeWidth:strokeWidth})
+        }
+        else if(element.x2>=element.x1){
+          console.log("THUIS CASE")
+          roughCanvas.line(element.x2,element.y2, element.x2-30, element.y2-20, {strokeWidth:strokeWidth})
+          roughCanvas.line(element.x2,element.y2, element.x2-30, element.y2+20, {strokeWidth:strokeWidth})
+        }
+        else if(element.x1>element.x2){
+          //console.log("THUIS CASE")
+          roughCanvas.line(element.x2,element.y2, element.x2+30, element.y2-20, {strokeWidth:strokeWidth})
+          roughCanvas.line(element.x2,element.y2, element.x2+30, element.y2+20, {strokeWidth:strokeWidth})
+        }
+        break;
+        default:
+          throw new Error (`Type not recognised ${element.type}`)
     }
   }
   
@@ -474,20 +501,35 @@ function DrawingBoard() {
   
   return (
     <div>
-      <div style={{position:"fixed"}}>
-        <input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
-        <label htmlFor="selection">Selection</label>
-        <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/>
-        <label htmlFor="line">line</label>
-        <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
-        <label htmlFor="rectangle">Rectangle</label>
-        <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
-        <label htmlFor="circle">Circle </label>
+        <div className="drawOptions">
+          <div className="allOptions">
+          <div className="shapesOptions">
+        <div>
+          <input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
+          <label htmlFor="selection">Selection</label>
+        </div>
+        <div>
+          <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/>
+          <label htmlFor="line">line</label>
+        </div>
+        <div>
+          <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
+          <label htmlFor="rectangle">Rectangle</label>
+        </div>
+        <div>
+          <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
+          <label htmlFor="circle">Circle </label>
+        </div>
+        <div>
+          <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
+          <label htmlFor="pencil">Pencil </label>
+        </div>
         {/*ELLIPSE NOT IMPLEMENTED NOW WILL BE IMPLEMENTED IN FUTURE*/}
-        {/* <input type="radio" id="ellipse" checked={elementType==="ellipse"} onChange={() => setTool("ellipse")}/>
-        <label htmlFor="arrow">Ellipse </label> */}
-        <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
-        <label htmlFor="pencil">Pencil </label>
+        <div>
+          <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
+          <label htmlFor="arrow">Arrow</label>
+        </div>
+        </div>
         <div className="styleCard">
         <div>
         Fill
@@ -496,7 +538,7 @@ function DrawingBoard() {
           <option>red</option>
           <option>green</option>
           <option>yellow</option>
-          <option>coral</option>
+          items<option>coral</option>
         </select>
         </div>
         <div>
@@ -523,8 +565,10 @@ function DrawingBoard() {
         <select id="strokeWidth">
           <option>2</option>
           <option>6</option>
+          <option>8</option>
           <option>10</option>
         </select>
+        </div>
         </div>
         </div>
       </div>

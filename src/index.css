@@ -4,7 +4,6 @@ body{
   padding: 0;
   margin: 0;
   font-family: 'Space Mono', monospace;
-  overflow: hidden;
   box-sizing: border-box;
 }
 
@@ -64,10 +63,6 @@ Old CSS
 .IDE{
   display: flex;
 }
-
-
-
-
 
 .outputbutton {
   font-size: medium;

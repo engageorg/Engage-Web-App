@@ -7,7 +7,11 @@
     background-color: greenyellow;
 }
 
-#lectureName{
+#lectureName, #creator{
     height: 2rem;
     margin: 10px;
+}
+
+input::-webkit-input-placeholder{
+   font-size: 20px; 
 }
