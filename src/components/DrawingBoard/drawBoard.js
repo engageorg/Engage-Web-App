@@ -180,7 +180,7 @@ function DrawingBoard() {
       case "arrow":
         roughCanvas.draw(element.roughElement)
         //console.log(element)
-        if(element.x1 !== element.x2 || element.y1 !== element.y2)
+        // if(element.x1 !== element.x2 || element.y1 !== element.y2)
         if(element.y2>element.y1+10){
           roughCanvas.line(element.x2,element.y2, element.x2-20, element.y2-30, {strokeWidth:strokeWidth})
           roughCanvas.line(element.x2,element.y2, element.x2+20, element.y2-30, {strokeWidth:strokeWidth})

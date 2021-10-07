@@ -8,7 +8,10 @@ const generator = rough.generator()
 
 function DrawingBoardPlayer(props) {
 
+  //element state for the drawer player elements
   const [elements, setElementState] = useState([])
+  //temporary element state for the user input elements
+  const [elementsUser, setUserElementState] = useState([])
   const [fill, setFill] = useState('transparent')
   const [fillStyle, setFillStyle] = useState('solid')
   const [strokeColor, setStrokeColor] = useState('black')
@@ -16,6 +19,7 @@ function DrawingBoardPlayer(props) {
   const [elementType ,setTool] = useState('')
   const [action, setAction] = useState('none')
   const [selectedElement, setSelectedElement] =useState('none')
+  const [selectedUserElement, setSelectedUserElement] =useState('none')
   const [points, setPoints] = useState([]);
 
 
@@ -45,9 +49,13 @@ function DrawingBoardPlayer(props) {
   }
 
   const updateElement = (id,x1,y1, x2, y2, type, fill, fillStyle, stroke,strokeWidth) => {
-    // const updatedElement = createElement(id,x1,y1,x2,y2,type, fill, fillStyle, stroke,strokeWidth)
-    //console.log(type)
-    const elementsCopy = [...elements]
+    let elementsCopy
+    if(elementsUser.length !== 0) {
+      elementsCopy = [...elementsUser]
+    }else if(elementsUser.length === 0){
+      elementsCopy = [...elements]
+    }
+    
     switch(type){
       case "line":
       case "rectangle":
@@ -63,8 +71,13 @@ function DrawingBoardPlayer(props) {
       default:
         throw new Error('Type not recognised') 
     }
-    setElementState(elementsCopy)
+    if(elementsUser.length !== 0){
+      setUserElementState(elementsCopy)
+    }else if(elementsUser.length === 0){
+      setElementState(elementsCopy)
+    }
   }
+  
 
   const distance = (a, b) => Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 
@@ -163,6 +176,7 @@ function DrawingBoardPlayer(props) {
     }
 
   function drawElement(roughCanvas, context, element) {
+    //console.log(element)
     switch (element.type) {
       case "line":
       case "rectangle":
@@ -210,9 +224,10 @@ function DrawingBoardPlayer(props) {
     const context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
     const roughCanvas = rough.canvas(canvas)
+    elementsUser.forEach(element => drawElement(roughCanvas, context, element))
     elements.forEach(element => drawElement(roughCanvas, context, element))
-  }, [elements])//run if elements state changes
-  
+  }, [elements, elementsUser])//run if elements state changes
+
   useEffect(() => {
     const fill = document.getElementById("fill")
     const stroke = document.getElementById("stroke")
@@ -237,6 +252,7 @@ function DrawingBoardPlayer(props) {
   },[])
 
   useEffect(() => {
+    setUserElementState([])
     const line = document.getElementById("line")
     const rectangle = document.getElementById("rectangle")
     const circle = document.getElementById("circle")
@@ -355,7 +371,6 @@ function DrawingBoardPlayer(props) {
       setAction('none')
       setSelectedElement(null)
     }
-  
 }, [props.event])
 
 
@@ -364,7 +379,7 @@ function DrawingBoardPlayer(props) {
     const {clientX, clientY} = event
 
     if(elementType === "selection"){
-      if(elements.length !== 0){
+      if(elementsUser.length !== 0){
       //return the element at the position we we clicked
       const element = getElementAtPosition(clientX, clientY, elements)
       //if there is a element as the clicked position
@@ -372,11 +387,11 @@ function DrawingBoardPlayer(props) {
         if(element.type === "pencil"){
           const xOffsets = element.points.map(point => clientX - point.x);
           const yOffsets = element.points.map(point => clientY - point.y);
-          setSelectedElement({ ...element, xOffsets, yOffsets });
+          setUserElementState({ ...element, xOffsets, yOffsets });
         }else{
           const offsetX = clientX - element.x1;
           const offsetY = clientY - element.y1;
-          setSelectedElement({ ...element, offsetX, offsetY });
+          setUserElementState({ ...element, offsetX, offsetY });
         }
 
         if(element.position === 'inside') {
@@ -388,11 +403,11 @@ function DrawingBoardPlayer(props) {
       }
     }
     }else{
-      const id = elements.length
+      const id = elementsUser.length
       const element = createElement(id,clientX,clientY,clientX,clientY, elementType);
       //add new element in the elements state
-      setElementState(prevState => [...prevState, element])
-      setSelectedElement(element)
+      setUserElementState(prevState => [...prevState, element])
+      setSelectedUserElement(element)
       setAction('drawing')
     }
   }
@@ -450,28 +465,28 @@ function DrawingBoardPlayer(props) {
     //coordinates while the mouse is moving
     const {clientX, clientY} = event
     if(elementType === "selection"){
-      if(elements.length !== 0){
-        const element = getElementAtPosition(clientX, clientY, elements)
+      if(elementsUser.length !== 0){
+        const element = getElementAtPosition(clientX, clientY, elementsUser)
         event.target.style.cursor = element ? cursorForPosition(element.position) : "default"
       }
     }
  
     if(action === "drawing"){
-    const index = elements.length-1
-    const {x1,y1} = elements[index]
+    const index = elementsUser.length-1
+    const {x1,y1} = elementsUser[index]
     //console.log(x1,y1) undefined in case of pencil element
     updateElement(index,x1,y1, clientX, clientY, elementType, fill, fillStyle, strokeColor,strokeWidth)
     }else if(action==="moving"){
-      if(selectedElement.type === "pencil"){
-        const newPoints = selectedElement.points.map((_, index) => ({
-          x: clientX - selectedElement.xOffsets[index],
-          y: clientY - selectedElement.yOffsets[index],
+      if(selectedUserElement.type === "pencil"){
+        const newPoints = selectedUserElement.points.map((_, index) => ({
+          x: clientX - selectedUserElement.xOffsets[index],
+          y: clientY - selectedUserElement.yOffsets[index],
         }));
-        const elementsCopy = [...elements];
-        elementsCopy[selectedElement.id].points = newPoints
-        setElementState(elementsCopy, true);
+        const elementsCopy = [...elementsUser];
+        elementsCopy[selectedUserElement.id].points = newPoints
+        setUserElementState(elementsCopy, true);
       }else{
-        const  {id ,x1, x2, y1, y2, type, offsetX, offsetY} = selectedElement
+        const  {id ,x1, x2, y1, y2, type, offsetX, offsetY} = selectedUserElement
         const width = x2-x1
         const height = y2-y1
   
@@ -481,7 +496,7 @@ function DrawingBoardPlayer(props) {
         updateElement(id ,newX1, newY1,newX1 + width, newY1+height, type, fill, fillStyle, strokeColor,strokeWidth)
       }
     }else if(action === "resize"){
-      const  {id ,type,position, ...coordiantes} = selectedElement
+      const  {id ,type,position, ...coordiantes} = selectedUserElement
       const {x1,y1,x2,y2} = resizedCoordinates(clientX, clientY, position, coordiantes)
       updateElement(id,x1,y1,x2,y2,type, fill, fillStyle, strokeColor,strokeWidth)
     }
@@ -490,18 +505,18 @@ function DrawingBoardPlayer(props) {
   const adjustmentRequired = type => ["line", "rectangle","circle"].includes(type);
 
   const handleMouseUp = () => {
-    if(elements.length !== 0){
-    if(selectedElement){
-      const index = selectedElement.id
-      const {id, type} = elements[index]
+    if(elementsUser.length !== 0){
+    if(selectedUserElement){
+      const index = selectedUserElement.id
+      const {id, type} = elementsUser[index]
       if ((action === "drawing" || action === "resizing") && adjustmentRequired(type)) {
-        const {x1,y1,x2,y2} = adjustElementCorrdinates(elements[index])
+        const {x1,y1,x2,y2} = adjustElementCorrdinates(elementsUser[index])
         updateElement(id, x1,y1,x2,y2,type, fill, fillStyle, strokeColor,strokeWidth)
       }
     }
   }
     setAction('none')
-    setSelectedElement(null)
+    setSelectedUserElement(null)
   }
   
   return (
