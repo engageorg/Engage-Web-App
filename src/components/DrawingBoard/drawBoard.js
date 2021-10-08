@@ -503,74 +503,82 @@ function DrawingBoard() {
     <div>
         <div className="drawOptions">
           <div className="allOptions">
-          <div className="shapesOptions">
-        <div>
-          <input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
-          <label htmlFor="selection">Selection</label>
-        </div>
-        <div>
-          <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/>
-          <label htmlFor="line">line</label>
-        </div>
-        <div>
-          <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
-          <label htmlFor="rectangle">Rectangle</label>
-        </div>
-        <div>
-          <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
-          <label htmlFor="circle">Circle </label>
-        </div>
-        <div>
-          <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
-          <label htmlFor="pencil">Pencil </label>
-        </div>
-        <div>
-          <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
-          <label htmlFor="arrow">Arrow</label>
-        </div>
-        </div>
-        <div className="styleCard">
-        <div>
-        Fill
-        <select id="fill">
-          <option>transparent</option>
-          <option>red</option>
-          <option>green</option>
-          <option>yellow</option>
-          items<option>coral</option>
-        </select>
-        </div>
-        <div>
-        FillStyle
-        <select id="fillStyle">
-          <option>solid</option>
-          <option>hachure</option>
-          <option>dashed</option>
-          <option>ZigZag</option>
-        </select>
-        </div>
-        <div>
-        Stroke 
-        <select id="stroke">
-          <option>black</option>
-          <option>red</option>
-          <option>green</option>
-          <option>blue</option>
-          <option>yellow</option>
-        </select>
-        </div>
-        <div>
-        strokeWidth
-        <select id="strokeWidth">
-          <option>2</option>
-          <option>6</option>
-          <option>8</option>
-          <option>10</option>
-        </select>
-        </div>
-        </div>
+              <div className="shapesOptions">
+                <div>
+                 <input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
+                 <label htmlFor="selection">Selection</label>
+                </div>
+
+                <div>
+                 <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/>
+                 <label htmlFor="line">line</label>
+                </div>
+
+                <div>
+                 <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
+                 <label htmlFor="rectangle">Rectangle</label>
+                </div>
+
+                <div>
+                 <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
+                 <label htmlFor="circle">Circle </label>
+                </div>
+ 
+                <div>
+                 <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
+                 <label htmlFor="pencil">Pencil </label>
+                </div>
+
+                <div>
+                 <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
+                 <label htmlFor="arrow">Arrow</label>
+                </div>
+              </div>
+        
+              <div className="styleCard">
+                  <div>
+                    Fill
+                    <select id="fill">
+                      <option>transparent</option>
+                      <option>red</option>
+                      <option>green</option>
+                      <option>yellow</option>
+                      items<option>coral</option>
+                    </select>
+                  </div>
+                  <div>
+                    FillStyle
+                  <select id="fillStyle">
+                    <option>solid</option>
+                    <option>hachure</option>
+                    <option>dashed</option>
+                    <option>ZigZag</option>
+                  </select>
+                  </div>
+                  <div>
+                    Stroke 
+                  <select id="stroke">
+                    <option>black</option>
+                    <option>red</option>
+                    <option>green</option>
+                    <option>blue</option>
+                    <option>yellow</option>
+                  </select>
+                  </div>
+                  <div>
+                   strokeWidth
+                   <select id="strokeWidth">
+                     <option>2</option>
+                     <option>6</option>
+                     <option>8</option>
+                     <option>10</option>
+                   </select>
+                   </div>
+              </div>
         </div>
       </div>
+     
+     <main>
       <canvas id="canvas" 
       width={window.innerWidth} 
       height={window.innerHeight}
@@ -579,7 +587,9 @@ function DrawingBoard() {
       onMouseUp = {handleMouseUp}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
-      ></canvas>  
+      ></canvas> 
+      </main> 
+    
     </div>  
   );
 }
