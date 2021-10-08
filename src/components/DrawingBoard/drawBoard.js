@@ -524,7 +524,6 @@ function DrawingBoard() {
           <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
           <label htmlFor="pencil">Pencil </label>
         </div>
-        {/*ELLIPSE NOT IMPLEMENTED NOW WILL BE IMPLEMENTED IN FUTURE*/}
         <div>
           <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
           <label htmlFor="arrow">Arrow</label>
