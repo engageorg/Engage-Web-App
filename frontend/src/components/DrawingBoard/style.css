@@ -34,12 +34,6 @@ select{
     align-items: center;
 }
 
-* {
-	border: 0;
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
 
 :root {
 	--bg: #e3e4e8;
@@ -52,15 +46,12 @@ select{
 	font-size: calc(20px + (40 - 20)*(100vw - 320px)/(2560 - 320));
 }
 
-body {
-	display: flex;
-}
-input [type = "radio"] {
+input[type = "radio"] {
 	color: var(--fg);
 	font: 1em/1.5 Muli, sans-serif;
 }
 
-label {
+.shapesOptions label {
 	display: flex;
     justify-content: center;
     align-items: center;
@@ -71,10 +62,10 @@ label {
 	-webkit-tap-highlight-color: transparent;
 }
 
-label input {
+.shapesOptions label input {
 	border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
-input[type = "radio"]{
+.shapesOptions input[type = "radio"]{
     width: 2.5rem;
 	height: 2.5em;
     transition: all var(--transDur) ease-in-out;
@@ -83,7 +74,7 @@ input[type = "radio"]{
 	appearance: none;
     appearance: none;
 }
-label {
+.shapesOptions label {
 	border-radius: 0;
 	box-shadow:
 		0.15em 0.15em 1em var(--bs2) inset,
@@ -101,24 +92,27 @@ label {
 	appearance: none;
 }
 
-label svg {
+.shapesOptions label svg {
     width: 1.5rem;
     height: 1.5rem;
 }
-input[type = "radio"]:checked {
+
+.shapesOptions input[type = "radio"]:checked {
 	box-shadow:
 		-0.15em -0.15em 0.45em var(--bs2) inset,
 		0.15em 0.15em 0.45em var(--bs4) inset,
 		0 0 0 var(--bs4), 
 		0 0 0 var(--bs1);
 }
-input[type = "radio"]:checked + span {
+
+.shapesOptions input[type = "radio"]:checked + span {
 	opacity: 1;
 }
-input[type = "radio"]:focus {
+.shapesOptions input[type = "radio"]:focus {
 	outline: transparent;
 }
-input + span {
+
+.shapesOptions input[type = "radio"] + span {
 	opacity: 0.65;
 	transition: opacity var(--transDur) ease-in-out;
 }
