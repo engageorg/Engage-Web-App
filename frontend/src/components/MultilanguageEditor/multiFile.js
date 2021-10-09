@@ -5,13 +5,13 @@ import { c, c99, cpp, cpp14, cpp17, python2, python3 } from "../../actions";
 import { useSelector, useDispatch } from "react-redux";
 import { runCode } from "../../actions/outputAction";
 import "./style.css";
-function MultiFile() {
-  const [language, setLanguage] = useState("python2");
+function MultiFile(props) {
+  const [language, setLanguage] = useState(props.language);
   const fileName = useSelector((state) => state.language);
   const dispatch = useDispatch();
   const [outputValue, setOutputValue] = useState("");
   const [inputValue, setInputValue] = useState("");
-  const file = files[fileName];
+  const file = files[language];
 
   function handleEditorChange(value) {
     file.value = value;
@@ -36,44 +36,44 @@ function MultiFile() {
     "Python 3": "python3",
   };
 
-  useEffect(() => {
-    const select = document.getElementById("language");
-    for (let key in languageList) {
-      var option = document.createElement("option");
-      option.text = key;
-      option.value = languageList[key];
-      option.className = languageList[key];
-      select.add(option);
-    }
+  // useEffect(() => {
+  //   const select = document.getElementsByClassName("language")[0]
+  //   for (let key in languageList) {
+  //     var option = document.createElement("option");
+  //     option.text = key;
+  //     option.value = languageList[key];
+  //     option.className = languageList[key];
+  //     select.add(option);
+  //   }
 
-    select.addEventListener("change", (e) => {
-      setLanguage(select.value);
-      if (select.value === "c") {
-        dispatch(c());
-      }
-      if (select.value === "c99") {
-        dispatch(c99());
-      }
-      if (select.value === "cpp") {
-        dispatch(cpp());
-      }
-      if (select.value === "cpp") {
-        dispatch(cpp());
-      }
-      if (select.value === "cpp14") {
-        dispatch(cpp14());
-      }
-      if (select.value === "cpp17") {
-        dispatch(cpp17());
-      }
-      if (select.value === "python2") {
-        dispatch(python2());
-      }
-      if (select.value === "python3") {
-        dispatch(python3());
-      }
-    });
-  }, []);
+  //   select.addEventListener("change", (e) => {
+  //     setLanguage(select.value);
+  //     if (select.value === "c") {
+  //       dispatch(c());
+  //     }
+  //     if (select.value === "c99") {
+  //       dispatch(c99());
+  //     }
+  //     if (select.value === "cpp") {
+  //       dispatch(cpp());
+  //     }
+  //     if (select.value === "cpp") {
+  //       dispatch(cpp());
+  //     }
+  //     if (select.value === "cpp14") {
+  //       dispatch(cpp14());
+  //     }
+  //     if (select.value === "cpp17") {
+  //       dispatch(cpp17());
+  //     }
+  //     if (select.value === "python2") {
+  //       dispatch(python2());
+  //     }
+  //     if (select.value === "python3") {
+  //       dispatch(python3());
+  //     }
+  //   });
+  // }, []);
 
   function userOutput(e) {
     console.log(e);
@@ -105,9 +105,10 @@ function MultiFile() {
     <>
       <div className="multilanguageIde">
         <div className="navbar">
-          <span className="fileName">main.cpp</span>
+          <span className="fileName">main 
+          {language === "python2" || language === "python3" ? ".py": ".cpp"}
+          </span>
           <div className="optionButton">
-            <select name="language" id="language"></select>
             <button
               className="showCodeOutput"
               style={{
@@ -127,8 +128,8 @@ function MultiFile() {
           <Editor
             height="100vh"
             width="80vw"
-            theme="vs-dark"
-            defaultLanguage="python"
+            theme="vs-light"
+            language="cpp"
             options={{ fontSize: 18, fontWeight: 400, fontFamily: "cursive" }}
             onChange={handleEditorChange}
             value={file.value}

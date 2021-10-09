@@ -11,12 +11,13 @@ import './style.css'
 var startTime;
 export default function Recorder(props) {
   const name = props.location.state.lectureType
+  const language = props.location.state.languageType
   const Recording = { events: [] };
   var lastMouse = {x : 0, y : 0};
   var lastKey = "";
   let fileName
-  if(name === "other"){
-    fileName="c"
+  if(name === "dsa"){
+    fileName= language
   }else if(name=== "ide"){
     fileName="index.html"
   }
@@ -66,7 +67,8 @@ export default function Recorder(props) {
     {
       eventName: "keyup",
       handler: function handleKeyPress(e) {
-        if(name === "ide" || name === "other"){
+        console.log(files[fileName])
+        if(name === "ide" || name === "dsa"){
           lastKey = childValue
           lastKeyClass = e.target.className
           Recording.events.push({
@@ -85,17 +87,16 @@ export default function Recorder(props) {
     {
       eventName: "click",
       handler: function handleClick(e) {
-        if(name === "ide" || name === "other"){
-          if(e.target.value  === "c" || 
-          e.target.value === "c99" || 
-          e.target.value === "cpp" || 
-          e.target.value === "cpp14" || 
-          e.target.value === "cpp17" || 
-          e.target.value === "python2" || 
-          e.target.value === "python3"){
-            fileName = e.target.value
+        if(name === "dsa"){
+          if(language  === "c" || 
+          language === "c99" || 
+          language === "cpp" || 
+          language === "cpp14" || 
+          language === "cpp17" || 
+          language === "python2" || 
+          language === "python3"){
+            fileName = language
           }
-          if(fileName !== "script.js" || fileName !== "style.css" || fileName !== "index.html")
           Recording.events.push({
             type: "click",
             target: e.target.className,
@@ -248,6 +249,7 @@ export default function Recorder(props) {
         name:props.location.state.lectureName,
         type:props.location.state.lectureType,
         creator:props.location.state.lectureCreator,
+        language:language,
         id:result.id
       }).then((result) => {
         console.log("Recording Tally Saved")
@@ -294,7 +296,7 @@ export default function Recorder(props) {
         <i className="fas fa-microphone record" onClick={handleClick}></i>
         <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
       </div>
-      {name === "drawboard" ?<DrawingBoard/>:<IDE name={name} parentCallBack = {callbackFunction}/>}
+      {name === "drawboard" ?<DrawingBoard/>:<IDE name={name} language={language} parentCallBack = {callbackFunction}/>}
       </div>
     </>
   );

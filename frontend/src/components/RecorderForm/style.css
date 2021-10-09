@@ -15,3 +15,7 @@
 input::-webkit-input-placeholder{
    font-size: 20px; 
 }
+
+#language{
+    display: none;
+}

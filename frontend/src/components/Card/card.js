@@ -11,17 +11,24 @@ function Card(props) {
             playButton.textContent = "Play Lecture"
             var nameHeading = document.createElement("h3")
             var creator = document.createElement("h3")
+            var language = document.createElement("h3")
             nameHeading.className = "nameoflecture"
             creator.className = "nameofcreator" 
-            playButton.className = props.lectures[i].type
+            language.className = "languageofLecture"
+            playButton.className = props.lectures[i].type + props.lectures[i].language
             playButton.id = props.lectures[i].id 
             lecture.appendChild(nameHeading)
             lecture.appendChild(creator)
+            lecture.appendChild(language)
             lecture.appendChild(playButton)
             nameHeading.innerHTML = "Name - " + props.lectures[i].name
             creator.innerHTML = "Creator - " + props.lectures[i].creator
+            if(props.lectures[i].language !== ''){
+                language.innerHTML = "Language- " + props.lectures[i].language
+            }
             mainWindow.appendChild(lecture)
         }
+        
         mainWindow.addEventListener("click", (e) => {
             const id =  e.target.id
             console.log(e)

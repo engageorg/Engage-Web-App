@@ -58,7 +58,8 @@ function Preloader(){
 }
 
 export default function Video(props) {
-  const name = props.location.state.type
+  const name = props.location.state.type.slice(0,3)
+  const language = props.location.state.type.slice(3, 10)
   const [refresh, setRefresh] = useState("");
   const [loading, setLoading] = useState("loading");
   const dispatch = useDispatch();
@@ -328,7 +329,7 @@ export default function Video(props) {
       <div className = "player-content">
       <div className = "videoscreen">
       {/* <IDE name={name} refresh = {refresh}/> */}
-      {name==="drawboard" ? <DrawingBoardPlayer event={drawing}/>: <IDE name={name} refresh={refresh}/>}
+      {name==="drawboard" ? <DrawingBoardPlayer event={drawing}/>: <IDE name={name} language={language} refresh={refresh}/>}
       </div>
       <div className="playButton">
       <div className="container"><a className="button button-play"></a></div>
