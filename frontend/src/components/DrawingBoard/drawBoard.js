@@ -6,9 +6,38 @@ import "./style.css";
 //A generator is a readonly property that lets you create a drawable object for a shape that can be later used with the draw method.
 const generator = rough.generator()
 
+const useHistory = (initialState) => {
+  const [index, setIndex] = useState(0)
+  const [ history, setHistory] = useState([initialState])
+  const setState = (action ,overwrite = false) => {
+    const newState = typeof action === "function" ?  action(history[index]) : action
+    
+    if(overwrite) {
+      const historyCopy = [...history];
+      historyCopy[index] = newState
+      setHistory(historyCopy)
+    }else {
+      const updatedState = [...history].slice(0, index+1)
+      setHistory(prevState => [...updatedState, newState])
+      setIndex(prevState=> prevState+1)
+    } 
+  }
+
+  const undo = () => {
+    console.log("WORTT")
+    index>0 && setIndex(prevState=> prevState-1)
+  }
+
+  const redo = () => index<history.length-1 && setIndex(prevState=> prevState+1)
+
+  return [history[index], setState, undo, redo]
+}
+
+
+
 function DrawingBoard() {
 
-  const [elements, setElementState] = useState([])
+  const [elements, setElementState, undo, redo] = useHistory([])
   const [fill, setFill] = useState('transparent')
   const [fillStyle, setFillStyle] = useState('solid')
   const [strokeColor, setStrokeColor] = useState('black')
@@ -63,7 +92,7 @@ function DrawingBoard() {
       default:
         throw new Error('Type not recognised') 
     }
-    setElementState(elementsCopy)
+    setElementState(elementsCopy, true)
   }
 
   const distance = (a, b) => Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
@@ -259,7 +288,7 @@ function DrawingBoard() {
           const offsetY = clientY - element.y1;
           setSelectedElement({ ...element, offsetX, offsetY });
         }
-
+        setElementState(prevState=>prevState)
         if(element.position === 'inside') {
           setAction("moving")
           const data = {
@@ -517,7 +546,7 @@ function DrawingBoard() {
               
                  <label className = "tools" htmlFor="line"> <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/> 
                 
-                 <svg viewBox="0 0 6 6"><line x1="0" y1="3" x2="6" y2="3" stroke="currentColor" stroke-linecap="round"></line></svg>
+                 <svg viewBox="0 0 6 6"><line x1="0" y1="3" x2="6" y2="3" stroke="currentColor" strokeLinecap="round"></line></svg>
                  </label>
                 
 
@@ -545,7 +574,7 @@ function DrawingBoard() {
               
                  <label className = "tools" htmlFor="arrow">   <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
                
-                 <svg viewBox="0 0 448 512" class="rtl-mirror"><path d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"></path></svg>
+                 <svg viewBox="0 0 448 512" className="rtl-mirror"><path d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"></path></svg>
                  </label>
                 
               </div>
@@ -605,7 +634,10 @@ function DrawingBoard() {
       onPointerMove={handlePointerMove}
       ></canvas> 
       </main> 
-    
+      <div style={{position:"fixed", bottom:0, padding:10}}>
+        <button onClick={undo}>Undo</button>
+        <button onClick={redo}>Redo</button>
+      </div>
     </div>  
   );
 }

@@ -6,12 +6,39 @@ import "./style.css";
 //A generator is a readonly property that lets you create a drawable object for a shape that can be later used with the draw method.
 const generator = rough.generator()
 
+const useHistory = (initialState) => {
+  const [index, setIndex] = useState(0)
+  const [ history, setHistory] = useState([initialState])
+  const setState = (action ,overwrite = false) => {
+    const newState = typeof action === "function" ?  action(history[index]) : action
+    
+    if(overwrite) {
+      const historyCopy = [...history];
+      historyCopy[index] = newState
+      setHistory(historyCopy)
+    }else {
+      const updatedState = [...history].slice(0, index+1)
+      setHistory(prevState => [...updatedState, newState])
+      setIndex(prevState=> prevState+1)
+    } 
+  }
+
+  const undo = () => {
+    console.log("WORTT")
+    index>0 && setIndex(prevState=> prevState-1)
+  }
+
+  const redo = () => index<history.length-1 && setIndex(prevState=> prevState+1)
+
+  return [history[index], setState, undo, redo]
+}
+
 function DrawingBoardPlayer(props) {
 
   //element state for the drawer player elements
   const [elements, setElementState] = useState([])
   //temporary element state for the user input elements
-  const [elementsUser, setUserElementState] = useState([])
+  const [elementsUser, setUserElementState, undo, redo] = useHistory([])
   const [fill, setFill] = useState('transparent')
   const [fillStyle, setFillStyle] = useState('solid')
   const [strokeColor, setStrokeColor] = useState('black')
@@ -72,7 +99,7 @@ function DrawingBoardPlayer(props) {
         throw new Error('Type not recognised') 
     }
     if(elementsUser.length !== 0){
-      setUserElementState(elementsCopy)
+      setUserElementState(elementsCopy, true)
     }else if(elementsUser.length === 0){
       setElementState(elementsCopy)
     }
@@ -226,7 +253,7 @@ function DrawingBoardPlayer(props) {
     const roughCanvas = rough.canvas(canvas)
     elementsUser.forEach(element => drawElement(roughCanvas, context, element))
     elements.forEach(element => drawElement(roughCanvas, context, element))
-  }, [elements, elementsUser])//run if elements state changes
+  }, [elements,elementsUser])//run if elements state changes
 
   useEffect(() => {
     const fill = document.getElementById("fill")
@@ -252,7 +279,7 @@ function DrawingBoardPlayer(props) {
   },[])
 
   useEffect(() => {
-    setUserElementState([])
+    setUserElementState([], true)
     const line = document.getElementById("line")
     const rectangle = document.getElementById("rectangle")
     const circle = document.getElementById("circle")
@@ -387,13 +414,13 @@ function DrawingBoardPlayer(props) {
         if(element.type === "pencil"){
           const xOffsets = element.points.map(point => clientX - point.x);
           const yOffsets = element.points.map(point => clientY - point.y);
-          setUserElementState({ ...element, xOffsets, yOffsets });
+          setSelectedUserElement({ ...element, xOffsets, yOffsets });
         }else{
           const offsetX = clientX - element.x1;
           const offsetY = clientY - element.y1;
-          setUserElementState({ ...element, offsetX, offsetY });
+          setSelectedUserElement({ ...element, offsetX, offsetY });
         }
-
+        setUserElementState(prevState => prevState)
         if(element.position === 'inside') {
           setAction("moving")
         }
@@ -522,85 +549,109 @@ function DrawingBoardPlayer(props) {
   return (
     <div>
         <div className="drawOptions">
+        <div style={{position:"fixed", zIndex:2, bottom:0, padding:10}}>
+        <button onClick={undo}>Undo</button>
+        <button onClick={redo}>Redo</button>
+      </div>
           <div className="allOptions">
-          <div className="shapesOptions">
-        <div>
-          <input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
-          <label htmlFor="selection">Selection</label>
-        </div>
-        <div>
-          <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/>
-          <label htmlFor="line">line</label>
-        </div>
-        <div>
-          <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
-          <label htmlFor="rectangle">Rectangle</label>
-        </div>
-        <div>
-          <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
-          <label htmlFor="circle">Circle </label>
-        </div>
-        <div>
-          <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
-          <label htmlFor="pencil">Pencil </label>
-        </div>
-        {/*ELLIPSE NOT IMPLEMENTED NOW WILL BE IMPLEMENTED IN FUTURE*/}
-        <div>
-          <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
-          <label htmlFor="arrow">Arrow</label>
-        </div>
-        </div>
-        <div className="styleCard">
-        <div>
-        Fill
-        <select id="fill">
-          <option>transparent</option>
-          <option>red</option>
-          <option>green</option>
-          <option>yellow</option>
-          items<option>coral</option>
-        </select>
-        </div>
-        <div>
-        FillStyle
-        <select id="fillStyle">
-          <option>solid</option>
-          <option>hachure</option>
-          <option>dashed</option>
-          <option>ZigZag</option>
-        </select>
-        </div>
-        <div>
-        Stroke 
-        <select id="stroke">
-          <option>black</option>
-          <option>red</option>
-          <option>green</option>
-          <option>blue</option>
-          <option>yellow</option>
-        </select>
-        </div>
-        <div>
-        strokeWidth
-        <select id="strokeWidth">
-          <option>2</option>
-          <option>6</option>
-          <option>8</option>
-          <option>10</option>
-        </select>
-        </div>
-        </div>
+              <div className="shapesOptions">
+              
+                 <label className = "tools" htmlFor="selection"><input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
+                 <svg viewBox="0 0 320 512" ><path d="M302.189 329.126H196.105l55.831 135.993c3.889 9.428-.555 19.999-9.444 23.999l-49.165 21.427c-9.165 4-19.443-.571-23.332-9.714l-53.053-129.136-86.664 89.138C18.729 472.71 0 463.554 0 447.977V18.299C0 1.899 19.921-6.096 30.277 5.443l284.412 292.542c11.472 11.179 3.007 31.141-12.5 31.141z"></path></svg>
+                 </label>
+                
+
+              
+                 <label className = "tools" htmlFor="line"> <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/> 
+                
+                 <svg viewBox="0 0 6 6"><line x1="0" y1="3" x2="6" y2="3" stroke="currentColor" strokeLinecap="round"></line></svg>
+                 </label>
+                
+
+              
+                 <label className = "tools" htmlFor="rectangle"> <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
+                
+                 <svg viewBox="0 0 448 512"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z"></path></svg>
+                 </label>
+                
+
+              
+                 <label className = "tools" htmlFor="circle"> <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
+                 
+                 <svg viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>
+                 </label>
+                
+ 
+              
+                 <label className = "tools" htmlFor="pencil"> <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
+              
+                 <svg viewBox="0 0 512 512"><path fill="currentColor" d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path></svg>
+                 </label>
+                
+
+              
+                 <label className = "tools" htmlFor="arrow">   <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
+               
+                 <svg viewBox="0 0 448 512" className="rtl-mirror"><path d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"></path></svg>
+                 </label>
+                
+              </div>
+        
+             {elementType !== "selection" ? <div className="styleCard">
+                  <div>
+                    Fill
+                    <select id="fill">
+                      <option>transparent</option>
+                      <option>red</option>
+                      <option>green</option>
+                      <option>yellow</option>
+                      items<option>coral</option>
+                    </select>
+                  </div>
+                  <div>
+                    FillStyle
+                  <select id="fillStyle">
+                    <option>solid</option>
+                    <option>hachure</option>
+                    <option>dashed</option>
+                    <option>ZigZag</option>
+                  </select>
+                  </div>
+                  <div>
+                    Stroke 
+                  <select id="stroke">
+                    <option>black</option>
+                    <option>red</option>
+                    <option>green</option>
+                    <option>blue</option>
+                    <option>yellow</option>
+                  </select>
+                  </div>
+                  <div>
+                   strokeWidth
+                   <select id="strokeWidth">
+                     <option>2</option>
+                     <option>6</option>
+                     <option>8</option>
+                     <option>10</option>
+                   </select>
+                   </div>
+              </div> : ""} 
+                
         </div>
       </div>
+     
+     <main style = {{ position : "absolute", top : "0" }}>
       <canvas id="canvas" 
-      width={window.innerWidth} 
-      height={window.innerHeight}
+      width = {window.innerWidth}
+      height = {window.innerHeight}
       onMouseDown = {handleMouseDown}
       onMouseMove = {handleMouseMove}
       onMouseUp = {handleMouseUp}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
-      ></canvas>  
+      ></canvas> 
+      </main> 
     </div>  
   );
 }

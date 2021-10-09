@@ -296,7 +296,7 @@ export default function Recorder(props) {
         <i className="fas fa-microphone record" onClick={handleClick}></i>
         <i className="fas fa-microphone-slash stop-record" onClick={handleStop}></i>
       </div>
-      {name === "drawboard" ?<DrawingBoard/>:<IDE name={name} language={language} parentCallBack = {callbackFunction}/>}
+      {name === "dra" ?<DrawingBoard/>:<IDE name={name} language={language} parentCallBack = {callbackFunction}/>}
       </div>
     </>
   );

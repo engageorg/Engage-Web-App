@@ -8,7 +8,7 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
 import DrawingBoardPlayer from "../DrawingBoard/drawBoardPlayer";
-//else{rectangle.click()}
+
 function Preloader(){
   return(
     <div className = "loader">
@@ -329,7 +329,7 @@ export default function Video(props) {
       <div className = "player-content">
       <div className = "videoscreen">
       {/* <IDE name={name} refresh = {refresh}/> */}
-      {name==="drawboard" ? <DrawingBoardPlayer event={drawing}/>: <IDE name={name} language={language} refresh={refresh}/>}
+      {name==="dra" ? <DrawingBoardPlayer event={drawing}/>: <IDE name={name} language={language} refresh={refresh}/>}
       </div>
       <div className="playButton">
       <div className="container"><a className="button button-play"></a></div>

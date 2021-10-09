@@ -67,7 +67,7 @@ function RecorderForm() {
             <select id="lectureType">
                 <option value="ide">Web Developerment</option>
                 <option value="dsa">DSA</option>
-                <option value="drawboard">Chalk Board</option>
+                <option value="dra">Chalk Board</option>
             </select>
             <button type="button"  onClick={navigateToRecorderWeb} id="submit">Submit</button>
         </form>
