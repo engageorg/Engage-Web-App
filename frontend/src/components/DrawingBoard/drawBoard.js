@@ -218,22 +218,26 @@ function DrawingBoard() {
     const stroke = document.getElementById("stroke")
     const strokeWidth = document.getElementById("strokeWidth")
     const fillStyle = document.getElementById("fillStyle")
-    //const fillStyle = document.getElementById("fillStyle")
+
+    if(elementType !== "selection"){
+     //const fillStyle = document.getElementById("fillStyle")
      fill.addEventListener("change", () => {
-       setFill(fill.value)
-     })
+      setFill(fill.value)
+    })
 
-     fillStyle.addEventListener("change", () => {
-       setFillStyle(fillStyle.value)
-     })
+    fillStyle.addEventListener("change", () => {
+      setFillStyle(fillStyle.value)
+    })
 
-     stroke.addEventListener("change", () => {
-       setStrokeColor(stroke.value)
-     })
+    stroke.addEventListener("change", () => {
+      setStrokeColor(stroke.value)
+    })
 
-     strokeWidth.addEventListener("change", () => {
-       setStrokeWidth(strokeWidth.value)
-     })
+    strokeWidth.addEventListener("change", () => {
+      setStrokeWidth(strokeWidth.value)
+    })
+    }
+   
   },[])
 
   const handleMouseDown = (event) => {
@@ -535,7 +539,7 @@ function DrawingBoard() {
                 </div>
               </div>
         
-              <div className="styleCard">
+             {elementType !== "selection" ? <div className="styleCard">
                   <div>
                     Fill
                     <select id="fill">
@@ -574,7 +578,8 @@ function DrawingBoard() {
                      <option>10</option>
                    </select>
                    </div>
-              </div>
+              </div> : ""} 
+                
         </div>
       </div>
      
