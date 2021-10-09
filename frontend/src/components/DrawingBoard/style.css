@@ -15,7 +15,6 @@ select{
 
 .allOptions{
     display: grid;
-    overflow: hidden;
 }
 
 .drawOptions{
@@ -35,12 +34,7 @@ select{
     align-items: center;
 }
 
-* {
-	border: 0;
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
+
 :root {
 	--bg: #e3e4e8;
 	--fg: #17181c;
@@ -51,15 +45,13 @@ select{
 	--transDur: 0.1s;
 	font-size: calc(20px + (40 - 20)*(100vw - 320px)/(2560 - 320));
 }
-body, form {
-	display: flex;
-}
-input {
+
+input[type = "radio"] {
 	color: var(--fg);
 	font: 1em/1.5 Muli, sans-serif;
 }
 
-label {
+.shapesOptions label {
 	display: flex;
     justify-content: center;
     align-items: center;
@@ -70,10 +62,19 @@ label {
 	-webkit-tap-highlight-color: transparent;
 }
 
-label input {
+.shapesOptions label input {
 	border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
-input {
+.shapesOptions input[type = "radio"]{
+    width: 2.5rem;
+	height: 2.5em;
+    transition: all var(--transDur) ease-in-out;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+    appearance: none;
+}
+.shapesOptions label {
 	border-radius: 0;
 	box-shadow:
 		0.15em 0.15em 1em var(--bs2) inset,
@@ -90,32 +91,29 @@ input {
 	-moz-appearance: none;
 	appearance: none;
 }
-input:checked {
+
+.shapesOptions label svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.shapesOptions input[type = "radio"]:checked {
 	box-shadow:
 		-0.15em -0.15em 0.45em var(--bs2) inset,
 		0.15em 0.15em 0.45em var(--bs4) inset,
 		0 0 0 var(--bs4), 
 		0 0 0 var(--bs1);
 }
-input:checked + span {
+
+.shapesOptions input[type = "radio"]:checked + span {
 	opacity: 1;
 }
-input:focus {
+.shapesOptions input[type = "radio"]:focus {
 	outline: transparent;
 }
-input + span {
+
+.shapesOptions input[type = "radio"] + span {
 	opacity: 0.65;
 	transition: opacity var(--transDur) ease-in-out;
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-	:root {
-		--bg: #454954;
-		--fg: #e3e4e8;
-		--bs1: #5a5f6d;
-		--bs2: #4a4e5a;
-		--bs3: #3e424c;
-		--bs4: #30333b;
-	}
-}
