@@ -509,41 +509,41 @@ function DrawingBoard() {
           <div className="allOptions">
               <div className="shapesOptions">
               
-                 <label htmlFor="selection"><input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
+                 <label className = "tools" htmlFor="selection"><input type="radio" id="selection" checked = {elementType==="selection"} onChange={() => setTool("selection")}/>
                  <svg viewBox="0 0 320 512" class=""><path d="M302.189 329.126H196.105l55.831 135.993c3.889 9.428-.555 19.999-9.444 23.999l-49.165 21.427c-9.165 4-19.443-.571-23.332-9.714l-53.053-129.136-86.664 89.138C18.729 472.71 0 463.554 0 447.977V18.299C0 1.899 19.921-6.096 30.277 5.443l284.412 292.542c11.472 11.179 3.007 31.141-12.5 31.141z"></path></svg>
                  </label>
                 
 
               
-                 <label htmlFor="line"> <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/> 
+                 <label className = "tools" htmlFor="line"> <input type="radio" id="line" checked = {elementType==="line"} onChange={() => setTool("line")}/> 
                 
                  <svg viewBox="0 0 6 6"><line x1="0" y1="3" x2="6" y2="3" stroke="currentColor" stroke-linecap="round"></line></svg>
                  </label>
                 
 
               
-                 <label htmlFor="rectangle"> <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
+                 <label className = "tools" htmlFor="rectangle"> <input type="radio" id="rectangle" checked = {elementType==="rectangle"} onChange={() => setTool("rectangle")}/>
                 
                  <svg viewBox="0 0 448 512"><path d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z"></path></svg>
                  </label>
                 
 
               
-                 <label htmlFor="circle"> <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
+                 <label className = "tools" htmlFor="circle"> <input type="radio" id="circle" checked={elementType==="circle"} onChange={() => setTool("circle")}/>
                  
                  <svg viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>
                  </label>
                 
  
               
-                 <label htmlFor="pencil"> <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
+                 <label className = "tools" htmlFor="pencil"> <input type="radio" id="pencil" checked={elementType==="pencil"} onChange={() => setTool("pencil")}/>
               
                  <svg viewBox="0 0 512 512"><path fill="currentColor" d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path></svg>
                  </label>
                 
 
               
-                 <label htmlFor="arrow">   <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
+                 <label className = "tools" htmlFor="arrow">   <input type="radio" id="arrow" checked={elementType==="arrow"} onChange={() => setTool("arrow")}/>
                
                  <svg viewBox="0 0 448 512" class="rtl-mirror"><path d="M313.941 216H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h301.941v46.059c0 21.382 25.851 32.09 40.971 16.971l86.059-86.059c9.373-9.373 9.373-24.569 0-33.941l-86.059-86.059c-15.119-15.119-40.971-4.411-40.971 16.971V216z"></path></svg>
                  </label>

@@ -17,9 +17,6 @@ select{
     display: grid;
 }
 
-.drawOptions{
-    position:absolute
-}
 
 .styleCard{
     border: 3px black solid;
@@ -34,6 +31,13 @@ select{
     align-items: center;
 }
 
+.tools{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 :root {
 	--bg: #e3e4e8;
@@ -51,20 +55,7 @@ input[type = "radio"] {
 	font: 1em/1.5 Muli, sans-serif;
 }
 
-.shapesOptions label {
-	display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 5rem;
-	margin: 0 0.2em;
-	text-align: center;
-	-webkit-tap-highlight-color: transparent;
-}
 
-.shapesOptions label input {
-	border-radius: 0.5em 0.5em 0.5em 0.5em;
-}
 .shapesOptions input[type = "radio"]{
     width: 2.5rem;
 	height: 2.5em;
@@ -72,9 +63,9 @@ input[type = "radio"] {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
-    appearance: none;
+    display: none;
 }
-.shapesOptions label {
+.shapesOptions .tools {
 	border-radius: 0;
 	box-shadow:
 		0.15em 0.15em 1em var(--bs2) inset,
@@ -83,7 +74,6 @@ input[type = "radio"] {
 		-0.15em -0.15em 0.45em var(--bs1);
 	cursor: pointer;
 	display: block;
-	margin-bottom: 0.5em;
 	width: 2.5rem;
 	height: 2.5em;
 	transition: all var(--transDur) ease-in-out;
@@ -97,23 +87,10 @@ input[type = "radio"] {
     height: 1.5rem;
 }
 
-.shapesOptions input[type = "radio"]:checked {
-	box-shadow:
-		-0.15em -0.15em 0.45em var(--bs2) inset,
-		0.15em 0.15em 0.45em var(--bs4) inset,
-		0 0 0 var(--bs4), 
-		0 0 0 var(--bs1);
+.tools:hover {
+    transform: scale(1.2);
 }
 
-.shapesOptions input[type = "radio"]:checked + span {
-	opacity: 1;
-}
-.shapesOptions input[type = "radio"]:focus {
-	outline: transparent;
-}
 
-.shapesOptions input[type = "radio"] + span {
-	opacity: 0.65;
-	transition: opacity var(--transDur) ease-in-out;
-}
+
 

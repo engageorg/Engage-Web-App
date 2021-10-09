@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "start-watch": "nodemon server.js",
-    "dev": "concurrently \"npm run start-watch\" \"cd frontend && npm start\""
+    "dev": "node server.js \n  cd ./frontend \n  npm start "
   },
   "author": "",
   "license": "ISC",
