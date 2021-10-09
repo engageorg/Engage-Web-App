@@ -13,7 +13,7 @@ function DrawingBoard() {
   const [fillStyle, setFillStyle] = useState('solid')
   const [strokeColor, setStrokeColor] = useState('black')
   const [strokeWidth ,setStrokeWidth] = useState('1')
-  const [elementType ,setTool] = useState('')
+  const [elementType ,setTool] = useState('selection')
   const [action, setAction] = useState('none')
   const [selectedElement, setSelectedElement] =useState('none')
   const [points, setPoints] = useState([]);
