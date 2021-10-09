@@ -1,6 +1,6 @@
 .drawOptions{
     margin-top: 10px;
-    margin-left: 10px;
+    z-index: 2;
 }
 
 select{
@@ -17,6 +17,9 @@ select{
     display: grid;
 }
 
+#canvas{
+    z-index: 1;
+}
 
 .styleCard{
     border: 3px black solid;
@@ -29,6 +32,7 @@ select{
     width: 100vw;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
 .tools{
