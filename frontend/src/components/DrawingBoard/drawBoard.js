@@ -45,7 +45,6 @@ function DrawingBoard() {
   const [elementType ,setTool] = useState('selection')
   const [action, setAction] = useState('none')
   const [selectedElement, setSelectedElement] =useState('none')
-  const [points, setPoints] = useState([]);
 
 
   function createElement(id, x1,y1,x2,y2,type, fill="transparent", fillStyle="solid", stroke="black", strokeWidth=2) {
@@ -111,6 +110,9 @@ function DrawingBoard() {
 
   const positionWithinElement = (x,y,element) => {
     const {type,x1,x2,y1,y2} = element
+
+    //TODO : change if else ladder to switch statement
+
     if(type === "line"){
       const on = onLine(x1,y1,x2,y2,x,y)
       const start = nearPoint(x,y,x1,y1,"start")
@@ -175,7 +177,7 @@ function DrawingBoard() {
   }
 
     //The function below will turn the points returned by getStroke into SVG path data.
-    const getSvgPathFromStroke = (stroke) => {
+  const getSvgPathFromStroke = (stroke) => {
       if (!stroke.length) return ''
     
       const d = stroke.reduce(
@@ -189,7 +191,7 @@ function DrawingBoard() {
     
       d.push('Z')
       return d.join(' ')
-    }
+  }
 
   function drawElement(roughCanvas, context, element) {
     switch (element.type) {
@@ -328,7 +330,7 @@ function DrawingBoard() {
           clientY:clientY,
           type:elementType,
         }
-      }else{
+      } else{
         data = {
           id:id,
           clientX:clientX,
@@ -388,15 +390,6 @@ function DrawingBoard() {
   }
 
 
-  const handlePointerDown = (e) => {
-    e.target.setPointerCapture(e.pointerId);
-    setPoints([[e.pageX, e.pageY, e.pressure]]);
-  }
-
-  const handlePointerMove = (e) => {
-    if (e.buttons !== 1) return;
-    setPoints([...points, [e.pageX, e.pageY, e.pressure]]);
-  }
 
   const handleMouseMove = (event) => {
     //coordinates while the mouse is moving
@@ -630,8 +623,6 @@ function DrawingBoard() {
       onMouseDown = {handleMouseDown}
       onMouseMove = {handleMouseMove}
       onMouseUp = {handleMouseUp}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
       ></canvas> 
       </main> 
       <div style={{position:"fixed", bottom:0, padding:10}}>
