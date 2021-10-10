@@ -7,6 +7,7 @@
     "@monaco-editor/react": "^4.2.2",
     "axios": "^0.21.4",
     "firebase": "^8.10.0",
+    "lz-string": "^1.4.4",
     "mic-recorder-to-mp3": "^2.2.2",
     "perfect-freehand": "^1.0.13",
     "react": "^16.14.0",

@@ -7,6 +7,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
 import './style.css'
+import LZString from 'lz-string'
 
 var startTime;
 export default function Recorder(props) {
@@ -267,7 +268,10 @@ export default function Recorder(props) {
         var reader = new FileReader();
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
-            audioString =(reader.result)
+            console.log(reader.result)
+            //console.log("blob "+blob)
+            console.log(LZString.compress(reader.result))
+            audioString =reader.result
             var storageRef = firebase.storage().ref();
               const id = JSON.parse(localStorage.getItem("recordingId"))
               //console.log(id)
