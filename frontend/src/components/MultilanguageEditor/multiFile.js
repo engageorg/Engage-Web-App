@@ -104,6 +104,7 @@ function MultiFile(props) {
   return (
     <>
       <div className="multilanguageIde">
+        <div className="editor">
         <div className="navbar">
           <span className="fileName">main 
           {language === "python2" || language === "python3" ? ".py": ".cpp"}
@@ -111,22 +112,14 @@ function MultiFile(props) {
           <div className="optionButton">
             <button
               className="showCodeOutput"
-              style={{
-                color: "white",
-                cursor: "pointer",
-                backgroundColor: "green",
-                borderRadius: "5px",
-                padding:"4px"
-              }}
               onClick={handleOutput}
             >
-              Run
+              <i class="fas fa-play"></i> Execute
             </button>
           </div>
         </div>
-        <div className="editor">
           <Editor
-            height="100vh"
+            height="96vh"
             width="80vw"
             theme="vs-light"
             language="cpp"
@@ -135,7 +128,8 @@ function MultiFile(props) {
             value={file.value}
             beforeMount={handleEditorWillMount}
           />
-          <div className="inputOutput">
+        </div>
+        <div className="inputOutput">
             <div className="inputArea">
               <h3>Input</h3>
               <textarea
@@ -157,7 +151,6 @@ function MultiFile(props) {
               ></textarea>
             </div>
           </div>
-        </div>
       </div>
     </>
   );

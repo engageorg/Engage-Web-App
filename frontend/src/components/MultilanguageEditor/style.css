@@ -1,25 +1,17 @@
 .inputOutput{
     display: flex;
     flex-direction:column;
-    justify-content: center;
-    align-items: center;
 }
 
 .editor{
     display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-
-.userInputArea, .userOutputArea{
-    resize: none;
-    width: 100%;
-    height: 100%;
-    background-color: #292929;
+    flex-direction: column;
 }
 
 .multilanguageIde{
     overflow: hidden;
+    display: flex;
+    flex-direction: row;
 }
 
 textarea{
@@ -31,7 +23,7 @@ textarea{
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    background-color: #6e6c6c;
+    background-color: #494A4E;
 }
 
 textarea::-webkit-input-placeholder{
@@ -41,13 +33,14 @@ textarea::-webkit-input-placeholder{
 
 .inputArea{
     color: white;
-    background-color: #1E1E1E;
+    background-color: #494A4E;
     flex: 1;
+    border-bottom: 5px solid #202020;
 }
 
 .outputArea{
     color: white;
-    background-color: #1E1E1E;
+    background-color: #494A4E;
     flex: 1;
 }
 
@@ -62,20 +55,15 @@ textarea::-webkit-input-placeholder{
 .navbar{
     display: flex;
     flex-direction: row;
-    background-color: #1E1E1E;
+    justify-content: space-between;
+    background-color:#1E1E1E;
     border-bottom: 1px solid #818181;
-    /* justify-content: space-around; */
 }
 
 .fileName{
     color: white;
     background-color: #202020;
     padding: 4px;
-}
-
-.optionButton{
-    padding: 4px;
-    justify-content: flex-end;
 }
 
 #language{
@@ -85,4 +73,20 @@ textarea::-webkit-input-placeholder{
     padding: 2px;
     border: 1px solid white;
 
+}
+
+.showCodeOutput{
+    color: white;
+    cursor: pointer;
+    background-color: green;
+    border-radius: 6px;
+    padding: 4px 5px 4px 5px;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top:4px;
+    margin-right: 4px;
+}
+
+.showCodeOutput .fa-play{
+    font-size: 18px;
 }
