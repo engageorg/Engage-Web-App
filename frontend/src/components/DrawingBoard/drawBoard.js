@@ -767,6 +767,7 @@ function isArrowKey(keyCode) {
     keyCode === KEYS.ARROW_UP
   );
 }
+
 function getSelectedIndices() {
   const selectedIndices = [];
   elements.forEach((element, index) => {
@@ -801,9 +802,11 @@ export default class App extends React.Component {
       scrollX: 0,
       scrollY: 0,
     };
+
     this.onResize = () => {
       this.forceUpdate();
     };
+
     this.onKeyDown = (event) => {
       if (isInputLike(event.target)) return;
       if (event.key === KEYS.ESCAPE) {
@@ -898,18 +901,22 @@ export default class App extends React.Component {
       moveAllLeft(elements, getSelectedIndices());
       this.forceUpdate();
     };
+
     this.moveOneLeft = () => {
       moveOneLeft(elements, getSelectedIndices());
       this.forceUpdate();
     };
+
     this.moveAllRight = () => {
       moveAllRight(elements, getSelectedIndices());
       this.forceUpdate();
     };
+
     this.moveOneRight = () => {
       moveOneRight(elements, getSelectedIndices());
       this.forceUpdate();
     };
+
     this.handleWheel = (e) => {
       e.preventDefault();
       const { deltaX, deltaY } = e;
@@ -943,6 +950,7 @@ export default class App extends React.Component {
     return (
       <div
         className="container"
+
         onCut = {(e) => {
           e.clipboardData.setData(
             "text/plain",
@@ -952,6 +960,7 @@ export default class App extends React.Component {
           this.forceUpdate();
           e.preventDefault();
         }}
+
         onCopy = {(e) => {
           e.clipboardData.setData(
             "text/plain",
@@ -959,6 +968,7 @@ export default class App extends React.Component {
           );
           e.preventDefault();
         }}
+
         onPaste = {(e) => {
           const paste = e.clipboardData.getData("text");
           let parsedElements;
@@ -1101,14 +1111,14 @@ export default class App extends React.Component {
         </div>
 
         <canvas
-          id="canvas"
-          style={{
+          id = "canvas"
+          style = {{
             width: canvasWidth,
             height: canvasHeight,
           }}
-          width={canvasWidth * window.devicePixelRatio}
-          height={canvasHeight * window.devicePixelRatio}
-          ref={(canvas) => {
+          width = {canvasWidth * window.devicePixelRatio}
+          height = {canvasHeight * window.devicePixelRatio}
+          ref = {(canvas) => {
             if (this.removeWheelEventListener) {
               this.removeWheelEventListener();
               this.removeWheelEventListener = undefined;
