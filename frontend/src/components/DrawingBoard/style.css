@@ -1,100 +1,110 @@
-.drawOptions{
-    margin-top: 10px;
-    z-index: 2;
-}
-
-select{
-    margin-left: 5px;
-    font-size: 20px;
-    padding-left: 2px;
-}
-
-.lineBox label{
-    border: 2px solid black;
-}
-
-.allOptions{
-    display: grid;
-}
-
-#canvas{
-    z-index: 1;
-}
-
-.styleCard{
-    border: 3px black solid;
-    width: 40%;
-}
-
-.shapesOptions{
-    display: flex;
-    flex-direction: row;
-    width: 100vw;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
-}
-
-.tools{
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-:root {
-	--bg: #e3e4e8;
-	--fg: #17181c;
-	--bs1: #ffffff;
-	--bs2: #f3f4f8;
-	--bs3: #cccdd1;
-	--bs4: #c1c2c5;
-	--transDur: 0.1s;
-	font-size: calc(20px + (40 - 20)*(100vw - 320px)/(2560 - 320));
-}
-
-input[type = "radio"] {
-	color: var(--fg);
-	font: 1em/1.5 Muli, sans-serif;
-}
-
-
-.shapesOptions input[type = "radio"]{
-    width: 2.5rem;
-	height: 2.5em;
-    transition: all var(--transDur) ease-in-out;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-    display: none;
-}
-.shapesOptions .tools {
-	border-radius: 0;
-	box-shadow:
-		0.15em 0.15em 1em var(--bs2) inset,
-		-0.15em -0.15em 1em var(--bs3) inset,
-		0.15em 0.15em 0.45em var(--bs4), 
-		-0.15em -0.15em 0.45em var(--bs1);
-	cursor: pointer;
-	display: block;
-	width: 2.5rem;
-	height: 2.5em;
-	transition: all var(--transDur) ease-in-out;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-}
-
-.shapesOptions label svg {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-.tools:hover {
-    transform: scale(1.2);
-}
-
-
-
-
+/* http://www.eaglefonts.com/fg-virgil-ttf-131249.htm */
+@font-face {
+	font-family: "Virgil";
+	src: url("https://uploads.codesandbox.io/uploads/user/ed077012-e728-4a42-8395-cbd299149d62/AflB-FG_Virgil.ttf");
+	font-display: swap;
+  }
+  body {
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+  }
+  .container {
+	display: flex;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+  }
+  .sidePanel {
+	width: 230px;
+	background-color: #eee;
+	padding: 10px;
+	overflow-y: auto;
+  }
+  .sidePanel h4 {
+	margin: 10px 0 10px 0;
+  }
+  .sidePanel .panelTools {
+	display: flex;
+	justify-content: space-between;
+  }
+  .sidePanel .panelTools label {
+	margin: 0;
+  }
+  .sidePanel .panelColumn {
+	display: flex;
+	flex-direction: column;
+  }
+  .tool {
+	position: relative;
+  }
+  .tool input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+  }
+  .tool input[type="radio"] + .toolIcon {
+	background-color: #ddd;
+	width: 41px;
+	height: 41px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 3px;
+  }
+  .tool input[type="radio"] + .toolIcon svg {
+	height: 1em;
+  }
+  .tool input[type="radio"]:hover + .toolIcon {
+	background-color: #e7e5e5;
+  }
+  .tool input[type="radio"]:checked + .toolIcon {
+	background-color: #bdbebc;
+  }
+  .tool input[type="radio"]:focus + .toolIcon {
+	box-shadow: 0 0 0 2px steelblue;
+  }
+  label {
+	margin-right: 6px;
+  }
+  label span {
+	display: inline-block;
+  }
+  input[type="number"] {
+	width: 30px;
+  }
+  input[type="color"] {
+	margin: 2px;
+  }
+  input {
+	margin-right: 5px;
+  }
+  input:focus {
+	outline: transparent;
+	box-shadow: 0 0 0 2px steelblue;
+  }
+  button {
+	background-color: #ddd;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	margin: 2px 0;
+	padding: 5px;
+	outline: transparent;
+  }
+  button:focus {
+	box-shadow: 0 0 0 2px steelblue;
+  }
+  button:hover {
+	background-color: #e7e5e5;
+	border-color: #d6d4d4;
+  }
+  button:active {
+	background-color: #bdbebc;
+	border-color: #bdbebc;
+  }
+  button:disabled {
+	cursor: not-allowed;
+  }
+  
