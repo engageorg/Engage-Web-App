@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import rough from "roughjs/bundled/rough.esm";
-import useForceUpdate from "use-force-update";
 import { moveOneLeft, moveAllLeft, moveOneRight, moveAllRight } from "./zindex";
 import "./style.css";
 
@@ -788,702 +787,690 @@ let lastCanvasHeight = -1;
 let lastMouseUp = null;
 
 
-const Chalkboard = (props) => {
+export default class App extends React.Component {
   
-  const [draggingElement, setdraggingElements] = useState(null);
-  const [resizingElement, setresizingElements] = useState(null);
-  const [elementType, setelementType] = useState("selection");
-  const [exportBackground, setexportBackground] = useState(true);
-  const [currentItemStrokeColor, setcurrentItemStrokeColor] = useState("#000000");
-  const [currentItemBackgroundColor, setcurrentItemBackgroundColor] = useState("#ffffff");
-  const [viewBackgroundColor, setviewBackgroundColor] = useState("#ffffff");
-  const [scrollX, setscrollX] = useState(0);
-  const [scrollY, setscrollY] = useState(0);
-  const forceUpdate = useForceUpdate();
-  const canvasWidth = window.innerWidth - CANVAS_WINDOW_OFFSET_LEFT;
-  const canvasHeight = window.innerHeight - CANVAS_WINDOW_OFFSET_TOP;
+  constructor() {
+    super(...arguments);
+    this.state = {
+      draggingElement: null,
+      resizingElement: null,
+      elementType: "selection",
+      exportBackground: true,
+      currentItemStrokeColor: "#000000",
+      currentItemBackgroundColor: "#ffffff",
+      viewBackgroundColor: "#ffffff",
+      scrollX: 0,
+      scrollY: 0,
+    };
 
-  const onResize = () => {
-    forceUpdate();
-  };
+    this.onResize = () => {
+      this.forceUpdate();
+    };
 
-  const onKeyDown = (event) => {
-    if (isInputLike(event.target)) return;
-    if (event.key === KEYS.ESCAPE) {
-      clearSelection();
-      forceUpdate();
-      event.preventDefault();
-    } else if (event.key === KEYS.BACKSPACE || event.key === KEYS.DELETE) {
-      deleteSelectedElements();
-      forceUpdate();
-      event.preventDefault();
-    } else if (isArrowKey(event.key)) {
-      const step = event.shiftKey
-        ? ELEMENT_SHIFT_TRANSLATE_AMOUNT
-        : ELEMENT_TRANSLATE_AMOUNT;
-      elements.forEach((element) => {
-        if (element.isSelected) {
-          if (event.key === KEYS.ARROW_LEFT) element.x -= step;
-          else if (event.key === KEYS.ARROW_RIGHT) element.x += step;
-          else if (event.key === KEYS.ARROW_UP) element.y -= step;
-          else if (event.key === KEYS.ARROW_DOWN) element.y += step;
+    this.onKeyDown = (event) => {
+      if (isInputLike(event.target)) return;
+      if (event.key === KEYS.ESCAPE) {
+        clearSelection();
+        this.forceUpdate();
+        event.preventDefault();
+      } else if (event.key === KEYS.BACKSPACE || event.key === KEYS.DELETE) {
+        deleteSelectedElements();
+        this.forceUpdate();
+        event.preventDefault();
+      } else if (isArrowKey(event.key)) {
+        const step = event.shiftKey
+          ? ELEMENT_SHIFT_TRANSLATE_AMOUNT
+          : ELEMENT_TRANSLATE_AMOUNT;
+        elements.forEach((element) => {
+          if (element.isSelected) {
+            if (event.key === KEYS.ARROW_LEFT) element.x -= step;
+            else if (event.key === KEYS.ARROW_RIGHT) element.x += step;
+            else if (event.key === KEYS.ARROW_UP) element.y -= step;
+            else if (event.key === KEYS.ARROW_DOWN) element.y += step;
+          }
+        });
+        this.forceUpdate();
+        event.preventDefault();
+        // Send backward: Cmd-Shift-Alt-B
+      } else if (
+        event.metaKey &&
+        event.shiftKey &&
+        event.altKey &&
+        event.code === "KeyB"
+      ) {
+        this.moveOneLeft();
+        event.preventDefault();
+        // Send to back: Cmd-Shift-B
+      } else if (event.metaKey && event.shiftKey && event.code === "KeyB") {
+        this.moveAllLeft();
+        event.preventDefault();
+        // Bring forward: Cmd-Shift-Alt-F
+      } else if (
+        event.metaKey &&
+        event.shiftKey &&
+        event.altKey &&
+        event.code === "KeyF"
+      ) {
+        this.moveOneRight();
+        event.preventDefault();
+        // Bring to front: Cmd-Shift-F
+      } else if (event.metaKey && event.shiftKey && event.code === "KeyF") {
+        this.moveAllRight();
+        event.preventDefault();
+        // Select all: Cmd-A
+      } else if (event.metaKey && event.code === "KeyA") {
+        elements.forEach((element) => {
+          element.isSelected = true;
+        });
+        this.forceUpdate();
+        event.preventDefault();
+      } else if (shapesShortcutKeys.includes(event.key.toLowerCase())) {
+        this.setState({ elementType: findElementByKey(event.key) });
+      } else if (event.metaKey && event.code === "KeyZ") {
+        let lastEntry = stateHistory.pop();
+        // If nothing was changed since last, take the previous one
+        if (generateHistoryCurrentEntry() === lastEntry) {
+          lastEntry = stateHistory.pop();
         }
-      });
-      forceUpdate();
-      event.preventDefault();
-      // Send backward: Cmd-Shift-Alt-B
-    } else if (
-      event.metaKey &&
-      event.shiftKey &&
-      event.altKey &&
-      event.code === "KeyB"
-    ) {
-      moveOneLeft();
-      event.preventDefault();
-      // Send to back: Cmd-Shift-B
-    } else if (event.metaKey && event.shiftKey && event.code === "KeyB") {
-      moveAllLeft();
-      event.preventDefault();
-      // Bring forward: Cmd-Shift-Alt-F
-    } else if (
-      event.metaKey &&
-      event.shiftKey &&
-      event.altKey &&
-      event.code === "KeyF"
-    ) {
-      moveOneRight();
-      event.preventDefault();
-      // Bring to front: Cmd-Shift-F
-    } else if (event.metaKey && event.shiftKey && event.code === "KeyF") {
-      moveAllRight();
-      event.preventDefault();
-      // Select all: Cmd-A
-    } else if (event.metaKey && event.code === "KeyA") {
-      elements.forEach((element) => {
-        element.isSelected = true;
-      });
-      forceUpdate();
-      event.preventDefault();
-    } else if (shapesShortcutKeys.includes(event.key.toLowerCase())) {
-      setelementType(findElementByKey(event.key));
-    } else if (event.metaKey && event.code === "KeyZ") {
-      let lastEntry = stateHistory.pop();
-      // If nothing was changed since last, take the previous one
-      if (generateHistoryCurrentEntry() === lastEntry) {
-        lastEntry = stateHistory.pop();
+        if (lastEntry !== undefined) {
+          restoreHistoryEntry(lastEntry);
+        }
+        this.forceUpdate();
+        event.preventDefault();
       }
-      if (lastEntry !== undefined) {
-        restoreHistoryEntry(lastEntry);
+    };
+
+    this.deleteSelectedElements = () => {
+      deleteSelectedElements();
+      this.forceUpdate();
+    };
+
+    this.clearCanvas = () => {
+      if (window.confirm("This will clear the whole canvas. Are you sure?")) {
+        elements.splice(0, elements.length);
+        this.setState({
+          viewBackgroundColor: "#ffffff",
+          scrollX: 0,
+          scrollY: 0,
+        });
+        this.forceUpdate();
       }
-      forceUpdate();
-      event.preventDefault();
-    }
-  };
+    };
 
-  const deleteSelectedElements = () => {
-    deleteSelectedElements();
-    forceUpdate();
-  };
+    this.moveAllLeft = () => {
+      moveAllLeft(elements, getSelectedIndices());
+      this.forceUpdate();
+    };
 
-  const clearCanvas = () => {
-    if (window.confirm("This will clear the whole canvas. Are you sure?")) {
-      elements.splice(0, elements.length);
-      setviewBackgroundColor("#ffffff");
-      setscrollX(0);
-      setscrollY(0);
-      forceUpdate();
-    }
-  };
+    this.moveOneLeft = () => {
+      moveOneLeft(elements, getSelectedIndices());
+      this.forceUpdate();
+    };
 
-  const localmoveAllLeft = () => {
-    moveAllLeft(elements, getSelectedIndices());
-    forceUpdate();
-  };
+    this.moveAllRight = () => {
+      moveAllRight(elements, getSelectedIndices());
+      this.forceUpdate();
+    };
 
-  const localmoveOneLeft = () => {
-    moveOneLeft(elements, getSelectedIndices());
-    forceUpdate();
-  };
+    this.moveOneRight = () => {
+      moveOneRight(elements, getSelectedIndices());
+      this.forceUpdate();
+    };
 
-  const localmoveAllRight = () => {
-    moveAllRight(elements, getSelectedIndices());
-    forceUpdate();
-  };
+    this.handleWheel = (e) => {
+      e.preventDefault();
+      const { deltaX, deltaY } = e;
+      this.setState((state) => ({
+        scrollX: state.scrollX - deltaX,
+        scrollY: state.scrollY - deltaY,
+      }));
+    };
+  }
 
-  const localmoveOneRight = () => {
-    moveOneRight(elements, getSelectedIndices());
-    forceUpdate();
-  };
 
-  const handleWheel = (e) => {
-    e.preventDefault();
-    const { deltaX, deltaY } = e;
-   
-    setscrollX(scrollX - deltaX);
-    setscrollY(scrollY - deltaY);
-   
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", onKeyDown, false);
-    window.addEventListener("resize", onResize, false);
+  componentDidMount() {
+    document.addEventListener("keydown", this.onKeyDown, false);
+    window.addEventListener("resize", this.onResize, false);
     const savedState = restoreFromLocalStorage();
     if (savedState) {
-      //state
+      this.setState(savedState);
     }
-  
-    // returned function will be called on component unmount 
-    return () => {
-      document.removeEventListener("keydown", onKeyDown, false);
-      window.removeEventListener("resize", onResize, false);
-    }
-  }, []);
+  }
 
-  const mounted = useRef();
-  useEffect(() => {
-  if (!mounted.current) {
-    // do componentDidMount logic
-    mounted.current = true;
-  } else {
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.onKeyDown, false);
+    window.removeEventListener("resize", this.onResize, false);
+  }
+
+  render() {
+    
+    const canvasWidth = window.innerWidth - CANVAS_WINDOW_OFFSET_LEFT;
+    const canvasHeight = window.innerHeight - CANVAS_WINDOW_OFFSET_TOP;
+   
+    return (
+      <div
+        className="container"
+
+        onCut = {(e) => {
+          e.clipboardData.setData(
+            "text/plain",
+            JSON.stringify(elements.filter((element) => element.isSelected))
+          );
+          deleteSelectedElements();
+          this.forceUpdate();
+          e.preventDefault();
+        }}
+
+        onCopy = {(e) => {
+          e.clipboardData.setData(
+            "text/plain",
+            JSON.stringify(elements.filter((element) => element.isSelected))
+          );
+          e.preventDefault();
+        }}
+
+        onPaste = {(e) => {
+          const paste = e.clipboardData.getData("text");
+          let parsedElements;
+          try {
+            parsedElements = JSON.parse(paste);
+          } catch (e) {}
+          if (
+            Array.isArray(parsedElements) &&
+            parsedElements.length > 0 &&
+            parsedElements[0].type // need to implement a better check here...
+          ) {
+            clearSelection();
+            parsedElements.forEach((parsedElement) => {
+              parsedElement.x += 10;
+              parsedElement.y += 10;
+              parsedElement.seed = randomSeed();
+              generateDraw(parsedElement);
+              elements.push(parsedElement);
+            });
+            this.forceUpdate();
+          }
+          e.preventDefault();
+        }}
+      >
+        <div className="sidePanel">
+          <h4>Shapes</h4>
+          <div className="panelTools">
+            {SHAPES.map(({ value, icon }) => (
+              <label
+                key={value}
+                className="tool"
+                title={`${capitalize(value)} - ${capitalize(value)[0]}`}
+              >
+                <input
+                  type="radio"
+                  checked={this.state.elementType === value}
+                  onChange={() => {
+                    this.setState({ elementType: value });
+                    clearSelection();
+                    document.documentElement.style.cursor =
+                      value === "text" ? "text" : "crosshair";
+                    this.forceUpdate();
+                  }}
+                />
+                <div className="toolIcon">{icon}</div>
+              </label>
+            ))}
+          </div>
+          <h4>Colors</h4>
+          <div className="panelColumn">
+            <label>
+              <input
+                type="color"
+                value={this.state.viewBackgroundColor}
+                onChange={(e) => {
+                  this.setState({ viewBackgroundColor: e.target.value });
+                }}
+              />
+              Background
+            </label>
+            <label>
+              <input
+                type="color"
+                value={this.state.currentItemStrokeColor}
+                onChange={(e) => {
+                  this.setState({ currentItemStrokeColor: e.target.value });
+                }}
+              />
+              Shape Stroke
+            </label>
+            <label>
+              <input
+                type="color"
+                value={this.state.currentItemBackgroundColor}
+                onChange={(e) => {
+                  this.setState({ currentItemBackgroundColor: e.target.value });
+                }}
+              />
+              Shape Background
+            </label>
+          </div>
+          <h4>Canvas</h4>
+          <div className="panelColumn">
+            <button
+              onClick={this.clearCanvas}
+              title="Clear the canvas & reset background color"
+            >
+              Clear canvas
+            </button>
+          </div>
+          <h4>Export</h4>
+          <div className="panelColumn">
+            <button
+              onClick={() => {
+                exportAsPNG(this.state);
+              }}
+            >
+              Export to png
+            </button>
+            <label>
+              <input
+                type="checkbox"
+                checked={this.state.exportBackground}
+                onChange={(e) => {
+                  this.setState({ exportBackground: e.target.checked });
+                }}
+              />
+              background
+            </label>
+          </div>
+          <h4>Save/Load</h4>
+          <div className="panelColumn">
+            <button
+              onClick={() => {
+                saveAsJSON();
+              }}
+            >
+              Save as...
+            </button>
+            <button
+              onClick={() => {
+                loadFromJSON().then(() => this.forceUpdate());
+              }}
+            >
+              Load file...
+            </button>
+          </div>
+          {someElementIsSelected() && (
+            <>
+              <h4>Shape options</h4>
+              <div className="panelColumn">
+                <button onClick={this.deleteSelectedElements}>Delete</button>
+                <button onClick={this.moveOneRight}>Bring forward</button>
+                <button onClick={this.moveAllRight}>Bring to front</button>
+                <button onClick={this.moveOneLeft}>Send backward</button>
+                <button onClick={this.moveAllLeft}>Send to back</button>
+              </div>
+            </>
+          )}
+        </div>
+
+        <canvas
+          id = "canvas"
+          style = {{
+            width: canvasWidth,
+            height: canvasHeight,
+          }}
+          width = {canvasWidth * window.devicePixelRatio}
+          height = {canvasHeight * window.devicePixelRatio}
+          ref = {(canvas) => {
+            if (this.removeWheelEventListener) {
+              this.removeWheelEventListener();
+              this.removeWheelEventListener = undefined;
+            }
+            if (canvas) {
+              canvas.addEventListener("wheel", this.handleWheel, {
+                passive: false,
+              });
+              this.removeWheelEventListener = () =>
+                canvas.removeEventListener("wheel", this.handleWheel);
+              // Whenever React sets the width/height of the canvas element,
+              // the context loses the scale transform. We need to re-apply it
+              if (
+                canvasWidth !== lastCanvasWidth ||
+                canvasHeight !== lastCanvasHeight
+              ) {
+                lastCanvasWidth = canvasWidth;
+                lastCanvasHeight = canvasHeight;
+                canvas
+                  .getContext("2d")
+                  .scale(window.devicePixelRatio, window.devicePixelRatio);
+              }
+            }
+          }}
+
+          onMouseDown={(e) => {
+
+            const canvas = document.getElementById("canvas");
+            const rc = rough.canvas(canvas);
+            const context = canvas.getContext("2d");
+
+            if (lastMouseUp !== null) {
+              // Unfortunately, sometimes we don't get a mouseup after a mousedown,
+              // this can happen when a contextual menu or alert is triggered. In order to avoid
+              // being in a weird state, we clean up on the next mousedown
+              lastMouseUp(e);
+            }
+
+            // only handle left mouse button
+            if (e.button !== 0) return;
+            // fixes mousemove causing selection of UI texts #32
+
+            e.preventDefault();
+
+            // Preventing the event above disables default behavior
+            //  of defocusing potentially focused input, which is what we want
+            //  when clicking inside the canvas.
+            if (isInputLike(document.activeElement)) {
+              document.activeElement.blur();
+            }
+            // Handle scrollbars dragging
+            const { isOverHorizontalScrollBar, isOverVerticalScrollBar } =
+              isOverScrollBars(
+                e.clientX - CANVAS_WINDOW_OFFSET_LEFT,
+                e.clientY - CANVAS_WINDOW_OFFSET_TOP,
+                canvasWidth,
+                canvasHeight,
+                this.state.scrollX,
+                this.state.scrollY
+              );
+
+            const x = e.clientX - CANVAS_WINDOW_OFFSET_LEFT - this.state.scrollX;
+            const y = e.clientY - CANVAS_WINDOW_OFFSET_TOP - this.state.scrollY;
+
+            const element = newElement(
+              this.state.elementType,
+              x,
+              y,
+              this.state.currentItemStrokeColor,
+              this.state.currentItemBackgroundColor
+            );
+
+            let resizeHandle = false;
+            let isDraggingElements = false;
+            let isResizingElements = false;
+
+            if (this.state.elementType === "selection") {
+              const resizeElement = elements.find((element) => {
+                return resizeTest(element, x, y, {
+                  scrollX: this.state.scrollX,
+                  scrollY: this.state.scrollY,
+                  viewBackgroundColor: this.state.viewBackgroundColor,
+                });
+              });
+
+              this.setState({
+                resizingElement: resizeElement ? resizeElement : null,
+              });
+              if (resizeElement) {
+                resizeHandle = resizeTest(resizeElement, x, y, {
+                  scrollX: this.state.scrollX,
+                  scrollY: this.state.scrollY,
+                  viewBackgroundColor: this.state.viewBackgroundColor,
+                });
+                document.documentElement.style.cursor = `${resizeHandle}-resize`;
+                isResizingElements = true;
+              } else {
+                let hitElement = null;
+                // We need to to hit testing from front (end of the array) to back (beginning of the array)
+                for (let i = elements.length - 1; i >= 0; --i) {
+                  if (hitTest(elements[i], x, y)) {
+                    hitElement = elements[i];
+                    break;
+                  }
+                }
+                // If we click on something
+                if (hitElement) {
+                  if (hitElement.isSelected) {
+                    // If that element is not already selected, do nothing,
+                    // we're likely going to drag it
+                  } else {
+                    // We unselect every other elements unless shift is pressed
+                    if (!e.shiftKey) {
+                      clearSelection();
+                    }
+                    // No matter what, we select it
+                    hitElement.isSelected = true;
+                  }
+                } else {
+                  // If we don't click on anything, let's remove all the selected elements
+                  clearSelection();
+                }
+                isDraggingElements = someElementIsSelected();
+                if (isDraggingElements) {
+                  document.documentElement.style.cursor = "move";
+                }
+              }
+            }
+            if (isTextElement(element)) {
+              resetCursor();
+              const text = prompt("What text do you want?");
+              if (text === null) {
+                return;
+              }
+              const fontSize = 20;
+              element.text = text;
+              element.font = `${fontSize}px Virgil`;
+              const font = context.font;
+              context.font = element.font;
+              const textMeasure = context.measureText(element.text);
+              const width = textMeasure.width;
+              const actualBoundingBoxAscent =
+                textMeasure.actualBoundingBoxAscent || fontSize;
+              const actualBoundingBoxDescent =
+                textMeasure.actualBoundingBoxDescent || 0;
+              element.actualBoundingBoxAscent = actualBoundingBoxAscent;
+              context.font = font;
+              const height = actualBoundingBoxAscent + actualBoundingBoxDescent;
+              // Center the text
+              element.x -= width / 2;
+              element.y -= actualBoundingBoxAscent;
+              element.width = width;
+              element.height = height;
+            }
+            generateDraw(element);
+            elements.push(element);
+            if (this.state.elementType === "text") {
+              this.setState({
+                draggingElement: null,
+                elementType: "selection",
+              });
+              element.isSelected = true;
+            } else {
+              this.setState({ draggingElement: element });
+            }
+            let lastX = x;
+            let lastY = y;
+            if (isOverHorizontalScrollBar || isOverVerticalScrollBar) {
+              lastX = e.clientX - CANVAS_WINDOW_OFFSET_LEFT;
+              lastY = e.clientY - CANVAS_WINDOW_OFFSET_TOP;
+            }
+
+            const onMouseMove = (e) => {
+              const target = e.target;
+              if (!(target instanceof HTMLElement)) {
+                return;
+              }
+              if (isOverHorizontalScrollBar) {
+                const x = e.clientX - CANVAS_WINDOW_OFFSET_LEFT;
+                const dx = x - lastX;
+                this.setState((state) => ({ scrollX: state.scrollX - dx }));
+                lastX = x;
+                return;
+              }
+              if (isOverVerticalScrollBar) {
+                const y = e.clientY - CANVAS_WINDOW_OFFSET_TOP;
+                const dy = y - lastY;
+                this.setState((state) => ({ scrollY: state.scrollY - dy }));
+                lastY = y;
+                return;
+              }
+              if (isResizingElements && this.state.resizingElement) {
+                const el = this.state.resizingElement;
+                const selectedElements = elements.filter((el) => el.isSelected);
+                if (selectedElements.length === 1) {
+                  const x =
+                    e.clientX - CANVAS_WINDOW_OFFSET_LEFT - this.state.scrollX;
+                  const y =
+                    e.clientY - CANVAS_WINDOW_OFFSET_TOP - this.state.scrollY;
+                  selectedElements.forEach((element) => {
+                    switch (resizeHandle) {
+                      case "nw":
+                        element.width += element.x - lastX;
+                        element.height += element.y - lastY;
+                        element.x = lastX;
+                        element.y = lastY;
+                        break;
+                      case "ne":
+                        element.width = lastX - element.x;
+                        element.height += element.y - lastY;
+                        element.y = lastY;
+                        break;
+                      case "sw":
+                        element.width += element.x - lastX;
+                        element.x = lastX;
+                        element.height = lastY - element.y;
+                        break;
+                      case "se":
+                        element.width += x - lastX;
+                        if (e.shiftKey) {
+                          element.height = element.width;
+                        } else {
+                          element.height += y - lastY;
+                        }
+                        break;
+                      case "n":
+                        element.height += element.y - lastY;
+                        element.y = lastY;
+                        break;
+                      case "w":
+                        element.width += element.x - lastX;
+                        element.x = lastX;
+                        break;
+                      case "s":
+                        element.height = lastY - element.y;
+                        break;
+                      case "e":
+                        element.width = lastX - element.x;
+                        break;
+                    }
+                    el.x = element.x;
+                    el.y = element.y;
+                    generateDraw(el);
+                  });
+                  lastX = x;
+                  lastY = y;
+                  // We don't want to save history when resizing an element
+                  skipHistory = true;
+                  this.forceUpdate();
+                  return;
+                }
+              }
+              if (isDraggingElements) {
+                const selectedElements = elements.filter((el) => el.isSelected);
+                if (selectedElements.length) {
+                  const x =
+                    e.clientX - CANVAS_WINDOW_OFFSET_LEFT - this.state.scrollX;
+                  const y =
+                    e.clientY - CANVAS_WINDOW_OFFSET_TOP - this.state.scrollY;
+                  selectedElements.forEach((element) => {
+                    element.x += x - lastX;
+                    element.y += y - lastY;
+                  });
+                  lastX = x;
+                  lastY = y;
+                  // We don't want to save history when dragging an element to initially size it
+                  skipHistory = true;
+                  this.forceUpdate();
+                  return;
+                }
+              }
+              // It is very important to read this.state within each move event,
+              // otherwise we would read a stale one!
+              const draggingElement = this.state.draggingElement;
+              if (!draggingElement) return;
+              let width =
+                e.clientX -
+                CANVAS_WINDOW_OFFSET_LEFT -
+                draggingElement.x -
+                this.state.scrollX;
+              let height =
+                e.clientY -
+                CANVAS_WINDOW_OFFSET_TOP -
+                draggingElement.y -
+                this.state.scrollY;
+              draggingElement.width = width;
+              // Make a perfect square or circle when shift is enabled
+              draggingElement.height = e.shiftKey
+                ? Math.abs(width) * Math.sign(height)
+                : height;
+              generateDraw(draggingElement);
+              if (this.state.elementType === "selection") {
+                setSelection(draggingElement);
+              }
+              // We don't want to save history when moving an element
+              skipHistory = true;
+              this.forceUpdate();
+            };
+
+            const onMouseUp = (e) => {
+              const { draggingElement, elementType } = this.state;
+              lastMouseUp = null;
+              window.removeEventListener("mousemove", onMouseMove);
+              window.removeEventListener("mouseup", onMouseUp);
+              resetCursor();
+              // if no element is clicked, clear the selection and redraw
+              if (draggingElement === null) {
+                clearSelection();
+                this.forceUpdate();
+                return;
+              }
+              if (elementType === "selection") {
+                if (isDraggingElements) {
+                  isDraggingElements = false;
+                }
+                elements.pop();
+              } else {
+                draggingElement.isSelected = true;
+              }
+              this.setState({
+                draggingElement: null,
+                elementType: "selection",
+              });
+              this.forceUpdate();
+            };
+
+            lastMouseUp = onMouseUp;
+            window.addEventListener("mousemove", onMouseMove);
+            window.addEventListener("mouseup", onMouseUp);
+            // We don't want to save history on mouseDown, only on mouseUp when it's fully configured
+            skipHistory = true;
+            this.forceUpdate();
+          }}
+        />
+      </div>
+    );
+  }
+
+  componentDidUpdate() {
     const canvas = document.getElementById("canvas");
     const rc = rough.canvas(canvas);
     const context = canvas.getContext("2d");
     renderScene(rc, canvas, {
       
-      scrollX: scrollX,
-      scrollY: scrollY,
-      viewBackgroundColor: viewBackgroundColor,
+      scrollX: this.state.scrollX,
+      scrollY: this.state.scrollY,
+      viewBackgroundColor: this.state.viewBackgroundColor,
     });
-    save({
-      draggingElement: draggingElement,
-      resizingElement: resizingElement,
-      elementType: elementType,
-      exportBackground: exportBackground,
-      currentItemStrokeColor: currentItemStrokeColor,
-      currentItemBackgroundColor: currentItemBackgroundColor,
-      scrollX: scrollX,
-      scrollY: scrollY,
-      viewBackgroundColor: viewBackgroundColor,
-    });
+    save(this.state);
     if (!skipHistory) {
       pushHistoryEntry(generateHistoryCurrentEntry());
     }
     skipHistory = false;
   }
-  });
-  
-  const removeWheelEventListener = undefined;
-
-  return (
-    <div
-      className="container"
-
-      onCut = {(e) => {
-        e.clipboardData.setData(
-          "text/plain",
-          JSON.stringify(elements.filter((element) => element.isSelected))
-        );
-        deleteSelectedElements();
-        forceUpdate();
-        e.preventDefault();
-      }}
-
-      onCopy = {(e) => {
-        e.clipboardData.setData(
-          "text/plain",
-          JSON.stringify(elements.filter((element) => element.isSelected))
-        );
-        e.preventDefault();
-      }}
-
-      onPaste = {(e) => {
-        const paste = e.clipboardData.getData("text");
-        let parsedElements;
-        try {
-          parsedElements = JSON.parse(paste);
-        } catch (e) {}
-        if (
-          Array.isArray(parsedElements) &&
-          parsedElements.length > 0 &&
-          parsedElements[0].type // need to implement a better check here...
-        ) {
-          clearSelection();
-          parsedElements.forEach((parsedElement) => {
-            parsedElement.x += 10;
-            parsedElement.y += 10;
-            parsedElement.seed = randomSeed();
-            generateDraw(parsedElement);
-            elements.push(parsedElement);
-          });
-          forceUpdate();
-        }
-        e.preventDefault();
-      }}
-    >
-      <div className="sidePanel">
-        <h4>Shapes</h4>
-        <div className="panelTools">
-          {SHAPES.map(({ value, icon }) => (
-            <label
-              key={value}
-              className="tool"
-              title={`${capitalize(value)} - ${capitalize(value)[0]}`}
-            >
-              <input
-                type="radio"
-                checked={elementType === value}
-                onChange={() => {
-                  setelementType(value);
-                  clearSelection();
-                  document.documentElement.style.cursor =
-                    value === "text" ? "text" : "crosshair";
-                    forceUpdate();
-                }}
-              />
-              <div className="toolIcon">{icon}</div>
-            </label>
-          ))}
-        </div>
-        <h4>Colors</h4>
-        <div className="panelColumn">
-          <label>
-            <input
-              type="color"
-              value={viewBackgroundColor}
-              onChange={(e) => {
-                setviewBackgroundColor(e.target.value);
-              }}
-            />
-            Background
-          </label>
-          <label>
-            <input
-              type="color"
-              value={currentItemStrokeColor}
-              onChange={(e) => {
-                setcurrentItemStrokeColor(e.target.value);
-              }}
-            />
-            Shape Stroke
-          </label>
-          <label>
-            <input
-              type="color"
-              value={currentItemBackgroundColor}
-              onChange={(e) => {
-                setcurrentItemBackgroundColor(e.target.value);
-              }}
-            />
-            Shape Background
-          </label>
-        </div>
-        <h4>Canvas</h4>
-        <div className="panelColumn">
-          <button
-            onClick={clearCanvas}
-            title="Clear the canvas & reset background color"
-          >
-            Clear canvas
-          </button>
-        </div>
-        <h4>Export</h4>
-        <div className="panelColumn">
-          <button
-            onClick={() => {
-              exportAsPNG({
-                draggingElement: draggingElement,
-                resizingElement: resizingElement,
-                elementType: elementType,
-                exportBackground: exportBackground,
-                currentItemStrokeColor: currentItemStrokeColor,
-                currentItemBackgroundColor: currentItemBackgroundColor,
-                scrollX: scrollX,
-                scrollY: scrollY,
-                viewBackgroundColor: viewBackgroundColor,
-              });
-            }}
-          >
-            Export to png
-          </button>
-          <label>
-            <input
-              type="checkbox"
-              checked={exportBackground}
-              onChange={(e) => {
-                setexportBackground(e.target.checked);
-              }}
-            />
-            background
-          </label>
-        </div>
-        <h4>Save/Load</h4>
-        <div className="panelColumn">
-          <button
-            onClick={() => {
-              saveAsJSON();
-            }}
-          >
-            Save as...
-          </button>
-          <button
-            onClick={() => {
-              loadFromJSON().then(() => forceUpdate());
-            }}
-          >
-            Load file...
-          </button>
-        </div>
-        {someElementIsSelected() && (
-          <>
-            <h4>Shape options</h4>
-            <div className="panelColumn">
-              <button onClick={deleteSelectedElements}>Delete</button>
-              <button onClick={localmoveOneRight}>Bring forward</button>
-              <button onClick={localmoveAllRight}>Bring to front</button>
-              <button onClick={localmoveOneLeft}>Send backward</button>
-              <button onClick={localmoveAllLeft}>Send to back</button>
-            </div>
-          </>
-        )}
-      </div>
-
-      <canvas
-        id = "canvas"
-        style = {{
-          width: canvasWidth,
-          height: canvasHeight,
-        }}
-        width = {canvasWidth * window.devicePixelRatio}
-        height = {canvasHeight * window.devicePixelRatio}
-        ref = {(canvas) => {
-          if (removeWheelEventListener) {
-            removeWheelEventListener();
-            removeWheelEventListener = undefined;
-          }
-          if (canvas) {
-            canvas.addEventListener("wheel", handleWheel, {
-              passive: false,
-            });
-              const removeWheelEventListener = () =>
-              canvas.removeEventListener("wheel", handleWheel);
-            // Whenever React sets the width/height of the canvas element,
-            // the context loses the scale transform. We need to re-apply it
-            if (
-              canvasWidth !== lastCanvasWidth ||
-              canvasHeight !== lastCanvasHeight
-            ) {
-              lastCanvasWidth = canvasWidth;
-              lastCanvasHeight = canvasHeight;
-              canvas
-                .getContext("2d")
-                .scale(window.devicePixelRatio, window.devicePixelRatio);
-            }
-          }
-        }}
-
-        onMouseDown={(e) => {
-
-          const canvas = document.getElementById("canvas");
-          const rc = rough.canvas(canvas);
-          const context = canvas.getContext("2d");
-
-          if (lastMouseUp !== null) {
-            // Unfortunately, sometimes we don't get a mouseup after a mousedown,
-            // this can happen when a contextual menu or alert is triggered. In order to avoid
-            // being in a weird state, we clean up on the next mousedown
-            lastMouseUp(e);
-          }
-
-          // only handle left mouse button
-          if (e.button !== 0) return;
-          // fixes mousemove causing selection of UI texts #32
-
-          e.preventDefault();
-
-          // Preventing the event above disables default behavior
-          //  of defocusing potentially focused input, which is what we want
-          //  when clicking inside the canvas.
-          if (isInputLike(document.activeElement)) {
-            document.activeElement.blur();
-          }
-          // Handle scrollbars dragging
-          const { isOverHorizontalScrollBar, isOverVerticalScrollBar } =
-            isOverScrollBars(
-              e.clientX - CANVAS_WINDOW_OFFSET_LEFT,
-              e.clientY - CANVAS_WINDOW_OFFSET_TOP,
-              canvasWidth,
-              canvasHeight,
-              scrollX,
-              scrollY
-            );
-
-          const x = e.clientX - CANVAS_WINDOW_OFFSET_LEFT - scrollX;
-          const y = e.clientY - CANVAS_WINDOW_OFFSET_TOP - scrollY;
-
-          const element = newElement(
-            elementType,
-            x,
-            y,
-            currentItemStrokeColor,
-            currentItemBackgroundColor
-          );
-
-          let resizeHandle = false;
-          let isDraggingElements = false;
-          let isResizingElements = false;
-
-          if (elementType === "selection") {
-            const resizeElement = elements.find((element) => {
-              return resizeTest(element, x, y, {
-                scrollX: scrollX,
-                scrollY: scrollY,
-                viewBackgroundColor: viewBackgroundColor,
-              });
-            });
-
-            setresizingElements(resizeElement ? resizeElement : null)
-       
-            if (resizeElement) {
-              resizeHandle = resizeTest(resizeElement, x, y, {
-                scrollX: scrollX,
-                scrollY: scrollY,
-                viewBackgroundColor: viewBackgroundColor,
-              });
-              document.documentElement.style.cursor = `${resizeHandle}-resize`;
-              isResizingElements = true;
-            } else {
-              let hitElement = null;
-              // We need to to hit testing from front (end of the array) to back (beginning of the array)
-              for (let i = elements.length - 1; i >= 0; --i) {
-                if (hitTest(elements[i], x, y)) {
-                  hitElement = elements[i];
-                  break;
-                }
-              }
-              // If we click on something
-              if (hitElement) {
-                if (hitElement.isSelected) {
-                  // If that element is not already selected, do nothing,
-                  // we're likely going to drag it
-                } else {
-                  // We unselect every other elements unless shift is pressed
-                  if (!e.shiftKey) {
-                    clearSelection();
-                  }
-                  // No matter what, we select it
-                  hitElement.isSelected = true;
-                }
-              } else {
-                // If we don't click on anything, let's remove all the selected elements
-                clearSelection();
-              }
-              isDraggingElements = someElementIsSelected();
-              if (isDraggingElements) {
-                document.documentElement.style.cursor = "move";
-              }
-            }
-          }
-          if (isTextElement(element)) {
-            resetCursor();
-            const text = prompt("What text do you want?");
-            if (text === null) {
-              return;
-            }
-            const fontSize = 20;
-            element.text = text;
-            element.font = `${fontSize}px Virgil`;
-            const font = context.font;
-            context.font = element.font;
-            const textMeasure = context.measureText(element.text);
-            const width = textMeasure.width;
-            const actualBoundingBoxAscent =
-              textMeasure.actualBoundingBoxAscent || fontSize;
-            const actualBoundingBoxDescent =
-              textMeasure.actualBoundingBoxDescent || 0;
-            element.actualBoundingBoxAscent = actualBoundingBoxAscent;
-            context.font = font;
-            const height = actualBoundingBoxAscent + actualBoundingBoxDescent;
-            // Center the text
-            element.x -= width / 2;
-            element.y -= actualBoundingBoxAscent;
-            element.width = width;
-            element.height = height;
-          }
-          generateDraw(element);
-          elements.push(element);
-          if (elementType === "text") {
-            setdraggingElements(null);
-            setelementType("selection");
-            element.isSelected = true;
-          } else {
-            setdraggingElements(element);
-          }
-          let lastX = x;
-          let lastY = y;
-          if (isOverHorizontalScrollBar || isOverVerticalScrollBar) {
-            lastX = e.clientX - CANVAS_WINDOW_OFFSET_LEFT;
-            lastY = e.clientY - CANVAS_WINDOW_OFFSET_TOP;
-          }
-
-          const onMouseMove = (e) => {
-            const target = e.target;
-            if (!(target instanceof HTMLElement)) {
-              return;
-            }
-            if (isOverHorizontalScrollBar) {
-              const x = e.clientX - CANVAS_WINDOW_OFFSET_LEFT;
-              const dx = x - lastX;
-              setscrollX(scrollX - dx);
-              lastX = x;
-              return;
-            }
-            if (isOverVerticalScrollBar) {
-              const y = e.clientY - CANVAS_WINDOW_OFFSET_TOP;
-              const dy = y - lastY;
-              setscrollY(scrollY - dy);
-              lastY = y;
-              return;
-            }
-            if (isResizingElements && resizingElement) {
-              const el = resizingElement;
-              const selectedElements = elements.filter((el) => el.isSelected);
-              if (selectedElements.length === 1) {
-                const x =
-                  e.clientX - CANVAS_WINDOW_OFFSET_LEFT - scrollX;
-                const y =
-                  e.clientY - CANVAS_WINDOW_OFFSET_TOP - scrollY;
-                selectedElements.forEach((element) => {
-                  switch (resizeHandle) {
-                    case "nw":
-                      element.width += element.x - lastX;
-                      element.height += element.y - lastY;
-                      element.x = lastX;
-                      element.y = lastY;
-                      break;
-                    case "ne":
-                      element.width = lastX - element.x;
-                      element.height += element.y - lastY;
-                      element.y = lastY;
-                      break;
-                    case "sw":
-                      element.width += element.x - lastX;
-                      element.x = lastX;
-                      element.height = lastY - element.y;
-                      break;
-                    case "se":
-                      element.width += x - lastX;
-                      if (e.shiftKey) {
-                        element.height = element.width;
-                      } else {
-                        element.height += y - lastY;
-                      }
-                      break;
-                    case "n":
-                      element.height += element.y - lastY;
-                      element.y = lastY;
-                      break;
-                    case "w":
-                      element.width += element.x - lastX;
-                      element.x = lastX;
-                      break;
-                    case "s":
-                      element.height = lastY - element.y;
-                      break;
-                    case "e":
-                      element.width = lastX - element.x;
-                      break;
-                  }
-                  el.x = element.x;
-                  el.y = element.y;
-                  generateDraw(el);
-                });
-                lastX = x;
-                lastY = y;
-                // We don't want to save history when resizing an element
-                skipHistory = true;
-                forceUpdate();
-                return;
-              }
-            }
-            if (isDraggingElements) {
-              const selectedElements = elements.filter((el) => el.isSelected);
-              if (selectedElements.length) {
-                const x =
-                  e.clientX - CANVAS_WINDOW_OFFSET_LEFT - scrollX;
-                const y =
-                  e.clientY - CANVAS_WINDOW_OFFSET_TOP - scrollY;
-                selectedElements.forEach((element) => {
-                  element.x += x - lastX;
-                  element.y += y - lastY;
-                });
-                lastX = x;
-                lastY = y;
-                // We don't want to save history when dragging an element to initially size it
-                skipHistory = true;
-                forceUpdate();
-                return;
-              }
-            }
-            
-            // It is very important to read state within each move event,
-            // otherwise we would read a stale one!
-            if (draggingElement === null) return;
-            let width = e.clientX - CANVAS_WINDOW_OFFSET_LEFT - draggingElement.x - scrollX;
-            let height =
-              e.clientY -
-              CANVAS_WINDOW_OFFSET_TOP -
-              draggingElement.y - scrollY;
-            draggingElement.width = width;
-            // Make a perfect square or circle when shift is enabled
-            draggingElement.height = e.shiftKey
-              ? Math.abs(width) * Math.sign(height)
-              : height;
-            generateDraw(draggingElement);
-            if (elementType === "selection") {
-              setSelection(draggingElement);
-            }
-            // We don't want to save history when moving an element
-            skipHistory = true;
-            forceUpdate();
-          };
-
-          const onMouseUp = (e) => {
-            lastMouseUp = null;
-            window.removeEventListener("mousemove", onMouseMove);
-            window.removeEventListener("mouseup", onMouseUp);
-            resetCursor();
-            // if no element is clicked, clear the selection and redraw
-            if (draggingElement === null) {
-              clearSelection();
-              forceUpdate();
-              return;
-            }
-            if (elementType === "selection") {
-              if (isDraggingElements) {
-                isDraggingElements = false;
-              }
-              elements.pop();
-            } else {
-              draggingElement.isSelected = true;
-            }
-            setdraggingElements(null)
-            setelementType("selection")
-            forceUpdate();
-          };
-
-          lastMouseUp = onMouseUp;
-          window.addEventListener("mousemove", onMouseMove);
-          window.addEventListener("mouseup", onMouseUp);
-          // We don't want to save history on mouseDown, only on mouseUp when it's fully configured
-          skipHistory = true;
-          forceUpdate();
-        }}
-      />
-    </div>
-  );
 }
-
-export default Chalkboard;
-
-
-
