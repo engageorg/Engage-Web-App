@@ -7,7 +7,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
-import DrawingBoardPlayer from "../DrawingBoard/drawBoardPlayer";
+import DrawingBoardPlayer from "../DrawingBoard/drawBoard";
 
 function Preloader(){
   return(
@@ -276,7 +276,7 @@ export default function Video(props) {
 
         }
       }
-      if (event.type === "click") {
+      else if (event.type === "click") {
         
         flashClass(fakeCursor, "click");
         tar = document.getElementsByClassName(event.target)[0];
@@ -286,7 +286,7 @@ export default function Video(props) {
           flashClass(tar, "clicked");
         }
       }
-      if (event.type === "keyup") {
+      else if (event.type === "keyup") {
         const path = event.target;
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
@@ -300,7 +300,7 @@ export default function Video(props) {
             }
         }
       }
-      if(event.type === "output") {
+      else if(event.type === "output") {
         const path = event.target;
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
