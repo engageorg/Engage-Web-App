@@ -32,6 +32,7 @@ textarea::-webkit-input-placeholder{
 }
 
 .inputArea{
+    border-top: 5px solid #1E1E1E;
     color: white;
     background-color: #494A4E;
     flex: 1;
@@ -46,10 +47,12 @@ textarea::-webkit-input-placeholder{
 
 .inputArea h3{
     margin: 0;
+    border-bottom: 5px solid #1E1E1E;
 }
 
 .outputArea h3{
     margin: 0;
+    border-bottom: 5px solid #1E1E1E;
 }
 
 .navbar{
