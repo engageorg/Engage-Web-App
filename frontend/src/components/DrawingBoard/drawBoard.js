@@ -949,7 +949,7 @@ export default class App extends React.Component {
       if (e.button !== 0) return;
 
       // fixes mousemove causing selection of UI texts #32
-      if(e.type = "mousedown") e.preventDefault();
+      // if(e.type === "mousedown") e.preventDefault();
 
       // Preventing the event above disables default behavior
       //  of defocusing potentially focused input, which is what we want
@@ -1256,7 +1256,7 @@ export default class App extends React.Component {
   componentDidMount() {
     document.addEventListener("keydown", this.onKeyDown, false);
     window.addEventListener("resize", this.onResize, false);
-    window.addEventListener("canvasmousedown", this.handlemousedown);
+    document.addEventListener("canvasmousedown", this.handlemousedown);
     const savedState = restoreFromLocalStorage();
     if (savedState) {
       this.setState(savedState);
@@ -1264,7 +1264,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    window.addEventListener("canvasmousedown", this.handlemousedown);
+    document.addEventListener("canvasmousedown", this.handlemousedown);
   }
 
   componentWillUnmount() {

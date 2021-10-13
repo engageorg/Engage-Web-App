@@ -265,6 +265,7 @@ export default function Video(props) {
 
     function drawEvent(event, fakeCursor) {
       if (event.type === "mousedown") {
+        console.log(event);
         const content = {
           type: "mousedown",
           button: event.button,
@@ -273,10 +274,11 @@ export default function Video(props) {
           shiftKey : event.shiftKey,
         };
         const e = new CustomEvent("canvasmousedown", { detail: content });
-        document.documentElement.dispatchEvent(e);
-        window.addEventListener("canvasmousedown", function(e){
-           console.log(e);
-        });
+        document.dispatchEvent(e);
+
+        // document.addEventListener("canvasmousedown", function(e){
+        //    console.log(e);
+        // });
         
       }
       else if (event.type === "mousemove") {
