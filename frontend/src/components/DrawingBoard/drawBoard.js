@@ -794,7 +794,7 @@ export default class App extends React.Component {
     this.state = {
       draggingElement: null,
       resizingElement: null,
-      elementType: "selection",
+      elementType: "circle",
       exportBackground: true,
       currentItemStrokeColor: "#000000",
       currentItemBackgroundColor: "#ffffff",
@@ -1080,6 +1080,7 @@ export default class App extends React.Component {
       }
 
       const onMouseMove = (e) => {
+        console.log(e);
         if(e.type !== "mousemove"){
           e = e.detail
         }
@@ -1244,8 +1245,8 @@ export default class App extends React.Component {
       lastMouseUp = onMouseUp;
       window.addEventListener("mousemove", onMouseMove);
       window.addEventListener("mouseup", onMouseUp);
-      window.addEventListener("canvasmouseup", onMouseUp);
-      window.addEventListener("canvasmousemove", onMouseMove);
+      document.getElementById("canvas").addEventListener("canvasmouseup", onMouseUp);
+      document.getElementById("canvas").addEventListener("canvasmousemove", onMouseMove);
       // We don't want to save history on mouseDown, only on mouseUp when it's fully configured
       skipHistory = true;
       this.forceUpdate();
@@ -1256,15 +1257,11 @@ export default class App extends React.Component {
   componentDidMount() {
     document.addEventListener("keydown", this.onKeyDown, false);
     window.addEventListener("resize", this.onResize, false);
-    document.addEventListener("canvasmousedown", this.handlemousedown);
+    document.getElementById("canvas").addEventListener("canvasmousedown", this.handlemousedown);
     const savedState = restoreFromLocalStorage();
     if (savedState) {
       this.setState(savedState);
     }
-  }
-
-  componentWillMount() {
-    document.addEventListener("canvasmousedown", this.handlemousedown);
   }
 
   componentWillUnmount() {

@@ -274,7 +274,7 @@ export default function Video(props) {
           shiftKey : event.shiftKey,
         };
         const e = new CustomEvent("canvasmousedown", { detail: content });
-        document.dispatchEvent(e);
+        document.getElementById("canvas").dispatchEvent(e);
 
         // document.addEventListener("canvasmousedown", function(e){
         //    console.log(e);
@@ -289,7 +289,7 @@ export default function Video(props) {
           shiftKey : event.shiftKey,
         };
         const e = new CustomEvent("canvasmousemove", { detail: content });
-        document.documentElement.dispatchEvent(e);
+        document.getElementById("canvas").dispatchEvent(e);
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
         fakeCursor.style.top = JSON.stringify(event.y) + "px";
@@ -306,7 +306,7 @@ export default function Video(props) {
           type: "mouseup"
         };
         const e = new CustomEvent("canvasmouseup", { detail: content });
-        document.documentElement.dispatchEvent(e);
+        document.getElementById("canvas").dispatchEvent(e);
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
         fakeCursor.style.top = JSON.stringify(event.y) + "px";
