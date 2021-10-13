@@ -927,10 +927,13 @@ export default class App extends React.Component {
     };
 
     this.handlemousedown = (e) => {
-      
+      console.log("eeeeeeeeeeeeeeeeeeeeee!");
+      if(e.type !== "mousedown"){
+        e = e.detail
+      }
       const canvasWidth = window.innerWidth - CANVAS_WINDOW_OFFSET_LEFT;
       const canvasHeight = window.innerHeight - CANVAS_WINDOW_OFFSET_TOP;
-      
+
       const canvas = document.getElementById("canvas");
       const rc = rough.canvas(canvas);
       const context = canvas.getContext("2d");
@@ -944,9 +947,9 @@ export default class App extends React.Component {
 
       // only handle left mouse button
       if (e.button !== 0) return;
-      // fixes mousemove causing selection of UI texts #32
 
-      e.preventDefault();
+      // fixes mousemove causing selection of UI texts #32
+      if(e.type = "mousedown") e.preventDefault();
 
       // Preventing the event above disables default behavior
       //  of defocusing potentially focused input, which is what we want
@@ -1077,10 +1080,16 @@ export default class App extends React.Component {
       }
 
       const onMouseMove = (e) => {
-        const target = e.target;
-        if (!(target instanceof HTMLElement)) {
-          return;
+        if(e.type !== "mousemove"){
+          e = e.detail
         }
+        if(e.type === "mousemove"){
+          const target = e.target;
+          if (!(target instanceof HTMLElement)) {
+            return;
+          }
+        }
+
         if (isOverHorizontalScrollBar) {
           const x = e.clientX - CANVAS_WINDOW_OFFSET_LEFT;
           const dx = x - lastX;
@@ -1208,6 +1217,8 @@ export default class App extends React.Component {
         lastMouseUp = null;
         window.removeEventListener("mousemove", onMouseMove);
         window.removeEventListener("mouseup", onMouseUp);
+        window.removeEventListener("canvasmouseup", onMouseUp);
+        window.removeEventListener("canvasmousemove", onMouseMove);
         resetCursor();
         // if no element is clicked, clear the selection and redraw
         if (draggingElement === null) {
@@ -1233,6 +1244,8 @@ export default class App extends React.Component {
       lastMouseUp = onMouseUp;
       window.addEventListener("mousemove", onMouseMove);
       window.addEventListener("mouseup", onMouseUp);
+      window.addEventListener("canvasmouseup", onMouseUp);
+      window.addEventListener("canvasmousemove", onMouseMove);
       // We don't want to save history on mouseDown, only on mouseUp when it's fully configured
       skipHistory = true;
       this.forceUpdate();
@@ -1243,10 +1256,15 @@ export default class App extends React.Component {
   componentDidMount() {
     document.addEventListener("keydown", this.onKeyDown, false);
     window.addEventListener("resize", this.onResize, false);
+    window.addEventListener("canvasmousedown", this.handlemousedown);
     const savedState = restoreFromLocalStorage();
     if (savedState) {
       this.setState(savedState);
     }
+  }
+
+  componentWillMount() {
+    window.addEventListener("canvasmousedown", this.handlemousedown);
   }
 
   componentWillUnmount() {
@@ -1433,10 +1451,10 @@ export default class App extends React.Component {
           ref = {(canvas) => {
             if (this.removeWheelEventListener) {
               this.removeWheelEventListener();
+              
               this.removeWheelEventListener = undefined;
             }
             if (canvas) {
-              window.addEventListener("canvasmousedown", this.handlemousedown);
               canvas.addEventListener("wheel", this.handleWheel, {
                 passive: false,
               });

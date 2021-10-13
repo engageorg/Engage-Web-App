@@ -31,11 +31,38 @@ export default function Recorder(props) {
   // Record each type of event
   const handlers = [
     {
+      eventName: "mouseup",
+      handler: function handleMouseMove(e) {
+        
+        Recording.events.push({
+          type: "mouseup",
+          time: Date.now() - startTime,
+        });
+      },
+    },
+    {
+      eventName: "mousedown",
+      handler: function handleMouseMove(e) {
+        
+        Recording.events.push({
+          type: "mousedown",
+          button: e.button,
+          clientX : e.clientX,
+          clientY : e.clientY,
+          shiftKey : e.shiftKey,
+          time: Date.now() - startTime,
+        });
+      },
+    },
+    {
       eventName: "mousemove",
       handler: function handleMouseMove(e) {
         lastMouse  = {x : e.pageX, y :e.pageY};
         Recording.events.push({
           type: "mousemove",
+          clientX : e.clientX,
+          clientY : e.clientY,   
+          shiftKey : e.shiftKey,       
           target: lastKeyClass,
           x: e.pageX,
           fileName : fileName,
