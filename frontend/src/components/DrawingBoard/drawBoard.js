@@ -1283,7 +1283,7 @@ export default class App extends React.Component {
    
     return (
       <div
-        className="container"
+        className="_drawcontainer"
 
         onCut = {(e) => {
           e.clipboardData.setData(
@@ -1388,6 +1388,7 @@ export default class App extends React.Component {
           <h4>Canvas</h4>
           <div className="panelColumn">
             <button
+              className = "chalk_button"
               onClick={this.clearCanvas}
               title="Clear the canvas & reset background color"
             >
@@ -1397,6 +1398,7 @@ export default class App extends React.Component {
           <h4>Export</h4>
           <div className="panelColumn">
             <button
+              className = "chalk_button"
               onClick={() => {
                 exportAsPNG(this.state);
               }}
@@ -1417,6 +1419,7 @@ export default class App extends React.Component {
           <h4>Save/Load</h4>
           <div className="panelColumn">
             <button
+              className = "chalk_button"
               onClick={() => {
                 saveAsJSON();
               }}
@@ -1424,6 +1427,7 @@ export default class App extends React.Component {
               Save as...
             </button>
             <button
+              className = "chalk_button"
               onClick={() => {
                 loadFromJSON().then(() => this.forceUpdate());
               }}
@@ -1435,11 +1439,11 @@ export default class App extends React.Component {
             <>
               <h4>Shape options</h4>
               <div className="panelColumn">
-                <button onClick={this.deleteSelectedElements}>Delete</button>
-                <button onClick={this.moveOneRight}>Bring forward</button>
-                <button onClick={this.moveAllRight}>Bring to front</button>
-                <button onClick={this.moveOneLeft}>Send backward</button>
-                <button onClick={this.moveAllLeft}>Send to back</button>
+                <button  className = "chalk_button" onClick={this.deleteSelectedElements}>Delete</button>
+                <button  className = "chalk_button" onClick={this.moveOneRight}>Bring forward</button>
+                <button  className = "chalk_button" onClick={this.moveAllRight}>Bring to front</button>
+                <button  className = "chalk_button" onClick={this.moveOneLeft}>Send backward</button>
+                <button  className = "chalk_button" onClick={this.moveAllLeft}>Send to back</button>
               </div>
             </>
           )}

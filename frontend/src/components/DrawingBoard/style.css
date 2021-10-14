@@ -8,7 +8,7 @@
 	margin: 0;
 	font-family: Arial, Helvetica, sans-serif;
   }
-  .container {
+  ._drawcontainer {
 	display: flex;
 	position: fixed;
 	top: 0;
@@ -66,10 +66,10 @@
   .tool input[type="radio"]:focus + .toolIcon {
 	box-shadow: 0 0 0 2px steelblue;
   }
-  label {
+  .tool {
 	margin-right: 6px;
   }
-  label span {
+  .tool span {
 	display: inline-block;
   }
   input[type="number"] {
@@ -81,11 +81,7 @@
   input {
 	margin-right: 5px;
   }
-  input:focus {
-	outline: transparent;
-	box-shadow: 0 0 0 2px steelblue;
-  }
-  button {
+ .chalk_button {
 	background-color: #ddd;
 	border: 1px solid #ccc;
 	border-radius: 4px;
@@ -93,18 +89,18 @@
 	padding: 5px;
 	outline: transparent;
   }
-  button:focus {
+ .chalk_button:focus {
 	box-shadow: 0 0 0 2px steelblue;
   }
-  button:hover {
+ .chalk_button:hover {
 	background-color: #e7e5e5;
 	border-color: #d6d4d4;
   }
-  button:active {
+ .chalk_button:active {
 	background-color: #bdbebc;
 	border-color: #bdbebc;
   }
-  button:disabled {
+ .chalk_button:disabled {
 	cursor: not-allowed;
   }
   
