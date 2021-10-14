@@ -275,7 +275,7 @@ export default function Video(props) {
           shiftKey : event.shiftKey,
         });
 
-        document.getElementById("canvas").dispatchEvent(eve);
+        if(document.getElementById("canvas"))document.getElementById("canvas").dispatchEvent(eve);
 
       }
       else if (event.type === "mousemove") {
@@ -289,7 +289,7 @@ export default function Video(props) {
           shiftKey : event.shiftKey,
         });
 
-        document.getElementById("canvas").dispatchEvent(eve);
+        if(document.getElementById("canvas"))document.getElementById("canvas").dispatchEvent(eve);
         
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
@@ -308,8 +308,7 @@ export default function Video(props) {
           bubbles: true,
           cancelable: true
         });
-
-        document.getElementById("canvas").dispatchEvent(eve);
+        if(document.getElementById("canvas"))document.getElementById("canvas").dispatchEvent(eve);
       }
       else if (event.type === "click") {
         
