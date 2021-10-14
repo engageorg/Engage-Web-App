@@ -1254,7 +1254,7 @@ export default class App extends React.Component {
       lastMouseUp = onMouseUp;
       window.addEventListener("mousemove", onMouseMove);
       window.addEventListener("mouseup", onMouseUp);
-      // We don't want to save history on mouseDown, only on mouseUp when it's fully configured
+      //We don't want to save history on mouseDown, only on mouseUp when it's fully configured
       skipHistory = true;
       this.forceUpdate();
     }
