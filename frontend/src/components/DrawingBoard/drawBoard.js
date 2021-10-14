@@ -927,10 +927,11 @@ export default class App extends React.Component {
     };
 
     this.handlemousedown = (e) => {
-      console.log("eeeeeeeeeeeeeeeeeeeeee!");
+      
       if(e.type !== "mousedown"){
         e = e.detail
       }
+     
       const canvasWidth = window.innerWidth - CANVAS_WINDOW_OFFSET_LEFT;
       const canvasHeight = window.innerHeight - CANVAS_WINDOW_OFFSET_TOP;
 
@@ -949,7 +950,7 @@ export default class App extends React.Component {
       if (e.button !== 0) return;
 
       // fixes mousemove causing selection of UI texts #32
-      // if(e.type === "mousedown") e.preventDefault();
+      //if(e.type === "mousedown") e.preventDefault();
 
       // Preventing the event above disables default behavior
       //  of defocusing potentially focused input, which is what we want
@@ -984,6 +985,8 @@ export default class App extends React.Component {
       let isResizingElements = false;
 
       if (this.state.elementType === "selection") {
+        
+        //find the element that needs to be resized 
         const resizeElement = elements.find((element) => {
           return resizeTest(element, x, y, {
             scrollX: this.state.scrollX,
@@ -991,18 +994,22 @@ export default class App extends React.Component {
             viewBackgroundColor: this.state.viewBackgroundColor,
           });
         });
-
+        
+        //keep the resizing element in a global state
         this.setState({
           resizingElement: resizeElement ? resizeElement : null,
         });
+
         if (resizeElement) {
           resizeHandle = resizeTest(resizeElement, x, y, {
             scrollX: this.state.scrollX,
             scrollY: this.state.scrollY,
             viewBackgroundColor: this.state.viewBackgroundColor,
           });
+
           document.documentElement.style.cursor = `${resizeHandle}-resize`;
           isResizingElements = true;
+
         } else {
           let hitElement = null;
           // We need to to hit testing from front (end of the array) to back (beginning of the array)
@@ -1061,6 +1068,7 @@ export default class App extends React.Component {
         element.width = width;
         element.height = height;
       }
+
       generateDraw(element);
       elements.push(element);
       if (this.state.elementType === "text") {
@@ -1194,6 +1202,7 @@ export default class App extends React.Component {
           CANVAS_WINDOW_OFFSET_LEFT -
           draggingElement.x -
           this.state.scrollX;
+        console.log(width);
         let height =
           e.clientY -
           CANVAS_WINDOW_OFFSET_TOP -
@@ -1331,6 +1340,7 @@ export default class App extends React.Component {
               >
                 <input
                   type="radio"
+                  className = {value}
                   checked={this.state.elementType === value}
                   onChange={() => {
                     this.setState({ elementType: value });

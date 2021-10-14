@@ -265,31 +265,32 @@ export default function Video(props) {
 
     function drawEvent(event, fakeCursor) {
       if (event.type === "mousedown") {
-        console.log(event);
-        const content = {
-          type: "mousedown",
+
+        let eve = new MouseEvent("mousedown", {
+          bubbles: true,
+          cancelable: true,
           button: event.button,
           clientX : event.clientX,
           clientY : event.clientY,
           shiftKey : event.shiftKey,
-        };
-        const e = new CustomEvent("canvasmousedown", { detail: content });
-        document.getElementById("canvas").dispatchEvent(e);
+        });
 
-        // document.addEventListener("canvasmousedown", function(e){
-        //    console.log(e);
-        // });
-        
+        document.getElementById("canvas").dispatchEvent(eve);
+
       }
       else if (event.type === "mousemove") {
-        const content = {
-          type: "mousemove",
+
+        let eve = new MouseEvent("mousemove", {
+          bubbles: true,
+          cancelable: true,
+          button: event.button,
           clientX : event.clientX,
           clientY : event.clientY,
           shiftKey : event.shiftKey,
-        };
-        const e = new CustomEvent("canvasmousemove", { detail: content });
-        document.getElementById("canvas").dispatchEvent(e);
+        });
+
+        document.getElementById("canvas").dispatchEvent(eve);
+        
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
         fakeCursor.style.left = JSON.stringify(event.x) + "px";
         fakeCursor.style.top = JSON.stringify(event.y) + "px";
@@ -302,24 +303,17 @@ export default function Video(props) {
         }
       }
       else if (event.type === "mouseup") {
-        const content = {
-          type: "mouseup"
-        };
-        const e = new CustomEvent("canvasmouseup", { detail: content });
-        document.getElementById("canvas").dispatchEvent(e);
-       //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
-        fakeCursor.style.left = JSON.stringify(event.x) + "px";
-        fakeCursor.style.top = JSON.stringify(event.y) + "px";
-        const path = event.target;
-        handleButtonEvents(event.fileName);
-        var tar = document.getElementsByClassName(path)[0];
-        if (tar != null) {
-          tar.focus();
 
-        }
+        let eve = new MouseEvent("mouseup", {
+          bubbles: true,
+          cancelable: true
+        });
+
+        document.getElementById("canvas").dispatchEvent(eve);
       }
       else if (event.type === "click") {
         
+        if(event.target === "rectangle" || event.target === "ellipse" || event.target === "arrow" || event.target === "selection") document.getElementsByClassName(event.target)[0].click();
         flashClass(fakeCursor, "click");
         tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){

@@ -75,7 +75,7 @@ export default function Recorder(props) {
     {
       eventName: "click",
       handler: function handleClick(e) {
-        if(name === "ide" || name === "other"){
+        // if(name === "ide" || name === "other"){
           if(e.target.className === "cssfile" || e.target.className === "buttontext style" || e.target.className === "fab fa-css3-alt") fileName = "style.css"
           if(e.target.className === "jsfile" || e.target.className === "buttontext script" || e.target.className === " fa-js-square") fileName = "script.js" 
           if(e.target.className === "htmlfile" || e.target.className === "buttontext html" || e.target.className === "fab fa-html5fab") fileName = "index.html"
@@ -88,7 +88,7 @@ export default function Recorder(props) {
             y: e.pageY,
             time: Date.now() - startTime,
           });
-        }
+        //}
       },
     },
     {
