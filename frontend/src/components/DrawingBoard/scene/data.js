@@ -21,6 +21,7 @@ export function saveAsJSON(elements, name) {
     });
     saveFile(`${name}.json`, "data:text/plain;charset=utf-8," + encodeURIComponent(serialized));
 }
+
 export function loadFromJSON() {
     const input = document.createElement("input");
     const reader = new FileReader();
@@ -50,6 +51,7 @@ export function loadFromJSON() {
         };
     });
 }
+
 export function exportCanvas(type, elements, canvas, { exportBackground, exportPadding = 10, viewBackgroundColor, name }) {
     if (!elements.length)
         return window.alert("Cannot export empty canvas.");
@@ -107,6 +109,7 @@ export function exportCanvas(type, elements, canvas, { exportBackground, exportP
     if (tempCanvas !== canvas)
         tempCanvas.remove();
 }
+
 function restore(savedElements, savedState) {
     return {
         elements: savedElements.map(element => ({
@@ -122,6 +125,7 @@ function restore(savedElements, savedState) {
         appState: savedState
     };
 }
+
 export function restoreFromLocalStorage() {
     const savedElements = localStorage.getItem(LOCAL_STORAGE_KEY);
     const savedState = localStorage.getItem(LOCAL_STORAGE_KEY_STATE);
@@ -145,6 +149,7 @@ export function restoreFromLocalStorage() {
     }
     return restore(elements, appState);
 }
+
 export function saveToLocalStorage(elements, state) {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(elements));
     localStorage.setItem(LOCAL_STORAGE_KEY_STATE, JSON.stringify(state));

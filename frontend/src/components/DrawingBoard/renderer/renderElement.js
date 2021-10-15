@@ -12,6 +12,7 @@ export function renderElement(element, rc, context, { scrollX, scrollY }) {
         context.fillRect(element.x + scrollX, element.y + scrollY, element.width, element.height);
         context.fillStyle = fillStyle;
     }
+
     else if (element.type === "rectangle") {
         const shape = withCustomMathRandom(element.seed, () => {
             return generator.rectangle(0, 0, element.width, element.height, {
@@ -28,6 +29,7 @@ export function renderElement(element, rc, context, { scrollX, scrollY }) {
         context.translate(-element.x - scrollX, -element.y - scrollY);
         context.globalAlpha = 1;
     }
+
     else if (element.type === "diamond") {
         const shape = withCustomMathRandom(element.seed, () => {
             const [topX, topY, rightX, rightY, bottomX, bottomY, leftX, leftY] = getDiamondPoints(element);
@@ -50,6 +52,7 @@ export function renderElement(element, rc, context, { scrollX, scrollY }) {
         context.translate(-element.x - scrollX, -element.y - scrollY);
         context.globalAlpha = 1;
     }
+
     else if (element.type === "ellipse") {
         const shape = withCustomMathRandom(element.seed, () => generator.ellipse(element.width / 2, element.height / 2, element.width, element.height, {
             stroke: element.strokeColor,
@@ -64,6 +67,7 @@ export function renderElement(element, rc, context, { scrollX, scrollY }) {
         context.translate(-element.x - scrollX, -element.y - scrollY);
         context.globalAlpha = 1;
     }
+    
     else if (element.type === "arrow") {
         const [x1, y1, x2, y2, x3, y3, x4, y4] = getArrowPoints(element);
         const options = {
