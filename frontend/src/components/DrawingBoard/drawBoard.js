@@ -801,7 +801,7 @@ export default class App extends React.Component {
     this.state = {
       draggingElement: null,
       resizingElement: null,
-      elementType: "circle",
+      elementType: "selection",
       exportBackground: true,
       currentItemStrokeColor: "#000000",
       currentItemBackgroundColor: "#ffffff",
