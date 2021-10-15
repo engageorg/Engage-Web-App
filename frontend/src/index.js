@@ -7,8 +7,8 @@ import './index.css';
 import Recorder from './components/Recorder/Recorder';
 import Video from './components/Player/Player';
 import RecorderForm from './components/RecorderForm/recorderForm';
-import DrawingBoard from './components/DrawingBoard/drawBoard';
-import DrawingBoardPlayer from './components/DrawingBoard/drawBoardPlayer'
+import DrawingBoard from './components/DrawingBoard/index';
+import DrawingBoardPlayer from './components/DrawingBoard/index'
 import allReducer from './reducers';
 import LiveClasses from './components/LiveClasses/liveClasses';
 import thunk from 'redux-thunk'

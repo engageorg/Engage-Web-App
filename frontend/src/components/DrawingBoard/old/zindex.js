@@ -1,8 +1,10 @@
+
 function swap(elements, indexA, indexB) {
     const element = elements[indexA];
     elements[indexA] = elements[indexB];
     elements[indexB] = element;
 }
+
 export function moveOneLeft(elements, indicesToMove) {
     indicesToMove.sort((a, b) => a - b);
     let isSorted = true;
@@ -16,8 +18,8 @@ export function moveOneLeft(elements, indicesToMove) {
         }
         swap(elements, index - 1, index);
     });
-    return elements;
 }
+
 export function moveOneRight(elements, indicesToMove) {
     const reversedIndicesToMove = indicesToMove.sort((a, b) => b - a);
     let isSorted = true;
@@ -31,7 +33,6 @@ export function moveOneRight(elements, indicesToMove) {
         }
         swap(elements, index + 1, index);
     });
-    return elements;
 }
 // Let's go through an example
 //        |        |
@@ -103,7 +104,6 @@ export function moveAllLeft(elements, indicesToMove) {
     leftMostElements.forEach((element, i) => {
         elements[i] = element;
     });
-    return elements;
 }
 // Let's go through an example
 //        |        |
@@ -174,5 +174,4 @@ export function moveAllRight(elements, indicesToMove) {
     rightMostElements.forEach((element, i) => {
         elements[elements.length - i - 1] = element;
     });
-    return elements;
 }

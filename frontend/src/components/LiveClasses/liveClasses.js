@@ -1,5 +1,5 @@
 import React, { useEffect,useRef} from "react";
-import DrawingBoardLive from '../DrawingBoard/drawBoardPlayer'
+import DrawingBoardLive from '../DrawingBoard/index'
 import * as io from 'socket.io-client'
 
 const env = process.env.NODE_ENV; // current environment

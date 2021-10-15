@@ -1,6 +1,6 @@
 import React from "react";
 import IDE from "../IDE";
-import DrawingBoard from "../DrawingBoard/drawBoard";
+import DrawingBoard from "../DrawingBoard/index";
 import files from "../../assets/files";
 import MicRecorder from 'mic-recorder-to-mp3';
 import firebase from 'firebase/app'
