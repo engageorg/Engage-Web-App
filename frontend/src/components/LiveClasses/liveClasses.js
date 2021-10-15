@@ -2,10 +2,19 @@ import React, { useEffect,useRef} from "react";
 import DrawingBoardLive from '../DrawingBoard/drawBoardPlayer'
 import * as io from 'socket.io-client'
 
+const env = process.env.NODE_ENV; // current environment
+let url
+if(env === "development") {
+  url = 'http://localhost:5000/'
+}else{
+  url = 'https://fierce-reef-05156.herokuapp.com/' 
+}
+
+
 function LiveClasses() {
     const socketRef = useRef()
     useEffect(() => {
-        socketRef.current = io.connect("http://localhost:5000")
+        socketRef.current = io.connect(url)
 
         socketRef.current.on("liveStart", ({event}) => {
             //console.log(event)

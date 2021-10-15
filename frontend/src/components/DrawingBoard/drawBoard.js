@@ -10,6 +10,13 @@ const elements = Array.of();
 let skipHistory = false;
 const stateHistory = [];
 
+const env = process.env.NODE_ENV; // current environment
+let url
+if(env === "development") {
+  url = 'http://localhost:5000/'
+}else{
+  url = 'https://fierce-reef-05156.herokuapp.com/' 
+}
 
 function generateHistoryCurrentEntry() {
   return JSON.stringify(
@@ -793,7 +800,7 @@ let lastCanvasHeight = -1;
 let lastMouseUp = null;
 
 const socketRef = React.createRef();
-socketRef.current = io.connect("http://localhost:5000")
+socketRef.current = io.connect(url)
 export default class App extends React.Component {
   
   constructor() {
@@ -1076,7 +1083,7 @@ export default class App extends React.Component {
         element.height = height;
       }
 
-      socketRef.current = io.connect("http://localhost:5000")
+      socketRef.current = io.connect(url)
 
       socketRef.current.emit("eventStart", {data:{
         button: e.button,
@@ -1232,7 +1239,7 @@ export default class App extends React.Component {
           ? Math.abs(width) * Math.sign(height)
           : height;
 
-        socketRef.current = io.connect("http://localhost:5000")
+        socketRef.current = io.connect(url)
         socketRef.current.emit("eventDrawing", {data:{
           button: e.button,
           clientX : e.clientX,
