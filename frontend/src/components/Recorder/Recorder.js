@@ -73,6 +73,21 @@ export default function Recorder(props) {
       },
     },
     {
+      eventName: "dblclick",
+      handler: function handleMouseMove(e) {
+        console.log(e);
+        Recording.events.push({
+          type: "dblclick",
+          button: e.button,
+          clientX : e.clientX,
+          clientY : e.clientY,
+          shiftKey : e.shiftKey,
+          altKey : e.altKey,
+          time: Date.now() - startTime,
+        });
+      },
+    },
+    {
       eventName: "click",
       handler: function handleClick(e) {
         // if(name === "ide" || name === "other"){
@@ -144,76 +159,6 @@ export default function Recorder(props) {
           target:"userOutputArea",
           time:Date.now() - startTime,
           value:e.detail.output
-        })
-      }
-    },
-    {
-      eventName:"drawStart", 
-      handler:function handleChange(e){
-      Recording.events.push({
-        type:"drawStart",
-        time:Date.now() - startTime,
-        value:e.detail
-        })
-      }
-    },
-    {
-      eventName:"drawEnd", 
-      handler:function handleChange(e){
-      Recording.events.push({
-        type:"drawEnd",
-        time:Date.now() - startTime,
-        value:e.detail
-        })
-      }
-    },
-    {
-      eventName:"drawing", 
-      handler:function handleChange(e){
-      Recording.events.push({
-        type:"drawing",
-        time:Date.now() - startTime,
-        value:e.detail
-        })
-      }
-    },
-    {
-      eventName:"movingStart",
-      handler:function handleChange(e){
-        Recording.events.push({
-          type:"movingStart",
-          time:Date.now() - startTime,
-          value:e.detail.element
-        })
-      }
-    },
-    {
-      eventName:"moving",
-      handler:function handleChange(e){
-        Recording.events.push({
-          type:"moving",
-          time:Date.now()-startTime,
-          value:e.detail
-        })
-      }
-    },
-    {
-      eventName:"resizeStart",
-      handler:function handleChange(e){
-        Recording.events.push({
-          type:"resizeStart",
-          time:Date.now() - startTime,
-          value:e.detail
-        })
-      }
-    },
-    {
-      eventName:"resizing",
-      handler:function handleChange(e){
-        Recording.events.push({
-          type:"resizing",
-          time:Date.now()-startTime,
-          value:e.detail
         })
       }
     }
