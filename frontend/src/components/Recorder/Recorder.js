@@ -127,6 +127,23 @@ export default function Recorder(props) {
       },
     },
     {
+      eventName: "keydown",
+      handler: function handleKeyPress(e) {
+  
+          Recording.events.push({
+            type: "keydown",
+            key: e.key,
+            shiftKey: e.shiftKey,
+            x: lastMouse.x,
+            y: lastMouse.y,
+          
+            keyCode: e.keyCode,
+            time: Date.now() - startTime,
+          });
+        
+      },
+    },
+    {
       eventName: "click",
       handler: function handleClick(e) {
         if(name === "dsa"){

@@ -6,6 +6,7 @@ export function textWysiwyg({ initText, x, y, strokeColor, font, onSubmit }) {
     const editable = document.createElement("div");
     editable.contentEditable = "true";
     editable.tabIndex = 0;
+    editable.className = "canvas_text";
     editable.innerText = initText;
     editable.dataset.type = "wysiwyg";
     Object.assign(editable.style, {
@@ -23,6 +24,7 @@ export function textWysiwyg({ initText, x, y, strokeColor, font, onSubmit }) {
         minHeight: "1em"
     });
     editable.onkeydown = ev => {
+        console.log(ev);
         if (ev.key === KEYS.ESCAPE) {
             ev.preventDefault();
             if (initText) {

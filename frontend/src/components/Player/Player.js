@@ -279,7 +279,8 @@ export default function Video(props) {
 
       }
       else if (event.type === "mousemove") {
-
+        
+        // TODO: Add e.buttons too
         let eve = new MouseEvent("mousemove", {
           bubbles: true,
           cancelable: true,
@@ -301,6 +302,16 @@ export default function Video(props) {
           tar.focus();
 
         }
+      }
+      else if (event.type === "keydown") {
+
+        let eve = new KeyboardEvent("keydown", {
+          key: event.key,
+          shiftKey: event.shiftKey,
+          bubbles: true,
+          cancelable: true
+        });
+        if(document.getElementById("canvas_text")) document.getElementById("canvas_text").dispatchEvent(eve);
       }
       else if (event.type === "mouseup") {
 

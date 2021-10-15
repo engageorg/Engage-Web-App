@@ -138,7 +138,10 @@ export default class App extends React.Component {
         event.preventDefault();
         return;
       }
-      if (isInputLike(event.target)) return;
+      if (isInputLike(event.target)){
+       
+        return;
+      } 
       const data = this.actionManager.handleKeyDown(
         event,
         elements,
@@ -387,6 +390,7 @@ export default class App extends React.Component {
               }
             }
           }}
+          
           onContextMenu={(e) => {
             e.preventDefault();
             const { x, y } = viewportCoordsToSceneCoords(e, this.state);
@@ -716,6 +720,7 @@ export default class App extends React.Component {
               history.skipRecording();
               this.forceUpdate();
             };
+            
             const onMouseUp = (e) => {
               const { draggingElement, elementType } = this.state;
               lastMouseUp = null;
@@ -836,7 +841,7 @@ export default class App extends React.Component {
               },
             });
           }}
-          
+
           onMouseMove={(e) => {
             const hasDeselectedButton = Boolean(e.buttons);
             if (hasDeselectedButton || this.state.elementType !== "selection") {
@@ -897,6 +902,7 @@ export default class App extends React.Component {
       }
     }
   }
+
   componentDidUpdate() {
     renderScene(elements, this.rc, this.canvas, {
       scrollX: this.state.scrollX,
