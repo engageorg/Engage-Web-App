@@ -6,6 +6,7 @@ export default function StartingComponent() {
     const history = useHistory();
     const navigateToLectureScreen = () => history.push('/lectures')
     const navigateToDrawBoard = () => history.push('/drawboard')
+    const navigateToDrawBoardLive = () => history.push('/drawboardlive')
     const navigateToRecorderDraw = () => history.push('/recorder/drawboard');
     const navigateToRecordForm = () => history.push('/recordform');
     const navigateToPlayerDraw = () => history.push('/videoplayer/drawboard');
@@ -18,7 +19,7 @@ export default function StartingComponent() {
         <button onClick={navigateToDrawBoard}>Drawing Board</button>
         <button className = "recordWebD" onClick={navigateToRecorderDraw}>Recorder with Drawing Board</button>
         {/* <button className = "recordOther" onClick={navigateToRecorderOther}>Recorder with Other</button> */}
-        <button className = "playWebD" onClick={navigateToPlayerDraw}>Player with Drawing Board</button>
+        <button className = "playWebD" onClick={navigateToDrawBoardLive}>Drawing Board Live</button>
         </>
     )
 }

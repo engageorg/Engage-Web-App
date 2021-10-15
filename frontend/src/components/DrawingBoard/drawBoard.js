@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useRef} from "react";
 import rough from "roughjs/bundled/rough.esm";
 import { moveOneLeft, moveAllLeft, moveOneRight, moveAllRight } from "./zindex";
+import * as io from 'socket.io-client';
 import "./style.css";
 
 const LOCAL_STORAGE_KEY = "chalkboard";
@@ -8,6 +9,7 @@ const LOCAL_STORAGE_KEY_STATE = "chalkboard-state";
 const elements = Array.of();
 let skipHistory = false;
 const stateHistory = [];
+
 
 function generateHistoryCurrentEntry() {
   return JSON.stringify(
@@ -657,14 +659,14 @@ function deleteSelectedElements() {
 }
 
 function save(state) {
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(elements));
-  localStorage.setItem(LOCAL_STORAGE_KEY_STATE, JSON.stringify(state));
+  // localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(elements));
+  // localStorage.setItem(LOCAL_STORAGE_KEY_STATE, JSON.stringify(state));
 }
 
 function restoreFromLocalStorage() {
-  const savedElements = localStorage.getItem(LOCAL_STORAGE_KEY);
-  const savedState = localStorage.getItem(LOCAL_STORAGE_KEY_STATE);
-  return restore(savedElements, savedState);
+  // const savedElements = localStorage.getItem(LOCAL_STORAGE_KEY);
+  // const savedState = localStorage.getItem(LOCAL_STORAGE_KEY_STATE);
+  // return restore(savedElements, savedState);
 }
 
 function restore(savedElements, savedState) {
@@ -759,6 +761,10 @@ function findElementByKey(key) {
   }, defaultElement);
 }
 
+function ChangeTool(value) {
+  socketRef.current.emit("changeTool", {data:value})
+}
+
 function isArrowKey(keyCode) {
   return (
     keyCode === KEYS.ARROW_LEFT ||
@@ -786,7 +792,8 @@ let lastCanvasWidth = -1;
 let lastCanvasHeight = -1;
 let lastMouseUp = null;
 
-
+const socketRef = React.createRef();
+socketRef.current = io.connect("http://localhost:5000")
 export default class App extends React.Component {
   
   constructor() {
@@ -1069,6 +1076,16 @@ export default class App extends React.Component {
         element.height = height;
       }
 
+      socketRef.current = io.connect("http://localhost:5000")
+
+      socketRef.current.emit("eventStart", {data:{
+        button: e.button,
+        clientX : e.clientX,
+        clientY : e.clientY,
+        shiftKey : e.shiftKey,
+        target: e.target.className,
+      }})
+      console.log(element)
       generateDraw(element);
       elements.push(element);
       if (this.state.elementType === "text") {
@@ -1174,6 +1191,7 @@ export default class App extends React.Component {
             return;
           }
         }
+        console.log(isDraggingElements)
         if (isDraggingElements) {
           const selectedElements = elements.filter((el) => el.isSelected);
           if (selectedElements.length) {
@@ -1213,6 +1231,15 @@ export default class App extends React.Component {
         draggingElement.height = e.shiftKey
           ? Math.abs(width) * Math.sign(height)
           : height;
+
+        socketRef.current = io.connect("http://localhost:5000")
+        socketRef.current.emit("eventDrawing", {data:{
+          button: e.button,
+          clientX : e.clientX,
+          clientY : e.clientY,
+          shiftKey : e.shiftKey,
+          target: e.target.className,
+        }})
         generateDraw(draggingElement);
         if (this.state.elementType === "selection") {
           setSelection(draggingElement);
@@ -1248,6 +1275,7 @@ export default class App extends React.Component {
           draggingElement: null,
           elementType: "selection",
         });
+        socketRef.current.emit("eventEnd", {data:{elementType:"selection"}})
         this.forceUpdate();
       };
 
@@ -1341,6 +1369,7 @@ export default class App extends React.Component {
                   className = {value}
                   checked={this.state.elementType === value}
                   onChange={() => {
+                    ChangeTool(value)
                     this.setState({ elementType: value });
                     clearSelection();
                     document.documentElement.style.cursor =

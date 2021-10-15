@@ -18,7 +18,8 @@
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "roughjs": "^4.4.1"
+    "roughjs": "^4.4.1",
+    "socket.io-client": "^4.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

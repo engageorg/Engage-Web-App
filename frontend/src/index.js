@@ -8,7 +8,9 @@ import Recorder from './components/Recorder/Recorder';
 import Video from './components/Player/Player';
 import RecorderForm from './components/RecorderForm/recorderForm';
 import DrawingBoard from './components/DrawingBoard/drawBoard';
+import DrawingBoardPlayer from './components/DrawingBoard/drawBoardPlayer'
 import allReducer from './reducers';
+import LiveClasses from './components/LiveClasses/liveClasses';
 import thunk from 'redux-thunk'
 import firebase from 'firebase/app';
 import StartingComponent from './components/StartingComponent/startingCompoent';
@@ -44,6 +46,7 @@ ReactDOM.render(
       <Switch>
         <Route exact path = "/lectures" component = {AllLectures} />
         <Route exact path = "/drawboard" component = {DrawingBoard}/>
+        <Route exact path = "/drawboardlive" component = {LiveClasses}/>
         <Route exact path = "/recordform" component = {RecorderForm}/>
         <Route exact path = "/recorder" component = {Recorder} ide="web"/>
         <Route exact path = "/videoplayer" component = {Video}/>
