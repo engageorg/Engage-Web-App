@@ -7,7 +7,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
-import DrawingBoardPlayer from "../DrawingBoard/drawBoard";
+import DrawingBoardPlayer from "../DrawingBoard/tempdraw";
 
 function Preloader(){
   return(
