@@ -32,27 +32,10 @@ if (true) {
 
 
 io.on('connection', socket => {
-  //console.log("WOF")
-  socket.on("changeTool", ({data}) => {
+  socket.on("emitData", ({data}) => {
     console.log(data)
-    io.emit("toolChange", {event:data})
+    io.emit("receiveData", {data})
   })
-  socket.on("eventStart", ({data}) => {
-    //console.log(data)
-    io.emit('liveStart', {event:data})
-  })
-  socket.on("eventDrawing", ({data}) => {
-    //console.log(draggingElement)
-     io.emit('liveDrawing', {event:data})
-  })
-  socket.on("eventEnd", ({data}) => {
-    //console.log(data)
-    io.emit('liveEnd', {event:data})
-  })
-  // socket.on("moving", ({data}) => {
-  //   console.log(data)
-  //   io.emit('movingElement', {event:data})
-  // })
 })
 
 app.use('/api', routes);
