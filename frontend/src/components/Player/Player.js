@@ -13,7 +13,7 @@ function Preloader(){
   return(
     <div className = "loader">
        <div className ="preloader">
-        <div class="load">
+        <div className = "load">
 	         <img src= {img} border="0"/>
         </div>
        </div>
@@ -25,7 +25,6 @@ export default function Video(props) {
   const name = props.location.state.type.slice(0,3)
   const language = props.location.state.type.slice(3, 10)
   const [refresh, setRefresh] = useState("");
-  const [loading, setLoading] = useState("loading");
   const dispatch = useDispatch();
   let drawingEvent=''
   const [drawing, setDrawing] = useState('')
@@ -275,7 +274,10 @@ export default function Video(props) {
           bubbles: true,
           cancelable: true
         });
-        if(document.getElementById("canvas_text")) document.getElementById("canvas_text").dispatchEvent(eve);
+        if(document.getElementsByClassName("canvas_text")[0]){
+          document.getElementsByClassName("canvas_text")[0].innerText =  event.innerText;
+
+        } 
       }
       else if (event.type === "mouseup") {
 

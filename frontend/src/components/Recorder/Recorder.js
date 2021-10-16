@@ -129,15 +129,13 @@ export default function Recorder(props) {
     {
       eventName: "keydown",
       handler: function handleKeyPress(e) {
-  
+          let innerText = document.getElementsByClassName("canvas_text")[0].innerText
           Recording.events.push({
             type: "keydown",
             key: e.key,
             shiftKey: e.shiftKey,
-            x: lastMouse.x,
-            y: lastMouse.y,
-          
-            keyCode: e.keyCode,
+    
+            innerText: innerText,
             time: Date.now() - startTime,
           });
         

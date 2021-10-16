@@ -3,6 +3,7 @@ export function textWysiwyg({ initText, x, y, strokeColor, font, onSubmit }) {
     // Using contenteditable here as it has dynamic width.
     // But this solution has an issue — it allows to paste
     // multiline text, which is not currently supported
+   
     const editable = document.createElement("div");
     editable.contentEditable = "true";
     editable.tabIndex = 0;
@@ -24,7 +25,7 @@ export function textWysiwyg({ initText, x, y, strokeColor, font, onSubmit }) {
         minHeight: "1em"
     });
     editable.onkeydown = ev => {
-        console.log(ev);
+       
         if (ev.key === KEYS.ESCAPE) {
             ev.preventDefault();
             if (initText) {
@@ -32,7 +33,7 @@ export function textWysiwyg({ initText, x, y, strokeColor, font, onSubmit }) {
                 handleSubmit();
                 return;
             }
-            cleanup();
+            cleanup();         
             return;
         }
         if (ev.key === KEYS.ENTER) {
@@ -40,6 +41,7 @@ export function textWysiwyg({ initText, x, y, strokeColor, font, onSubmit }) {
             handleSubmit();
         }
     };
+
     editable.onblur = handleSubmit;
     // override paste to disallow non-textual data, and replace newlines
     editable.onpaste = ev => {
