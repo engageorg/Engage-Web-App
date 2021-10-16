@@ -112,7 +112,7 @@ export const actionChangeOpacity = {
     },
     PanelComponent: ({ elements, updateData }) => (<>
       <h5>Opacity</h5>
-      <input type="range" min="0" max="100" onChange={e => updateData(+e.target.value)} value={getSelectedAttribute(elements, element => element.opacity) ||
+      <input className = "opacity" type="range" min="0" max="100" onChange={e => updateData(+e.target.value)} value={getSelectedAttribute(elements, element => element.opacity) ||
         0 /* Put the opacity at 0 if there are two conflicting ones */}/>
     </>)
 };

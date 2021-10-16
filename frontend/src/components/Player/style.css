@@ -31,7 +31,7 @@
 .load img {
 	width: 250px; height: 250px;
 	background-size: contain;
-	animation: spin 1s linear infinite;
+	animation: spin 5s linear infinite;
 }
 
 @keyframes spin {
