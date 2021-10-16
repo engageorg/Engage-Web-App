@@ -267,13 +267,6 @@ export default function Video(props) {
         }
       }
       else if (event.type === "keydown") {
-
-        let eve = new KeyboardEvent("keydown", {
-          key: event.key,
-          shiftKey: event.shiftKey,
-          bubbles: true,
-          cancelable: true
-        });
         if(document.getElementsByClassName("canvas_text")[0]){
           document.getElementsByClassName("canvas_text")[0].innerText =  event.innerText;
 
