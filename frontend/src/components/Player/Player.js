@@ -8,13 +8,13 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
 import DrawingBoardPlayer from "../DrawingBoard/index";
-
+import img from "../../assets/Gear-0.2s-200px.png"
 function Preloader(){
   return(
     <div className = "loader">
        <div className ="preloader">
         <div class="load">
-	         <img src="https://i.ibb.co/bP83CgK/spinner-PNG14.png" border="0"/>
+	         <img src= {img} border="0"/>
         </div>
        </div>
     </div>
