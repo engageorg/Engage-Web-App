@@ -33,8 +33,20 @@ if (true) {
 
 io.on('connection', socket => {
   socket.on("emitData", ({data}) => {
-    console.log(data)
+    //console.log(data)
     io.emit("receiveData", {data})
+  })
+  socket.on("sendStream", (data) => {
+    //console.log(data)
+    io.emit("emitStream", data )
+  })
+  // socket.on("callUser", ({data}) => {
+  //   console.log('data')
+  //   console.log(data)
+  // })\
+  socket.on("answerCall", (data) => {
+    console.log(data)
+    io.emit("callAccepted", data)
   })
 })
 

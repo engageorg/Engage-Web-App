@@ -1,12 +1,24 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DrawingBoard from '../DrawingBoard/index'
+import Peer from "simple-peer"
 import * as io from 'socket.io-client'
 
 function LiveClassEmitter() {
 
     const socketRef = useRef()
+    const [ stream, setStream ] = useState()
     socketRef.current = io.connect("http://localhost:5000")
     // Record each type of event
+	const myVideo = useRef()
+    const userVideo = useRef()
+	const connectionRef= useRef()
+    useEffect(() => {
+        navigator.mediaDevices.getUserMedia({ audio: true}).then((stream) => {
+            setStream(stream)
+            myVideo.current.srcObject = stream
+        })
+    }, [])
+
     const handlers = [
         {
             eventName: "mouseup",
@@ -86,6 +98,22 @@ function LiveClassEmitter() {
     }
 
     function startLive() {
+        const peer = new Peer({
+            initiator: true,
+            trickle: false,
+            stream: stream
+        })
+        peer.on("signal", (data) => {
+            socketRef.current.emit("sendStream", {
+                signalData: data
+            })
+        })
+
+        socketRef.current.on("callAccepted", (data) => {
+            console.log(data)
+            peer.signal(data.signalData)
+		})
+
         handlers.map((x) => listen(x.eventName, x.handler));
     }
 
@@ -95,11 +123,14 @@ function LiveClassEmitter() {
 
     return (
         <>
-            <div style={{position:"absolute", zIndex:"3"}}>
+            <div style={{display:"flex", flexDirection:"row-reverse"}}>
+            <div style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
                 <button style={{backgroundColor:"red"}} onClick = {() => startLive()}>Start</button>
                 <button style={{backgroundColor:"yellow"}} onClick = {() => stopLive()}>Stop</button>
+                {stream && <video playsInline muted ref={myVideo} autoPlay style={{width: "300px" }} />}
             </div>
             <DrawingBoard/>
+            </div>
         </>
     )
 }
