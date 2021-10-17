@@ -280,10 +280,15 @@ export default function Video(props) {
         if(document.getElementById("canvas"))document.getElementById("canvas").dispatchEvent(eve);
       }
       else if (event.type === "click") {
-        if(document.getElementsByClassName(event.target)[0] !== undefined && document.getElementsByClassName(event.target)[0].nodeName === "INPUT"){
-            document.getElementsByClassName(event.target)[0].click();
+ 
+        if(document.getElementsByClassName(event.target)[0] !== undefined){
+          let clickEvent = new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+          });
+          document.getElementsByClassName(event.target)[0].dispatchEvent(clickEvent);
         }
-        // if(event.target === "rectangle" || event.target === "ellipse" || event.target === "arrow" || event.target === "selection") document.getElementsByClassName(event.target)[0].click();
+        if(event.target === "rectangle" || event.target === "ellipse" || event.target === "arrow" || event.target === "selection") document.getElementsByClassName(event.target)[0].click();
         flashClass(fakeCursor, "click");
         tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
