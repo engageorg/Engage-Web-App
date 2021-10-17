@@ -42,7 +42,6 @@ function LiveClassReceiver() {
                 }
               }
               else if (data.type === "mouseup") {
-
                 let eve = new MouseEvent("mouseup", {
                   bubbles: true,
                   cancelable: true
@@ -53,6 +52,12 @@ function LiveClassReceiver() {
                 if(document.getElementsByClassName(data.target)[0] !== undefined && document.getElementsByClassName(data.target)[0].nodeName === "INPUT"){
                     document.getElementsByClassName(data.target)[0].click();
                 }
+              }
+              else if(data.type === "keydown"){
+                console.log("keydown event")
+                if(document.getElementsByClassName("canvas_text")[0]){
+                  document.getElementsByClassName("canvas_text")[0].innerText =  data.innerText;
+                } 
               }
         })
     }, [])

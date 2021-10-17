@@ -269,7 +269,6 @@ export default function Video(props) {
       else if (event.type === "keydown") {
         if(document.getElementsByClassName("canvas_text")[0]){
           document.getElementsByClassName("canvas_text")[0].innerText =  event.innerText;
-
         } 
       }
       else if (event.type === "mouseup") {

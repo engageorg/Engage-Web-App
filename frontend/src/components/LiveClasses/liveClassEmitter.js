@@ -53,6 +53,19 @@ function LiveClassEmitter() {
                 sendData(data)
 
             },
+        },
+        {
+            eventName: "keydown",
+            handler: function handleMouseMove(e) {
+                let innerText = document.getElementsByClassName("canvas_text")[0].innerText
+                const data = {
+                    type: "keydown",
+                    target: e.target.className,
+                    shiftKey: e.shiftKey,
+                    innerText: innerText,
+                }
+                sendData(data)
+            },
         }
     ];
 

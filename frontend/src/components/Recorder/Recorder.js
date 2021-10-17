@@ -134,7 +134,6 @@ export default function Recorder(props) {
             type: "keydown",
             key: e.key,
             shiftKey: e.shiftKey,
-    
             innerText: innerText,
             time: Date.now() - startTime,
           });
