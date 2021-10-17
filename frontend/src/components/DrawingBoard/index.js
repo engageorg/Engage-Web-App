@@ -531,7 +531,8 @@ export default class App extends React.Component {
                   }
                 }
               }
-            } else {
+            } 
+            else {
               elements = clearSelection(elements);
             }
             if (isTextElement(element)) {
