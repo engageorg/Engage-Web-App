@@ -94,12 +94,12 @@ export default function Recorder(props) {
           if(e.target.className === "cssfile" || e.target.className === "buttontext style" || e.target.className === "fab fa-css3-alt") fileName = "style.css"
           if(e.target.className === "jsfile" || e.target.className === "buttontext script" || e.target.className === " fa-js-square") fileName = "script.js" 
           if(e.target.className === "htmlfile" || e.target.className === "buttontext html" || e.target.className === "fab fa-html5fab") fileName = "index.html"
-          //console.log(e.target.className);
+          console.log(e.target.className);
           Recording.events.push({
             type: "click",
             target: e.target.className,
             x: e.pageX,
-            fileName :fileName,
+            fileName: fileName,
             y: e.pageY,
             time: Date.now() - startTime,
           });

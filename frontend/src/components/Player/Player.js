@@ -9,6 +9,7 @@ import 'firebase/storage';
 import "./style.css";
 import DrawingBoardPlayer from "../DrawingBoard/index";
 import img from "../../assets/Gear-0.2s-200px.png"
+import e from "cors";
 function Preloader(){
   return(
     <div className = "loader">
@@ -280,10 +281,17 @@ export default function Video(props) {
         if(document.getElementById("canvas"))document.getElementById("canvas").dispatchEvent(eve);
       }
       else if (event.type === "click") {
-        if(document.getElementsByClassName(event.target)[0] !== undefined && document.getElementsByClassName(event.target)[0].nodeName === "INPUT"){
-            document.getElementsByClassName(event.target)[0].click();
+ 
+        if(document.getElementsByClassName(event.target)[0] !== undefined){
+          let clickEvent = new MouseEvent("click", {
+            pageX: event.x,
+            pageY: event.y, 
+            bubbles: true,
+            cancelable: true,
+          });
+          document.getElementsByClassName(event.target)[0].dispatchEvent(clickEvent);
         }
-        // if(event.target === "rectangle" || event.target === "ellipse" || event.target === "arrow" || event.target === "selection") document.getElementsByClassName(event.target)[0].click();
+        if(event.target === "rectangle" || event.target === "ellipse" || event.target === "arrow" || event.target === "selection") document.getElementsByClassName(event.target)[0].click();
         flashClass(fakeCursor, "click");
         tar = document.getElementsByClassName(event.target)[0];
         if(tar !=  null){
