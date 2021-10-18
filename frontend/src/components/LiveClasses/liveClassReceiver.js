@@ -12,7 +12,7 @@ function LiveClassReceiver() {
     socketRef.current = io.connect("http://localhost:5000")
     useEffect(() => {
         socketRef.current.on("receiveData", ({data}) => {
-            console.log(data)
+            //console.log(data)
             if (data.type === "mousedown") {
                 let eve = new MouseEvent("mousedown", {
                   bubbles: true,
@@ -59,7 +59,6 @@ function LiveClassReceiver() {
                 }
               }
               else if(data.type === "keydown"){
-                console.log("keydown event")
                 if(document.getElementsByClassName("canvas_text")[0]){
                   document.getElementsByClassName("canvas_text")[0].innerText =  data.innerText;
                 } 
@@ -73,7 +72,6 @@ function LiveClassReceiver() {
     }, [])
     
     function answerCall() {
-      console.log("ASNWER")
       const peer = new Peer({
         initiator: false,
         trickle: false,
@@ -89,7 +87,6 @@ function LiveClassReceiver() {
       peer.signal(callerSignal)
 
       peer.on("stream", (stream) => {
-        console.log(stream)
         setStream(stream)
         userVideo.current.srcObject = stream
       })

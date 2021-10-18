@@ -7,12 +7,14 @@ function LiveClassEmitter() {
 
     const socketRef = useRef()
     const [ stream, setStream ] = useState()
-    socketRef.current = io.connect("http://localhost:5000")
+    //while in development mode change document.location.origin to http://localhost:5000
+    socketRef.current = io.connect(document.location.origin)
     // Record each type of event
 	const myVideo = useRef()
     const userVideo = useRef()
 	const connectionRef= useRef()
     useEffect(() => {
+        //console.log(document.location.origin)
         navigator.mediaDevices.getUserMedia({ video:true,audio: true}).then((stream) => {
             setStream(stream)
             myVideo.current.srcObject = stream
@@ -110,7 +112,6 @@ function LiveClassEmitter() {
         })
 
         socketRef.current.on("callAccepted", (data) => {
-            console.log(data)
             peer.signal(data.signalData)
 		})
 
