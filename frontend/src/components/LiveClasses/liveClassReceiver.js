@@ -9,7 +9,8 @@ function LiveClassReceiver() {
     const [ receivingCall, setReceivingCall ] = useState(false)
     const [ callerSignal, setCallerSignal ] = useState()
     const userVideo = useRef()
-    socketRef.current = io.connect("http://localhost:5000")
+    //while in development mode change document.location.origin to http://localhost:5000
+    socketRef.current = io.connect(document.location.origin)
     useEffect(() => {
         socketRef.current.on("receiveData", ({data}) => {
             //console.log(data)
