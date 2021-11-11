@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ChalkBoard from '../ChalkBoard/index'
 import Peer from "simple-peer"
 import * as io from 'socket.io-client'
+import "./style.css"
 
 function LiveClassEmitter() {
     const socketRef = useRef()
@@ -124,9 +125,11 @@ function LiveClassEmitter() {
     return (
         <>
             <div style={{display:"flex", flexDirection:"row-reverse"}}>
-            <div style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
-                <button style={{backgroundColor:"red"}} onClick = {() => startLive()}>Start</button>
-                <button style={{backgroundColor:"yellow"}} onClick = {() => stopLive()}>Stop</button>
+            <div className="streamingWindow">
+                <div className="buttons">
+                <button className="startButton" onClick = {() => startLive()}>Start</button>
+                <button className="stopButton" onClick = {() => stopLive()}>Stop</button>
+                </div>
                 {stream && <video playsInline muted ref={myVideo} autoPlay style={{width: "300px" }} />}
             </div>
             </div>
