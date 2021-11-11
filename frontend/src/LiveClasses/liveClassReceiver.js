@@ -12,7 +12,10 @@ function LiveClassReceiver() {
     //while in development mode change document.location.origin to http://localhost:5000
     socketRef.current = io.connect("http://localhost:5000")
     useEffect(() => {
+        const button = document.getElementsByClassName("answerButton")[0]
+        button.style.display = "none"
         socketRef.current.on("receiveData", ({data}) => {
+            button.style.display="block"
             if (data.type === "mousedown") {
                 console.log("mousedown")
                 let eve = new PointerEvent("pointerdown", {
