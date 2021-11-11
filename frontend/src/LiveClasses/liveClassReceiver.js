@@ -10,7 +10,7 @@ function LiveClassReceiver() {
     const [ callerSignal, setCallerSignal ] = useState()
     const userVideo = useRef()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect("http://localhost:5000")
+    socketRef.current = io.connect(document.location.origin)
     useEffect(() => {
         const button = document.getElementsByClassName("answerButton")[0]
         button.style.display = "none"
