@@ -33,7 +33,7 @@ if (true) {
 
 io.on('connection', socket => {
   socket.on("emitData", ({data}) => {
-    //console.log(data)
+    console.log(data)
     io.emit("receiveData", {data})
   })
   socket.on("sendStream", (data) => {

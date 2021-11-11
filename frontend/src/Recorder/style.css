@@ -1,0 +1,26 @@
+.recorder-button{
+    position: absolute;
+    z-index: 100;
+    top: 2vh;
+    right: 3vw;
+    cursor: pointer;
+  }
+
+.record{
+    background: none;
+}
+
+.fa-microphone{
+    font-size: 1.5rem;
+    color: gray;
+  }
+  
+.fa-microphone-slash{
+    font-size: 1.3rem;
+    display: none;
+    color: red;
+}
+
+.chalk{
+  height: 100vh;
+}

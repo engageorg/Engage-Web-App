@@ -1,0 +1,40 @@
+body{
+    padding: 0;
+    margin: 0;
+    font-family: 'Space Mono', monospace;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --dur: 2s;
+    --bg: #e3e4e8;
+    --fg: #494a4e;
+    font-size: calc(12px + (24 - 12) * (100vw - 320px) / (2560 - 320));
+  }
+  
+
+  button {
+    background-color: transparent;
+    border: none;
+  }
+  
+  .customCursor {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    position: fixed;
+    top: 220px;
+    left: 220px;
+    background: url(./assets/cursor.svg);
+    z-index: 3;
+  }
+  
+  .click {
+    border-radius: 50%;
+    background: url(./assets/cursor.svg);
+    position: fixed;
+    width: 40px;
+    height: 40px;
+  }
+  
+  
