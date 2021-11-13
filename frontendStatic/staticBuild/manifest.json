@@ -1,20 +1,75 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Excalidraw",
+  "name": "Excalidraw",
+  "description": "Excalidraw is a whiteboard tool that lets you easily sketch diagrams that have a hand-drawn feel to them.",
   "icons": [
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "logo-180x180.png",
+      "sizes": "180x180",
+      "type": "image/png"
     },
     {
-      "src": "logo512.png",
+      "src": "apple-touch-icon.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "256x256"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "application/vnd.excalidraw+json": [".excalidraw"]
+      }
+    }
+  ],
+  "capture_links": "new-client",
+  "share_target": {
+    "action": "/web-share-target",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "file",
+          "accept": ["application/vnd.excalidraw+json", "application/json", ".excalidraw"]
+        }
+      ]
+    }
+  },
+  "screenshots": [
+    {
+      "src": "/screenshots/virtual-whiteboard.png",
+      "type": "image/png",
+      "sizes": "462x945"
+    },
+    {
+      "src": "/screenshots/wireframe.png",
+      "type": "image/png",
+      "sizes": "462x945"
+    },
+    {
+      "src": "/screenshots/illustration.png",
+      "type": "image/png",
+      "sizes": "462x945"
+    },
+    {
+      "src": "/screenshots/shapes.png",
+      "type": "image/png",
+      "sizes": "462x945"
+    },
+    {
+      "src": "/screenshots/collaboration.png",
+      "type": "image/png",
+      "sizes": "462x945"
+    },
+    {
+      "src": "/screenshots/export.png",
+      "type": "image/png",
+      "sizes": "462x945"
+    }
+  ]
 }
