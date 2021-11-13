@@ -7,7 +7,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
-import ChalkBoard from "../ChalkBoard/index";
+import ChalkBoard from "../ChalkBoardPlayer/index";
 import img from "../assets/Gear-0.2s-200px.png"
 
 function Preloader(){
