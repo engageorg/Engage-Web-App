@@ -98,7 +98,7 @@ function LiveClassReceiver() {
             <div style={{display:"flex", flexDirection:"row-reverse"}}>
             <div style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
             <button onClick={() => answerCall()}>Answer Call</button>
-            {stream && <video playsInline ref={userVideo} autoPlay style={{width: "300px" }} />}
+            {stream && <video playsInline ref={userVideo} autoPlay style={{width: "300px" }}/>}
             </div>
             <DrawingBoard/>
             </div>
