@@ -243,6 +243,7 @@ export default function Video(props) {
 
       }
       else if (event.type === "mousemove") {
+
         // TODO: Add e.buttons too
         let eve = new PointerEvent("pointermove", {
           bubbles: true,
@@ -282,7 +283,6 @@ export default function Video(props) {
         if(document.getElementsByClassName("excalidraw__canvas")[0])document.getElementsByClassName("excalidraw__canvas")[0].dispatchEvent(eve);
       }
       else if (event.type === "click") {
- 
         if(document.getElementsByClassName(event.target)[0] !== undefined){
           let clickEvent = new MouseEvent("click", {
             pageX: event.x,
@@ -290,6 +290,7 @@ export default function Video(props) {
             bubbles: true,
             cancelable: true,
           });
+          
           document.getElementsByClassName(event.target)[0].dispatchEvent(clickEvent);
         }
         if(event.target === "rectangle" || event.target === "ellipse" || event.target === "arrow" || event.target === "selection") document.getElementsByClassName(event.target)[0].click();
