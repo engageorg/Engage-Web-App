@@ -32,7 +32,7 @@
     <!-- General tags -->
     <meta
       name="description"
-      content="Engage e-learning for everyone"
+      content="Engage provides e-learning tools for everyone"
     />
     <meta name="image" content="og-image.png" />
 
@@ -63,10 +63,6 @@
     <!-- Twitter Card tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Excalidraw" />
-    <meta
-      name="twitter:description"
-      content="Excalidraw is a whiteboard tool that lets you easily sketch diagrams that have a hand-drawn feel to them."
-    />
 
     <link rel="shortcut icon" href="logo192.png" type="image/x-icon" />
 
@@ -101,27 +97,9 @@
     />
 
     <link rel="stylesheet" href="fonts.css" type="text/css" />
-    <script>
-      window.EXCALIDRAW_ASSET_PATH = "/";
-      // setting this so that libraries installation reuses this window tab.
-      window.name = "_excalidraw";
-    </script>
-    <% if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) { %>
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GOOGLE_ANALYTICS_ID%"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "%REACT_APP_GOOGLE_ANALYTICS_ID%");
-    </script>
-    <% } %>
 
-    <!-- FIXME: remove this when we update CRA (fix SW caching) -->
+  
+    
     <style>
       body,
       html {
