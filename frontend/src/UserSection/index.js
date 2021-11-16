@@ -12,7 +12,7 @@ function UserSection(props) {
 		</div>
 		<div className="horizontal-tabs">
 			<a href="#" className="active">Applications</a>
-			<a href="#">Watch Lectures</a>
+			<Link to = "/lectures">Watch Lectures</Link>
 		</div>
 		<div className="content-header">
 			<div className="content-header-intro">
