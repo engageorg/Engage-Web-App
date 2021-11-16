@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import IDE from "../IDE";
 import files from "../assets/files";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
 import firebase from 'firebase/app'
 import 'firebase/firestore';
@@ -23,9 +24,9 @@ function Preloader(){
 }
 
 export default function Video(props) {
-  const name = props.location.state.type.slice(0,3)
-  const language = props.location.state.type.slice(3, 10)
-  console.log(name)
+  const { id, type } = useParams();
+  const name = type.slice(0,3)
+  const language = type.slice(3, 10)
   const [refresh, setRefresh] = useState("");
   const dispatch = useDispatch();
   let drawingEvent=''
@@ -40,7 +41,7 @@ export default function Video(props) {
     let recording = { events: [] };
     const recordingJsonValue = localStorage.getItem("recording");
     //const audioValue = JSON.parse(localStorage.getItem("file"));
-    const id = (props.location.state.id)
+   
     firebase.firestore().collection('events').where(firebase.firestore.FieldPath.documentId(), '==', id).get()
     .then((snap) => {
         snap.forEach((doc) => {

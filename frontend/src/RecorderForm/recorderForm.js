@@ -9,7 +9,7 @@ function RecorderForm() {
     let languageType;
     const navigateToRecorderWeb = () => history.push({
         pathname:'/recorder',
-        state:{lectureType,lectureName, lectureCreator, languageType}}
+        state:{lectureType, lectureName, lectureCreator, languageType}}
     );
 
     const languageList = {
@@ -69,7 +69,7 @@ function RecorderForm() {
                 <option value="dsa">DSA</option>
                 <option value="dra">Chalk Board</option>
             </select>
-            <button type="button"  onClick={navigateToRecorderWeb} id="submit">Submit</button>
+            <button type="button"  onClick = {navigateToRecorderWeb} id="submit">Submit</button>
         </form>
         </>
     )
