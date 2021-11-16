@@ -8,7 +8,7 @@ function UserSection(props) {
 <main className="main">
 	<div className="responsive-wrapper">
 		<div className="main-header">
-			<h1>Engage</h1>
+			<h1>Engage Proof of Concept Demo</h1>
 		</div>
 		<div className="horizontal-tabs">
 			<a href="#" className="active">Applications</a>
@@ -42,6 +42,7 @@ function UserSection(props) {
 			</div>
 			<div className="content-main">
 				<div className="card-grid">
+                    <Link to="/drawboard">
 					<article className="uscard">
 						<div className="card-header">
 							<div>
@@ -57,7 +58,7 @@ function UserSection(props) {
 							<a href="#">View integration</a>
 						</div>
 					</article>
-
+                    </Link>
 
                     <article className="uscard">
 						<div className="card-header">
