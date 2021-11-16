@@ -23,15 +23,23 @@ function Preloader(){
 }
 
 export default function Video(props) {
-  const name = props.location.state.type.slice(0,3)
-  const language = props.location.state.type.slice(3, 10)
-  console.log(name)
+  const queryParams = new URLSearchParams(window.location.search);
+
+  // // const name = queryParams.get('name');
+  // const type = queryParams.get('l');
+  // console.log(type)
+  const name = queryParams.get('t')
+  const language = queryParams.get('l');
+  console.log(name, language)
   const [refresh, setRefresh] = useState("");
   const dispatch = useDispatch();
   let drawingEvent=''
   const [drawing, setDrawing] = useState('')
   
   useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+
+    const id = queryParams.get('v');
     let offsetPlay = 0;
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
     const videoPlayer = document.getElementsByClassName('videoplayer')[0]
@@ -40,7 +48,7 @@ export default function Video(props) {
     let recording = { events: [] };
     const recordingJsonValue = localStorage.getItem("recording");
     //const audioValue = JSON.parse(localStorage.getItem("file"));
-    const id = (props.location.state.id)
+    //const id = (props.location.state.id)
     firebase.firestore().collection('events').where(firebase.firestore.FieldPath.documentId(), '==', id).get()
     .then((snap) => {
         snap.forEach((doc) => {

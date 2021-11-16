@@ -7,7 +7,7 @@ function Card(props) {
         const mainWindow = document.getElementById("lectureCard")
         for(let i=0;i<props.lectures.length;i++){
             var lecture = document.createElement("div")
-            var playButton = document.createElement("button")
+            var playButton = document.createElement("a")
             playButton.textContent = "Play Lecture"
             var nameHeading = document.createElement("h3")
             var creator = document.createElement("h3")
@@ -17,6 +17,7 @@ function Card(props) {
             language.className = "languageofLecture"
             playButton.className = props.lectures[i].type + props.lectures[i].language
             playButton.id = props.lectures[i].id 
+            playButton.href = `/videoplayer?t=${props.lectures[i].type}&v=${props.lectures[i].id}&l=${props.lectures[i].language}`
             lecture.appendChild(nameHeading)
             lecture.appendChild(creator)
             lecture.appendChild(language)
@@ -29,17 +30,17 @@ function Card(props) {
             mainWindow.appendChild(lecture)
         }
         
-        mainWindow.addEventListener("click", (e) => {
-            const id =  e.target.id
-            console.log(e)
-            const type =  e.target.className
-            console.log(type)
-             console.log(e.target.id)
-            history.push({
-                pathname:'/videoplayer',
-                state:{id,type}
-            });
-        })
+        // mainWindow.addEventListener("click", (e) => {
+        //     const id =  e.target.id
+        //     console.log(e)
+        //     const type =  e.target.className
+        //     console.log(type)
+        //      console.log(e.target.id)
+        //     history.push({
+        //         pathname:'/videoplayer',
+        //         state:{id,type}
+        //     });
+        // })
     },[])   
 
     return (
