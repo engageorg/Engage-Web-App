@@ -33,6 +33,7 @@ export default function Video(props) {
   const [drawing, setDrawing] = useState('')
   
   useEffect(() => {
+
     let offsetPlay = 0;
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
     const videoPlayer = document.getElementsByClassName('videoplayer')[0]
