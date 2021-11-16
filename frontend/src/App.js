@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ChalkBoard from "./ChalkBoard";
 import Recorder from "./Recorder";
 import Player from "./Player";
+import UserSection from "./UserSection";
 import { createStore, compose, applyMiddleware} from 'redux';
 import StartingComponent from './StartingComponent/startingCompoent'
 import RecorderForm from './RecorderForm/recorderForm'
@@ -47,7 +48,7 @@ function App() {
         <Provider store={store}>
     <Router>
     
-      <Route exact path = "/" component = {StartingComponent}/>
+      <Route exact path = "/" component = {UserSection}/>
       <Route exact path = "/lectures" component = {AllLectures}/>
       <Route exact path = "/:type/:id" component = {Player}/>
       <Route exact path = "/emitter" component = {LiveClassEmitter}/>
