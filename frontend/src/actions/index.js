@@ -75,3 +75,15 @@ export const python3 = () => {
         type : "python3",
     }
 }
+
+export const play = () => {
+    return {
+        type:true
+    }
+}
+
+export const pause = () => {
+   return {
+       type:false
+   } 
+}

@@ -3,7 +3,7 @@ import IDE from "../IDE";
 import files from "../assets/files";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
+import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs, play, pause } from "../actions";
 import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
@@ -90,12 +90,26 @@ export default function Video(props) {
   
     audioPlayer.addEventListener("play", () => {
       playButton.style.display="none"
+      dispatch(play())
+      localStorage.setItem("status", false)
+      const data = {
+        status:false
+      }
+      const event = new CustomEvent("status", { detail: data });
+      document.dispatchEvent(event);
       playfunction();
       console.log("audio play")
     })
 
     audioPlayer.addEventListener("pause", () => {
       console.log("clicked pause");
+      localStorage.setItem("status", true)
+      const data = {
+        status:true
+      }
+      const event = new CustomEvent("status", { detail: data });
+      document.dispatchEvent(event);
+      dispatch(pause())
       pausefunction();
     })
     

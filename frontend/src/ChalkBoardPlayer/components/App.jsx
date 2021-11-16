@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import rough from "roughjs/bin/rough";
 import clsx from "clsx";
 import { nanoid } from "nanoid";
@@ -26,6 +27,7 @@ import {
   actionToggleZenMode,
   actionUngroup,
 } from "../actions";
+
 import { createRedoAction, createUndoAction } from "../actions/actionHistory";
 import { ActionManager } from "../actions/manager";
 import { actions } from "../actions/register";
@@ -206,6 +208,11 @@ const ExcalidrawContainerContext = React.createContext({
 });
 export const useExcalidrawContainer = () =>
   useContext(ExcalidrawContainerContext);
+
+const PlayerPause = () => {
+  const status = useSelector(state => state.player) 
+  return status;
+} 
 let didTapTwice = false;
 let tappedTwiceTimer = 0;
 let cursorX = 0;
@@ -230,9 +237,11 @@ class App extends React.Component {
     this.rc = null;
     this.unmounted = false;
     this.isMobile = false;
+    this.trusted = false
     this.excalidrawContainerRef = React.createRef();
     this.files = {};
     this.imageCache = new Map();
+    console.log(this.state)
     this.focusContainer = () => {
       if (this.props.autoFocus) {
         this.excalidrawContainerRef.current?.focus();
@@ -1398,106 +1407,109 @@ class App extends React.Component {
       invalidateContextMenu = true;
     };
     this.handleCanvasPointerDown = (event) => {
-      // remove any active selection when we start to interact with canvas
-      // (mainly, we care about removing selection outside the component which
-      //  would prevent our copy handling otherwise)
-      const selection = document.getSelection();
-      if (selection?.anchorNode) {
-        selection.removeAllRanges();
-      }
-      this.maybeOpenContextMenuAfterPointerDownOnTouchDevices(event);
-      this.maybeCleanupAfterMissingPointerUp(event);
-      if (isPanning) {
-        return;
-      }
-      this.setState({
-        lastPointerDownWith: event.pointerType,
-        cursorButton: "down",
-      });
-      this.savePointer(event.clientX, event.clientY, "down");
-      if (this.handleCanvasPanUsingWheelOrSpaceDrag(event)) {
-        return;
-      }
-      // only handle left mouse button or touch
-      if (
-        event.button !== POINTER_BUTTON.MAIN &&
-        event.button !== POINTER_BUTTON.TOUCH
-      ) {
-        return;
-      }
-      this.updateGestureOnPointerDown(event);
-      // don't select while panning
-      if (gesture.pointers.size > 1) {
-        return;
-      }
-      // State for the duration of a pointer interaction, which starts with a
-      // pointerDown event, ends with a pointerUp event (or another pointerDown)
-      const pointerDownState = this.initialPointerDownState(event);
-      if (this.handleDraggingScrollBar(event, pointerDownState)) {
-        return;
-      }
-      this.clearSelectionIfNotUsingSelection();
-      this.updateBindingEnabledOnPointerMove(event);
-      if (this.handleSelectionOnPointerDown(event, pointerDownState)) {
-        return;
-      }
-      if (this.state.elementType === "text") {
-        this.handleTextOnPointerDown(event, pointerDownState);
-        return;
-      } else if (
-        this.state.elementType === "arrow" ||
-        this.state.elementType === "line"
-      ) {
-        this.handleLinearElementOnPointerDown(
-          event,
-          this.state.elementType,
-          pointerDownState
-        );
-      } else if (this.state.elementType === "image") {
-        // reset image preview on pointerdown
-        setCursor(this.canvas, CURSOR_TYPE.CROSSHAIR);
-        if (!this.state.pendingImageElement) {
+      if(event.isTrusted === this.state.trusted){
+        console.log(event)
+        // remove any active selection when we start to interact with canvas
+        // (mainly, we care about removing selection outside the component which
+        //  would prevent our copy handling otherwise)
+        const selection = document.getSelection();
+        if (selection?.anchorNode) {
+          selection.removeAllRanges();
+        }
+        this.maybeOpenContextMenuAfterPointerDownOnTouchDevices(event);
+        this.maybeCleanupAfterMissingPointerUp(event);
+        if (isPanning) {
           return;
         }
         this.setState({
-          draggingElement: this.state.pendingImageElement,
-          editingElement: this.state.pendingImageElement,
-          pendingImageElement: null,
-          multiElement: null,
+          lastPointerDownWith: event.pointerType,
+          cursorButton: "down",
         });
-        const { x, y } = viewportCoordsToSceneCoords(event, this.state);
-        mutateElement(this.state.pendingImageElement, {
-          x,
-          y,
-        });
-      } else if (this.state.elementType === "freedraw") {
-        this.handleFreeDrawElementOnPointerDown(
-          event,
-          this.state.elementType,
-          pointerDownState
-        );
-      } else {
-        this.createGenericElementOnPointerDown(
-          this.state.elementType,
-          pointerDownState
-        );
-      }
-      const onPointerMove =
-        this.onPointerMoveFromPointerDownHandler(pointerDownState);
-      const onPointerUp =
-        this.onPointerUpFromPointerDownHandler(pointerDownState);
-      const onKeyDown = this.onKeyDownFromPointerDownHandler(pointerDownState);
-      const onKeyUp = this.onKeyUpFromPointerDownHandler(pointerDownState);
-      lastPointerUp = onPointerUp;
-      if (!this.state.viewModeEnabled) {
-        window.addEventListener(EVENT.POINTER_MOVE, onPointerMove);
-        window.addEventListener(EVENT.POINTER_UP, onPointerUp);
-        window.addEventListener(EVENT.KEYDOWN, onKeyDown);
-        window.addEventListener(EVENT.KEYUP, onKeyUp);
-        pointerDownState.eventListeners.onMove = onPointerMove;
-        pointerDownState.eventListeners.onUp = onPointerUp;
-        pointerDownState.eventListeners.onKeyUp = onKeyUp;
-        pointerDownState.eventListeners.onKeyDown = onKeyDown;
+        this.savePointer(event.clientX, event.clientY, "down");
+        if (this.handleCanvasPanUsingWheelOrSpaceDrag(event)) {
+          return;
+        }
+        // only handle left mouse button or touch
+        if (
+          event.button !== POINTER_BUTTON.MAIN &&
+          event.button !== POINTER_BUTTON.TOUCH
+        ) {
+          return;
+        }
+        this.updateGestureOnPointerDown(event);
+        // don't select while panning
+        if (gesture.pointers.size > 1) {
+          return;
+        }
+        // State for the duration of a pointer interaction, which starts with a
+        // pointerDown event, ends with a pointerUp event (or another pointerDown)
+        const pointerDownState = this.initialPointerDownState(event);
+        if (this.handleDraggingScrollBar(event, pointerDownState)) {
+          return;
+        }
+        this.clearSelectionIfNotUsingSelection();
+        this.updateBindingEnabledOnPointerMove(event);
+        if (this.handleSelectionOnPointerDown(event, pointerDownState)) {
+          return;
+        }
+        if (this.state.elementType === "text") {
+          this.handleTextOnPointerDown(event, pointerDownState);
+          return;
+        } else if (
+          this.state.elementType === "arrow" ||
+          this.state.elementType === "line"
+        ) {
+          this.handleLinearElementOnPointerDown(
+            event,
+            this.state.elementType,
+            pointerDownState
+          );
+        } else if (this.state.elementType === "image") {
+          // reset image preview on pointerdown
+          setCursor(this.canvas, CURSOR_TYPE.CROSSHAIR);
+          if (!this.state.pendingImageElement) {
+            return;
+          }
+          this.setState({
+            draggingElement: this.state.pendingImageElement,
+            editingElement: this.state.pendingImageElement,
+            pendingImageElement: null,
+            multiElement: null,
+          });
+          const { x, y } = viewportCoordsToSceneCoords(event, this.state);
+          mutateElement(this.state.pendingImageElement, {
+            x,
+            y,
+          });
+        } else if (this.state.elementType === "freedraw") {
+          this.handleFreeDrawElementOnPointerDown(
+            event,
+            this.state.elementType,
+            pointerDownState
+          );
+        } else {
+          this.createGenericElementOnPointerDown(
+            this.state.elementType,
+            pointerDownState
+          );
+        }
+        const onPointerMove =
+          this.onPointerMoveFromPointerDownHandler(pointerDownState);
+        const onPointerUp =
+          this.onPointerUpFromPointerDownHandler(pointerDownState);
+        const onKeyDown = this.onKeyDownFromPointerDownHandler(pointerDownState);
+        const onKeyUp = this.onKeyUpFromPointerDownHandler(pointerDownState);
+        lastPointerUp = onPointerUp;
+        if (!this.state.viewModeEnabled) {
+          window.addEventListener(EVENT.POINTER_MOVE, onPointerMove);
+          window.addEventListener(EVENT.POINTER_UP, onPointerUp);
+          window.addEventListener(EVENT.KEYDOWN, onKeyDown);
+          window.addEventListener(EVENT.KEYUP, onKeyUp);
+          pointerDownState.eventListeners.onMove = onPointerMove;
+          pointerDownState.eventListeners.onUp = onPointerUp;
+          pointerDownState.eventListeners.onKeyUp = onKeyUp;
+          pointerDownState.eventListeners.onKeyDown = onKeyDown;
+        }
       }
     };
     this.maybeOpenContextMenuAfterPointerDownOnTouchDevices = (event) => {
@@ -2892,6 +2904,7 @@ class App extends React.Component {
       ...defaultAppState,
       theme,
       isLoading: true,
+      trusted:false,
       ...this.getCanvasOffsets(),
       viewModeEnabled,
       zenModeEnabled,
@@ -2947,7 +2960,9 @@ class App extends React.Component {
     this.actionManager.registerAll(actions);
     this.actionManager.registerAction(createUndoAction(this.history));
     this.actionManager.registerAction(createRedoAction(this.history));
+    console.log(this.state)
   }
+
   renderCanvas() {
     const canvasScale = window.devicePixelRatio;
     const {
@@ -3089,6 +3104,7 @@ class App extends React.Component {
     );
   }
   async componentDidMount() {
+    console.log(localStorage.getItem("status"))
     this.excalidrawContainerValue.container =
       this.excalidrawContainerRef.current;
     if (
@@ -3202,6 +3218,9 @@ class App extends React.Component {
     this.removeEventListeners();
     document.addEventListener(EVENT.POINTER_UP, this.removePointer); // #3553
     document.addEventListener(EVENT.COPY, this.onCopy);
+    document.addEventListener("status", (e) => {
+      this.state.trusted = e.detail.status
+    })
     if (this.props.handleKeyboardGlobally) {
       document.addEventListener(EVENT.KEYDOWN, this.onKeyDown, false);
     }
@@ -3241,6 +3260,7 @@ class App extends React.Component {
     window.addEventListener(EVENT.DROP, this.disableEvent, false);
   }
   componentDidUpdate(prevProps, prevState) {
+    //console.log(localStorage.getItem("status"))
     if (prevProps.langCode !== this.props.langCode) {
       this.updateLanguage();
     }
@@ -3660,7 +3680,7 @@ class App extends React.Component {
     pointerDownState.lastCoords.x = event.clientX;
     pointerDownState.lastCoords.y = event.clientY;
     const onPointerMove = withBatchedUpdates((event) => {
-      if(event.isTrusted === false){
+      if(event.isTrusted === this.state.trusted){
       const target = event.target;
       if (!(target instanceof HTMLElement)) {
         return;
@@ -3704,7 +3724,7 @@ class App extends React.Component {
   onKeyDownFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
       
-      if(event.isTrusted === false){
+      if(event.isTrusted === this.state.trusted){
 
       if (this.maybeHandleResize(pointerDownState, event)) {
         return;
@@ -3717,7 +3737,7 @@ class App extends React.Component {
   onKeyUpFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
 
-      if(event.isTrusted === false){
+      if(event.isTrusted ===  this.state.trusted){
       // Prevents focus from escaping excalidraw tab
       event.key === KEYS.ALT && event.preventDefault();
       if (this.maybeHandleResize(pointerDownState, event)) {
@@ -3730,7 +3750,7 @@ class App extends React.Component {
   onPointerMoveFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
 
-      if(event.isTrusted === false){
+      if(event.isTrusted ===  this.state.trusted){
       // We need to initialize dragOffsetXY only after we've updated
       // `state.selectedElementIds` on pointerDown. Doing it here in pointerMove
       // event handler should hopefully ensure we're already working with
