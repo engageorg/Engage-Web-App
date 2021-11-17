@@ -2,9 +2,9 @@ import { clearAppStateForLocalStorage, getDefaultAppState, } from "../../appStat
 import { clearElementsForLocalStorage } from "../../element";
 import { STORAGE_KEYS as APP_STORAGE_KEYS } from "../../constants";
 export const STORAGE_KEYS = {
-    LOCAL_STORAGE_ELEMENTS: "excalidraw",
-    LOCAL_STORAGE_APP_STATE: "excalidraw-state",
-    LOCAL_STORAGE_COLLAB: "excalidraw-collab",
+    LOCAL_STORAGE_ELEMENTS: "chalkboard",
+    LOCAL_STORAGE_APP_STATE: "chalkboard-state",
+    LOCAL_STORAGE_COLLAB: "chalkboard-collab",
     LOCAL_STORAGE_KEY_COLLAB_FORCE_FLAG: "collabLinkForceLoadFlag",
 };
 export const saveUsernameToLocalStorage = (username) => {

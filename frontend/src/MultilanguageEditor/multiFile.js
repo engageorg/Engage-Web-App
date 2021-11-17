@@ -25,59 +25,6 @@ function MultiFile(props) {
     });
   }
 
-  const languageList = {
-    "Python 2": "python2", 
-    C: "c",
-    "C-99": "c99",
-    "C++": "cpp",
-    "C++ 14": "cpp14",
-    "C++ 17": "cpp17",
-    "Python 3": "python3",
-  };
-
-  // useEffect(() => {
-  //   const select = document.getElementsByClassName("language")[0]
-  //   for (let key in languageList) {
-  //     var option = document.createElement("option");
-  //     option.text = key;
-  //     option.value = languageList[key];
-  //     option.className = languageList[key];
-  //     select.add(option);
-  //   }
-
-  //   select.addEventListener("change", (e) => {
-  //     setLanguage(select.value);
-  //     if (select.value === "c") {
-  //       dispatch(c());
-  //     }
-  //     if (select.value === "c99") {
-  //       dispatch(c99());
-  //     }
-  //     if (select.value === "cpp") {
-  //       dispatch(cpp());
-  //     }
-  //     if (select.value === "cpp") {
-  //       dispatch(cpp());
-  //     }
-  //     if (select.value === "cpp14") {
-  //       dispatch(cpp14());
-  //     }
-  //     if (select.value === "cpp17") {
-  //       dispatch(cpp17());
-  //     }
-  //     if (select.value === "python2") {
-  //       dispatch(python2());
-  //     }
-  //     if (select.value === "python3") {
-  //       dispatch(python3());
-  //     }
-  //   });
-  // }, []);
-
-  function userOutput(e) {
-    console.log(e);
-  }
-
   function handleInput(e) {
     setInputValue(e.target.value);
   }
@@ -146,7 +93,6 @@ function MultiFile(props) {
                 rows="20"
                 cols="52"
                 className="userOutputArea"
-                onChange={userOutput}
                 value={outputValue}
               ></textarea>
             </div>
