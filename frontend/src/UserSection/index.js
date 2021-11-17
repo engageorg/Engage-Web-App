@@ -1,18 +1,20 @@
 import React from "react";
 import "./styles.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import {motion} from 'framer-motion';
+
 function UserSection(props) {
   return (
-    <section className = "usersection">
+    <motion.section className = "usersection" initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1}} transition= {{duration: 0.2}}>
       
 <main className="main">
 	<div className="responsive-wrapper">
 		<div className="main-header">
-			<h1>Engage</h1>
+			<h1>Engage Proof of Concept Demo</h1>
 		</div>
 		<div className="horizontal-tabs">
 			<a href="#" className="active">Applications</a>
-			<a href="#">Watch Lectures</a>
+			<Link to = "/lectures">Watch Lectures</Link>
 		</div>
 		<div className="content-header">
 			<div className="content-header-intro">
@@ -20,11 +22,11 @@ function UserSection(props) {
 				<p>Supercharge your Productivity.</p>
 			</div>
 			<div className="content-header-actions">
-                <a href="#" className="button">
+                <a href="#" className="us_button">
 					<span>Live Classes</span>
 				</a>
                 <Link to = "/recordform">
-				<div className="button">
+				<div className="us_button">
 					<span>Record A Lecture</span>
 				</div>
                 </Link>
@@ -41,11 +43,12 @@ function UserSection(props) {
 				</div>
 			</div>
 			<div className="content-main">
-				<div className="card-grid">
+				<div className="us-card-grid">
+                    <Link to="/drawboard">
 					<article className="uscard">
 						<div className="card-header">
 							<div>
-								<span><img src="https://assets.codepen.io/285131/zeplin.svg" /></span>
+								<span><img  className = "us_img" src="https://assets.codepen.io/285131/zeplin.svg" /></span>
 								<h3>Chalk Board</h3>
 							</div>
 
@@ -54,21 +57,21 @@ function UserSection(props) {
 							<p>Custom ChalkBoard specially designed for teaching</p>
 						</div>
 						<div className="card-footer">
-							<a href="#">View integration</a>
+							<div>View integration</div>
 						</div>
 					</article>
-
+                    </Link>
 
                     <article className="uscard">
 						<div className="card-header">
 							<div>
-								<span><img src="https://assets.codepen.io/285131/zeplin.svg" /></span>
-								<h3>Web Development IDE</h3>
+								<span><img className = "us_img" src="https://assets.codepen.io/285131/zeplin.svg" /></span>
+								<h3>WebD IDE</h3>
 							</div>
 
 						</div>
 						<div className="card-body">
-							<p>Great Web Development for beginners, that works on vscode editor</p>
+							<p>Web Development IDE for beginners, that works on vscode editor</p>
 						</div>
 						<div className="card-footer">
 							<a href="#">View integration</a>
@@ -79,7 +82,7 @@ function UserSection(props) {
                     <article className="uscard">
 						<div className="card-header">
 							<div>
-								<span><img src="https://assets.codepen.io/285131/zeplin.svg" /></span>
+								<span><img  className = "us_img" src="https://assets.codepen.io/285131/zeplin.svg" /></span>
 								<h3>C++ IDE</h3>
 							</div>
 
@@ -97,7 +100,7 @@ function UserSection(props) {
 		</div>
 	</div>
 </main>
-    </section>
+    </motion.section>
   );
 }
 
