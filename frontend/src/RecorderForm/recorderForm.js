@@ -1,5 +1,6 @@
 import React, { useEffect} from 'react'
 import {useHistory} from "react-router-dom";
+import { motion } from "framer-motion";
 import "./style.css"
 function RecorderForm() {
     const history = useHistory();
@@ -59,7 +60,7 @@ function RecorderForm() {
     },[])
 
     return (
-        <>
+        <motion.div  initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1, duration:0.5}} transition= {{type: "Tween"}}>
         <form>
             <input id="lectureName" placeholder="Lecture Title"/>
             <input id="creator" placeholder="Creator"/>
@@ -71,7 +72,7 @@ function RecorderForm() {
             </select>
             <button type="button"  onClick = {navigateToRecorderWeb} id="submit">Submit</button>
         </form>
-        </>
+        </motion.div>
     )
 }
 

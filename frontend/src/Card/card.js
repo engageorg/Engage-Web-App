@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import {useHistory, Link} from "react-router-dom";
+import { motion } from "framer-motion";
 import './styles.css'
 function Card(props) {
     const history = useHistory();
@@ -44,7 +45,7 @@ function Card(props) {
 
     return (
         <>
-            <section className="hero-section">
+            <motion.section  initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1, duration:0.5}} transition= {{type: "Tween"}} className="hero-section">
                 <div className="card-grid">
                 {props.lectures.map((lecture) => {
                     const id = lecture.id;
@@ -63,7 +64,7 @@ function Card(props) {
                     </div>)
                 })}
                 </div>
-            </section>
+            </motion.section>
         </>    
     )
 }

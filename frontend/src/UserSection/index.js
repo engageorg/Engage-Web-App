@@ -1,9 +1,11 @@
 import React from "react";
 import "./styles.css";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import {motion} from 'framer-motion';
+
 function UserSection(props) {
   return (
-    <section className = "usersection">
+    <motion.section className = "usersection" initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1}} transition= {{duration: 0.2}}>
       
 <main className="main">
 	<div className="responsive-wrapper">
@@ -98,7 +100,7 @@ function UserSection(props) {
 		</div>
 	</div>
 </main>
-    </section>
+    </motion.section>
   );
 }
 
