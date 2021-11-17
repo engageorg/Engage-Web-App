@@ -55,7 +55,7 @@ function UserSection(props) {
 							<p>Custom ChalkBoard specially designed for teaching</p>
 						</div>
 						<div className="card-footer">
-							<a href="#">View integration</a>
+							<div>View integration</div>
 						</div>
 					</article>
                     </Link>
@@ -64,12 +64,12 @@ function UserSection(props) {
 						<div className="card-header">
 							<div>
 								<span><img src="https://assets.codepen.io/285131/zeplin.svg" /></span>
-								<h3>Web Development IDE</h3>
+								<h3>WebD IDE</h3>
 							</div>
 
 						</div>
 						<div className="card-body">
-							<p>Great Web Development for beginners, that works on vscode editor</p>
+							<p>Web Development IDE for beginners, that works on vscode editor</p>
 						</div>
 						<div className="card-footer">
 							<a href="#">View integration</a>
