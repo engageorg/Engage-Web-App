@@ -20,11 +20,11 @@ function UserSection(props) {
 				<p>Supercharge your Productivity.</p>
 			</div>
 			<div className="content-header-actions">
-                <a href="#" className="button">
+                <a href="#" className="us_button">
 					<span>Live Classes</span>
 				</a>
                 <Link to = "/recordform">
-				<div className="button">
+				<div className="us_button">
 					<span>Record A Lecture</span>
 				</div>
                 </Link>
@@ -46,7 +46,7 @@ function UserSection(props) {
 					<article className="uscard">
 						<div className="card-header">
 							<div>
-								<span><img src="https://assets.codepen.io/285131/zeplin.svg" /></span>
+								<span><img  className = "us_img" src="https://assets.codepen.io/285131/zeplin.svg" /></span>
 								<h3>Chalk Board</h3>
 							</div>
 
@@ -63,7 +63,7 @@ function UserSection(props) {
                     <article className="uscard">
 						<div className="card-header">
 							<div>
-								<span><img src="https://assets.codepen.io/285131/zeplin.svg" /></span>
+								<span><img className = "us_img" src="https://assets.codepen.io/285131/zeplin.svg" /></span>
 								<h3>WebD IDE</h3>
 							</div>
 
@@ -80,7 +80,7 @@ function UserSection(props) {
                     <article className="uscard">
 						<div className="card-header">
 							<div>
-								<span><img src="https://assets.codepen.io/285131/zeplin.svg" /></span>
+								<span><img  className = "us_img" src="https://assets.codepen.io/285131/zeplin.svg" /></span>
 								<h3>C++ IDE</h3>
 							</div>
 
