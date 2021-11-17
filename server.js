@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 if (true) {
-  app.use(express.static(path.join(__dirname, '/frontendStatic/staticBuild')))
+  app.use(express.static(path.join(__dirname, '/frontendStatic')))
 
   app.get('*', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'frontendStatic', 'staticBuild', 'index.html'))
