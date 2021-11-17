@@ -54,7 +54,7 @@ function Card(props) {
                     <div key={lecture.id}>
                         <Link to = {`/${type}/${id}`}>
                         <div className="card">
-                        <div className="card__background" style={{"backgroundImage": "url(https://images.unsplash.com/photo-1557177324-56c542165309?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)"}}></div>
+                        <div className="card__background" style={{"backgroundImage": "../"}}></div>
                         <div className="card__content">
                             <p className="card__category">{lecture.creator}</p>
                             <h3 className="card__heading">{lecture.name}</h3>
