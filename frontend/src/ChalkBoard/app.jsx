@@ -1,7 +1,7 @@
-import ExcalidrawApp from "./excalidraw-app";
+import ChalkBoard from "./excalidraw-app";
 const Test = () => {
     return (<>
-      <ExcalidrawApp />
+      <ChalkBoard/>
       </>);
 };
 export default Test;

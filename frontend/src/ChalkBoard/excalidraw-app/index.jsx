@@ -436,7 +436,7 @@ const ExcalidrawWrapper = () => {
         localFileStorage.reset();
     }, []);
     return (<>
-      <Excalidraw ref={excalidrawRefCallback} onChange={onChange} initialData={initialStatePromiseRef.current.promise} onCollabButtonClick={collabAPI?.onCollabButtonClick} isCollaborating={collabAPI?.isCollaborating()} onPointerUpdate={collabAPI?.onPointerUpdate} UIOptions={{
+      <Excalidraw ref={excalidrawRefCallback} onChange={onChange} initialData={null} onCollabButtonClick={collabAPI?.onCollabButtonClick} isCollaborating={collabAPI?.isCollaborating()} onPointerUpdate={collabAPI?.onPointerUpdate} UIOptions={{
             canvasActions: {
                 export: {
                     onExportToBackend,
