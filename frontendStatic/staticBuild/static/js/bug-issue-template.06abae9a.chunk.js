@@ -1,2 +1,0 @@
-(this.webpackJsonpengagev2=this.webpackJsonpengagev2||[]).push([[2],{334:function(n,e,t){"use strict";t.r(e),e.default=function(n){return"\n### Scene content\n\n```\nPaste scene content here\n```\n\n### Sentry Error ID\n\n".concat(n,"\n")}},336:function(n,e,t){"use strict";t.r(e),e.default=function(n){return"\n### Scene content\n\n```\nPaste scene content here\n```\n\n### Sentry Error ID\n\n".concat(n,"\n")}}}]);
-//# sourceMappingURL=bug-issue-template.06abae9a.chunk.js.map
