@@ -41,7 +41,7 @@ function UserSection(props) {
 				</div>
 			</div>
 			<div className="content-main">
-				<div className="card-grid">
+				<div className="us-card-grid">
                     <Link to="/drawboard">
 					<article className="uscard">
 						<div className="card-header">
