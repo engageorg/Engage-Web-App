@@ -73,7 +73,7 @@ export const actionChangeExportEmbedScene = register({
     PanelComponent: ({ appState, updateData }) => (<CheckboxItem checked={appState.exportEmbedScene} onChange={(checked) => updateData(checked)}>
       {t("labels.exportEmbedScene")}
       <Tooltip label={t("labels.exportEmbedScene_details")} long={true}>
-        <div className="chalkboard-tooltip-icon">{questionCircle}</div>
+        <div className="excalidraw-tooltip-icon">{questionCircle}</div>
       </Tooltip>
     </CheckboxItem>),
 });

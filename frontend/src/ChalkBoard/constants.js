@@ -1,5 +1,5 @@
 import cssVariables from "./css/variables.module.scss";
-export const APP_NAME = "ChalkBoard";
+export const APP_NAME = "Excalidraw";
 export const DRAGGING_THRESHOLD = 10; // px
 export const LINE_CONFIRM_THRESHOLD = 8; // px
 export const ELEMENT_SHIFT_TRANSLATE_AMOUNT = 5;
