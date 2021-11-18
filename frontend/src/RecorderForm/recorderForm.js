@@ -61,15 +61,15 @@ function RecorderForm() {
 
     return (
         <motion.div  initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1, duration:0.5}} transition= {{type: "Tween"}}>
-        <form>
+        <form className="lectureForm">
             <input id="lectureName" placeholder="Lecture Title"/>
             <input id="creator" placeholder="Creator"/>
-            <select name="language" id="language"></select>
             <select id="lectureType">
                 <option value="ide">Web Developerment</option>
                 <option value="dsa">DSA</option>
                 <option value="dra">Chalk Board</option>
             </select>
+            <select name="language" id="language"></select>
             <button type="button"  onClick = {navigateToRecorderWeb} id="submit">Submit</button>
         </form>
         </motion.div>

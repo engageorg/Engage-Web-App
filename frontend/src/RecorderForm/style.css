@@ -5,11 +5,16 @@
     border-radius: 5px;
     padding: 10px 15px 10px 15px;
     background-color: greenyellow;
+    width: 10%;
 }
 
 #lectureName, #creator{
     height: 2rem;
     margin: 10px;
+    width: 30%;
+    font-size: 20px;
+    border: none;
+    border-bottom: 2px solid rgb(119, 118, 118);
 }
 
 input::-webkit-input-placeholder{
@@ -18,4 +23,23 @@ input::-webkit-input-placeholder{
 
 #language{
     display: none;
+    height: 30px;
+}
+
+.lectureForm{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 180px;
+}
+
+.lectureDetails{
+    display: flex;
+    flex-direction: column;
+}
+
+#lectureType{
+    width: 15%;
+    height: 30px;
 }
