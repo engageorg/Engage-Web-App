@@ -150,10 +150,7 @@ export const ColorPicker = ({ type, color, onChange, label, isActive, setActive,
     const pickerButton = React.useRef(null);
     return (<div>
       <div className="color-picker-control-container">
-        <button className="color-picker-label-swatch" aria-label={label} style={color ? { "--swatch-color": color } : undefined} onClick={() => setActive(!isActive)} ref={pickerButton}/>
-        <ColorInput color={color} label={label} onChange={(color) => {
-            onChange(color);
-        }}/>
+      <button className={`${type} color-picker-label-swatch`} aria-label={label} style={color ? { "--swatch-color": color } : undefined} onClick={() => setActive(!isActive)} ref={pickerButton}/>
       </div>
       <React.Suspense fallback="">
         {isActive ? (<Popover onCloseRequest={(event) => event.target !== pickerButton.current && setActive(false)}>
