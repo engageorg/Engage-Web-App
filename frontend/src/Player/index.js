@@ -358,7 +358,7 @@ export default function Video(props) {
       <div className = "player-content">
       <div className = "videoscreen">
       {/* <IDE name={name} refresh = {refresh}/> */}
-      {name==="dra" ? <div className="chalk"><ChalkBoard event={drawing}/></div>: <IDE name={name} language={language} refresh={refresh}/>}
+      {name==="dra" ? <div className="chalk"><ChalkBoard /></div>: <IDE name={name} language={language} refresh={refresh}/>}
       </div>
       <div className="playButton">
       <div className="container"><a className="button button-play"></a></div>

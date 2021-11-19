@@ -54,7 +54,7 @@ function UserSection() {
 
 						</div>
 						<div className="card-body">
-							<p>Custom ChalkBoard specially designed for teaching</p>
+							<p>Custom ChalkBoard specially designed for teaching, tailored made UI/UX for different subjects</p>
 						</div>
 						<div className="card-footer">
 							<div>View integration</div>
@@ -74,7 +74,7 @@ function UserSection() {
 							<p>Web Development IDE for beginners, that works on vscode editor</p>
 						</div>
 						<div className="card-footer">
-							<a href="#">View integration</a>
+							<div>View integration</div>
 						</div>
 					</article>
 
@@ -91,7 +91,7 @@ function UserSection() {
 							<p>Learn DSA in C++, using the c++ compiler and IDE</p>
 						</div>
 						<div className="card-footer">
-							<a href="#">View integration</a>
+							<div>View integration</div>
 						</div>
 					</article>
 
