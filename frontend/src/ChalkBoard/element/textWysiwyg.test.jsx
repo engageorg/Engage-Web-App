@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import ChalkBoard from "../excalidraw-app";
+import ExcalidrawApp from "../excalidraw-app";
 import { render } from "../tests/test-utils";
 import { Pointer, UI } from "../tests/helpers/ui";
 import { KEYS } from "../keys";
@@ -9,7 +9,7 @@ const tab = "    ";
 describe("textWysiwyg", () => {
     let textarea;
     beforeEach(async () => {
-        await render(<ChalkBoard />);
+        await render(<ExcalidrawApp />);
         const element = UI.createElement("text");
         new Pointer("mouse").clickOn(element);
         textarea = document.querySelector(".excalidraw-textEditorContainer > textarea");

@@ -2,20 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 import ChalkBoard from '../ChalkBoard/index'
 import Peer from "simple-peer"
 import * as io from 'socket.io-client'
-import "./style.css"
 
 function LiveClassEmitter() {
     const socketRef = useRef()
     const [ stream, setStream ] = useState()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect("http://localhost:5000")
     // Record each type of event
 	const myVideo = useRef()
     const userVideo = useRef()
 	const connectionRef= useRef()
     useEffect(() => {
         //console.log(document.location.origin)
-        navigator.mediaDevices.getUserMedia({ audio: true}).then((stream) => {
+        navigator.mediaDevices.getUserMedia({ video:true,audio: true}).then((stream) => {
             setStream(stream)
             myVideo.current.srcObject = stream
         })
@@ -125,11 +124,9 @@ function LiveClassEmitter() {
     return (
         <>
             <div style={{display:"flex", flexDirection:"row-reverse"}}>
-            <div className="streamingWindow">
-                <div className="buttons">
-                <button className="startButton" onClick = {() => startLive()}>Start</button>
-                <button className="stopButton" onClick = {() => stopLive()}>Stop</button>
-                </div>
+            <div style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
+                <button style={{backgroundColor:"red"}} onClick = {() => startLive()}>Start</button>
+                <button style={{backgroundColor:"yellow"}} onClick = {() => stopLive()}>Stop</button>
                 {stream && <video playsInline muted ref={myVideo} autoPlay style={{width: "300px" }} />}
             </div>
             </div>

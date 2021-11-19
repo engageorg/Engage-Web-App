@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 if (true) {
-  app.use(express.static(path.join(__dirname, '/frontendStatic')))
+  app.use(express.static(path.join(__dirname, '/frontendStatic/staticBuild')))
 
   app.get('*', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'frontendStatic', 'staticBuild', 'index.html'))
@@ -33,7 +33,7 @@ if (true) {
 
 io.on('connection', socket => {
   socket.on("emitData", ({data}) => {
-    //console.log(data)
+    console.log(data)
     io.emit("receiveData", {data})
   })
   socket.on("sendStream", (data) => {

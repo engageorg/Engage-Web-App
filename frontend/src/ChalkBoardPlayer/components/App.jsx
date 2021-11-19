@@ -3660,13 +3660,11 @@ class App extends React.Component {
     pointerDownState.lastCoords.x = event.clientX;
     pointerDownState.lastCoords.y = event.clientY;
     const onPointerMove = withBatchedUpdates((event) => {
-      if(event.isTrusted === false){
       const target = event.target;
       if (!(target instanceof HTMLElement)) {
         return;
       }
       this.handlePointerMoveOverScrollbars(event, pointerDownState);
-    }
     });
     const onPointerUp = withBatchedUpdates(() => {
       isDraggingScrollBar = false;
@@ -3703,34 +3701,24 @@ class App extends React.Component {
   }
   onKeyDownFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
-      
-      if(event.isTrusted === false){
-
       if (this.maybeHandleResize(pointerDownState, event)) {
         return;
       }
       this.maybeDragNewGenericElement(pointerDownState, event);
-
-      }
     });
   }
   onKeyUpFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
-
-      if(event.isTrusted === false){
       // Prevents focus from escaping excalidraw tab
       event.key === KEYS.ALT && event.preventDefault();
       if (this.maybeHandleResize(pointerDownState, event)) {
         return;
       }
       this.maybeDragNewGenericElement(pointerDownState, event);
-      }
     });
   }
   onPointerMoveFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
-
-      if(event.isTrusted === false){
       // We need to initialize dragOffsetXY only after we've updated
       // `state.selectedElementIds` on pointerDown. Doing it here in pointerMove
       // event handler should hopefully ensure we're already working with
@@ -3995,7 +3983,6 @@ class App extends React.Component {
             this.scene.getElements()
           )
         );
-      }
       }
     });
   }

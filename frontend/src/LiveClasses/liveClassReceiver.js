@@ -10,12 +10,9 @@ function LiveClassReceiver() {
     const [ callerSignal, setCallerSignal ] = useState()
     const userVideo = useRef()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect("http://localhost:5000")
     useEffect(() => {
-        const button = document.getElementsByClassName("answerButton")[0]
-        button.style.display = "none"
         socketRef.current.on("receiveData", ({data}) => {
-            button.style.display="block"
             if (data.type === "mousedown") {
                 console.log("mousedown")
                 let eve = new PointerEvent("pointerdown", {
@@ -101,7 +98,7 @@ function LiveClassReceiver() {
         <>
             <div style={{display:"flex", flexDirection:"row-reverse"}}>
             <div style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
-            <button className="answerButton" onClick={() => answerCall()}>Answer Call</button>
+            <button onClick={() => answerCall()}>Answer Call</button>
             {stream && <video playsInline ref={userVideo} autoPlay style={{width: "300px" }} />}
             </div>
             </div>

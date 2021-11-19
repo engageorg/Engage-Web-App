@@ -1,0 +1,148 @@
+/* Text editor  */
+.text-editor {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  
+  .editor-sidebar {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--fg);
+  }
+  
+  .sidebar-heading {
+    color: #fffffe;
+    padding: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+  }
+  
+  .sidebar-navbutton {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 20;
+  }
+  
+  .jsfile:disabled, .cssfile:disabled, .htmlfile:disabled  {
+    color: white !important;
+    background: rgba(13,34,48,0.4);
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    border: none;
+    text-align: left;
+    width: 100%;
+    transition: 200ms;
+  }
+  
+  .jsfile, .cssfile, .htmlfile {
+    color: #fffffe;
+    border: none;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .buttontext {
+    font-size: medium;
+    width: 100%;
+  }
+  
+  .fa-html5{
+    color:#cc0000;
+    margin-right: 5px;
+    font-size: 20px; 
+  }
+  
+  
+  .fa-css3-alt{
+    color: #0066ff;
+    margin-right: 5px;
+    font-size: 20px; 
+   
+  }
+  
+  .fa-js-square{
+    color: #ffd11a;
+    margin-right: 5px;
+    font-size: 20px; 
+  }
+  
+  .sidebar-footer{
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .editor {
+    display: flex;
+    flex: 9
+  }
+  
+  .Modal {
+    position: absolute;
+    top: 20vh;
+    left: 20vw;
+    right: 20vw;
+    bottom: 20vh;
+    background-color: #e5e5e5;
+    z-index: 1000000;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .Overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    
+  }
+  
+  .outputiframe{
+    width: 60vw;
+    height: 57.2vh;
+  }
+
+  .fa-window-close{
+    color: rgb(239, 57, 61);
+    padding-left: 1px;
+  }
+  
+  .closeButton{
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
+    background-color: rgb(242, 248, 247);
+    border-bottom: 1px solid rgb(163, 167, 166);
+  }
+
+  .closeButton:hover{
+    opacity: 0.8;
+  }  
+
+  .output{
+    transition: 0.5s;
+    z-index: 2;
+  }
+
+  .output:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }

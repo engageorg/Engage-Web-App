@@ -30,3 +30,512 @@ button {
   width: 40px;
   height: 40px;
 }
+
+
+/* 
+
+Old CSS
+
+.sidebar {
+  background-color: #d9d9e2;
+
+}
+
+.explorer{
+    padding: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  
+}
+
+.player {
+  width : 50px;
+  height: 50px;
+  margin-left: 55px;
+
+}
+
+.IDE{
+  display: flex;
+}
+
+.outputbutton {
+  font-size: medium;
+  background-color: green;
+  border-radius: 10px;
+  color: white;
+  border: none;
+  padding: 10px;
+}
+
+.MuiButton-label{
+  color: rgb(0, 0, 0);
+  font-weight:600;
+  text-transform: lowercase;
+  font-size: 15px;
+  text-align: left;
+}
+
+.MuiButton-root{
+  padding: 0;
+  margin: 0;
+}
+
+.file:hover{
+  background-color: #a19f9f !important;
+}
+
+
+.MuiButton-root.Mui-disabled {
+  color: red;
+}
+
+.scriptbutton {
+  background-color: #d9d9e2;
+  font-size: medium;
+  border: none;
+  padding: 5px;
+  text-align: left;
+  width: 8.35vw;
+}
+
+.stylebutton {
+  background-color: #d9d9e2;
+  font-size: medium;
+  border: none;
+  padding: 5px;
+  text-align: left;
+  width: 8.35vw;
+}
+
+.htmlbutton {
+  background-color: #d9d9e2;
+  font-size: medium;
+  border: none;
+  padding: 5px;
+  text-align: left;
+  width: 8.35vw;
+}
+
+.htmlbutton:disabled {
+  color: black;
+  background-color: #fffffe !important;
+  border: none;
+  padding: 5px;
+  text-align: left;
+}
+
+.stylebutton:disabled {
+  color: black;
+  background-color: #fffffe !important;
+  border: none;
+  padding: 5px;
+  text-align: left;
+}
+
+.scriptbutton:disabled {
+  color: black;
+  background-color: #fffffe !important;
+  border: none;
+  padding: 5px;
+  text-align: left;
+}
+
+
+
+.videoplayer{
+  position: absolute;
+  z-index: 100;
+  top: 90vh;
+  width: 100vw;
+  display: flex;
+  padding: 1rem;
+  justify-content: center;
+}
+
+.recorder-button{
+  position: absolute;
+  z-index: 100;
+  top: 2vh;
+  right: 3vw;
+  cursor: pointer;
+}
+
+.record{
+  background: none;
+}
+
+.fab{
+  font-size: 1rem;
+}
+
+.fa-html5{
+  color:#cc0000;
+  margin-right: 5px;
+  padding: 8px;
+  transform: scale(1.6);
+}
+
+
+.fa-css3-alt{
+  color: #0066ff;
+  margin-right: 5px;
+  padding: 8px;
+  transform: scale(1.8);
+}
+
+.fa-js-square{
+  color: #ffd11a;
+  margin-right: 5px;
+  padding: 8px;
+  transform: scale(1.8);
+}
+
+.fa-microphone{
+  font-size: 1.5rem;
+  color: rgb(7, 1, 1);
+}
+
+.fa-microphone-slash{
+  font-size: 1.3rem;
+  display: none;
+  color: red;
+}
+
+.fa-play-circle{
+  transform: translate(-50%, -50%);
+  font-size: 6rem;
+  color: rgb(2, 25, 34);
+  z-index:2;
+  opacity: 0.8;
+}
+
+.fa-window-close{
+  color: rgb(239, 57, 61);
+  padding-left: 1px;
+}
+
+.closeButton:hover{
+  opacity: 0.8;
+}
+
+.fa-play-circle:hover{
+  transition: 200ms;
+  font-size: 8rem;
+}
+
+.loading {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000000000;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.loading-hide{
+  display: none;
+}
+
+.videoplayer{
+  display: none;
+}
+
+button{
+  transition: 50ms;
+}
+
+button:hover{
+  transform: scale(1.1);
+}
+
+audio{
+  width:80%;
+  border-radius: 5px;
+  display: flex;
+  background-color: white;
+}
+
+audio::-webkit-media-controls-enclosure{
+  background: none;
+}
+
+
+audio::-webkit-media-controls-play-button {
+  background-size: 50px;
+}
+
+.closeButton{
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
+  background-color: rgb(242, 248, 247);
+  border-bottom: 1px solid rgb(163, 167, 166);
+}
+
+.playButton{
+ position: absolute;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 100vw;
+ height: 100vh;
+ left: 0;
+ right: 0;
+ top:0;
+ bottom: 0;
+ background-color: rgba(0, 0, 0, 0.8);
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.circle {
+  display: block;
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 120px;
+  height: 120px;
+  stroke-dasharray: 1000px;
+  stroke-dashoffset: 0;
+  transform-origin: 50% 50%;
+  transition: all 0.8s linear 0.2s, opacity 0s linear 0s;
+}
+
+.button-play {
+  display: block;
+  position: relative;
+  border: 8px solid white;
+  box-shadow: 0 4px 6px -3px rgba(0, 0, 0, 0.3), inset 0 3px 4px -2px rgba(0, 0, 0, 0.25);
+  position: relative;
+  width: 112px;
+  height: 112px;
+  background: rgb(54, 67, 92);
+
+  border-radius: 50%;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.465, 1.55) 0.2s, border-width 0.4s cubic-bezier(0.68, -0.55, 0.465, 1.55);
+}
+.button-play:before {
+  display: block;
+  position: absolute;
+  content: "";
+  bottom: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 30px solid transparent;
+  border-width: 25px 0px 25px 40px;
+  border-radius: 0;
+  border-left-color: white;
+  transform: translate(-13px, 50%);
+}
+.button-play:hover, .button-play.active {
+  border: 4px solid white;
+}
+.button-play:hover .circle, .button-play.active .circle {
+  stroke-dasharray: -1000px;
+  stroke-dashoffset: -500px;
+  opacity: 0;
+  transition: all 2s linear 0.3s, opacity 0.1s linear 2s;
+}
+.button-play:hover:before, .button-play.active:before {
+  -webkit-animation: playJump 0.5s linear infinite;
+          animation: playJump 0.5s linear infinite;
+}
+
+@-webkit-keyframes playJump {
+  0% {
+    transform: translate(-13px, 60%) scale(1.1, 0.7);
+  }
+  10% {
+    transform: translate(-13px, 30%) scale(0.9, 1.2);
+  }
+  20% {
+    transform: translate(-13px, 15%);
+  }
+  40% {
+    transform: translate(-13px, 10%);
+  }
+  50% {
+    transform: translate(-13px, 10%);
+  }
+  55% {
+    transform: translate(-13px, 18%);
+  }
+  60% {
+    transform: translate(-13px, 20%);
+  }
+  65% {
+    transform: translate(-13px, 25%);
+  }
+  70% {
+    transform: translate(-13px, 30%);
+  }
+  90% {
+    transform: translate(-13px, 60%) scale(1.2, 0.7);
+  }
+  100% {
+    transform: translate(-13px, 60%) scale(1.4, 0.7);
+  }
+}
+
+@keyframes playJump {
+  0% {
+    transform: translate(-13px, 60%) scale(1.1, 0.7);
+  }
+  10% {
+    transform: translate(-13px, 30%) scale(0.9, 1.2);
+  }
+  20% {
+    transform: translate(-13px, 15%);
+  }
+  40% {
+    transform: translate(-13px, 10%);
+  }
+  50% {
+    transform: translate(-13px, 10%);
+  }
+  55% {
+    transform: translate(-13px, 18%);
+  }
+  60% {
+    transform: translate(-13px, 20%);
+  }
+  65% {
+    transform: translate(-13px, 25%);
+  }
+  70% {
+    transform: translate(-13px, 30%);
+  }
+  90% {
+    transform: translate(-13px, 60%) scale(1.2, 0.7);
+  }
+  100% {
+    transform: translate(-13px, 60%) scale(1.4, 0.7);
+  }
+}
+
+.outputbuttondiv{
+  min-width: 8.35vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+@media screen and (max-width: 1300px) {
+
+  .explorer{
+    margin-bottom: 10px;
+    margin-left: 8px;
+    color: #2d2d30;
+    font-size: 1rem;
+    background-color: #d9d9e2;
+    padding: 2px;
+    border-bottom-color: #050101 !important;
+    
+  }
+  
+  .outputbutton{
+    left:1vw;
+    background-color: transparent;
+  }
+  .buttontext{
+    display: none;
+  }
+
+  .fa-html5{
+    color:#cc0000;
+    margin-left: 3vw;
+    padding: 5px;
+    transform: scale(2);
+  }
+
+  .fa-play{
+    color: green;
+    margin-left: 3vw;
+    padding: 5px;
+    transform: scale(2);
+  }
+  
+
+  .fa-css3-alt{
+    color: #0066ff;
+    margin-left: 3vw;
+    padding: 5px;
+    transform: scale(2);
+  }
+  
+  .fa-js-square{
+    color: #ffd11a;
+    padding: 5px;
+    margin-left: 3vw;
+    transform: scale(2);
+  }
+  
+  .fa-microphone{
+    font-size: 1.5rem;
+    color: rgb(7, 1, 1);
+  }
+
+}
+
+@media screen and (max-width: 600px) {
+
+  .explorer{
+    margin-bottom: 10px;
+    margin-left: 8px;
+    color: #2d2d30;
+    font-size: 1.3rem;
+    background-color: #d9d9e2;
+    padding: 2px;
+    border-bottom-color: #050101 !important;
+    
+  }
+ 
+  .buttontext{
+    display: block;
+  }
+  .scriptbutton {
+    background-color: #d9d9e2;
+    font-size: medium;
+    border: none;
+    padding: 5px;
+    font-weight: 550;
+    text-align: left;
+    width: 100vw;
+  }
+  
+  .stylebutton {
+    background-color: #d9d9e2;
+    font-size: medium;
+    border: none;
+    font-weight: 550;
+    padding: 5px;
+    text-align: left;
+    width: 100vw;
+  }
+  
+  .htmlbutton {
+    background-color: #d9d9e2;
+    font-size: medium;
+    border: none;
+    font-weight: 550;
+    padding: 5px;
+    text-align: left;
+    width: 100vw;
+  }
+
+ 
+}
+ */

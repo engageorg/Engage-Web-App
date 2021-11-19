@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import IDE from "../IDE";
 import files from "../assets/files";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
-
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from "../actions";
 import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
-import ChalkBoard from "../ChalkBoardPlayer/index";
+import ChalkBoard from "../ChalkBoard/index";
 import img from "../assets/Gear-0.2s-200px.png"
 
 function Preloader(){
@@ -25,16 +23,15 @@ function Preloader(){
 }
 
 export default function Video(props) {
-  const { id, type } = useParams();
-  const name = type.slice(0,3)
-  const language = type.slice(3, 10)
+  const name = props.location.state.type.slice(0,3)
+  const language = props.location.state.type.slice(3, 10)
+  console.log(name)
   const [refresh, setRefresh] = useState("");
   const dispatch = useDispatch();
   let drawingEvent=''
   const [drawing, setDrawing] = useState('')
   
   useEffect(() => {
-
     let offsetPlay = 0;
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
     const videoPlayer = document.getElementsByClassName('videoplayer')[0]
@@ -43,7 +40,7 @@ export default function Video(props) {
     let recording = { events: [] };
     const recordingJsonValue = localStorage.getItem("recording");
     //const audioValue = JSON.parse(localStorage.getItem("file"));
-   
+    const id = (props.location.state.id)
     firebase.firestore().collection('events').where(firebase.firestore.FieldPath.documentId(), '==', id).get()
     .then((snap) => {
         snap.forEach((doc) => {
@@ -246,7 +243,6 @@ export default function Video(props) {
 
       }
       else if (event.type === "mousemove") {
-
         // TODO: Add e.buttons too
         let eve = new PointerEvent("pointermove", {
           bubbles: true,
@@ -286,6 +282,7 @@ export default function Video(props) {
         if(document.getElementsByClassName("excalidraw__canvas")[0])document.getElementsByClassName("excalidraw__canvas")[0].dispatchEvent(eve);
       }
       else if (event.type === "click") {
+ 
         if(document.getElementsByClassName(event.target)[0] !== undefined){
           let clickEvent = new MouseEvent("click", {
             pageX: event.x,
@@ -293,7 +290,6 @@ export default function Video(props) {
             bubbles: true,
             cancelable: true,
           });
-          
           document.getElementsByClassName(event.target)[0].dispatchEvent(clickEvent);
         }
         if(event.target === "rectangle" || event.target === "ellipse" || event.target === "arrow" || event.target === "selection") document.getElementsByClassName(event.target)[0].click();

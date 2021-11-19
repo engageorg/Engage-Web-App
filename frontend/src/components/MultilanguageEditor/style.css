@@ -1,0 +1,106 @@
+.inputOutput{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+
+.editor{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.userInputArea, .userOutputArea{
+    resize: none;
+    width: 100%;
+    height: 100%;
+    background-color: #292929;
+}
+
+.multilanguageIde{
+    overflow: hidden;
+}
+
+textarea{
+    border: none;
+    overflow: auto;
+    outline: none;
+    color: white;
+    font-size: 17px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    background-color: #6e6c6c;
+}
+
+textarea::-webkit-input-placeholder{
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.inputArea{
+    color: white;
+    background-color: #1E1E1E;
+    flex: 1;
+}
+
+.outputArea{
+    color: white;
+    background-color: #1E1E1E;
+    flex: 1;
+}
+
+.inputArea h3{
+    margin: 0;
+    padding-top: 6px;
+}
+
+.outputArea h3{
+    margin: 0;
+}
+
+.navbar{
+    display: flex;
+    flex-direction: row;
+    background-color: #1E1E1E;
+    border-bottom: 1px solid #818181;
+    justify-content: space-between;
+}
+
+.fileName{
+    color: white;
+    background-color: #807d7d;
+    padding: 4px;
+}
+
+.optionButton{
+    padding: 4px;
+    justify-content: flex-end;
+}
+
+.editor{
+    display: flex;
+    flex-direction: column;
+}
+
+#language{
+    margin-right: 10px;
+    color: white;
+    background-color:#1E1E1E;
+    padding: 2px;
+    border: 1px solid white;
+
+}
+
+.showCodeOutput{
+    color: white;
+    cursor: pointer;
+    background-color: green;
+    border-radius: 6px;
+    padding: 4px 5px 4px 5px;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top:4px;
+    margin-right: 4px;
+}
