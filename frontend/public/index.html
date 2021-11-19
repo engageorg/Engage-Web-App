@@ -91,7 +91,20 @@
       // setting this so that libraries installation reuses this window tab.
       window.name = "_excalidraw";
     </script>
- 
+    <% if (process.env.REACT_APP_GOOGLE_ANALYTICS_ID) { %>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GOOGLE_ANALYTICS_ID%"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "%REACT_APP_GOOGLE_ANALYTICS_ID%");
+    </script>
+    <% } %>
     
     <style>
       body,
