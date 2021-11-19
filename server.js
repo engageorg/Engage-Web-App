@@ -45,7 +45,6 @@ io.on('connection', socket => {
   //   console.log(data)
   // })\
   socket.on("answerCall", (data) => {
-    console.log(data)
     io.emit("callAccepted", data)
   })
 })
