@@ -7,8 +7,6 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
 import './style.css'
-import { motion } from "framer-motion";
-
 var startTime;
 export default function Recorder(props) {
   const name = props.location.state.lectureType
@@ -279,7 +277,6 @@ export default function Recorder(props) {
   //console.log(Recording)
   return (
     <>
-    <motion.div initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1, duration:0.5}} transition= {{type: "Tween"}}>
       <div className="recorder">
         <div className = "recorder-button">
           <i className="fas fa-microphone record" onClick={handleClick}></i>
@@ -287,7 +284,6 @@ export default function Recorder(props) {
         </div>
         {name === "dra" ?<div className = "chalk"> <ChalkBoard/> </div>:<IDE name={name} language={language} parentCallBack = {callbackFunction}/>}
         </div>
-    </motion.div>
     </>
   );
 }

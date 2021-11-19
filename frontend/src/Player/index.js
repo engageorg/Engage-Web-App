@@ -9,7 +9,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore';
 import 'firebase/storage';
 import "./style.css";
-import ChalkBoard from "../ChalkBoardPlayer/index";
+import ChalkBoard from "../ChalkBoard/index";
 import img from "../assets/Gear-0.2s-200px.png"
 
 function Preloader(){
@@ -92,11 +92,21 @@ export default function Video(props) {
     audioPlayer.addEventListener("play", () => {
       playButton.style.display="none"
       playfunction();
+      const data = {
+        status:false
+      }
+      const event = new CustomEvent("status", { detail: data });
+      document.dispatchEvent(event);
       console.log("audio play")
     })
 
     audioPlayer.addEventListener("pause", () => {
       console.log("clicked pause");
+      const data = {
+        status:true
+      }
+      const event = new CustomEvent("status", { detail: data });
+      document.dispatchEvent(event);
       pausefunction();
     })
     

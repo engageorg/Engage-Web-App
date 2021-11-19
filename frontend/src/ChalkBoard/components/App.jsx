@@ -230,6 +230,7 @@ class App extends React.Component {
     this.rc = null;
     this.unmounted = false;
     this.isMobile = false;
+    this.trusted = false
     this.excalidrawContainerRef = React.createRef();
     this.files = {};
     this.imageCache = new Map();
@@ -1398,7 +1399,9 @@ class App extends React.Component {
       invalidateContextMenu = true;
     };
     this.handleCanvasPointerDown = (event) => {
-      // remove any active selection when we start to interact with canvas
+      if(event.isTrusted === this.state.trusted){
+        console.log(this.state.trusted)
+              // remove any active selection when we start to interact with canvas
       // (mainly, we care about removing selection outside the component which
       //  would prevent our copy handling otherwise)
       const selection = document.getSelection();
@@ -1498,6 +1501,7 @@ class App extends React.Component {
         pointerDownState.eventListeners.onUp = onPointerUp;
         pointerDownState.eventListeners.onKeyUp = onKeyUp;
         pointerDownState.eventListeners.onKeyDown = onKeyDown;
+      }
       }
     };
     this.maybeOpenContextMenuAfterPointerDownOnTouchDevices = (event) => {
@@ -2892,6 +2896,7 @@ class App extends React.Component {
       ...defaultAppState,
       theme,
       isLoading: true,
+      trusted:true,
       ...this.getCanvasOffsets(),
       viewModeEnabled,
       zenModeEnabled,
@@ -2947,6 +2952,7 @@ class App extends React.Component {
     this.actionManager.registerAll(actions);
     this.actionManager.registerAction(createUndoAction(this.history));
     this.actionManager.registerAction(createRedoAction(this.history));
+    console.log(this.state)
   }
   renderCanvas() {
     const canvasScale = window.devicePixelRatio;
@@ -3202,6 +3208,9 @@ class App extends React.Component {
     this.removeEventListeners();
     document.addEventListener(EVENT.POINTER_UP, this.removePointer); // #3553
     document.addEventListener(EVENT.COPY, this.onCopy);
+    document.addEventListener("status", (e) => {
+      this.state.trusted = e.detail.status
+    })
     if (this.props.handleKeyboardGlobally) {
       document.addEventListener(EVENT.KEYDOWN, this.onKeyDown, false);
     }
@@ -3719,7 +3728,8 @@ class App extends React.Component {
   }
   onPointerMoveFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
-      // We need to initialize dragOffsetXY only after we've updated
+      if(event.isTrusted === this.state.trusted){
+              // We need to initialize dragOffsetXY only after we've updated
       // `state.selectedElementIds` on pointerDown. Doing it here in pointerMove
       // event handler should hopefully ensure we're already working with
       // the updated state.
@@ -3983,6 +3993,7 @@ class App extends React.Component {
             this.scene.getElements()
           )
         );
+      }
       }
     });
   }
