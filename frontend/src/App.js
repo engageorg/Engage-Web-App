@@ -4,7 +4,6 @@ import Recorder from "./Recorder";
 import Player from "./Player";
 import UserSection from "./UserSection";
 import { createStore, compose, applyMiddleware} from 'redux';
-import StartingComponent from './StartingComponent/startingCompoent'
 import RecorderForm from './RecorderForm/recorderForm'
 import Video from './Player';
 import LiveClassEmitter from "./LiveClasses/liveClassEmitter";
