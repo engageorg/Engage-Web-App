@@ -1,4 +1,5 @@
-const someJSCodeExample = `"use strict";
+const someJSCodeExample = `
+"use strict";
 /* TODO:  **************************************************************
 make a graphics that looks like the player has (loose wires / a tail / a rope) to indicate player motion
 
@@ -1363,6 +1364,7 @@ function open() {
     ctx.restore();  
   }
 }
+
 `;
 
 const someCSSCodeExample = `body {
@@ -1602,8 +1604,8 @@ zoom: + -
 
 </g>
 </svg>
-<script> src="https://rawgit.com/mrdoob/stats.js/master/build/stats.min.js"></script>
-<script> src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/464612/matter.min.js"></script>
+<script src="https://rawgit.com/mrdoob/stats.js/master/build/stats.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/464612/matter.min.js"></script>
 `;
 
 const someCCodeExample = ``;
