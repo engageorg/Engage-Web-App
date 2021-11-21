@@ -12,7 +12,6 @@ import Excalidraw, { defaultLang, languages, } from "../packages/excalidraw/inde
 import { debounce, getVersion, preventUnload, resolvablePromise, } from "../utils";
 import { FIREBASE_STORAGE_PREFIXES, SAVE_TO_LOCAL_STORAGE_TIMEOUT, } from "./app_constants";
 import CollabWrapper, { CollabContext, CollabContextConsumer, } from "./collab/CollabWrapper";
-import { LanguageList } from "./components/LanguageList";
 import { exportToBackend, getCollaborationLinkData, loadScene } from "./data";
 import { importFromLocalStorage, saveToLocalStorage, } from "./data/localStorage";
 import CustomStats from "./CustomStats";
@@ -389,7 +388,6 @@ const ExcalidrawWrapper = () => {
             {shield}
           </Tooltip>
         </a>);
-        const renderLanguageList = () => (<LanguageList onChange={(langCode) => setLangCode(langCode)} languages={languages} currentLangCode={langCode}/>);
         if (isMobile) {
             const isTinyDevice = window.innerWidth < 362;
             return (<div style={{
@@ -398,7 +396,6 @@ const ExcalidrawWrapper = () => {
                 }}>
             <fieldset>
               <legend>{t("labels.language")}</legend>
-              {renderLanguageList()}
             </fieldset>
             {/* FIXME remove after 2021-05-20 */}
             <div style={{
@@ -418,7 +415,6 @@ const ExcalidrawWrapper = () => {
         }
         return (<>
           {renderEncryptedIcon()}
-          {renderLanguageList()}
         </>);
     }, [langCode]);
     const renderCustomStats = () => {

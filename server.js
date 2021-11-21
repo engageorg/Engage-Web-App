@@ -26,24 +26,18 @@ if (true) {
   app.use(express.static(path.join(__dirname, '/frontendStatic')))
 
   app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontendStatic', 'staticBuild', 'index.html'))
+    res.sendFile(path.resolve(__dirname, 'frontendStatic', 'index.html'))
   )
 }
 
 
 io.on('connection', socket => {
   socket.on("emitData", ({data}) => {
-    //console.log(data)
     io.emit("receiveData", {data})
   })
   socket.on("sendStream", (data) => {
-    //console.log(data)
     io.emit("emitStream", data )
   })
-  // socket.on("callUser", ({data}) => {
-  //   console.log('data')
-  //   console.log(data)
-  // })\
   socket.on("answerCall", (data) => {
     console.log(data)
     io.emit("callAccepted", data)
