@@ -61,7 +61,8 @@ function UserSection() {
 						</div>
 					</article>
                     </Link>
-
+                    
+					<Link to="/webd">
                     <article className="uscard">
 						<div className="card-header">
 							<div>
@@ -77,8 +78,9 @@ function UserSection() {
 							<div>View integration</div>
 						</div>
 					</article>
-
-
+                    </Link>
+                    
+					<Link to="/drawboard">
                     <article className="uscard">
 						<div className="card-header">
 							<div>
@@ -94,7 +96,7 @@ function UserSection() {
 							<div>View integration</div>
 						</div>
 					</article>
-
+                    </Link>
 				</div>
 			</div>
 		</div>
