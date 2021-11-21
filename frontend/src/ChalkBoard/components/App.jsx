@@ -200,12 +200,15 @@ import throttle from "lodash.throttle";
 import { fileOpen, nativeFileSystemSupported } from "../data/filesystem";
 const IsMobileContext = React.createContext(false);
 export const useIsMobile = () => useContext(IsMobileContext);
+
 const ExcalidrawContainerContext = React.createContext({
   container: null,
   id: null,
 });
+
 export const useExcalidrawContainer = () =>
   useContext(ExcalidrawContainerContext);
+
 let didTapTwice = false;
 let tappedTwiceTimer = 0;
 let cursorX = 0;
@@ -217,14 +220,18 @@ let currentScrollBars = { horizontal: null, vertical: null };
 let touchTimeout = 0;
 let invalidateContextMenu = false;
 let lastPointerUp = null;
+
 const gesture = {
   pointers: new Map(),
   lastCenter: null,
   initialDistance: null,
   initialScale: null,
 };
+
 class App extends React.Component {
+
   constructor(props) {
+
     super(props);
     this.canvas = null;
     this.rc = null;
@@ -234,17 +241,24 @@ class App extends React.Component {
     this.excalidrawContainerRef = React.createRef();
     this.files = {};
     this.imageCache = new Map();
+    
+
+    //why do we need to focus the excali container?
     this.focusContainer = () => {
       if (this.props.autoFocus) {
         this.excalidrawContainerRef.current?.focus();
       }
     };
+    
+    //class scene
     this.getSceneElementsIncludingDeleted = () => {
       return this.scene.getElementsIncludingDeleted();
     };
+    
     this.getSceneElements = () => {
       return this.scene.getElements();
     };
+
     this.syncActionResult = withBatchedUpdates((actionResult) => {
       if (this.unmounted || actionResult === false) {
         return;
@@ -321,17 +335,21 @@ class App extends React.Component {
         );
       }
     });
+
     // Lifecycle
     this.onBlur = withBatchedUpdates(() => {
       isHoldingSpace = false;
       this.setState({ isBindingEnabled: true });
     });
+
     this.onUnload = () => {
       this.onBlur();
     };
+
     this.disableEvent = (event) => {
       event.preventDefault();
     };
+
     this.onFontLoaded = () => {
       this.scene.getElementsIncludingDeleted().forEach((element) => {
         if (isTextElement(element)) {
@@ -340,6 +358,7 @@ class App extends React.Component {
       });
       this.onSceneUpdated();
     };
+
     this.importLibraryFromUrl = async (url, token) => {
       if (window.location.hash.includes(URL_HASH_KEYS.addLibrary)) {
         const hash = new URLSearchParams(window.location.hash.slice(1));
@@ -377,6 +396,7 @@ class App extends React.Component {
         this.focusContainer();
       }
     };
+
     this.resetHistory = () => {
       this.history.clear();
     };
@@ -1778,6 +1798,7 @@ class App extends React.Component {
       }
       return false;
     };
+
     this.handleTextOnPointerDown = (event, pointerDownState) => {
       // if we're currently still editing text, clicking outside
       // should only finalize it, not create another (irrespective
@@ -1797,6 +1818,7 @@ class App extends React.Component {
         });
       }
     };
+
     this.handleFreeDrawElementOnPointerDown = (
       event,
       elementType,
@@ -1850,6 +1872,7 @@ class App extends React.Component {
         suggestedBindings: [],
       });
     };
+
     this.createImageElement = ({ sceneX, sceneY }) => {
       const [gridX, gridY] = getGridPoint(sceneX, sceneY, this.state.gridSize);
       const element = newImageElement({
@@ -1867,6 +1890,7 @@ class App extends React.Component {
       });
       return element;
     };
+
     this.handleLinearElementOnPointerDown = (
       event,
       elementType,
@@ -1970,6 +1994,7 @@ class App extends React.Component {
         });
       }
     };
+
     this.createGenericElementOnPointerDown = (
       elementType,
       pointerDownState
@@ -2009,6 +2034,7 @@ class App extends React.Component {
         });
       }
     };
+
     this.initializeImage = async ({
       imageFile,
       imageElement: _imageElement,
@@ -2954,6 +2980,7 @@ class App extends React.Component {
     this.actionManager.registerAction(createRedoAction(this.history));
     console.log(this.state)
   }
+
   renderCanvas() {
     const canvasScale = window.devicePixelRatio;
     const {
@@ -3008,6 +3035,7 @@ class App extends React.Component {
       </canvas>
     );
   }
+
   render() {
     const { zenModeEnabled, viewModeEnabled } = this.state;
     const {
@@ -3094,6 +3122,7 @@ class App extends React.Component {
       </div>
     );
   }
+
   async componentDidMount() {
     this.excalidrawContainerValue.container =
       this.excalidrawContainerRef.current;
@@ -3160,6 +3189,7 @@ class App extends React.Component {
       this.updateDOMRect(this.initializeScene);
     }
   }
+
   componentWillUnmount() {
     this.files = {};
     this.imageCache.clear();
@@ -3170,6 +3200,7 @@ class App extends React.Component {
     clearTimeout(touchTimeout);
     touchTimeout = 0;
   }
+
   removeEventListeners() {
     document.removeEventListener(EVENT.POINTER_UP, this.removePointer);
     document.removeEventListener(EVENT.COPY, this.onCopy);
@@ -3204,6 +3235,7 @@ class App extends React.Component {
     document.removeEventListener(EVENT.GESTURE_END, this.onGestureEnd, false);
     this.detachIsMobileMqHandler?.();
   }
+
   addEventListeners() {
     this.removeEventListeners();
     document.addEventListener(EVENT.POINTER_UP, this.removePointer); // #3553
@@ -3249,6 +3281,7 @@ class App extends React.Component {
     window.addEventListener(EVENT.DRAG_OVER, this.disableEvent, false);
     window.addEventListener(EVENT.DROP, this.disableEvent, false);
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.langCode !== this.props.langCode) {
       this.updateLanguage();
@@ -3406,9 +3439,11 @@ class App extends React.Component {
       );
     }
   }
+
   static resetTapTwice() {
     didTapTwice = false;
   }
+
   addTextFromPaste(text) {
     const { x, y } = viewportCoordsToSceneCoords(
       { clientX: cursorX, clientY: cursorY },
@@ -3438,6 +3473,7 @@ class App extends React.Component {
     this.setState({ selectedElementIds: { [element.id]: true } });
     this.history.resumeRecording();
   }
+
   selectShapeTool(elementType) {
     if (!isHoldingSpace) {
       setCursorForShape(this.canvas, elementType);
@@ -3462,6 +3498,7 @@ class App extends React.Component {
       this.setState({ elementType });
     }
   }
+
   handleTextWysiwyg(element, { isExistingElement = false }) {
     const updateElement = (text, isDeleted = false) => {
       this.scene.replaceAllElements([
@@ -3536,6 +3573,7 @@ class App extends React.Component {
     // modifying element's x/y for sake of editor (case: syncing to remote)
     updateElement(element.text);
   }
+
   deselectElements() {
     this.setState({
       selectedElementIds: {},
@@ -3543,6 +3581,7 @@ class App extends React.Component {
       editingGroupId: null,
     });
   }
+
   getTextElementAtPosition(x, y) {
     const element = this.getElementAtPosition(x, y);
     if (element && isTextElement(element) && !element.isDeleted) {
@@ -3550,6 +3589,7 @@ class App extends React.Component {
     }
     return null;
   }
+
   getElementAtPosition(x, y, opts) {
     const allHitElements = this.getElementsAtPosition(x, y);
     if (allHitElements.length > 1) {
@@ -3578,11 +3618,13 @@ class App extends React.Component {
     }
     return null;
   }
+
   getElementsAtPosition(x, y) {
     return getElementsAtPosition(this.scene.getElements(), (element) =>
       hitTest(element, this.state, x, y)
     );
   }
+
   maybeCleanupAfterMissingPointerUp(event) {
     if (lastPointerUp !== null) {
       // Unfortunately, sometimes we don't get a pointerup after a pointerdown,
@@ -3591,6 +3633,7 @@ class App extends React.Component {
       lastPointerUp(event);
     }
   }
+
   updateGestureOnPointerDown(event) {
     gesture.pointers.set(event.pointerId, {
       x: event.clientX,
@@ -3604,6 +3647,7 @@ class App extends React.Component {
       );
     }
   }
+
   initialPointerDownState(event) {
     const origin = viewportCoordsToSceneCoords(event, this.state);
     const selectedElements = getSelectedElements(
@@ -3658,6 +3702,7 @@ class App extends React.Component {
       },
     };
   }
+
   // Returns whether the event is a dragging a scrollbar
   handleDraggingScrollBar(event, pointerDownState) {
     if (
@@ -3691,9 +3736,11 @@ class App extends React.Component {
     window.addEventListener(EVENT.POINTER_UP, onPointerUp);
     return true;
   }
+
   isASelectedElement(hitElement) {
     return hitElement != null && this.state.selectedElementIds[hitElement.id];
   }
+
   isHittingCommonBoundingBoxOfSelectedElements(point, selectedElements) {
     if (selectedElements.length < 2) {
       return false;
@@ -3708,6 +3755,7 @@ class App extends React.Component {
       point.y < y2 + threshold
     );
   }
+
   onKeyDownFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
       if (this.maybeHandleResize(pointerDownState, event)) {
@@ -3716,6 +3764,7 @@ class App extends React.Component {
       this.maybeDragNewGenericElement(pointerDownState, event);
     });
   }
+
   onKeyUpFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
       // Prevents focus from escaping excalidraw tab
@@ -3726,6 +3775,7 @@ class App extends React.Component {
       this.maybeDragNewGenericElement(pointerDownState, event);
     });
   }
+
   onPointerMoveFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((event) => {
       if(event.isTrusted === this.state.trusted){
@@ -3997,6 +4047,7 @@ class App extends React.Component {
       }
     });
   }
+
   // Returns whether the pointer move happened over either scrollbar
   handlePointerMoveOverScrollbars(event, pointerDownState) {
     if (pointerDownState.scrollbars.isOverHorizontal) {
@@ -4019,6 +4070,7 @@ class App extends React.Component {
     }
     return false;
   }
+
   onPointerUpFromPointerDownHandler(pointerDownState) {
     return withBatchedUpdates((childEvent) => {
       const {
@@ -4343,10 +4395,12 @@ class App extends React.Component {
       }
     });
   }
+
   maybeSuggestBindingForAll(selectedElements) {
     const suggestedBindings = getEligibleElementsForBinding(selectedElements);
     this.setState({ suggestedBindings });
   }
+
   clearSelection(hitElement) {
     this.setState((prevState) => ({
       selectedElementIds: {},
@@ -4365,6 +4419,7 @@ class App extends React.Component {
       previousSelectedElementIds: this.state.selectedElementIds,
     });
   }
+
   getTextWysiwygSnappedToCenterPosition(x, y, appState, canvas, scale) {
     const elementClickedInside = getElementContainingPosition(
       this.scene
@@ -4393,6 +4448,7 @@ class App extends React.Component {
       }
     }
   }
+
   getCanvasOffsets() {
     if (this.excalidrawContainerRef?.current) {
       const excalidrawContainer = this.excalidrawContainerRef.current;
@@ -4407,6 +4463,7 @@ class App extends React.Component {
       offsetTop: 0,
     };
   }
+
   async updateLanguage() {
     const currentLang =
       languages.find((lang) => lang.code === this.props.langCode) ||

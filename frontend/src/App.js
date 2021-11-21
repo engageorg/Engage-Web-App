@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ChalkBoard from "./ChalkBoard";
+import TextEditor from './TextEditor/TextEditor';
 import Recorder from "./Recorder";
 import Player from "./Player";
 import UserSection from "./UserSection";
@@ -53,6 +54,7 @@ function App() {
       <Route exact path = "/emitter" component = {LiveClassEmitter}/>
       <Route exact path = "/receiver" component = {LiveClassReceiver}/>
       <Route exact path = "/drawboard" component = {ChalkBoard}/>
+      <Route exact path = "/webd" component = {TextEditor}/>
       <Route exact path = "/recordform" component = {RecorderForm}/>
       <Route exact path = "/videoplayer" component = {Video}/>
       <Route exact path = "/recorder" component = {Recorder} ide="web"/>
