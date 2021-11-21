@@ -62,7 +62,7 @@ function UserSection() {
 					</article>
                     </Link>
                     
-					<Link to="/drawboard">
+					<Link to="/webd">
                     <article className="uscard">
 						<div className="card-header">
 							<div>
