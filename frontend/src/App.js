@@ -55,8 +55,7 @@ function App() {
       <Route exact path = "/emitter" component = {LiveClassEmitter}/>
       <Route exact path = "/receiver" component = {LiveClassReceiver}/>
       <Route exact path = "/drawboard" component = {ChalkBoard}/>
-      <Route exact path = "/webd" component = {TextEditor}/>
-      <Route exact path = "/fullpage" component = {WebD}/>
+      <Route exact path = "/webd" component = {WebD}/>
       <Route exact path = "/recordform" component = {RecorderForm}/>
       <Route exact path = "/videoplayer" component = {Video}/>
       <Route exact path = "/recorder" component = {Recorder} ide="web"/>

@@ -78,7 +78,7 @@ function TextEditor(props) {
     <Editor
             height="100vh"
             width="94vw"
-            theme="vs-light"
+            theme="vs-dark"
             path={file.name}
             defaultLanguage={file.language}
             defaultValue={file.value}
