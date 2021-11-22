@@ -2,7 +2,6 @@ import React from "react";
 import ChalkBoard from "../ChalkBoard/excalidraw-app";
 import TextEditor from "../TextEditor/TextEditor";
 import "fullpage.js/vendors/scrolloverflow"; // Optional. When using scrollOverflow:true
-import ReactFullpage from "@fullpage/react-fullpage";
 import "./styles.css";
 
 class FullpageWrapper extends React.Component {
