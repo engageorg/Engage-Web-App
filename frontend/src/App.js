@@ -3,6 +3,7 @@ import ChalkBoard from "./ChalkBoard";
 import TextEditor from './TextEditor/TextEditor';
 import Recorder from "./Recorder";
 import Player from "./Player";
+import WebD from "./WebD";
 import UserSection from "./UserSection";
 import { createStore, compose, applyMiddleware} from 'redux';
 import RecorderForm from './RecorderForm/recorderForm'
@@ -54,7 +55,7 @@ function App() {
       <Route exact path = "/emitter" component = {LiveClassEmitter}/>
       <Route exact path = "/receiver" component = {LiveClassReceiver}/>
       <Route exact path = "/drawboard" component = {ChalkBoard}/>
-      <Route exact path = "/webd" component = {TextEditor}/>
+      <Route exact path = "/webd" component = {WebD}/>
       <Route exact path = "/recordform" component = {RecorderForm}/>
       <Route exact path = "/videoplayer" component = {Video}/>
       <Route exact path = "/recorder" component = {Recorder} ide="web"/>

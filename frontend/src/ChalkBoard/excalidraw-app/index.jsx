@@ -91,7 +91,7 @@ const initializeScene = async (opts) => {
     const id = searchParams.get("id");
     const jsonBackendMatch = window.location.hash.match(/^#json=([0-9]+),([a-zA-Z0-9_-]+)$/);
     const externalUrlMatch = window.location.hash.match(/^#url=(.*)$/);
-    const localDataState = null;
+    const localDataState = importFromLocalStorage();
     let scene = await loadScene(null, null, localDataState);
     let roomLinkData = getCollaborationLinkData(window.location.href);
     const isExternalScene = !!(id || jsonBackendMatch || roomLinkData);
@@ -432,7 +432,7 @@ const ExcalidrawWrapper = () => {
         localFileStorage.reset();
     }, []);
     return (<>
-      <Excalidraw ref={excalidrawRefCallback} onChange={onChange} initialData={null} onCollabButtonClick={collabAPI?.onCollabButtonClick} isCollaborating={collabAPI?.isCollaborating()} onPointerUpdate={collabAPI?.onPointerUpdate} UIOptions={{
+      <Excalidraw ref={excalidrawRefCallback} onChange={onChange} initialData={initialStatePromiseRef.current.promise} onCollabButtonClick={collabAPI?.onCollabButtonClick} isCollaborating={collabAPI?.isCollaborating()} onPointerUpdate={collabAPI?.onPointerUpdate} UIOptions={{
             canvasActions: {
                 export: {
                     onExportToBackend,
