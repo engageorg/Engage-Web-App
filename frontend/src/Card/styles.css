@@ -56,7 +56,6 @@
   .card__background{
     background-size: cover;
     background-position: center;
-    border-radius: var(--spacing-m);
     bottom: 0;
     filter: brightness(0.75) saturate(1.2) contrast(0.85);
     left: 0;
@@ -83,6 +82,7 @@
     padding: var(--spacing-l);
     position: absolute;
     top: 0;
+    z-index: 1;
   }
   
   .card__category{
@@ -94,11 +94,11 @@
   
   .card__heading{
     color: var(--text-lighter);
-    font-size: 1 rem;
+    font-size: 1rem;
     margin: 0;
     text-shadow: 2px 2px 20px rgba(0,0,0,0.2);
     line-height: 1.4;
-    word-spacing: 100vw;
+    /* word-spacing: 100vw; */
   }
 
   .card__background{

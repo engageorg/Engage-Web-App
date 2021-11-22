@@ -6,6 +6,7 @@ import MicRecorder from 'mic-recorder-to-mp3';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage';
+import axios from "axios";
 import './style.css'
 var startTime;
 export default function Recorder(props) {
@@ -256,13 +257,19 @@ export default function Recorder(props) {
             audioString =(reader.result)
             var storageRef = firebase.storage().ref();
               const id = JSON.parse(localStorage.getItem("recordingId"))
-              //console.log(id)
               localStorage.removeItem('recordingId');
+              const lectureData = {
+                recording:recordingString,
+                audio:audioString
+              }
               var audioRef = storageRef.child(id);
               audioRef.putString(audioString, 'data_url').then((snapshot) => {
                 alert('Audio saved!');
               }).catch((e) => {
                 console.log(e)
+              })
+              axios.post("http://localhost:5000/savedata", {
+                lectureData
               })
           }
       }).catch((e) => console.log(e));

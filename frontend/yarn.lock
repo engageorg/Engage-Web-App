@@ -5388,6 +5388,11 @@
   "resolved" "https://registry.npmjs.org/destroy/-/destroy-1.0.4.tgz"
   "version" "1.0.4"
 
+"detect-browser@^4.1.0":
+  "integrity" "sha512-f4h2dFgzHUIpjpBLjhnDIteXv8VQiUm8XzAuzQtYUqECX/eKh67ykuiVoyb7Db7a0PUSmJa3OGXStG0CbQFUVw=="
+  "resolved" "https://registry.npmjs.org/detect-browser/-/detect-browser-4.8.0.tgz"
+  "version" "4.8.0"
+
 "detect-newline@^3.0.0":
   "integrity" "sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA=="
   "resolved" "https://registry.npmjs.org/detect-newline/-/detect-newline-3.1.0.tgz"
@@ -6294,6 +6299,11 @@
   dependencies:
     "d" "1"
     "es5-ext" "~0.10.14"
+
+"event-target-shim@^3.0.2":
+  "integrity" "sha512-HK5GhnEAkm7fLy249GtF7DIuYmjLm85Ft6ssj7DhVl8Tx/z9+v0W6aiIVUdT4AXWGYy5Fc+s6gqBI49Bf0LejQ=="
+  "resolved" "https://registry.npmjs.org/event-target-shim/-/event-target-shim-3.0.2.tgz"
+  "version" "3.0.2"
 
 "event-target-shim@^5.0.0":
   "integrity" "sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ=="
@@ -10838,6 +10848,14 @@
     "prelude-ls" "^1.2.1"
     "type-check" "^0.4.0"
     "word-wrap" "^1.2.3"
+
+"opus-media-recorder@^0.8.0":
+  "integrity" "sha512-AIvJMpnJqZ18dFAU7Amtt5cZZp8oPzDoAOtobdTcLzwVNm/j815+GJmBupBzBZGBa4L940TEulm7Uu4tGOYDGQ=="
+  "resolved" "https://registry.npmjs.org/opus-media-recorder/-/opus-media-recorder-0.8.0.tgz"
+  "version" "0.8.0"
+  dependencies:
+    "detect-browser" "^4.1.0"
+    "event-target-shim" "^3.0.2"
 
 "ora@^3.4.0":
   "integrity" "sha512-eNwHudNbO1folBP3JsZ19v9azXWtQZjICdr3Q0TDPIaeBQ3mXLrh54wM+er0+hSp+dWKf+Z8KM58CYzEyIYxYg=="

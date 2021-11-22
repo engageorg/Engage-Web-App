@@ -1,5 +1,6 @@
-const routes = require('./routes/api');
+const api = require('./routes/api');
 const path = require('path')
+const savedata = require('./routes/saveFile')
 const express = require('express')
 const app = require('express')()
 const http = require('http').createServer(app)
@@ -12,9 +13,9 @@ const io = require('socket.io')(http, {
 require('dotenv').config()
 
 const port = process.env.PORT || 5000;
-
+app.use(express.json({limit: '50mb'}));
 app.use(express.json());
-
+//app.use(express.json({limit: '50mb'}));
 //handle CORS related issues that you might face when trying to access the API from different domains during development and testing:
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -44,7 +45,9 @@ io.on('connection', socket => {
   })
 })
 
-app.use('/api', routes);
+app.use('/api', api);
+app.use('/savedata', savedata);
+
 
 http.listen(port, () => {
   console.log(`Server running on port ${port}`);

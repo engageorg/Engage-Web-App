@@ -67,6 +67,7 @@
     "husky": "7.0.4",
     "jest-canvas-mock": "2.3.1",
     "lint-staged": "11.2.6",
+    "opus-media-recorder": "^0.8.0",
     "pepjs": "0.5.3",
     "prettier": "2.4.1",
     "rewire": "5.0.0"
