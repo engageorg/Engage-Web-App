@@ -18,7 +18,6 @@ class FullpageWrapper extends React.Component {
         scrollOverflow={true}
         onLeave={this.onLeave.bind(this)}
         afterLoad={this.afterLoad.bind(this)}
-        anchors= {['slide1', 'slide2']}
         render={({ state, fullpageApi }) => {
           return (
             <div id="fullpage-wrapper">
