@@ -36,7 +36,8 @@ export const LibraryUnit = ({ elements, files, pendingElements, onRemoveFromLibr
     const [isHovered, setIsHovered] = useState(false);
     const isMobile = useIsMobile();
     const adder = (isHovered || isMobile) && pendingElements && (<div className="library-unit__adder">{PLUS_ICON}</div>);
-    return (<div className={clsx("library-unit", {
+    return (<>
+        <div className={clsx("library-unit", {
             "library-unit__active": elements || pendingElements,
         })} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <div className={clsx("library-unit__dragger", {
@@ -49,5 +50,6 @@ export const LibraryUnit = ({ elements, files, pendingElements, onRemoveFromLibr
       {elements && (isHovered || isMobile) && (<button className="library-unit__removeFromLibrary" aria-label={t("labels.removeFromLibrary")} onClick={onRemoveFromLibrary}>
           {close}
         </button>)}
-    </div>);
+    </div>
+    </>);
 };

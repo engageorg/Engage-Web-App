@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CLASSES } from "../constants";
 import { exportCanvas } from "../data";
+import Libraries from '../../savedLib/savedLib.json'
 import { importLibraryFromJSON, saveLibraryAsJSON } from "../data/json";
 import { isTextElement, showSelectedShapeActions } from "../element";
 import { t } from "../i18n";
@@ -129,14 +130,14 @@ const LibraryMenuItems = ({
           />
         </>
       )}
-      <a
+      {/* <a
         href={`https://libraries.excalidraw.com?target=${
           window.name || "_blank"
         }&referrer=${referrer}&useHash=true&token=${id}&theme=${theme}`}
         target="_excalidraw_libraries"
       >
         {t("labels.libraries")}
-      </a>
+      </a> */}
     </div>
   );
   for (let row = 0; row < numRows; row++) {
@@ -209,10 +210,15 @@ const LibraryMenu = ({
           resolve("loading");
         }, 100);
       }),
-      library.loadLibrary().then((items) => {
-        setLibraryItems(items);
-        setIsLoading("ready");
-      }),
+      //console.log(Libraries.library),
+      setLibraryItems(Libraries.library),
+      setIsLoading("ready")
+      // library.loadLibrary().then((items) => {
+      //   console.log(items)
+      //   console.log(Libraries.library)
+      //   setLibraryItems(Libraries.library);
+      //   setIsLoading("ready");
+      // }),
     ]).then((data) => {
       if (data === "loading") {
         setIsLoading("loading");
