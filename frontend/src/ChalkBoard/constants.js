@@ -87,7 +87,7 @@ export const MIME_TYPES = {
 export const EXPORT_DATA_TYPES = {
     excalidraw: "excalidraw",
     excalidrawClipboard: "excalidraw/clipboard",
-    excalidrawLibrary: "excalidrawlib",
+    excalidrawLibrary: "chalkboardlib",
 };
 export const EXPORT_SOURCE = window.location.origin;
 export const STORAGE_KEYS = {
