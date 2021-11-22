@@ -1,26 +1,42 @@
-import React from "react";
-import ChalkBoard from "../ChalkBoard/excalidraw-app";
-import TextEditor from "../TextEditor/TextEditor";
-import "fullpage.js/vendors/scrolloverflow"; // Optional. When using scrollOverflow:true
-import "./styles.css";
-
-class FullpageWrapper extends React.Component {
-  onLeave(origin, destination, direction) {
-    console.log("Leaving section " + origin.index);
-  }
-  afterLoad(origin, destination, direction) {
-    console.log("After load: " + destination.index);
+import * as React from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { wrap } from "popmotion";
+import { images } from "./image-data";
+import ChalkBoard from "../ChalkBoard/excalidraw-app"
+import TextEditor from "../TextEditor/TextEditor"
+import "./styles.css"
+const variants = {
+  enter: (direction) => {
+    return {
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    };
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1
+  },
+  exit: (direction) => {
+    return {
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    };
   }
 };
 
-              <div className="section">
-                <div className="slide" data-anchor="slide1" >
-                  <TextEditor/>
-                </div>
-                <div className="slide" data-anchor="slide2" >
-                 <div id = "webd_draw"><ChalkBoard/></div>
-                </div>
-              </div>
+/**
+ * Experimenting with distilling swipe offset and velocity into a single variable, so the
+ * less distance a user has swiped, the more velocity they need to register as a swipe.
+ * Should accomodate longer swipes and short flicks without having binary checks on
+ * just distance thresholds and velocity > 0.
+ */
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset, velocity) => {
+  return Math.abs(offset) * velocity;
+};
 
  const WebD = () => {
   const [[page, direction], setPage] = useState([0, 0]);
@@ -50,17 +66,17 @@ class FullpageWrapper extends React.Component {
             x: { type: "spring", stiffness: 300, damping: 30 }
           }}
           // drag="x"
-          // dragConstraints={{ left: 0, right: 0 }}
-          // dragElastic={1}
-          // onDragEnd={(e, { offset, velocity }) => {
-          //   const swipe = swipePower(offset.x, velocity.x);
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x);
 
-          //   if (swipe < -swipeConfidenceThreshold) {
-          //     paginate(1);
-          //   } else if (swipe > swipeConfidenceThreshold) {
-          //     paginate(-1);
-          //   }
-          // }}
+            if (swipe < -swipeConfidenceThreshold) {
+              paginate(1);
+            } else if (swipe > swipeConfidenceThreshold) {
+              paginate(-1);
+            }
+          }}
         >
           {images[imageIndex]}
         </motion.div>
