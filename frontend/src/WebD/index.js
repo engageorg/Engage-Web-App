@@ -53,7 +53,7 @@ const swipePower = (offset, velocity) => {
 
   return (
     <div className="example-container">
-      <AnimatePresence initial={false} custom={direction}>
+      <AnimatePresence exitBeforeEnter={true} initial={false} custom={direction}>
         <motion.div
           className = "slider"
           key={page}
@@ -61,21 +61,9 @@ const swipePower = (offset, velocity) => {
           variants={variants}
           initial="enter"
           animate="center"
-          exit="exit"
+          // exit="exit"
           transition={{
             x: { type: "spring", stiffness: 300, damping: 30 }
-          }}
-          // drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={1}
-          onDragEnd={(e, { offset, velocity }) => {
-            const swipe = swipePower(offset.x, velocity.x);
-
-            if (swipe < -swipeConfidenceThreshold) {
-              paginate(1);
-            } else if (swipe > swipeConfidenceThreshold) {
-              paginate(-1);
-            }
           }}
         >
           {images[imageIndex]}
