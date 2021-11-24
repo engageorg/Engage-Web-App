@@ -34,7 +34,7 @@ export default function Video(props) {
   const [drawing, setDrawing] = useState('')
   
   useEffect(() => {
-
+    const playerBlock = document.getElementsByClassName("player-content")[0]
     let offsetPlay = 0;
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
     const videoPlayer = document.getElementsByClassName('videoplayer')[0]
@@ -82,6 +82,32 @@ export default function Video(props) {
     
     var i = 0;
     var paused = false;
+
+    playerBlock.addEventListener("keypress", (e)=> {
+      if(e.charCode === 32){
+        if(audioPlayer.paused){
+          audioPlayer.play()
+          playButton.style.display="none"
+          playfunction();
+          const data = {
+            status:false
+          }
+          const event = new CustomEvent("status", { detail: data });
+          document.dispatchEvent(event);
+          console.log("audio play")
+        }else{
+          audioPlayer.pause()
+          console.log(audioPlayer.paused)
+          console.log("clicked pause");
+          const data = {
+            status:true
+          }
+          const event = new CustomEvent("status", { detail: data });
+          document.dispatchEvent(event);
+          pausefunction();
+        }
+      }
+    })
 
     audioPlayer.addEventListener("canplay", () => {
       document.getElementsByClassName("player-content")[0].style.display = "block";
@@ -156,8 +182,7 @@ export default function Video(props) {
     }
 
 
-    function playfunction() {
-       
+    function playfunction() {  
       if( document.getElementsByClassName("videoscreen")[0] != null) document.getElementsByClassName("videoscreen")[0].className = "visiblescreen";
        //append fake cursor when user clicks play button
        fakeCursor.style.display = 'block';

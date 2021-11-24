@@ -66,7 +66,7 @@ function MultiFile(props) {
           </div>
         </div>
           <Editor
-            height="96vh"
+            height="95.3vh"
             width="80vw"
             theme="vs-light"
             language="python"
