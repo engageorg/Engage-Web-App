@@ -339,9 +339,6 @@ export default function Video(props) {
             }
         }
       }
-      else{
-        setDrawing(event)
-      }
     }
 
     function flashClass(el, className) {

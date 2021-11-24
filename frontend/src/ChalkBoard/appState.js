@@ -7,7 +7,7 @@ const defaultExportScale = EXPORT_SCALES.includes(devicePixelRatio)
     : 1;
 export const getDefaultAppState = () => {
     return {
-        theme: THEME.LIGHT,
+        theme: THEME.DARK,
         collaborators: new Map(),
         currentChartType: "bar",
         currentItemBackgroundColor: "transparent",
