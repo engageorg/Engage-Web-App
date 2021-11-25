@@ -2,12 +2,16 @@ import * as React from "react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { wrap } from "popmotion";
-import { images } from "./image-data";
 import "./styles.css"
+import ChalkBoard from "../ChalkBoard/excalidraw-app"
+import TextEditor from "../TextEditor/TextEditor"
 
+ const WebD = (props) => {
+  const images = [
+    <TextEditor refresh = {props.refresh}/>,
+    <ChalkBoard/>
+  ];
 
-
- const WebD = () => {
   const [[page, direction], setPage] = useState([0, 0]);
 
   const imageIndex = wrap(0, images.length, page);

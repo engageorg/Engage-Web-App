@@ -7,7 +7,7 @@ function App(props) {
   console.log(props)
   return (
     <>
-    {props.name === "ide" ? <WebD/> :<MultiFile language={props.language} refresh = {props.refresh}/>}
+    {props.name === "ide" ? <WebD refresh = {props.refresh}/> :<MultiFile language={props.language} refresh = {props.refresh}/>}
     </>
   )
 }
