@@ -78,8 +78,8 @@ function TextEditor(props) {
     <div className = "editor">
     <Editor
             height="100vh"
-            width="94vw"
-            theme="vs-dark"
+            width="47vw"
+            theme="vs-light"
             path={file.name}
             defaultLanguage={file.language}
             defaultValue={file.value}
@@ -88,6 +88,14 @@ function TextEditor(props) {
             cursorSmoothCaretAnimation = "true"
             value={file.value}
           />
+    <iframe
+              height="100vh"
+              width="47vw"
+              src= "./output/output.html"
+              title="output"
+              className="outputiframe"
+              frameBorder="0"
+    />
     </div>
 
 
@@ -101,13 +109,6 @@ function TextEditor(props) {
           >
            
             <div className="closeButton"><i className="fas fa-window-close" onClick={handleCloseModal}></i></div>
-            {/* <iframe
-              srcDoc={srcDoc}
-              title="output"
-              className="outputiframe"
-              sandbox="allow-scripts"
-              frameBorder="0"
-            /> */}
             <ChalkBoard/>
           
           </ReactModal>

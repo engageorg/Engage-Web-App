@@ -3,7 +3,6 @@ body{
     margin: 0;
     font-family: 'Space Mono', monospace;
     box-sizing: border-box;
-    background-color: black;
   }
   
   :root {

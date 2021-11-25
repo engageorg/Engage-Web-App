@@ -88,6 +88,8 @@
   
   .editor {
     display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     flex: 9
   }
   
