@@ -129,7 +129,7 @@ function TextEditor(props) {
             }}
             className="output"
           >
-            <i style={{ color: "white" }} className="fas fa-play"></i>
+            <i class="fas fa-chalkboard-teacher"></i>
             <span
               className="outputtext"
               style={{ color: "white", backgroundColor: "green" }}

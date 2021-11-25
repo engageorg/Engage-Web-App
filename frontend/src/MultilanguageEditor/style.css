@@ -108,3 +108,31 @@ textarea::-webkit-input-placeholder{
 .showCodeOutput:hover{
     background-color: rgb(6, 172, 6);
 }
+
+.showModal{
+    color: white;
+    cursor: pointer;
+    background-color: green;
+    border-radius: 6px;
+    padding: 4px 5px 4px 5px;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top:4px;
+    margin-right: 4px;
+}
+
+.showModal:hover{
+    background-color: rgb(6, 172, 6);
+}
+
+.Overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    z-index: 1000; 
+  }

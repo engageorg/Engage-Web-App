@@ -236,7 +236,7 @@ export const ColorPicker = ({
         {isActive ? (
           <Popover
             onCloseRequest={(event) =>
-              event.target !== pickerButton.current && setActive(true)
+              event.target !== pickerButton.current && setActive(false)
             }
           >
             <Picker

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import files from "../assets/files";
+import ChalkBoard from "../ChalkBoard";
+import ReactModal from "react-modal";
 import { c, c99, cpp, cpp14, cpp17, python2, python3 } from "../actions";
 import { useSelector, useDispatch } from "react-redux";
 import { runCode } from "../actions/outputAction";
 import "./style.css";
 function MultiFile(props) {
   const [language, setLanguage] = useState(props.language);
+  const [modalActive, setModal] = useState(false);
   const dispatch = useDispatch();
   const [outputValue, setOutputValue] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -25,8 +28,17 @@ function MultiFile(props) {
     });
   }
 
+  function handleModal(){
+    setModal(true)
+  }
+
   function handleInput(e) {
     setInputValue(e.target.value);
+  }
+
+  function handleCloseModal(){
+    console.log("WORKINH")
+    setModal(false)
   }
 
   function handleOutput() {
@@ -57,6 +69,12 @@ function MultiFile(props) {
           {language === "python2" || language === "python3" ? ".py": ".cpp"}
           </span>
           <div className="optionButton">
+          <button
+              className="showModal"
+              onClick={handleModal}
+            >
+              <i class="fas fa-chalkboard-teacher"></i>
+            </button>
             <button
               className="showCodeOutput"
               onClick={handleOutput}
@@ -68,7 +86,7 @@ function MultiFile(props) {
           <Editor
             height="95.3vh"
             width="80vw"
-            theme="vs-light"
+            theme="vs-dark"
             language="python"
             options={{ fontSize: 18, fontWeight: 400, fontFamily: "cursive" }}
             onChange={handleEditorChange}
@@ -98,6 +116,17 @@ function MultiFile(props) {
             </div>
           </div>
         </div>
+        <ReactModal
+        className="outputModal Modal"
+        isOpen={modalActive}
+        overlayClassName="Overlay"
+        ariaHideApp={false}
+      >
+        <div className="closeButton">
+          <i className="fas fa-window-close" onClick = {handleCloseModal}></i>
+        </div>
+        <ChalkBoard />
+      </ReactModal>
       </div>
     </>
   );
