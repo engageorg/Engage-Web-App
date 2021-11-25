@@ -31,8 +31,8 @@ export const Popover = ({
           unstable_batchedUpdates(() => onCloseRequest(event));
         }
       };
-      document.addEventListener("pointerdown", handler, false);
-      return () => document.removeEventListener("pointerdown", handler, false);
+      document.addEventListener("click", handler, false);
+      return () => document.removeEventListener("click", handler, false);
     }
   }, [onCloseRequest]);
   return (
