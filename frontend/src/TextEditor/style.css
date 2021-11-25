@@ -118,8 +118,11 @@
 
   .fa-window-close{
     color: rgb(239, 57, 61);
-    padding-left: 1px;
-  }
+    padding: 10px;
+    transform: scale(1.4);
+    position: fixed;
+    z-index: 1000;
+    }
   
 
   .closeButton:hover{
