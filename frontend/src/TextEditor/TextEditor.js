@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactModal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
@@ -6,6 +6,8 @@ import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '..
 import files from "../assets/files"
 import "./style.css"
 import ChalkBoard from "../ChalkBoard";
+
+
 
 function TextEditor(props) {
   const srcDoc = useSelector(state => state.srcDocs);
@@ -19,6 +21,24 @@ function TextEditor(props) {
   function handleEditorChange(value) {
     file.value = value;
   }
+  
+  useEffect( () => {
+
+    var frame = document.getElementsByClassName("outputiframe")[0].contentDocument;
+  
+    frame.open()
+    frame.write(srcDoc);
+    frame.close()
+    var fra = document.getElementsByClassName("outputiframe")[0].contentDocument;
+    fra.addEventListener("click", function() {
+      console.log("clicked!")
+    })
+  
+    fra.addEventListener("mousemove", function() {
+      console.log("mousemove")
+    })
+  
+  });
 
   const handleOutput = () => {
     dispatch(setSrcDocs());
