@@ -42,6 +42,10 @@ function TextEditor(props) {
 
   const handleOutput = () => {
     dispatch(setSrcDocs());
+    console.log("l")
+  }
+
+  const handleDrawBoard = () => {
     dispatch(outputModalTrue());
     console.log("l")
   }
@@ -91,6 +95,7 @@ function TextEditor(props) {
     </div>
     <div className = "sidebar-footer">
     <button onClick={handleOutput} style = {{color : "white", backgroundColor: "green", padding: "5px", borderRadius: "5px"}} className="output"><i style = {{color : "white"}} className="fas fa-play"></i><span className = "outputtext" style = {{color : "white", backgroundColor: "green"}}> See Output</span></button>
+    <button onClick={handleDrawBoard} style = {{color : "white", backgroundColor: "green", padding: "5px", borderRadius: "5px"}} className="output"><i style = {{color : "white"}} className="fas fa-play"></i><span className = "outputtext" style = {{color : "white", backgroundColor: "green"}}> Chalkboard</span></button>
     </div>
     </div>
 
