@@ -142,9 +142,9 @@ export const renderScene = (
   // When doing calculations based on canvas width we should used normalized one
   const normalizedCanvasWidth = canvas.width / scale;
   const normalizedCanvasHeight = canvas.height / scale;
-  if (isExport && sceneState.theme === "dark") {
-    context.filter = THEME_FILTER;
-  }
+//   if (isExport && sceneState.theme === "dark") {
+//     context.filter = THEME_FILTER;
+//   }
   sceneState.viewBackgroundColor = "transparent"
   // Paint background
   if (typeof sceneState.viewBackgroundColor === "string") {
