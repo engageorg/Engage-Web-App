@@ -141,31 +141,31 @@ export default function Recorder(props) {
         
     //   },
     // },
-    {
-      eventName: "click",
-      handler: function handleClick(e) {
-        if(name === "dsa"){
-          if(language  === "c" || 
-          language === "c99" || 
-          language === "cpp" || 
-          language === "cpp14" || 
-          language === "cpp17" || 
-          language === "python2" || 
-          language === "python3"){
-            fileName = language
-          }
-          Recording.events.push({
-            type: "click",
-            target: e.target.className,
-            x: e.pageX,
-            fileName :fileName,
-            y: e.pageY,
-            value:files[fileName].value,
-            time: Date.now() - startTime,
-          });
-        }
-      },
-      },
+    // {
+    //   eventName: "click",
+    //   handler: function handleClick(e) {
+    //     if(name === "dsa"){
+    //       if(language  === "c" || 
+    //       language === "c99" || 
+    //       language === "cpp" || 
+    //       language === "cpp14" || 
+    //       language === "cpp17" || 
+    //       language === "python2" || 
+    //       language === "python3"){
+    //         fileName = language
+    //       }
+    //       Recording.events.push({
+    //         type: "click",
+    //         target: e.target.className,
+    //         x: e.pageX,
+    //         fileName :fileName,
+    //         y: e.pageY,
+    //         value:files[fileName].value,
+    //         time: Date.now() - startTime,
+    //       });
+    //     }
+    //   },
+    //   },
     {
       eventName:"output",
       handler:function handleChange(e){
