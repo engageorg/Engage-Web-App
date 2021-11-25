@@ -121,11 +121,6 @@
     padding-left: 1px;
   }
   
-  .closeButton{
-    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
-    background-color: rgb(242, 248, 247);
-    border-bottom: 1px solid rgb(163, 167, 166);
-  }
 
   .closeButton:hover{
     opacity: 0.8;
