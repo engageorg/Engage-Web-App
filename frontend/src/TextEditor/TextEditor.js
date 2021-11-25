@@ -5,6 +5,7 @@ import Editor from "@monaco-editor/react";
 import { js, css, html, outputModalTrue, outputModalFalse, setSrcDocs } from '../actions'
 import files from "../assets/files"
 import "./style.css"
+import ChalkBoard from "../ChalkBoard";
 
 function TextEditor(props) {
   const srcDoc = useSelector(state => state.srcDocs);
@@ -100,13 +101,14 @@ function TextEditor(props) {
           >
            
             <div className="closeButton"><i className="fas fa-window-close" onClick={handleCloseModal}></i></div>
-            <iframe
+            {/* <iframe
               srcDoc={srcDoc}
               title="output"
               className="outputiframe"
               sandbox="allow-scripts"
               frameBorder="0"
-            />
+            /> */}
+            <ChalkBoard/>
           
           </ReactModal>
 
