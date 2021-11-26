@@ -26,11 +26,17 @@ function TextEditor(props) {
   function handleEditorChange(value) {
     file.value = value;
   }
-
+  
+  useEffect(() => {
+      dispatch(setSrcDocs());
+      document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
+        dispatch(setSrcDocs());
+      });
+  },[])
   useEffect(() => {
     var frame =
       document.getElementsByClassName("outputiframe")[0].contentDocument;
-
+    
     frame.open();
     frame.write(srcDoc);
     frame.close();
@@ -43,16 +49,16 @@ function TextEditor(props) {
     fra.addEventListener("mousemove", function () {
       console.log("mousemove");
     });
+    
+
   });
 
   const handleOutput = () => {
     dispatch(setSrcDocs());
-    console.log("l");
   };
 
   const handleDrawBoard = () => {
     dispatch(outputModalTrue());
-    console.log("l");
   };
 
   function handleCloseModal() {
@@ -154,6 +160,7 @@ function TextEditor(props) {
           onChange={handleEditorChange}
           cursorSmoothCaretAnimation="true"
           value={file.value}
+          className="code_text"
         />
         <iframe
           height="100vh"
@@ -173,7 +180,7 @@ function TextEditor(props) {
         overlayClassName="Overlay"
         ariaHideApp={false}
       >
-        <div className="closeButton">
+        <div className=".layer-ui__wrapper closeButton">
           <i className=" fas fa-window-close" onClick={handleCloseModal}></i>
         </div>
         <ChalkBoard />
