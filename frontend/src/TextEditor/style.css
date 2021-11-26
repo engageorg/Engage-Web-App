@@ -80,7 +80,8 @@
   
   .sidebar-footer{
     display: flex;
-    flex: 2;
+    flex: 3;
+    justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -94,7 +95,6 @@
   }
   
   .Modal {
-  
     height: 100vh;
   }
   
@@ -119,13 +119,19 @@
     color: rgb(239, 57, 61);
     padding: 10px;
     transform: scale(1.4);
-    position: fixed;
+    position: absolute;
     top: 1vh;
     right: 4vw;
-    z-index: 1000;
+    z-index: 1000000;
+    cursor: pointer;
+    pointer-events: all;
     }
   
-
+  .closeButton{
+    z-index: 1000000;
+    cursor: pointer;
+    pointer-events: all;
+  }
   .closeButton:hover{
     opacity: 0.8;
   }  
@@ -133,6 +139,9 @@
   .output{
     transition: 0.5s;
     z-index: 2;
+    margin: 5px;
+    min-width: 13vw;
+    padding-top: 15px;
   }
 
   .output:hover {

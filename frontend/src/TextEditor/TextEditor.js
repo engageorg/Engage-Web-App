@@ -105,7 +105,7 @@ function TextEditor(props) {
             style={{
               color: "white",
               backgroundColor: "green",
-              padding: "5px",
+              padding: "8px",
               borderRadius: "5px",
             }}
             className="output"
@@ -124,12 +124,12 @@ function TextEditor(props) {
             style={{
               color: "white",
               backgroundColor: "green",
-              padding: "5px",
+              padding: "7px",
               borderRadius: "5px",
             }}
             className="output"
           >
-            <i class="fas fa-chalkboard-teacher"></i>
+            <i className="fas fa-chalkboard-teacher"></i>
             <span
               className="outputtext"
               style={{ color: "white", backgroundColor: "green" }}
@@ -174,7 +174,7 @@ function TextEditor(props) {
         ariaHideApp={false}
       >
         <div className="closeButton">
-          <i className="fas fa-window-close" onClick={handleCloseModal}></i>
+          <i className=" fas fa-window-close" onClick={handleCloseModal}></i>
         </div>
         <ChalkBoard />
       </ReactModal>
