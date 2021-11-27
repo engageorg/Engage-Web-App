@@ -91,24 +91,9 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    flex: 9
+    flex: 15
   }
   
-  .Modal {
-    height: 100vh;
-  }
-  
-  .Overlay {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: transparent;
-    z-index: 1000; 
-  }
   
   .outputiframe{
     width: 60vw;
@@ -118,7 +103,7 @@
   .fa-window-close{
     color: rgb(239, 57, 61);
     padding: 10px;
-    transform: scale(1.4);
+    transform: scale(2.4);
     position: absolute;
     top: 1vh;
     right: 4vw;
@@ -131,20 +116,32 @@
     z-index: 1000000;
     cursor: pointer;
     pointer-events: all;
+    
   }
   .closeButton:hover{
-    opacity: 0.8;
+    opacity: 1;
+    
   }  
 
   .output{
     transition: 0.5s;
     z-index: 2;
     margin: 5px;
-    min-width: 13vw;
+    min-width: 8vw;
     padding-top: 15px;
   }
 
   .output:hover {
     transform: scale(1.1);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .chalkboardweb{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left:0;
+    display: none;
+    
   }

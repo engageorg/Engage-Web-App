@@ -32,7 +32,16 @@ function TextEditor(props) {
       document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
         dispatch(setSrcDocs());
       });
-  },[])
+      document.getElementsByClassName("closechalkboard")[0].addEventListener("click", function () {
+        document.getElementsByClassName("chalkboardweb")[0].style.display = "none"
+      })
+
+      document.getElementsByClassName("output")[0].addEventListener("click", function () {
+        document.getElementsByClassName("chalkboardweb")[0].style.display = "block"
+        console.log("mousemovddddddddde");
+      }) 
+  },[]);
+
   useEffect(() => {
     var frame =
       document.getElementsByClassName("outputiframe")[0].contentDocument;
@@ -57,13 +66,8 @@ function TextEditor(props) {
     dispatch(setSrcDocs());
   };
 
-  const handleDrawBoard = () => {
-    dispatch(outputModalTrue());
-  };
 
-  function handleCloseModal() {
-    dispatch(outputModalFalse());
-  }
+
 
   return (
     <div className="text-editor">
@@ -106,27 +110,9 @@ function TextEditor(props) {
           </button>
         </div>
         <div className="sidebar-footer">
+
           <button
-            onClick={handleOutput}
-            style={{
-              color: "white",
-              backgroundColor: "green",
-              padding: "8px",
-              borderRadius: "5px",
-            }}
-            className="output"
-          >
-            <i style={{ color: "white" }} className="fas fa-play"></i>
-            <span
-              className="outputtext"
-              style={{ color: "white", backgroundColor: "green" }}
-            >
-              {" "}
-              See Output
-            </span>
-          </button>
-          <button
-            onClick={handleDrawBoard}
+            
             style={{
               color: "white",
               backgroundColor: "green",
@@ -172,19 +158,12 @@ function TextEditor(props) {
         />
       </div>
 
-      <ReactModal
-        className="outputModal Modal"
-        isOpen={modalActive}
-        contentLabel="onRequestClose Example"
-        onRequestClose={handleCloseModal}
-        overlayClassName="Overlay"
-        ariaHideApp={false}
-      >
-        <div className=".layer-ui__wrapper closeButton">
-          <i className=" fas fa-window-close" onClick={handleCloseModal}></i>
-        </div>
+      <div className="chalkboardweb">
+        
+          <button className = "closechalkboard"><i className=" fas fa-window-close"></i></button>
+        
         <ChalkBoard />
-      </ReactModal>
+      </div>
     </div>
   );
 }
