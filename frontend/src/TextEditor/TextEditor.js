@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
-import ReactModal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
 import {
   js,
   css,
   html,
-  outputModalTrue,
-  outputModalFalse,
   setSrcDocs,
 } from "../actions";
 import files from "../assets/files";
