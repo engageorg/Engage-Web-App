@@ -25,25 +25,38 @@ function Preloader(){
 }
 
 export default function Video(props) {
+  
+  //lecture fetching from firebase and which text editor to open
   const { id, type } = useParams();
   const name = type.slice(0,3)
   const language = type.slice(3, 10)
+
+  //TODO needed to reload the text editor
   const [refresh, setRefresh] = useState("");
+
   const dispatch = useDispatch();
-  let drawingEvent=''
-  const [drawing, setDrawing] = useState('')
+  
   
   useEffect(() => {
-    const playerBlock = document.getElementsByClassName("player-content")[0]
+
+    //TODO naming of var 
+    const playerBlock = document.getElementsByClassName("player-content")[0];
+    const videoPlayer = document.getElementsByClassName('videoplayer')[0];
+    const playButton = document.getElementsByClassName("playButton")[0];
+    const audioPlayer = document.getElementById("audio_player")
+    var startPlay;
     let offsetPlay = 0;
+    var i = 0;
+    var paused = false;
+
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
-    const videoPlayer = document.getElementsByClassName('videoplayer')[0]
-    const playButton = document.getElementsByClassName("playButton")[0]
+
     // fetch recording from local storage
     let recording = { events: [] };
-    const recordingJsonValue = localStorage.getItem("recording");
-    //const audioValue = JSON.parse(localStorage.getItem("file"));
+
+  
    
+    // fetch from firebase collection
     firebase.firestore().collection('events').where(firebase.firestore.FieldPath.documentId(), '==', id).get()
     .then((snap) => {
         snap.forEach((doc) => {
@@ -54,10 +67,8 @@ export default function Video(props) {
         console.log(err)
       })
 
-    if (recordingJsonValue != null) recording = JSON.parse(recordingJsonValue);
 
-    // console.log(recording);
-
+    // fetch from cloud storage
     var storageRef = firebase.storage().ref();
     storageRef.child((id)).getDownloadURL().then((url) => {
       audioPlayer.src = url
@@ -66,24 +77,14 @@ export default function Video(props) {
       console.log(e)
     })
 
-    //fake cursor for playing
+    //fake cursor for playing, create and append
     const fakeCursor = document.createElement("div");
+    fakeCursor.className = "customCursor";
     document.getElementById("root").appendChild(fakeCursor);
     fakeCursor.style.display = 'none'
-    const audioPlayer = document.getElementById("audio_player")
-    var startPlay;
-    // console.log(playButton)
-    audioPlayer.addEventListener("onclick", (e) => {
-      console.log("Click on the audioPlayer")
-      console.log(e)
-    })
-
-    fakeCursor.className = "customCursor";
     
-    var i = 0;
-    var paused = false;
-
-    playerBlock.addEventListener("keypress", (e)=> {
+    //pause/play on spacebar and dispach an event acc
+    playerBlock.addEventListener("keypress", (e) => {
       if(e.charCode === 32){
         if(audioPlayer.paused){
           audioPlayer.play()
@@ -108,13 +109,15 @@ export default function Video(props) {
         }
       }
     })
-
+    
+    //init player
     audioPlayer.addEventListener("canplay", () => {
       document.getElementsByClassName("player-content")[0].style.display = "block";
       document.getElementsByClassName("loader")[0].style.display = "none";
       console.log("loaded")
     })
-  
+    
+    //TODO
     audioPlayer.addEventListener("play", () => {
       playButton.style.display="none"
       playfunction();
@@ -125,7 +128,8 @@ export default function Video(props) {
       document.dispatchEvent(event);
       console.log("audio play")
     })
-
+    
+    //TODO
     audioPlayer.addEventListener("pause", () => {
       console.log("clicked pause");
       const data = {
@@ -150,27 +154,23 @@ export default function Video(props) {
      
       //TODO: Implement binary search or lower bound
       for(let x=0;x<recording.events.length;x++){
-        if(recording.events[x].time>curTime*1000){
+        if(recording.events[x].time >= curTime*1000){
           i=x;
           break;
         }
       }
 
-      console.log(i)
-      console.log(recording.events[i].time)
-      console.log(curTime)
-      //localStorage.setItem("lastSessionTimeStamp", JSON.stringify(recording.events[i].time))
       if( recording.events[i].time>(curTime*1000)){
         localStorage.setItem("lastSessionTimeStamp", recording.events[i].time)
       }else{
         localStorage.setItem("lastSessionTimeStamp", curTime*1000)
       }
-      //handlePlayerClick()
+    
     })
 
     playButton.addEventListener("click", () => {
-      playButton.style.display="none"
-      videoPlayer.style.display="flex"
+      playButton.style.display="none";
+      videoPlayer.style.display="flex";
       audioPlayer.play();
       playfunction();
     })
@@ -196,7 +196,8 @@ export default function Video(props) {
            if (!event) {
              return;
            }
-
+           
+           //must have pause before
            if(localStorage.getItem("lastSessionTimeStamp") !== null){
             offsetPlay = JSON.parse(localStorage.getItem("lastSessionTimeStamp")) + Date.now() - startPlay;
            }
@@ -386,7 +387,7 @@ export default function Video(props) {
       <div className="container"><a className="button button-play"></a></div>
       </div>
       <div className = "videoplayer"> 
-      <audio id="audio_player" controls="controls" controlsList="nodownload"></audio>
+         <audio id="audio_player" controls="controls" controlsList="nodownload"></audio>
       </div>
       </div>
 
