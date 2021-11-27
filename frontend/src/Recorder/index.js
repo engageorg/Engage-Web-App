@@ -37,6 +37,7 @@ export default function Recorder(props) {
         
         Recording.events.push({
           type: "mouseup",
+          target: e.target.className,
           time: Date.now() - startTime,
         });
       },
@@ -49,6 +50,7 @@ export default function Recorder(props) {
           type: "mousedown",
           button: e.button,
           clientX : e.clientX,
+          target: e.target.className,
           clientY : e.clientY,
           shiftKey : e.shiftKey,
           time: Date.now() - startTime,
@@ -65,6 +67,7 @@ export default function Recorder(props) {
           clientY : e.clientY,   
           shiftKey : e.shiftKey,       
           target: lastKeyClass,
+          class: e.target.className,
           x: e.pageX,
           fileName : fileName,
           y: e.pageY,

@@ -277,8 +277,8 @@ export default function Video(props) {
           clientY : event.clientY,
           shiftKey : event.shiftKey,
         });
-
-        if(document.getElementsByClassName("excalidraw__canvas")[0])document.getElementsByClassName("excalidraw__canvas")[0].dispatchEvent(eve);
+        console.log(event.target)
+        if(document.getElementsByClassName(event.target)[0])document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
 
       }
       else if (event.type === "mousemove") {
@@ -292,9 +292,9 @@ export default function Video(props) {
           clientY : event.clientY,
           shiftKey : event.shiftKey,
         });
-
-        if(document.getElementsByClassName("excalidraw__canvas")[0]){
-          document.getElementsByClassName("excalidraw__canvas")[0].dispatchEvent(eve);
+       
+        if(document.getElementsByClassName(event.class)[0]){
+          document.getElementsByClassName(event.class)[0].dispatchEvent(eve);
         }
         
        //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
@@ -319,7 +319,7 @@ export default function Video(props) {
           bubbles: true,
           cancelable: true
         });
-        if(document.getElementsByClassName("excalidraw__canvas")[0])document.getElementsByClassName("excalidraw__canvas")[0].dispatchEvent(eve);
+        if(document.getElementsByClassName(event.target)[0])document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
       }
       else if (event.type === "click") {
         if(document.getElementsByClassName(event.target)[0] !== undefined){
