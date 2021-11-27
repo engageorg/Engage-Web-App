@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
+import Split from 'react-split'
+
 import {
   js,
   css,
@@ -13,7 +15,6 @@ import ChalkBoard from "../ChalkBoard";
 
 function TextEditor(props) {
   const srcDoc = useSelector((state) => state.srcDocs);
-  const modalActive = useSelector((state) => state.outputModal);
 
   const fileName = useSelector((state) => state.fileName);
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ function TextEditor(props) {
       document.getElementsByClassName("outputiframe")[0].contentDocument;
     
     frame.open();
+    frame.write("");
     frame.write(srcDoc);
     frame.close();
     var fra =
@@ -132,6 +134,12 @@ function TextEditor(props) {
 
       {/* Editor */}
       <div className="editor">
+      <Split
+          sizes={[25, 75]}
+          direction="horizontal"
+          cursor="col-resize"
+          className="split-flex"
+      >
         <Editor
           height="100vh"
           width="47vw"
@@ -147,19 +155,19 @@ function TextEditor(props) {
         />
         <iframe
           height="100vh"
-          width="47vw"
+       
           src="./output/output.html"
           title="output"
           className="outputiframe"
           frameBorder="0"
         />
+
+</Split>
       </div>
 
       <div className="chalkboardweb">
-        
           <button className = "closechalkboard"><i className=" fas fa-window-close"></i></button>
-        
-        <ChalkBoard />
+          <ChalkBoard />
       </div>
     </div>
   );
