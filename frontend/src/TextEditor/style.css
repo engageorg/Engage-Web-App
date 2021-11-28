@@ -157,3 +157,8 @@
     cursor: ew-resize;
     background-color: var(--fg) !important;
   }
+
+  .previewWindow{
+    display: flex;
+    flex-direction:column;
+  }
