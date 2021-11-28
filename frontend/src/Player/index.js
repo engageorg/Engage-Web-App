@@ -91,31 +91,39 @@ export default function Video(props) {
     const fakeCursor = document.createElement("div");
     fakeCursor.className = "customCursor";
     document.getElementById("root").appendChild(fakeCursor);
-    fakeCursor.style.display = "none";
+    fakeCursor.style.display = 'none'
+
+    function playerPlay() {
+      playButton.style.display="none"
+      playfunction();
+      const data = {
+        status:false
+      }
+      const event = new CustomEvent("status", { detail: data });
+      document.dispatchEvent(event);
+    }
+
+    function playerPause() {
+      console.log("clicked pause");
+      const data = {
+        status:true
+      }
+      const event = new CustomEvent("status", { detail: data });
+      document.dispatchEvent(event);
+      pausefunction();
+    }
+
 
     //pause/play on spacebar and dispach an event acc
     playerBlock.addEventListener("keypress", (e) => {
-      if (e.charCode === 32) {
-        if (audioPlayer.paused) {
-          audioPlayer.play();
-          playButton.style.display = "none";
-          playfunction();
-          const data = {
-            status: false,
-          };
-          const event = new CustomEvent("status", { detail: data });
-          document.dispatchEvent(event);
-          console.log("audio play");
-        } else {
-          audioPlayer.pause();
-          console.log(audioPlayer.paused);
-          console.log("clicked pause");
-          const data = {
-            status: true,
-          };
-          const event = new CustomEvent("status", { detail: data });
-          document.dispatchEvent(event);
-          pausefunction();
+      if(e.charCode === 32){
+        if(audioPlayer.paused){
+          audioPlayer.play()
+          playerPlay()
+          console.log("audio play")
+        }else{
+          audioPlayer.pause()
+          playerPause()
         }
       }
     });
@@ -130,27 +138,15 @@ export default function Video(props) {
 
     //TODO
     audioPlayer.addEventListener("play", () => {
-      playButton.style.display = "none";
-      playfunction();
-      const data = {
-        status: false,
-      };
-      const event = new CustomEvent("status", { detail: data });
-      document.dispatchEvent(event);
-      console.log("audio play");
-    });
-
+      playerPlay()
+      console.log("audio play")
+    })
+    
     //TODO
     audioPlayer.addEventListener("pause", () => {
-      console.log("clicked pause");
-      const data = {
-        status: true,
-      };
-      const event = new CustomEvent("status", { detail: data });
-      document.dispatchEvent(event);
-      pausefunction();
-    });
-
+      playerPause()
+    })
+    
     audioPlayer.addEventListener("ended", () => {
       pausefunction();
       console.log("ended audio");
