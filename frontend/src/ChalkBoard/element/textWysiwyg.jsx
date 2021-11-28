@@ -55,6 +55,7 @@ export const textWysiwyg = ({ id, appState, onChange, onSubmit, getViewportCoord
     const editable = document.createElement("textarea");
     editable.dir = "auto";
     editable.tabIndex = 0;
+    editable.className = "canvas_text";
     editable.dataset.type = "wysiwyg";
     // prevent line wrapping on Safari
     editable.wrap = "off";
