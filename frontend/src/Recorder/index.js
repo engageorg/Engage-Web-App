@@ -152,8 +152,8 @@ export default function Recorder(props) {
     {
       eventName: "keydown",
       handler: function handleKeyPress(e) {
-        let value =
-          document.getElementsByClassName("canvas_text")[0].value;
+        let value = null;
+        if(document.getElementsByClassName("canvas_text")[0]) value = document.getElementsByClassName("canvas_text")[0].value;
         Recording.events.push({
           type: "keydown",
           key: e.key,

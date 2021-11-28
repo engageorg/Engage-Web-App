@@ -324,27 +324,28 @@ export default function Video(props) {
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
       } else if (event.type === "keydown") {
 
-        let eve = new KeyboardEvent("keydown", {
-          key: event.key,
-          shiftKey: event.shiftKey,
-          code: event.code,
-          isComposing: event.isComposing,
-          bubbles: true,
-          cancelable: true,
-        });
+        // let eve = new KeyboardEvent("keydown", {
+        //   key: event.key,
+        //   shiftKey: event.shiftKey,
+        //   code: event.code,
+        //   isComposing: event.isComposing,
+        //   bubbles: true,
+        //   cancelable: true,
+        // });
 
-        let eve_up = new KeyboardEvent("keyup", {
-          key: event.key,
-          shiftKey: event.shiftKey,
-          code: event.code,
-          isComposing: event.isComposing,
-          bubbles: true,
-          cancelable: true,
-        });
+        // let eve_up = new KeyboardEvent("keyup", {
+        //   key: event.key,
+        //   shiftKey: event.shiftKey,
+        //   code: event.code,
+        //   isComposing: event.isComposing,
+        //   bubbles: true,
+        //   cancelable: true,
+        // });
         
         if (document.getElementsByClassName("canvas_text")[0]) {
-          document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve);
-          document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve_up);   
+          // document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve);
+          // document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve_up);
+          document.getElementsByClassName("canvas_text")[0].value = event.value;   
         }
       } else if(event.type === "dblclick"){
         let eve = new PointerEvent("dblclick", {
