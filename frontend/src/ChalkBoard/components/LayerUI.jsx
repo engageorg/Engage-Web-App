@@ -482,28 +482,45 @@ const LayerUI = ({
       id={id}
     />
   ) : null;
-  const renderFixedSideContainer = () => {
+
+  const renderTopUI = () => {
     const shouldRenderSelectedShapeActions = showSelectedShapeActions(
       appState,
       elements
     );
-    return (
-      <FixedSideContainer side="top">
-        <div className="App-menu App-menu_top">
-          <Stack.Col
+    return(
+      <div className = "FixedSideContainer">
+        
+        <Stack.Col
             gap={4}
             className={clsx({ "disable-pointerEvents": zenModeEnabled })}
           >
             {viewModeEnabled
               ? renderViewModeCanvasActions()
               : renderCanvasActions()}
-            {shouldRenderSelectedShapeActions && renderSelectedShapeActions()}
+            
           </Stack.Col>
+           {/* <HintViewer
+                        appState={appState}
+                        elements={elements}
+                        isMobile={isMobile}
+                      />
+           {shouldRenderSelectedShapeActions && renderSelectedShapeActions()} */}
+          
+      </div >
+    )
+  }
+  const renderFixedSideContainer = () => {
+
+    return (
+      <FixedSideContainer side="left">
+        <div className="App-menu App-menu_left">
+          
           {!viewModeEnabled && (
             <Section heading="shapes">
               {(heading) => (
-                <Stack.Col gap={4} align="start">
-                  <Stack.Row gap={1}>
+                <Stack.Row gap={4} align="start">
+                  <Stack.Col gap={1}>
                     <LockButton
                       zenModeEnabled={zenModeEnabled}
                       checked={appState.elementLocked}
@@ -514,13 +531,9 @@ const LayerUI = ({
                       padding={1}
                       className={clsx({ "zen-mode": zenModeEnabled })}
                     >
-                      <HintViewer
-                        appState={appState}
-                        elements={elements}
-                        isMobile={isMobile}
-                      />
+                      
                       {heading}
-                      <Stack.Row gap={1}>
+                      <Stack.Col gap={1}>
                         <ShapesSwitcher
                           canvas={canvas}
                           elementType={appState.elementType}
@@ -531,15 +544,15 @@ const LayerUI = ({
                             });
                           }}
                         />
-                      </Stack.Row>
+                      </Stack.Col>
                     </Island>
                     <LibraryButton
                       appState={appState}
                       setAppState={setAppState}
                     />
-                  </Stack.Row>
+                  </Stack.Col>
                   {libraryMenu}
-                </Stack.Col>
+                </Stack.Row>
               )}
             </Section>
           )}
@@ -703,6 +716,7 @@ const LayerUI = ({
       })}
     >
       {dialogs}
+      {renderTopUI()}
       {renderFixedSideContainer()}
       {renderBottomAppMenu()}
       {appState.scrolledOutside && (
