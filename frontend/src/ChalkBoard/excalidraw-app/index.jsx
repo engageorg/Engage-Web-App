@@ -91,7 +91,7 @@ const initializeScene = async (opts) => {
     const id = searchParams.get("id");
     const jsonBackendMatch = window.location.hash.match(/^#json=([0-9]+),([a-zA-Z0-9_-]+)$/);
     const externalUrlMatch = window.location.hash.match(/^#url=(.*)$/);
-    const localDataState = importFromLocalStorage();
+    const localDataState = null;
     let scene = await loadScene(null, null, localDataState);
     let roomLinkData = getCollaborationLinkData(window.location.href);
     const isExternalScene = !!(id || jsonBackendMatch || roomLinkData);
