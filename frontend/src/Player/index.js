@@ -315,21 +315,32 @@ export default function Video(props) {
         if (tar != null) {
           tar.focus();
         }
-      } else if (event.type === "keydown") {
-        
-        if (document.getElementsByClassName("canvas_text")[0]) {
-          
-      
-          document.getElementsByClassName("canvas_text")[0].value = event.value;
-        }
       } else if (event.type === "mouseup") {
         let eve = new PointerEvent("pointerup", {
           bubbles: true,
           cancelable: true,
+          button: event.button,
+          clientX: event.clientX,
+          clientY: event.clientY,
+          shiftKey: event.shiftKey,
         });
         if (document.getElementsByClassName(event.target)[0])
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
-      } else if (event.type === "click") {
+      } else if (event.type === "keydown") {
+
+        let eve = new KeyboardEvent("keypress", {
+          key: event.key,
+          shiftKey: event.shiftKey,
+          code: event.code,
+          isComposing: event.isComposing,
+          bubbles: true,
+          cancelable: true,
+        });
+        
+        if (document.getElementsByClassName("canvas_text")[0]) {
+          document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve);   
+        }
+      }  else if (event.type === "click") {
         if (document.getElementsByClassName(event.target)[0] !== undefined) {
           let clickEvent = new MouseEvent("click", {
             pageX: event.x,

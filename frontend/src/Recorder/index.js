@@ -37,6 +37,9 @@ export default function Recorder(props) {
         Recording.events.push({
           type: "mouseup",
           target: e.target.className,
+          clientX: e.clientX,
+          clientY: e.clientY,
+          shiftKey: e.shiftKey,
           time: Date.now() - startTime,
         });
       },
