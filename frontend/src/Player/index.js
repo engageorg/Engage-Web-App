@@ -328,7 +328,16 @@ export default function Video(props) {
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
       } else if (event.type === "keydown") {
 
-        let eve = new KeyboardEvent("keypress", {
+        let eve = new KeyboardEvent("keydown", {
+          key: event.key,
+          shiftKey: event.shiftKey,
+          code: event.code,
+          isComposing: event.isComposing,
+          bubbles: true,
+          cancelable: true,
+        });
+
+        let eve_up = new KeyboardEvent("keyup", {
           key: event.key,
           shiftKey: event.shiftKey,
           code: event.code,
@@ -338,8 +347,20 @@ export default function Video(props) {
         });
         
         if (document.getElementsByClassName("canvas_text")[0]) {
-          document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve);   
+          document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve);
+          document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve_up);   
         }
+      } else if(event.type === "dblclick"){
+        let eve = new PointerEvent("dblclick", {
+          bubbles: true,
+          cancelable: true,
+          button: event.button,
+          clientX: event.clientX,
+          clientY: event.clientY,
+          shiftKey: event.shiftKey,
+        });
+        if (document.getElementsByClassName(event.target)[0])
+          document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
       }  else if (event.type === "click") {
         if (document.getElementsByClassName(event.target)[0] !== undefined) {
           let clickEvent = new MouseEvent("click", {
