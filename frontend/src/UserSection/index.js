@@ -2,8 +2,10 @@ import React from "react";
 import "./styles.css";
 import { Link } from "react-router-dom";
 import {motion} from 'framer-motion';
+import { v4 as uuidv4 } from 'uuid';
 
 function UserSection() {
+  const classid = uuidv4();
   return (
     <motion.section className = "usersection" initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1}} transition= {{duration: 0.2}}>
       
@@ -91,6 +93,25 @@ function UserSection() {
 						</div>
 						<div className="card-body">
 							<p>Learn DSA in C++, using the c++ compiler and IDE</p>
+						</div>
+						<div className="card-footer">
+							<div>View integration</div>
+						</div>
+					</article>
+                    </Link>
+					<Link to={{
+							pathname: `/emitter/${classid}`
+					}}>
+                    <article className="uscard">
+						<div className="card-header">
+							<div>
+								<span><img  className = "us_img" src="https://assets.codepen.io/285131/zeplin.svg" /></span>
+								<h3>Live Classes</h3>
+							</div>
+
+						</div>
+						<div className="card-body">
+							<p>Conduct a Live Class Room Session</p>
 						</div>
 						<div className="card-footer">
 							<div>View integration</div>

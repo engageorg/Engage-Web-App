@@ -45,23 +45,24 @@ const store = createStore(
 function App() {
   return (
     <>
-        <Provider store={store}>
-    <Router>
-    
-      <Route exact path = "/" component = {UserSection}/>
-      <Route exact path = "/lectures" component = {AllLectures}/>
-      <Route exact path = "/:type/:id" component = {Player}/>
-      <Route exact path = "/emitter" component = {LiveClassEmitter}/>
-      <Route exact path = "/receiver" component = {LiveClassReceiver}/>
-      <Route exact path = "/drawboard" component = {ChalkBoard}/>
-      <Route exact path = "/webd" component = {TextEditor}/>
-      <Route exact path = "/recordform" component = {RecorderForm}/>
-      <Route exact path = "/videoplayer" component = {Video}/>
-      <Route exact path = "/recorder" component = {Recorder} ide="web"/>
-      
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Route exact path="/" component={UserSection} />
+        <Route exact path="/lectures" component={AllLectures} />
+        <Route exact path="/player/:type/:id" component={Player} />
+        <Route
+          path="/emitter/:classid"
+          component={LiveClassEmitter}
+        />
+        <Route exact path="/receiver" component={LiveClassReceiver} />
+        <Route exact path="/drawboard" component={ChalkBoard} />
+        <Route exact path="/webd" component={TextEditor} />
+        <Route exact path="/recordform" component={RecorderForm} />
+        <Route exact path="/videoplayer" component={Video} />
+        <Route exact path="/recorder" component={Recorder} ide="web" />
+      </Router>
     </Provider>
-    </>
+  </>
   );
 }
 
