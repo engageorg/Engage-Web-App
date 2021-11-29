@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Editor from "@monaco-editor/react";
 import Split from 'react-split'
-import OutFront from "./console";
 
 import {
   js,
@@ -13,7 +12,6 @@ import {
 import files from "../assets/files";
 import "./style.css";
 import ChalkBoard from "../ChalkBoard";
-
 
 function TextEditor(props) {
   const srcDoc = useSelector((state) => state.srcDocs);
@@ -57,10 +55,7 @@ function TextEditor(props) {
     });
 
     fra.addEventListener("mousemove", function () {
-      // console.dirxml()
-      // console.dir()
-      // console.info()
-      console.reactStack()      //console.log(fileX)
+      console.log("mousemove");
     });
     
 
@@ -131,7 +126,7 @@ function TextEditor(props) {
               style={{ color: "white", backgroundColor: "green" }}
             >
               {" "}
-              ChalkBoard
+              Chalkboard
             </span>
           </button>
         </div>
@@ -158,16 +153,14 @@ function TextEditor(props) {
           value={file.value}
           className="code_text"
         />
-        <div className="previewWindow">
-          <iframe
-            height="100vh"
-            src="./output/output.html"
-            title="output"
-            className="outputiframe"
-            frameBorder="0"
-          />
-          <OutFront/>
-        </div>
+        <iframe
+          height="100vh"
+       
+          src="./output/output.html"
+          title="output"
+          className="outputiframe"
+          frameBorder="0"
+        />
 
 </Split>
       </div>
