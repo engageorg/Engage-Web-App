@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Hook, Console, Unhook } from 'console-feed'
 import Editor from "@monaco-editor/react";
 import Split from 'react-split'
 
@@ -15,7 +16,7 @@ import ChalkBoard from "../ChalkBoard";
 
 function TextEditor(props) {
   const srcDoc = useSelector((state) => state.srcDocs);
-
+  const [logs, setLogs] = useState([])
   const fileName = useSelector((state) => state.fileName);
   const dispatch = useDispatch();
 
@@ -36,8 +37,15 @@ function TextEditor(props) {
 
       document.getElementsByClassName("output")[0].addEventListener("click", function () {
         document.getElementsByClassName("chalkboardweb")[0].style.display = "block"
-        console.log("mousemovddddddddde");
       }) 
+    
+
+      Hook(
+        document.getElementsByClassName("outputiframe")[0].contentWindow.console,
+        (log) => setLogs((currLogs) => [...currLogs, log]),
+        false
+      )
+      return () => Unhook(document.getElementsByClassName("outputiframe")[0].contentWindow.console)
   },[]);
 
   useEffect(() => {
@@ -60,12 +68,6 @@ function TextEditor(props) {
     
 
   });
-
-  const handleOutput = () => {
-    dispatch(setSrcDocs());
-  };
-
-
 
 
   return (
@@ -135,7 +137,7 @@ function TextEditor(props) {
       {/* Editor */}
       <div className="editor">
       <Split
-          sizes={[25, 75]}
+          sizes={[45, 25, 30]}
           direction="horizontal"
           cursor="col-resize"
           className="split-flex"
@@ -152,7 +154,8 @@ function TextEditor(props) {
           cursorSmoothCaretAnimation="true"
           value={file.value}
           className="code_text"
-        />
+        /> 
+        
         <iframe
           height="100vh"
        
@@ -161,8 +164,9 @@ function TextEditor(props) {
           className="outputiframe"
           frameBorder="0"
         />
-
-</Split>
+         <Console logs={logs} variant="light" />
+      </Split>
+     
       </div>
 
       <div className="chalkboardweb">
