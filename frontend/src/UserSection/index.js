@@ -99,9 +99,7 @@ function UserSection() {
 						</div>
 					</article>
                     </Link>
-					<Link to={{
-							pathname: `/emitter/${classid}`
-					}}>
+					<Link to="/classform">
                     <article className="uscard">
 						<div className="card-header">
 							<div>

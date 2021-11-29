@@ -41,22 +41,24 @@ function MultiFile(props) {
     setModal(false)
   }
 
-  function handleOutput() {
-    const words = file.value.split("\r");
-    let code = "";
-    for (let i = 0; i < words.length; i++) {
-      code = code + words[i];
+  function handleOutput(e) {
+    if(e.isTrusted){
+      const words = file.value.split("\r");
+      let code = "";
+      for (let i = 0; i < words.length; i++) {
+        code = code + words[i];
+      }
+      dispatch(runCode(language, code, inputValue)).then((e) => {
+        setOutputValue(e.data.output);
+        const data = {
+          output: e.data.output,
+        };
+        //creating a custom like predefined events like click or mousemove and more
+        const event = new CustomEvent("output", { detail: data });
+        //dispatching the event in document.documentElement where we listen for it in while recording
+        document.documentElement.dispatchEvent(event);
+      });
     }
-    dispatch(runCode(language, code, inputValue)).then((e) => {
-      setOutputValue(e.data.output);
-      const data = {
-        output: e.data.output,
-      };
-      //creating a custom like predefined events like click or mousemove and more
-      const event = new CustomEvent("output", { detail: data });
-      //dispatching the event in document.documentElement where we listen for it in while recording
-      document.documentElement.dispatchEvent(event);
-    });
   }
 
   return (

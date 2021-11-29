@@ -95,7 +95,6 @@ export default function Recorder(props) {
     {
       eventName: "click",
       handler: function handleClick(e) {
-        // if(name === "ide" || name === "other"){
         if (
           e.target.className === "cssfile" ||
           e.target.className === "buttontext style" ||
@@ -113,7 +112,7 @@ export default function Recorder(props) {
           e.target.className === "buttontext html" ||
           e.target.className === "fab fa-html5fab"
         )
-          fileName = "index.html";
+        fileName = "index.html";
         console.log(e.target.className);
         Recording.events.push({
           type: "click",
@@ -123,7 +122,6 @@ export default function Recorder(props) {
           y: e.pageY,
           time: Date.now() - startTime,
         });
-        //}
       },
     },
     {

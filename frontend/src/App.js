@@ -51,13 +51,14 @@ function App() {
         <Route exact path="/lectures" component={AllLectures} />
         <Route exact path="/player/:type/:id" component={Player} />
         <Route
-          path="/emitter/:classid"
+          path="/emitter/:type/:classid"
           component={LiveClassEmitter}
         />
-        <Route exact path="/receiver/:classid" component={LiveClassReceiver} />
+        <Route exact path="/receiver/:type/:classid" component={LiveClassReceiver} />
         <Route exact path="/drawboard" component={ChalkBoard} />
         <Route exact path="/webd" component={TextEditor} />
         <Route exact path="/recordform" component={RecorderForm} />
+        <Route exact path="/classform" component={RecorderForm} />
         <Route exact path="/videoplayer" component={Video} />
         <Route exact path="/recorder" component={Recorder} ide="web" />
       </Router>

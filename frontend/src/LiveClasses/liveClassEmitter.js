@@ -1,15 +1,33 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChalkBoard from '../ChalkBoard/index'
+import files from "../assets/files";
 import Peer from "simple-peer"
 import * as io from 'socket.io-client'
 import "./style.css"
+import IDE from '../IDE'
 import { useParams } from "react-router";
 function LiveClassEmitter() {
-    const { classid } = useParams();
+    const { classid, type } = useParams();
+    console.log(classid)
+    const name = type.slice(0, 3);
+    var lastMouse = { x: 0, y: 0 };
+    const language = type.slice(3, 10);
+    var lastKey = "";
+    let fileName;
+    if (name === "dsa") {
+      fileName = language;
+    } else if (name === "ide") {
+      fileName = "index.html";
+    }
+    let childValue;
+    var lastKeyClass = "";
+    console.log("http://localhost:3000/receiver/"+name+language+"/"+classid)
+     //TODO needed to reload the text editor
+    const [refresh, setRefresh] = useState("");
     const socketRef = useRef()
     const [ stream, setStream ] = useState()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect('http://localhost:5000')
     // Record each type of event
 	const myVideo = useRef()
     const userVideo = useRef()
@@ -69,28 +87,69 @@ function LiveClassEmitter() {
         {
             eventName: "click",
             handler: function handleMouseMove(e) {
-                const data = {
+                if (
+                    e.target.className === "cssfile" ||
+                    e.target.className === "buttontext style" ||
+                    e.target.className === "fab fa-css3-alt"
+                  )
+                    fileName = "style.css";
+                  if (
+                    e.target.className === "jsfile" ||
+                    e.target.className === "buttontext script" ||
+                    e.target.className === " fa-js-square"
+                  )
+                    fileName = "script.js";
+                  if (
+                    e.target.className === "htmlfile" ||
+                    e.target.className === "buttontext html" ||
+                    e.target.className === "fab fa-html5fab"
+                  )
+                  fileName = "index.html";
+                  console.log(e.target.className);
+                    const data = {
                     type: "click",
                     target: e.target.className,
-                    clientX : e.clientX,
-                    clientY : e.clientY,
+                    x: e.pageX,
+                    fileName: fileName,
+                    y: e.pageY,
                 }
                 sendData(data)
             },
         },
-        // {
-        //     eventName: "keydown",
-        //     handler: function handleMouseMove(e) {
-        //         let innerText = document.getElementsByClassName("canvas_text")[0].innerText
-        //         const data = {
-        //             type: "keydown",
-        //             target: e.target.className,
-        //             shiftKey: e.shiftKey,
-        //             innerText: innerText,
-        //         }
-        //         sendData(data)
-        //     },
-        // }
+        {
+            eventName: "keyup",
+            handler: function handleKeyPress(e) {
+              console.log(files[fileName]);
+              if (name === "ide" || name === "dsa") {
+                lastKey = childValue;
+                lastKeyClass = e.target.className;
+                const data = {
+                  type: "keyup",
+                  target: e.target.className,
+                  x: lastMouse.x,
+                  y: lastMouse.y,
+                  fileName: fileName,
+                  value:
+                    e.target.className === "userInputArea"
+                      ? e.target.value
+                      : files[fileName].value,
+                  keyCode: e.keyCode,
+                }
+                sendData(data)
+              }
+            },
+        },
+        {
+            eventName: "output",
+            handler: function handleChange(e) {
+              const data = {
+                type: "output",
+                target: "userOutputArea",
+                value: e.detail.output,
+              }
+              sendData(data)
+            },
+        },
     ];
 
     function sendData(data) {
@@ -146,7 +205,13 @@ function LiveClassEmitter() {
                 {stream && <video playsInline muted ref={myVideo} autoPlay style={{width: "300px" }} />}
             </div>
             </div>
-            <div  className = "chalk"><ChalkBoard/></div>
+            {name === "dra" ? (
+            <div className="chalk">
+              <ChalkBoard />
+            </div>
+          ) : (
+            <IDE name={name} language={language} refresh={refresh} />
+          )}
         </>
     )
 }

@@ -2,7 +2,10 @@ import React, { useEffect} from 'react'
 import {useHistory} from "react-router-dom";
 import { motion } from "framer-motion";
 import "./style.css"
+import { v4 as uuidv4 } from 'uuid';
 function RecorderForm() {
+    const classid = uuidv4();
+    const path = document.location.pathname
     const history = useHistory();
     let lectureName;
     let lectureType;
@@ -12,6 +15,11 @@ function RecorderForm() {
         pathname:'/recorder',
         state:{lectureType, lectureName, lectureCreator, languageType}}
     );
+    const navigateToLiveClass = () => history.push({
+        pathname:`/emitter/${lectureType+languageType}/${classid}`,
+        state:{lectureType, lectureName, lectureCreator, languageType}}
+    );
+
 
     const languageList = {
         "Python 2": "python2", 
@@ -70,7 +78,7 @@ function RecorderForm() {
                 <option value="dra">Chalk Board</option>
             </select>
             <select name="language" id="language"></select>
-            <button type="button"  onClick = {navigateToRecorderWeb} id="submit">Submit</button>
+            <button type="button" onClick = {path==="/classform"?navigateToLiveClass:navigateToRecorderWeb} id="submit">Submit</button>
         </form>
         </motion.div>
     )

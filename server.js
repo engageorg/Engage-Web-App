@@ -39,16 +39,12 @@ io.on('connection', socket => {
   })
 
   socket.on("emitData", (classid,data) => {
-    console.log(data)
-    console.log(classid)
     io.to(classid).emit("receiveData", data)
   })
   socket.on("sendStream", (data) => {
-    console.log(data)
     io.to(data.classid).emit("emitStream", data )
   })
   socket.on("answerCall", (data) => {
-    //console.log(data.classid)
     io.emit("callAccepted", data)
   })
 })

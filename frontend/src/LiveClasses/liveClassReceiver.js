@@ -1,18 +1,75 @@
 import React, { useEffect,useState,useRef} from "react";
 import ChalkBoard from '../ChalkBoard/index'
 import Peer from "simple-peer"
+import IDE from "../IDE"
+import files from "../assets/files";
+import { useDispatch } from "react-redux";
+import {
+  js,
+  css,
+  html,
+  outputModalTrue,
+  outputModalFalse,
+  setSrcDocs,
+} from "../actions";
 import * as io from 'socket.io-client'
 import { useParams } from "react-router";
 
 function LiveClassReceiver() {
-    const { classid } = useParams();
+    const { classid, type } = useParams();
+    const name = type.slice(0, 3);
+    const language = type.slice(3, 10);
     const socketRef = useRef()
     const [ stream, setStream ] = useState()
     const [ receivingCall, setReceivingCall ] = useState(false)
     const [ callerSignal, setCallerSignal ] = useState()
+    const dispatch = useDispatch();
+    //TODO needed to reload the text editor
+    const [refresh, setRefresh] = useState("");
     const userVideo = useRef()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect('http://localhost:5000')
+    function handleButtonEvents(target) {
+      switch (target) {
+        case "outputtext":
+          dispatch(setSrcDocs());
+          dispatch(outputModalTrue());
+          break;
+        case "output":
+          dispatch(setSrcDocs());
+          dispatch(outputModalTrue());
+          break;
+        case "buttontext output":
+          dispatch(setSrcDocs());
+          dispatch(outputModalTrue());
+          break;
+        case "fas fa-play":
+          dispatch(setSrcDocs());
+          dispatch(outputModalTrue());
+          break;
+        case "fas fa-window-close":
+          dispatch(outputModalFalse());
+          break;
+        case "style.css":
+          dispatch(css());
+          break;
+        case "buttontext style":
+          dispatch(css());
+          break;
+        case "index.html":
+          dispatch(html());
+          break;
+        case "script.js":
+          dispatch(js());
+          break;
+        case "buttontext script":
+          dispatch(js());
+          break;
+        default:
+          break;
+      }
+    }
+
     useEffect(() => {
         socketRef.current.emit("join-class", {classid:classid})
 
@@ -24,8 +81,8 @@ function LiveClassReceiver() {
           const drawStatus = {
             status:false
           }
-          const event = new CustomEvent("status", { detail: drawStatus });
-          document.dispatchEvent(event);
+          const eve = new CustomEvent("status", { detail: drawStatus });
+          document.dispatchEvent(eve);
           if (data.type === "mousedown") {
                 //console.log("mousedown")
                 let eve = new PointerEvent("pointerdown", {
@@ -42,8 +99,6 @@ function LiveClassReceiver() {
         
               }
               else if (data.type === "mousemove") {
-                //console.log("mousemove")
-                // TODO: Add e.buttons too
                 let eve = new PointerEvent("pointermove", {
                   bubbles: true,
                   cancelable: true,
@@ -77,8 +132,52 @@ function LiveClassReceiver() {
                 document.getElementsByClassName(data.target)[0].dispatchEvent(eve);
               }
               else if (data.type === "click") {
-                if(document.getElementsByClassName(data.target)[0] !== undefined && document.getElementsByClassName(data.target)[0].nodeName === "INPUT"){
-                    document.getElementsByClassName(data.target)[0].click();
+                if (document.getElementsByClassName(data.target)[0] !== undefined) {
+                  let clickEvent = new MouseEvent("click", {
+                    pageX: data.x,
+                    pageY: data.y,
+                    bubbles: true,
+                    cancelable: true,
+                  });
+        
+                  document
+                    .getElementsByClassName(data.target)[0]
+                    .dispatchEvent(clickEvent);
+                }
+                if (
+                  data.target === "rectangle" ||
+                  data.target === "ellipse" ||
+                  data.target === "arrow" ||
+                  data.target === "selection"
+                )
+                  document.getElementsByClassName(data.target)[0].click();        
+                  tar = document.getElementsByClassName(data.target)[0];
+                  if (tar != null) {
+                    handleButtonEvents(data.fileName);
+                    handleButtonEvents(data.target);
+                  }
+              }
+              else if (data.type === "keyup") {
+                const path = data.target;
+                tar = document.getElementsByClassName(path)[0];
+                if (tar != null) {
+                  tar.focus();
+                  if (path === "userInputArea") {
+                    tar.value = data.value;
+                  } else {
+                    files[data.fileName].value = data.value;
+                    handleButtonEvents(data.fileName);
+                    setRefresh(data.value);
+                  }
+                }
+              }else if (data.type === "output") {
+                const path = data.target;
+                tar = document.getElementsByClassName(path)[0];
+                if (tar != null) {
+                  tar.focus();
+                  if (path === "userOutputArea") {
+                    tar.value = data.value;
+                  }
                 }
               }
               else if(data.type === "keydown"){
@@ -125,7 +224,13 @@ function LiveClassReceiver() {
             {stream && <video playsInline ref={userVideo} autoPlay style={{width: "300px" }} />}
             </div>
             </div>
-            <div  className = "chalk"><ChalkBoard/></div>
+            {name === "dra" ? (
+            <div className="chalk">
+              <ChalkBoard />
+            </div>
+          ) : (
+            <IDE name={name} language={language} refresh={refresh} />
+          )}
         </>
     )
 }
