@@ -13,7 +13,7 @@ function Card(props) {
                     const type = `${lecture.type}${lecture.language}`;
                     return(
                     <div key={lecture.id}>
-                        <Link to = {`/${type}/${id}`}>
+                        <Link to = {`/player/${type}/${id}`}>
                         <div className="card">
                         <div className="card__background"></div>
                         <div className="card__content">

@@ -71,6 +71,7 @@ export const textWysiwyg = ({ id, appState, onChange, onSubmit, getViewportCoord
         resize: "none",
         background: "transparent",
         overflow: "hidden",
+        font: "Virgil",
         // prevent line wrapping (`whitespace: nowrap` doesn't work on FF)
         whiteSpace: "pre",
         // must be specified because in dark mode canvas creates a stacking context
@@ -79,6 +80,7 @@ export const textWysiwyg = ({ id, appState, onChange, onSubmit, getViewportCoord
     updateWysiwygStyle();
     if (onChange) {
         editable.oninput = () => {
+           
             onChange(normalizeText(editable.value));
         };
     }
@@ -108,9 +110,12 @@ export const textWysiwyg = ({ id, appState, onChange, onSubmit, getViewportCoord
             else {
                 indent();
             }
+            
             // We must send an input event to resize the element
             editable.dispatchEvent(new Event("input"));
         }
+        console.log("here on 89");
+        editable.dispatchEvent(new Event("input"));
     };
     const TAB_SIZE = 4;
     const TAB = " ".repeat(TAB_SIZE);
