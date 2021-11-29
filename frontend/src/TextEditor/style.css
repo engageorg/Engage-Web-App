@@ -97,7 +97,7 @@
   
   .outputiframe{
     width: 60vw;
-    height: 57.2vh;
+    height: 100vh;
   }
 
   .fa-window-close{
@@ -152,6 +152,11 @@
   .split-flex {
     display: flex;
     flex-direction: row;
+  }
+
+  .split-row-flex {
+    display: flex;
+    flex-direction: column;
   }
   .gutter.gutter-horizontal {
     cursor: ew-resize;
