@@ -100,7 +100,7 @@
     height: 100vh;
   }
 
-  .fa-window-close{
+  .closechalkboard{
     color: rgb(239, 57, 61);
     padding: 10px;
     transform: scale(2.4);
@@ -112,23 +112,9 @@
     pointer-events: all;
     }
   
-  .closeButton{
-    z-index: 1000000;
-    cursor: pointer;
-    pointer-events: all;
-    
-  }
-  .closeButton:hover{
-    opacity: 1;
-    
-  }  
-  
-  iframe{
-    height: 100vh;
-  }
+ 
   .output{
-    transition: 0.5s;
-    z-index: 2;
+    transition: 0.5s; 
     margin: 5px;
     min-width: 8vw;
     padding-top: 15px;
@@ -167,3 +153,4 @@
     display: flex;
     flex-direction:column;
   }
+

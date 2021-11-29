@@ -35,11 +35,18 @@ function MultiFile(props) {
   function handleInput(e) {
     setInputValue(e.target.value);
   }
+  
+  useEffect(() => {
+    document.getElementsByClassName("closechalkboard")[0].addEventListener("click", function () {
+      document.getElementsByClassName("chalkboardweb")[0].style.display = "none"
+    })
 
-  function handleCloseModal(){
-    console.log("WORKINH")
-    setModal(false)
-  }
+    document.getElementsByClassName("showModal")[0].addEventListener("click", function () {
+      document.getElementsByClassName("chalkboardweb")[0].style.display = "block"
+    }) 
+  
+},[]);
+
 
   function handleOutput(e) {
     if(e.isTrusted){
@@ -118,17 +125,10 @@ function MultiFile(props) {
             </div>
           </div>
         </div>
-        <ReactModal
-        className="outputModal Modal"
-        isOpen={modalActive}
-        overlayClassName="Overlay"
-        ariaHideApp={false}
-      >
-        <div className="closeButton">
-          <i className="fas fa-window-close" onClick = {handleCloseModal}></i>
-        </div>
-        <ChalkBoard />
-      </ReactModal>
+        <div className="chalkboardweb">
+          <button className = "closechalkboard"><i className=" fas fa-window-close"></i></button>
+          <ChalkBoard />
+       </div>
       </div>
     </>
   );
