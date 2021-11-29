@@ -9,7 +9,7 @@ function LiveClassEmitter() {
     const socketRef = useRef()
     const [ stream, setStream ] = useState()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect('http://localhost:5000')
+    socketRef.current = io.connect(document.location.origin)
     // Record each type of event
 	const myVideo = useRef()
     const userVideo = useRef()
@@ -29,7 +29,11 @@ function LiveClassEmitter() {
             eventName: "mouseup",
             handler: function handleMouseMove(e) {
                 const data = {
-                    type: "mouseup"
+                    type: "mouseup",
+                    target: e.target.className,
+                    clientX: e.clientX,
+                    clientY: e.clientY,
+                    shiftKey: e.shiftKey,
                 }
                 sendData(data)
             }
@@ -43,6 +47,7 @@ function LiveClassEmitter() {
                     clientX : e.clientX,
                     clientY : e.clientY,
                     shiftKey : e.shiftKey,
+                    target:e.target.className
                 }
                 sendData(data)
             },
@@ -56,6 +61,7 @@ function LiveClassEmitter() {
                     clientX : e.clientX,
                     clientY : e.clientY,
                     shiftKey : e.shiftKey,  
+                    target:e.target.className
                 }
                 sendData(data)
             },
@@ -66,6 +72,8 @@ function LiveClassEmitter() {
                 const data = {
                     type: "click",
                     target: e.target.className,
+                    clientX : e.clientX,
+                    clientY : e.clientY,
                 }
                 sendData(data)
             },
