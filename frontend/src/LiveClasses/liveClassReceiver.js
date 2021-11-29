@@ -2,22 +2,27 @@ import React, { useEffect,useState,useRef} from "react";
 import ChalkBoard from '../ChalkBoard/index'
 import Peer from "simple-peer"
 import * as io from 'socket.io-client'
+import { useParams } from "react-router";
 
 function LiveClassReceiver() {
+    const { classid } = useParams();
     const socketRef = useRef()
     const [ stream, setStream ] = useState()
     const [ receivingCall, setReceivingCall ] = useState(false)
     const [ callerSignal, setCallerSignal ] = useState()
     const userVideo = useRef()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect('http://localhost:5000')
     useEffect(() => {
+        socketRef.current.emit("join-class", {classid:classid})
+
         const button = document.getElementsByClassName("answerButton")[0]
         button.style.display = "none"
-        socketRef.current.on("receiveData", ({data}) => {
-            button.style.display="block"
+        socketRef.current.on("receiveData", (data) => {
+          console.log(data)  
+          button.style.display="block"
             if (data.type === "mousedown") {
-                console.log("mousedown")
+                //console.log("mousedown")
                 let eve = new PointerEvent("pointerdown", {
                   bubbles: true,
                   cancelable: true,
@@ -31,7 +36,7 @@ function LiveClassReceiver() {
         
               }
               else if (data.type === "mousemove") {
-                console.log("mousemove")
+                //console.log("mousemove")
                 // TODO: Add e.buttons too
                 let eve = new PointerEvent("pointermove", {
                   bubbles: true,
@@ -51,7 +56,7 @@ function LiveClassReceiver() {
                 }
               }
               else if (data.type === "mouseup") {
-                console.log("mouseup")
+                //console.log("mouseup")
                 let eve = new PointerEvent("pointerup", {
                   bubbles: true,
                   cancelable: true
@@ -71,6 +76,7 @@ function LiveClassReceiver() {
         })
 
         socketRef.current.on("emitStream", (data) => {
+          console.log(data.signalData)
           setCallerSignal(data.signalData)
         })
 
@@ -85,7 +91,8 @@ function LiveClassReceiver() {
 
       peer.on("signal", (data) => {
         socketRef.current.emit("answerCall", { 
-          signalData: data
+          signalData: data,
+          classid:classid
         })
       })
   

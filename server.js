@@ -33,14 +33,22 @@ if (true) {
 
 
 io.on('connection', socket => {
-  socket.on("emitData", ({data}) => {
-    io.emit("receiveData", {data})
+  
+  socket.on("join-class", ({classid}) => {
+      socket.join(classid)
+  })
+
+  socket.on("emitData", (classid,data) => {
+    console.log(data)
+    console.log(classid)
+    io.to(classid).emit("receiveData", data)
   })
   socket.on("sendStream", (data) => {
-    io.emit("emitStream", data )
+    console.log(data)
+    io.to(data.classid).emit("emitStream", data )
   })
   socket.on("answerCall", (data) => {
-    console.log(data)
+    //console.log(data.classid)
     io.emit("callAccepted", data)
   })
 })

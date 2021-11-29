@@ -3,19 +3,22 @@ import ChalkBoard from '../ChalkBoard/index'
 import Peer from "simple-peer"
 import * as io from 'socket.io-client'
 import "./style.css"
-
+import { useParams } from "react-router";
 function LiveClassEmitter() {
+    const { classid } = useParams();
     const socketRef = useRef()
     const [ stream, setStream ] = useState()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect('http://localhost:5000')
     // Record each type of event
 	const myVideo = useRef()
     const userVideo = useRef()
 	const connectionRef= useRef()
     useEffect(() => {
+    socketRef.current.emit("join-class", {classid:classid})
+
         //console.log(document.location.origin)
-        navigator.mediaDevices.getUserMedia({ audio: true}).then((stream) => {
+        navigator.mediaDevices.getUserMedia({ video:true,audio: true}).then((stream) => {
             setStream(stream)
             myVideo.current.srcObject = stream
         })
@@ -65,27 +68,27 @@ function LiveClassEmitter() {
                     target: e.target.className,
                 }
                 sendData(data)
-
             },
         },
-        {
-            eventName: "keydown",
-            handler: function handleMouseMove(e) {
-                let innerText = document.getElementsByClassName("canvas_text")[0].innerText
-                const data = {
-                    type: "keydown",
-                    target: e.target.className,
-                    shiftKey: e.shiftKey,
-                    innerText: innerText,
-                }
-                sendData(data)
-            },
-        }
+        // {
+        //     eventName: "keydown",
+        //     handler: function handleMouseMove(e) {
+        //         let innerText = document.getElementsByClassName("canvas_text")[0].innerText
+        //         const data = {
+        //             type: "keydown",
+        //             target: e.target.className,
+        //             shiftKey: e.shiftKey,
+        //             innerText: innerText,
+        //         }
+        //         sendData(data)
+        //     },
+        // }
     ];
 
     function sendData(data) {
-        socketRef.current.emit("emitData", {data})
+        socketRef.current.emit("emitData", classid,data)
     }
+
 
     function removeListener(eventName, handler) {
         return document.documentElement.removeEventListener(
@@ -107,11 +110,13 @@ function LiveClassEmitter() {
         })
         peer.on("signal", (data) => {
             socketRef.current.emit("sendStream", {
-                signalData: data
+                signalData: data,
+                classid:classid
             })
         })
 
         socketRef.current.on("callAccepted", (data) => {
+            console.log(data.signalData)
             peer.signal(data.signalData)
 		})
 
