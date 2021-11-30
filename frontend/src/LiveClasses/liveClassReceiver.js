@@ -28,7 +28,7 @@ function LiveClassReceiver() {
     const [refresh, setRefresh] = useState("");
     const userVideo = useRef()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect('http://localhost:5000')
     function handleButtonEvents(target) {
       switch (target) {
         case "outputtext":

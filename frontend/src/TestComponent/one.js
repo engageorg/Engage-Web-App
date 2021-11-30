@@ -3,7 +3,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { useEffect } from "react";
 
-function Test() {
+function One() {
   useEffect(() => {
     const firebaseConfig = {
       apiKey: "AIzaSyAp2cQvNNp8fUKOv6kO_7wR5IsKROCoh14",
@@ -68,7 +68,7 @@ function Test() {
       };
 
       webcamVideo.srcObject = localStream;
-      remoteVideo.srcObject = remoteStream;
+      //remoteVideo.srcObject = remoteStream;
 
       callButton.disabled = false;
       answerButton.disabled = false;
@@ -122,44 +122,44 @@ function Test() {
       hangupButton.disabled = false;
     };
 
-    // 3. Answer the call with the unique ID
-    answerButton.onclick = async () => {
-      const callId = callInput.value;
-      const callDoc = firestore.collection("calls").doc(callId);
-      const answerCandidates = callDoc.collection("answerCandidates");
-      const offerCandidates = callDoc.collection("offerCandidates");
+    // // 3. Answer the call with the unique ID
+    // answerButton.onclick = async () => {
+    //   const callId = callInput.value;
+    //   const callDoc = firestore.collection("calls").doc(callId);
+    //   const answerCandidates = callDoc.collection("answerCandidates");
+    //   const offerCandidates = callDoc.collection("offerCandidates");
 
-      pc.onicecandidate = (event) => {
-        event.candidate && answerCandidates.add(event.candidate.toJSON());
-      };
+    //   pc.onicecandidate = (event) => {
+    //     event.candidate && answerCandidates.add(event.candidate.toJSON());
+    //   };
 
-      const callData = (await callDoc.get()).data();
+    //   const callData = (await callDoc.get()).data();
 
-      const offerDescription = callData.offer;
-      await pc.setRemoteDescription(
-        new RTCSessionDescription(offerDescription)
-      );
+    //   const offerDescription = callData.offer;
+    //   await pc.setRemoteDescription(
+    //     new RTCSessionDescription(offerDescription)
+    //   );
 
-      const answerDescription = await pc.createAnswer();
-      await pc.setLocalDescription(answerDescription);
+    //   const answerDescription = await pc.createAnswer();
+    //   await pc.setLocalDescription(answerDescription);
 
-      const answer = {
-        type: answerDescription.type,
-        sdp: answerDescription.sdp,
-      };
+    //   const answer = {
+    //     type: answerDescription.type,
+    //     sdp: answerDescription.sdp,
+    //   };
 
-      await callDoc.update({ answer });
+    //   await callDoc.update({ answer });
 
-      offerCandidates.onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          console.log(change);
-          if (change.type === "added") {
-            let data = change.doc.data();
-            pc.addIceCandidate(new RTCIceCandidate(data));
-          }
-        });
-      });
-    };
+    //   offerCandidates.onSnapshot((snapshot) => {
+    //     snapshot.docChanges().forEach((change) => {
+    //       console.log(change);
+    //       if (change.type === "added") {
+    //         let data = change.doc.data();
+    //         pc.addIceCandidate(new RTCIceCandidate(data));
+    //       }
+    //     });
+    //   });
+    // };
   }, []);
   return (
     <>
@@ -168,10 +168,6 @@ function Test() {
         <span>
           <h3>Local Stream</h3>
           <video id="webcamVideo" autoPlay playsInline></video>
-        </span>
-        <span>
-          <h3>Remote Stream</h3>
-          <video id="remoteVideo" autoPlay playsInline></video>
         </span>
       </div>
 
@@ -198,4 +194,4 @@ function Test() {
   );
 }
 
-export default Test
+export default One
