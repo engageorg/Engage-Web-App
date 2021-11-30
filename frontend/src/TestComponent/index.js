@@ -3,7 +3,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { useEffect } from "react";
 
-function Test() {
+export default function Test() {
   useEffect(() => {
     const firebaseConfig = {
       apiKey: "AIzaSyAp2cQvNNp8fUKOv6kO_7wR5IsKROCoh14",
@@ -197,5 +197,3 @@ function Test() {
     </>
   );
 }
-
-export default Test

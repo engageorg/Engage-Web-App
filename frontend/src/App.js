@@ -3,9 +3,7 @@ import ChalkBoard from "./ChalkBoard";
 import TextEditor from "./TextEditor/TextEditor";
 import Recorder from "./Recorder";
 import Player from "./Player";
-import Test from "./TestComponent/index";
-import One from "./TestComponent/one";
-import Two from "./TestComponent/two";
+import Test from "./TestComponent";
 import UserSection from "./UserSection";
 import { createStore, compose, applyMiddleware } from "redux";
 import RecorderForm from "./RecorderForm/recorderForm";
@@ -62,8 +60,6 @@ function App() {
           <Route exact path="/classform" component={RecorderForm} />
           <Route exact path="/videoplayer" component={Video} />
           <Route exact path="/test" component={Test} />
-          <Route exact path="/one" component={One} />
-          <Route exact path="/two" component={Two} />
           <Route exact path="/recorder" component={Recorder} ide="web" />
         </Router>
       </Provider>

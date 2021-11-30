@@ -38,6 +38,11 @@ io.on('connection', socket => {
       socket.join(classid)
   })
 
+  socket.on("classid", ({callId}) => {
+    console.log(callId)
+    io.emit("answerId", callId)
+})
+
   socket.on("emitData", (classid,data) => {
     io.to(classid).emit("receiveData", data)
   })
