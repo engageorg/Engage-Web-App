@@ -24,32 +24,36 @@ function MultiFile(props) {
       base: "vs-dark",
       inherit: true,
       rules: [],
-      colors: { "editor.background": "#293738" }
+      colors: { "editor.background": "#293738" },
     });
   }
 
-  function handleModal(){
-    setModal(true)
+  function handleModal() {
+    setModal(true);
   }
 
   function handleInput(e) {
     setInputValue(e.target.value);
   }
-  
+
   useEffect(() => {
-    document.getElementsByClassName("closechalkboard")[0].addEventListener("click", function () {
-      document.getElementsByClassName("chalkboardweb")[0].style.display = "none"
-    })
+    document
+      .getElementsByClassName("closechalkboard")[0]
+      .addEventListener("click", function () {
+        document.getElementsByClassName("chalkboardweb")[0].style.display =
+          "none";
+      });
 
-    document.getElementsByClassName("showModal")[0].addEventListener("click", function () {
-      document.getElementsByClassName("chalkboardweb")[0].style.display = "block"
-    }) 
-  
-},[]);
-
+    document
+      .getElementsByClassName("showModal")[0]
+      .addEventListener("click", function () {
+        document.getElementsByClassName("chalkboardweb")[0].style.display =
+          "block";
+      });
+  }, []);
 
   function handleOutput(e) {
-    if(e.isTrusted){
+    if (e.isTrusted) {
       const words = file.value.split("\r");
       let code = "";
       for (let i = 0; i < words.length; i++) {
@@ -72,37 +76,34 @@ function MultiFile(props) {
     <>
       <div className="multilanguageIde">
         <div className="navbar">
-        <div className="editor">
-        <div className="navbar">
-          <span className="fileName">main 
-          {language === "python2" || language === "python3" ? ".py": ".cpp"}
-          </span>
-          <div className="optionButton">
-          <button
-              className="showModal"
-              onClick={handleModal}
-            >
-              <i class="fas fa-chalkboard-teacher"></i>
-            </button>
-            <button
-              className="showCodeOutput"
-              onClick={handleOutput}
-            >
-              <i class="fas fa-play"></i> Execute
-            </button>
+          <div className="editor">
+            <div className="navbar">
+              <span className="fileName">
+                main
+                {language === "python2" || language === "python3"
+                  ? ".py"
+                  : ".cpp"}
+              </span>
+              <div className="optionButton">
+                <button className="showModal" onClick={handleModal}>
+                  <i class="fas fa-chalkboard-teacher"></i>
+                </button>
+                <button className="showCodeOutput" onClick={handleOutput}>
+                  <i class="fas fa-play"></i> Execute
+                </button>
+              </div>
+            </div>
+            <Editor
+              height="95.3vh"
+              width="80vw"
+              theme="vs-dark"
+              language="python"
+              options={{ fontSize: 18, fontWeight: 400, fontFamily: "cursive" }}
+              onChange={handleEditorChange}
+              value={file.value}
+              beforeMount={handleEditorWillMount}
+            />
           </div>
-        </div>
-          <Editor
-            height="95.3vh"
-            width="80vw"
-            theme="vs-dark"
-            language="python"
-            options={{ fontSize: 18, fontWeight: 400, fontFamily: "cursive" }}
-            onChange={handleEditorChange}
-            value={file.value}
-            beforeMount={handleEditorWillMount}
-          />
-        </div>
           <div className="inputOutput">
             <div className="inputArea">
               <h3>Input</h3>
@@ -126,9 +127,11 @@ function MultiFile(props) {
           </div>
         </div>
         <div className="chalkboardweb">
-          <button className = "closechalkboard"><i className=" fas fa-window-close"></i></button>
+          <button className="closechalkboard">
+            <i className=" fas fa-window-close"></i>
+          </button>
           <ChalkBoard />
-       </div>
+        </div>
       </div>
     </>
   );
