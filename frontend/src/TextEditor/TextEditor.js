@@ -169,8 +169,11 @@ function TextEditor(props) {
           className="outputiframe"
           frameBorder="0"
         />
-         <Console logs={logs} variant="light" />
+        <div style={{ backgroundColor: "#242424" }}>
+         <Console logs={logs} variant="dark" />
+         </div>
       </Split>
+       
      
       </div>
 
@@ -178,6 +181,10 @@ function TextEditor(props) {
           <button className = "closechalkboard"><i className=" fas fa-window-close"></i></button>
           <ChalkBoard />
       </div>
+
+      <footer className = "texteditor_footer">
+
+      </footer>
     </div>
   );
 }
