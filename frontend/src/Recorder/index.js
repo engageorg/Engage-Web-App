@@ -207,13 +207,20 @@ export default function Recorder(props) {
   });
 
   function listen(eventName, handler) {
-    return document.documentElement.addEventListener(eventName, handler, true);
+    return document.getElementsByClassName("outputiframe")[0].contentDocument.addEventListener(eventName, handler, true);
+  }
+
+  function listeniframe(eventName, handler) {
+    return document.addEventListener(eventName, handler, true);
   }
 
   function startRecording() {
     startTime = Date.now();
     Recording.events = [];
     handlers.map((x) => listen(x.eventName, x.handler));
+    if(name !== "ide"){
+      handlers.map((x) => listeniframe(x.eventName, x.handler));
+    }
     Mp3Recorder.start()
       .then(() => {
         console.log("Started recording");
@@ -222,7 +229,7 @@ export default function Recorder(props) {
   }
 
   function removeListener(eventName, handler) {
-    return document.documentElement.removeEventListener(
+    return document.removeEventListener(
       eventName,
       handler,
       true
