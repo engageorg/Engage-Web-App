@@ -9,7 +9,7 @@ function UserSection() {
   return (
     <motion.section className = "usersection" initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1}} transition= {{duration: 0.2}}>
       
-<main className="main">
+<main className="us_main">
 	<div className="responsive-wrapper">
 		<div className="main-header">
 			<h1>Engage Proof of Concept Demo</h1>
