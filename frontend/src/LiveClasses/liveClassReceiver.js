@@ -28,7 +28,7 @@ function LiveClassReceiver() {
     const [refresh, setRefresh] = useState("");
     const userVideo = useRef()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect('http://localhost:5000')
     function handleButtonEvents(target) {
       switch (target) {
         case "outputtext":
@@ -73,18 +73,15 @@ function LiveClassReceiver() {
     useEffect(() => {
         socketRef.current.emit("join-class", {classid:classid})
 
-        const button = document.getElementsByClassName("answerButton")[0]
-        button.style.display = "none"
+        const answerButton = document.getElementsByClassName("answerButton")[0]
+        answerButton.style.display = "none"
         socketRef.current.on("receiveData", (data) => {
-          //console.log(data)  
-          button.style.display="block"
           const drawStatus = {
             status:false
           }
           const eve = new CustomEvent("status", { detail: drawStatus });
           document.dispatchEvent(eve);
           if (data.type === "mousedown") {
-                //console.log("mousedown")
                 let eve = new PointerEvent("pointerdown", {
                   bubbles: true,
                   cancelable: true,
@@ -189,9 +186,9 @@ function LiveClassReceiver() {
 
         socketRef.current.on("emitStream", (data) => {
           console.log(data.signalData)
+          answerButton.style.display="block"
           setCallerSignal(data.signalData)
         })
-
     }, [])
     
     function answerCall() {

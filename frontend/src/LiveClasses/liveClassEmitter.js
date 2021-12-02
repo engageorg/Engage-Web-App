@@ -41,7 +41,7 @@ function LiveClassEmitter() {
     const socketRef = useRef()
     const [ stream, setStream ] = useState()
     //while in development mode change document.location.origin to http://localhost:5000
-    socketRef.current = io.connect(document.location.origin)
+    socketRef.current = io.connect('http://localhost:5000')
     // Record each type of event
 	const myVideo = useRef()
     const userVideo = useRef()
