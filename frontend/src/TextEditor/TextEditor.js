@@ -142,13 +142,13 @@ function TextEditor(props) {
       {/* Editor */}
       <div className="editor">
       <Split
-          sizes={[45, 25, 30]}
+          sizes={[65, 35]}
           direction="horizontal"
           cursor="col-resize"
           className="split-flex"
       >
         <Editor
-          height="100vh"
+          height="97.6vh"
           width="47vw"
           theme="vs-dark"
           path={file.name}
@@ -162,16 +162,15 @@ function TextEditor(props) {
         /> 
         
         <iframe
-          height="100vh"
-       
+          height="97.6vh"
           src="./output/output.html"
           title="output"
           className="outputiframe"
           frameBorder="0"
         />
-        <div style={{ backgroundColor: "#242424" }}>
+        {/* <div style={{ backgroundColor: "#242424" }}>
          <Console logs={logs} variant="dark" />
-         </div>
+        </div> */}
       </Split>
        
      
@@ -183,7 +182,16 @@ function TextEditor(props) {
       </div>
 
       <footer className = "texteditor_footer">
-
+      
+      <div className = "side_footer">
+           <span className = "footer_text l_footer"><i className="fas fa-user-tie"></i> {" "}Instructor</span>
+           <span className = "footer_text l_footer error"><i className="far fa-times-circle"></i>{"  "} 0</span>
+           <span className = "footer_text l_footer warnings"><i className="fas fa-exclamation-triangle"></i> {"  "}0</span>
+       </div>
+       <div className = "side_footer">
+           <span className = "footer_text r_footer"><i class="fas fa-terminal"></i>{" "}Console</span>
+       </div>
+  
       </footer>
     </div>
   );

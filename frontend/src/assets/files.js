@@ -1,879 +1,567 @@
 const someJSCodeExample = `
-"use strict"
-		var stage = {
-			w:1280,
-			h:720
-		}
-
-		var _pexcanvas = document.getElementById("canvas");
-		_pexcanvas.width = stage.w;
-		_pexcanvas.height = stage.h;
-		var ctx = _pexcanvas.getContext("2d");
-
-
-
-
-		var pointer = {
-			x:stage.w/2,
-			y:stage.h/4
-		}
-
-		var scale = 1;
-		var portrait = true;
-		var loffset = 0;
-		var toffset = 0;
-		var mxpos = 0;
-		var mypos = 0;
-
-
-// ------------------------------------------------------------------------------- Gamy
-
-var againprog = 0;
-
-var healthprog = 0;
-
-
-function newGame() {
-	score = 0;
-	health = 100;
-	enemies=[];
-	enemies.push(new Enemy());
-	enemies.push(new Enemy());
-	enemies.push(new Enemy());
-	againprog = 0;
-}
-
-
-
-function drawHeart(x,y,w) {
-	ctx.beginPath();
-	ctx.arc(x-w/4, y, w/4, 0.75*Math.PI,0);
-	ctx.arc(x+w/4, y, w/4, 1*Math.PI, 2.25*Math.PI);
-	ctx.lineTo(x,y+w/1.5);
-	ctx.closePath();
-	ctx.fill();
-}
-
-
-var Cannon = function(x,y,tx,ty) {
-	this.x = x;
-	this.y = y;
-	this.tx = tx;
-	this.ty = ty;
-	this.r = 10;
-}
-
-var cannons = [];
-
-var gameover = false;
-
-cannons.push(new Cannon(stage.w,stage.h,stage.w/2,stage.h/2));
-
-var firetm = 0;
-var fireact = true;
-
-var health = 100;
-var score = 0;
-
-
-var arm = {x:stage.w,y:stage.h};
-var arm2 = {x:0,y:stage.h};
-var danger = false;
-var dangera = 0;
-
-
-
-var Enemy = function() {
-	this.x = stage.w/2;
-	this.y = stage.h/2;
-	this.r = 10;
-	this.tx = Math.floor(Math.random()*stage.w);
-	this.ty = Math.floor(Math.random()*stage.h);
-	this.des = false;
-	this.eyeX = 0.4;
-	this.eyeY = 0.25;
-	this.eyeR = 0.25;
-	this.sp = 50;
-	this.spl = 1.4;
-	this.op=1;
-	this.danger = false;
-	this.nuked = false;
-}
-
-var enemies = [];
-// for (var i = 0; i < 10; i++) {
-// 	enemies[i] = new Enemy();
-// }
-		enemies.push(new Enemy());
-		enemies.push(new Enemy());
-		enemies.push(new Enemy());
-
-var entm = 0;
-var ga =0;
-
-var steptime = 0;
-
-
-var Star = function() {
-	this.a = Math.random()*Math.PI*2;
-	this.v = 3+Math.random()*5;
-	this.x = stage.w/2;
-	this.y = stage.h/2;
-	this.r = 0.2;
-}
-
-var Power = function() {
-	this.type = Math.floor(Math.random()*2)+1;
-	this.a = Math.random()*Math.PI*2;
-	this.v = 3+Math.random()*5;
-	this.x = stage.w/2;
-	this.y = stage.h/2;
-	this.r = 0.2;
-	this.dis = false;
-	this.op = 1;
-}
-
-
-var powers = [];
-var powertm = 0;
-var powermax = Math.random()*800+300;
-// powermax = 10;
-
-var stars = [];
-
-for (var i =0;i<200;i++) {
-	stars[i] = new Star();
-	var st = stars[i];
-	var move = Math.random()*400;
-
-	st.x += Math.sin(st.a)*move;
-	st.y += Math.cos(st.a)*move;
-
-
-}
-
-// powers.push(new Power());
-
-
-
-function enginestep() {
-	steptime = Date.now();
-	ctx.clearRect(0,0,stage.w,stage.h);
-	
-	ctx.fillStyle = "#ffffff";
-
-	
-	for (var i = 0; i < stars.length; i++) {
-		var st = stars[i];
-
-		st.x += Math.sin(st.a)*st.v;
-		st.y += Math.cos(st.a)*st.v;
-		st.r += st.v/200;
-
-		ctx.beginPath();
-		ctx.arc(st.x,st.y, st.r, 2*Math.PI, 0);
-		ctx.fill();
-
-		if (st.x>stage.w||st.x<0||st.y<0||st.y>stage.h) {
-			stars[i] = new Star();
-		}
+var LEVELS = [
+	["                                                                                ",
+	 "                                                                                ",
+	 "                                                                                ",
+	 "                                                                                ",
+	 "                                                                                ",
+	 "                                                                                ",
+	 "                                                                  xxx           ",
+	 "                                                   xx      xx    xx!xx          ",
+	 "                                    o o      xx                  x!!!x          ",
+	 "                                                                 xx!xx          ",
+	 "                                   xxxxx                          xvx           ",
+	 "                                                                            xx  ",
+	 "  xx                                      o o                                x  ",
+	 "  x                     o                                                    x  ",
+	 "  x                                      xxxxx                             o x  ",
+	 "  x          xxxx       o                                                    x  ",
+	 "  x  @       x  x                                                xxxxx       x  ",
+	 "  xxxxxxxxxxxx  xxxxxxxxxxxxxxx   xxxxxxxxxxxxxxxxxxxx     xxxxxxx   xxxxxxxxx  ",
+	 "                              x   x                  x     x                    ",
+	 "                              x!!!x                  x!!!!!x                    ",
+	 "                              x!!!x                  x!!!!!x                    ",
+	 "                              xxxxx                  xxxxxxx                    ",
+	 "                                                                                ",
+	 "                                                                                "],
+	["                                      x!!x                        xxxxxxx                                    x!x  ",
+	 "                                      x!!x                     xxxx     xxxx                                 x!x  ",
+	 "                                      x!!xxxxxxxxxx           xx           xx                                x!x  ",
+	 "                                      xx!!!!!!!!!!xx         xx             xx                               x!x  ",
+	 "                                       xxxxxxxxxx!!x         x                                    o   o   o  x!x  ",
+	 "                                                xx!x         x     o   o                                    xx!x  ",
+	 "                                                 x!x         x                                xxxxxxxxxxxxxxx!!x  ",
+	 "                                                 xvx         x     x   x                        !!!!!!!!!!!!!!xx  ",
+	 "                                                             xx  |   |   |  xx            xxxxxxxxxxxxxxxxxxxxx   ",
+	 "                                                              xx!!!!!!!!!!!xx            v                        ",
+	 "                                                               xxxx!!!!!xxxx                                      ",
+	 "                                               x     x            xxxxxxx        xxx         xxx                  ",
+	 "                                               x     x                           x x         x x                  ",
+	 "                                               x     x                             x         x                    ",
+	 "                                               x     x                             xx        x                    ",
+	 "                                               xx    x                             x         x                    ",
+	 "                                               x     x      o  o     x   x         x         x                    ",
+	 "               xxxxxxx        xxx   xxx        x     x               x   x         x         x                    ",
+	 "              xx     xx         x   x          x     x     xxxxxx    x   x   xxxxxxxxx       x                    ",
+	 "             xx       xx        x o x          x    xx               x   x   x               x                    ",
+	 "     @       x         x        x   x          x     x               x   x   x               x                    ",
+	 "    xxx      x         x        x   x          x     x               x   xxxxx   xxxxxx      x                    ",
+	 "    x x      x         x       xx o xx         x     x               x     o     x x         x                    ",
+	 "!!!!x x!!!!!!x         x!!!!!!xx     xx!!!!!!!!xx    x!!!!!!!!!!     x     =     x x         x                    ",
+	 "!!!!x x!!!!!!x         x!!!!!xx       xxxxxxxxxx     x!!!!!!!xx!     xxxxxxxxxxxxx xx  o o  xx                    ",
+	 "!!!!x x!!!!!!x         x!!!!!x    o                 xx!!!!!!xx !                    xx     xx                     ",
+	 "!!!!x x!!!!!!x         x!!!!!x                     xx!!!!!!xx  !                     xxxxxxx                      ",
+	 "!!!!x x!!!!!!x         x!!!!!xx       xxxxxxxxxxxxxx!!!!!!xx   !                                                  ",
+	 "!!!!x x!!!!!!x         x!!!!!!xxxxxxxxx!!!!!!!!!!!!!!!!!!xx    !                                                  ",
+	 "!!!!x x!!!!!!x         x!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!xx     !                                                  "],
+	["                                                                                                              ",
+	 "                                                                                                              ",
+	 "                                                                                                              ",
+	 "                                                                                                              ",
+	 "                                                                                                              ",
+	 "                                        o                                                                     ",
+	 "                                                                                                              ",
+	 "                                        x                                                                     ",
+	 "                                        x                                                                     ",
+	 "                                        x                                                                     ",
+	 "                                        x                                                                     ",
+	 "                                       xxx                                                                    ",
+	 "                                       x x                 !!!        !!!  xxx                                ",
+	 "                                       x x                 !x!        !x!                                     ",
+	 "                                     xxx xxx                x          x                                      ",
+	 "                                      x   x                 x   oooo   x       xxx                            ",
+	 "                                      x   x                 x          x      x!!!x                           ",
+	 "                                      x   x                 xxxxxxxxxxxx       xxx                            ",
+	 "                                     xx   xx      x   x      x                                                ",
+	 "                                      x   xxxxxxxxx   xxxxxxxx              x x                               ",
+	 "                                      x   x           x                    x!!!x                              ",
+	 "                                      x   x           x                     xxx                               ",
+	 "                                     xx   xx          x                                                       ",
+	 "                                      x   x= = = =    x            xxx                                        ",
+	 "                                      x   x           x           x!!!x                                       ",
+	 "                                      x   x    = = = =x     o      xxx       xxx                              ",
+	 "                                     xx   xx          x                     x!!!x                             ",
+	 "                              o   o   x   x           x     x                xxv        xxx                   ",
+	 "                                      x   x           x              x                 x!!!x                  ",
+	 "                             xxx xxx xxx xxx     o o  x!!!!!!!!!!!!!!x                   vx                   ",
+	 "                             x xxx x x xxx x          x!!!!!!!!!!!!!!x                                        ",
+	 "                             x             x   xxxxxxxxxxxxxxxxxxxxxxx                                        ",
+	 "                             xx           xx                                         xxx                      ",
+	 "  xxx                         x     x     x                                         x!!!x                xxx  ",
+	 "  x x                         x    xxx    x                                          xxx                 x x  ",
+	 "  x                           x    xxx    xxxxxxx                        xxxxx                             x  ",
+	 "  x                           x           x                              x   x                             x  ",
+	 "  x                           xx          x                              x x x                             x  ",
+	 "  x                                       x       |xxxx|    |xxxx|     xxx xxx                             x  ",
+	 "  x                xxx             o o    x                              x         xxx                     x  ",
+	 "  x               xxxxx       xx          x                             xxx       x!!!x          x         x  ",
+	 "  x               oxxxo       x    xxx    x                             x x        xxx          xxx        x  ",
+	 "  x                xxx        xxxxxxxxxxxxx  x oo x    x oo x    x oo  xx xx                    xxx        x  ",
+	 "  x      @          x         x           x!!x    x!!!!x    x!!!!x    xx   xx                    x         x  ",
+	 "  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx           xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  ",
+	 "                                                                                                              ",
+	 "                                                                                                              "],
+	["                                                                                                  xxx x       ",
+	 "                                                                                                      x       ",
+	 "                                                                                                  xxxxx       ",
+	 "                                                                                                  x           ",
+	 "                                                                                                  x xxx       ",
+	 "                          o                                                                       x x x       ",
+	 "                                                                                             o o oxxx x       ",
+	 "                   xxx                                                                                x       ",
+	 "       !  o  !                                                xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx       ",
+	 "       x     x                                                x   x x   x x   x x   x x   x x   x x           ",
+	 "       x= o  x            x                                   xxx x xxx x xxx x xxx x xxx x xxx x xxxxx       ",
+	 "       x     x                                                  x x   x x   x x   x x   x x   x x     x       ",
+	 "       !  o  !            o                                  xxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxxxx       ",
+	 "                                                                                                              ",
+	 "          o              xxx                              xx                                                  ",
+	 "                                                                                                              ",
+	 "                                                                                                              ",
+	 "                                                      xx                                                      ",
+	 "                   xxx         xxx                                                                            ",
+	 "                                                                                                              ",
+	 "                          o                                                     x      x                      ",
+	 "                                                          xx     xx                                           ",
+	 "             xxx         xxx         xxx                                 x                  x                 ",
+	 "                                                                                                              ",
+	 "                                                                 ||                                           ",
+	 "  xxxxxxxxxxx                                                                                                 ",
+	 "  x         x o xxxxxxxxx o xxxxxxxxx o xx                                                x                   ",
+	 "  x         x   x       x   x       x   x                 ||                  x     x                         ",
+	 "  x  @      xxxxx   o   xxxxx   o   xxxxx                                                                     ",
+	 "  xxxxxxx                                     xxxxx       xx     xx     xxx                                   ",
+	 "        x=                  =                =x   x                     xxx                                   ",
+	 "        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   x!!!!!!!!!!!!!!!!!!!!!xxx!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+	 "                                                  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+	 "                                                                                                              "]
+  ];
+  
+  
+  function Vector(x, y) {
+	  this.x = x; this.y = y;
+  }
+  
+  Vector.prototype.plus = function(other) {
+	  return new Vector(this.x + other.x, this.y + other.y);
+  };
+  
+  Vector.prototype.times = function(scale) {
+	  return new Vector(this.x * scale, this.y * scale);
+  };
+  
+  // Note: uppercase words are used that means constructor are values
+  var actorchars =  {
+	  "@": Player,
+	  "o": Coin,
+	  "=": Lava,
+	  "|": Lava,
+	  "v": Lava
+  };
+  
+  function Player(pos) {
+	  this.pos = pos.plus(new Vector(0, -.5));
+	  this.size = new Vector(.5, 1);
+	  this.speed = new Vector(0, 0);
+  }
+  Player.prototype.type = "player";
+  
+  function Lava(pos, ch) {
+	  this.pos = pos;
+	  this.size = new Vector(1, 1);
+	  if (ch === "=")
+		  this.speed = new Vector(2, 0);
+	  else if (ch === '|')
+		  this.speed = new Vector(0, 2);
+	  else if (ch === 'v'){
+		  this.speed = new Vector(0, 3); 		   
+		  this.repeatPos = pos;
+	  }
+  }
+  Lava.prototype.type = "Lava";
+  
+  function Coin(pos) {
+	  this.basePos = this.pos = pos;
+	  this.size = new Vector(.6, .6);
+	  // take a look back
+	  this.wobble = Math.random() * Math.PI * 2;
+  }
+  Coin.prototype.type = "coin";
+  
+  Level.prototype.isFinished = function() {
+	return this.status != null && this.finishDelay < 0;
+  };
+  
+  function Level(plan) {
+	  this.width = plan[0].length;
+	  this.height = plan.length;
+	  this.grid = [];
+	  this.actors = [];
+	  
+	  for (var y = 0; y < this.height; y++) {
+		  var line = plan[y],  gridLine = [];
+		  for (var x = 0; x < this.width; x++) {
+			  var ch = line[x], fieldType = null;
+			  var Actor = actorchars[ch];
+			  if (Actor)
+				  this.actors.push(new Actor(new Vector(x, y), ch));
+			  else if (ch === "x")
+				  fieldType = "wall";
+			  else if (ch === "!")
+				  fieldType = "lava";
+			  else if (ch === "|")
+				  fieldType = "lava";
+			  else if (ch === "=")
+				  fieldType = "lava";
+			  else if (ch === "v"){
+				  fieldType = "lava";
+				  console.log(fieldType);
+			  }
+			  gridLine.push(fieldType)
+		  }
+		  this.grid.push(gridLine);
+	  }
+	  this.player = this.actors.filter(function(actor) {
+		  return actor.type === "player"
+	  })[0];	
+	  this.status = this.finishDelay = null;
+  }
+  
+  function element(name, className) {
+	  var elem = document.createElement(name);
+	  if(className) elem.className = className;
+	  return elem;
+  }
+  
+  function DOMDisplay(parent, level) {
+	  this.wrap = parent.appendChild(element("div", "game"));
+	  this.level = level;
+	  
+	  this.wrap.appendChild(this.drawBackground());
+	  this.actorLayer = null;
+	  this.drawFrame();
+  }
+  
+  
+  var scale = 15;
+  
+  
+  DOMDisplay.prototype.drawBackground = function() {
+	  var table = element("table", "background");
+	  table.style.width = this.level.width * scale + "px";
+	  table.style.height = this.level.height * scale + "px";
+	  this.level.grid.forEach(function(row) {
+	var rowElement = table.appendChild(element("tr"));
+		  rowElement.style.height = scale + "px";
+		  row.forEach(function(type) {
+			  rowElement.appendChild(element("td", type));
+		  });
+	  });
+	  return table;
+  };
+  
+  DOMDisplay.prototype.drawActors = function() {
+	  var wrap = element("div");
+	  this.level.actors.forEach(function(actor) {
+		  var rect = wrap.appendChild(element("div", "actor " + actor.type));
+		  rect.style.width = actor.size.x * scale + "px";
+		  rect.style.height = actor.size.y * scale + "px";
+		  rect.style.left = actor.pos.x * scale + "px";
+		  rect.style.top = actor.pos.y * scale + "px";
+	  });
+	  return wrap;
+  }
+  
+  DOMDisplay.prototype.drawFrame = function() {
+	  if (this.actorLayer)
+		  this.wrap.removeChild(this.actorLayer);
+	  this.actorLayer = this.wrap.appendChild(this.drawActors());
+	  this.wrap.className = "game " + (this.level.status || "");
+	  this.scrollPlayerIntoView();
+  };
+  
+  
+  // clear it later
+  DOMDisplay.prototype.scrollPlayerIntoView = function() {
+	var width = this.wrap.clientWidth;
+	var height = this.wrap.clientHeight;
+	var margin = width / 3;
+  
+	// The viewport
+	var left = this.wrap.scrollLeft, right = left + width;
+	var top = this.wrap.scrollTop, bottom = top + height;
+  
+	var player = this.level.player;
+	var center = player.pos.plus(player.size.times(0.5))
+				   .times(scale);
+  
+	if (center.x < left + margin)
+	  this.wrap.scrollLeft = center.x - margin;
+	else if (center.x > right - margin)
+	  this.wrap.scrollLeft = center.x + margin - width;
+	if (center.y < top + margin)
+	  this.wrap.scrollTop = center.y - margin;
+	else if (center.y > bottom - margin)
+	  this.wrap.scrollTop = center.y + margin - height;
+  };
+  
+  DOMDisplay.prototype.clear = function() {
+	  this.wrap.parentNode.removeChild(this.wrap);
+  };
+  
+  Level.prototype.obstacleAt = function(pos, size) {
+	var xStart = Math.floor(pos.x);
+	var xEnd = Math.ceil(pos.x + size.x);
+	var yStart = Math.floor(pos.y);
+	var yEnd = Math.ceil(pos.y + size.y);
+  
+	if (xStart < 0 || xEnd > this.width || yStart < 0)
+	  return "wall";
+	if (yEnd > this.height)
+	  return "lava";
+	for (var y = yStart; y < yEnd; y++) {
+	  for (var x = xStart; x < xEnd; x++) {
+		var fieldType = this.grid[y][x];
+		if (fieldType) return fieldType;
+	  }
 	}
-	if (!gameover) {
-		danger = false;
-
-
-		powertm++;
-		if (powertm>powermax) {
-			powers.push(new Power());
-			powertm = 0;
-			powermax = Math.random()*1200+600;
-			// powermax = 10;
-		}
-
-
-
-
-		for (var i = 0; i < powers.length; i++) {
-			var st = powers[i];
-
-			if (!st.des) {
-				st.x += Math.sin(st.a)*st.v/1.5;
-				st.y += Math.cos(st.a)*st.v/1.5;
-				st.r += st.v/15;
-			} else {
-				st.r *=1.1;
-				if (st.type==1) {
-				st.op += (0-st.op)/10;
-			} else {
-				st.op += (0-st.op)/20;
-
-			}
-				st.x += (stage.w/2-st.x)/10;
-				st.y += (stage.h/2-st.y)/10;
-
-			}
-
-			
-			if (st.type ==1) {
-				ctx.fillStyle = "rgba(255,0,0,"+st.op+")";
-
-				drawHeart(st.x,st.y-st.r/4, st.r*2);
-
-			} else {
-				ctx.fillStyle = "rgba(255,255,0,"+st.op+")";
-				ctx.strokeStyle = "rgba(255,255,0,"+st.op+")";
-				ctx.lineWidth = st.r/10;
-				ctx.beginPath();
-				ctx.arc(st.x,st.y, st.r, 2*Math.PI, 0);
-				ctx.stroke();
-
-				ctx.beginPath();
-				ctx.arc(st.x,st.y, st.r*0.15, 2*Math.PI, 0);
-				ctx.fill();
-
-
-				ctx.beginPath();
-				ctx.arc(st.x,st.y, st.r*0.85, 1.67*Math.PI, 2*Math.PI);
-				ctx.arc(st.x,st.y, st.r*0.25, 2*Math.PI, 1.67*Math.PI,true);
-
-				ctx.closePath();
-				ctx.fill();
-
-
-
-				ctx.beginPath();
-				ctx.arc(st.x,st.y, st.r*0.85, 3*Math.PI, 3.33*Math.PI);
-				ctx.arc(st.x,st.y, st.r*0.25, 3.33*Math.PI,3*Math.PI, true);
-				ctx.closePath();
-				ctx.fill();
-
-				ctx.beginPath();
-				ctx.arc(st.x,st.y, st.r*0.85, 2.33*Math.PI, 2.67*Math.PI);
-				ctx.arc(st.x,st.y, st.r*0.25, 2.67*Math.PI,2.33*Math.PI, true);
-				ctx.lineTo(st.x,st.y);
-				ctx.closePath();
-				ctx.fill();
-
-			}
-			if (st.x>stage.w||st.x<0||st.y<0||st.y>stage.h||st.r>stage.w/2) {
-				powers.splice(i,1);
-				if (st.type == 2&&st.r>stage.w/2) {
-					for (var e = 0; e < enemies.length; e++) {
-						enemies[e].des = true;
-						enemies[e].nuked = true;
-
-					}
-				}
-				i--;
-			}
-
-
-		}
-
-		entm++;
-		if (enemies.length<10&&entm>300) {
-			entm=0;
-			enemies.push(new Enemy());
-
-		}
-
-			ctx.lineWidth = 2;
-		for (var i = 0; i < enemies.length; i++) {
-			var en = enemies[i];
-			if (!en.danger) {
-				ctx.strokeStyle = "rgba(0,255,255,"+en.op*2+")";
-			} else {
-				health -= 0.01;
-				ctx.strokeStyle = "rgba(255,0,0,"+en.op*2+")";
-				danger = true;
-			}
-
-
-
-
-			if (!en.des) {
-
-				if (en.danger) {
-					var randx = Math.floor(Math.random()*4)-2;
-					var randy = Math.floor(Math.random()*4)-2;
-
-					en.x = en.tx+randx;
-					en.y = en.ty+randy;
-				} else {
-					en.x += (en.tx-en.x)/100;
-					en.y += (en.ty-en.y)/100;
-					var randx = 0;
-					var randy = 0;
-				}
-
-				en.r += (50-en.r)/100;
-				if (Math.abs(50-en.r)<2&&!en.danger) {
-					en.tx=en.x;
-					en.ty=en.y;
-					en.danger=true;
-				}
-				ctx.beginPath();
-				ctx.arc(en.x-en.r*en.eyeX,en.y-en.r*en.eyeY, en.r*en.eyeR, 0, 2*Math.PI);
-				ctx.stroke();
-				ctx.beginPath();
-				ctx.arc(en.x+en.r*en.eyeX,en.y-en.r*en.eyeY, en.r*en.eyeR, 0, 2*Math.PI);
-				ctx.stroke();
-
-				ctx.beginPath();
-				ctx.arc(en.x,en.y+en.r/4, en.r/3, 2*Math.PI, Math.PI);
-				ctx.stroke();
-
-				ctx.beginPath();
-				ctx.arc(en.x,en.y, en.r, 0, 2*Math.PI);
-				ctx.stroke();
-			} else {
-
-				en.eyeR += (0.5-en.eyeR)/5;
-				en.op += (0-en.op)/5;
-				// en.sp += (5-en.sp)/20;
-				en.r += (100-en.r)/20;
-				en.spl += (2.5-en.spl)/5;
-				ctx.beginPath();
-				ctx.arc(en.x-en.r*en.eyeX,en.y-en.r*en.eyeY, en.r*en.eyeR, 0, 2*Math.PI);
-				ctx.stroke();
-				ctx.beginPath();
-				ctx.arc(en.x+en.r*en.eyeX,en.y-en.r*en.eyeY, en.r*en.eyeR, 0, 2*Math.PI);
-				ctx.stroke();
-				ctx.beginPath();
-				ctx.arc(en.x,en.y+en.r/2, en.r*en.eyeR, Math.PI,2*Math.PI);
-				ctx.stroke();
-
-			ctx.beginPath();
-			ctx.arc(en.x,en.y, en.r, 0, 2*Math.PI);
-			ctx.stroke();
-			}
-
-			//spikes
-			for (var s = 0; s < 12; s++) {
-				var a = (Math.PI*2/12)*s+ga;
-				ctx.beginPath();
-				ctx.moveTo(en.x+Math.sin(a)*en.r,en.y+Math.cos(a)*en.r);
-				ctx.lineTo(en.x+Math.sin(a)*en.r*1.2,en.y+Math.cos(a)*en.r*1.2);
-				ctx.lineTo(en.x+Math.sin(a+Math.PI/en.sp)*en.r*en.spl,en.y+Math.cos(a+Math.PI/en.sp)*en.r*en.spl);
-				ctx.lineTo(en.x+Math.sin(a-Math.PI/en.sp)*en.r*en.spl,en.y+Math.cos(a-Math.PI/en.sp)*en.r*en.spl);
-				ctx.lineTo(en.x+Math.sin(a)*en.r*1.2,en.y+Math.cos(a)*en.r*1.2);
-				ctx.stroke();
-				// ctx.fill();
-			}
-
-			if (Math.abs(0.5-en.eyeR)<0.01) {
-				var rand = Math.floor(Math.random()*2);
-				if (enemies[i].nuked&&rand==1) {
-				enemies.splice(i,1);
-
-				} else {
-				enemies[i] = new Enemy();
-
-				}
-			}
-		}
-
-
-
-
-
-
-
-	    if (danger) {
-	    	dangera += 0.05+(100-health)/1000;
-	    	if (dangera>=Math.PI) {
-	    		dangera=0;
-	    	}
-	    	ctx.fillStyle='rgba(255,0,0,'+(1-Math.sin(dangera))/4+')';
-			ctx.fillRect(0,0,stage.w,stage.h);
-			if (health<10) {
-		    	ctx.fillStyle='rgba(255,255,0,'+(Math.sin(dangera))+')';
-		    	ctx.strokeStyle='rgba(255,255,0,'+(Math.sin(dangera))+')';
-
-			    ctx.lineWidth = 10;
-			    ctx.beginPath();
-			    ctx.lineJoin = 'round';
-			    ctx.moveTo(stage.w/2,stage.h/4);
-			    ctx.lineTo(stage.w/2+stage.h/7,stage.h/2);
-			    ctx.lineTo(stage.w/2-stage.h/7,stage.h/2);
-			    ctx.closePath();
-			    ctx.stroke();
-
-			    ctx.font = "bold 130px arial";
-			    ctx.textAlign = "center"; 
-			    ctx.textBaseline = "middle"; 
-			    ctx.fillText("!",stage.w/2,stage.h/2.5);
-
-			    ctx.font = "bold 50px arial";
-			    ctx.fillText("LOW HEALTH",stage.w/2,stage.h*0.6);
-			}
-	    } else {
-	    	dangera = 0;
-	    }
-
-	    healthprog += (health-healthprog)/5;
-	    ctx.fillStyle='#00ffff';
-	    ctx.font = "30px arial";
-	    ctx.textAlign = "left"; 
-	    ctx.textBaseline = "middle"; 
-	    ctx.fillText("Health: ",20,40);
-
-	    ctx.fillText("Score: "+score,stage.w-200,40);
-	    // ctx.fillText("Step:   "+(Date.now()-steptime),20,120);
-	    if (health>30) {
-	    	ctx.fillStyle='rgba(0,255,255,0.8)';
-		} else {
-	    	ctx.fillStyle='rgba(255,0,0,0.8)';
-		}
-		ctx.lineWidth = 2;
-	    ctx.fillRect(130,25,healthprog*3,30);
-	    ctx.strokeStyle = "#00ffff";
-	    ctx.strokeRect(130,25,300,30);
-	    
-	    if (health<0) {
-	    	gameover = true;
-	    }
-
-	} else {	
-
-
-	    ctx.fillStyle='rgba(0,255,255,0.3)';
-	    ctx.fillRect((stage.w-220)/2,stage.h*0.65-25,againprog,50);
-
-    	ctx.fillStyle='#00ffff';
-	    ctx.font = "bold 130px arial";
-	    ctx.textAlign = "center"; 
-	    ctx.textBaseline = "middle"; 
-	    ctx.fillText("GAME OVER",stage.w/2,stage.h/3);
-	    ctx.font = "bold 50px arial";
-	    ctx.fillText("SCORE: "+score,stage.w/2,stage.h/2);
-
-	    ctx.font = "bold 30px arial";
-
-	    ctx.fillText("PLAY AGAIN",stage.w/2,stage.h*0.65);
-	    ctx.strokeRect((stage.w-220)/2,stage.h*0.65-25,220,50);
-
-	    againprog += (0-againprog)/50;
-
+  };
+  
+  Level.prototype.actorAt = function(actor) {
+	for (var i = 0; i < this.actors.length; i++) {
+	  var other = this.actors[i];
+	  if (other != actor &&
+		  actor.pos.x + actor.size.x > other.pos.x &&
+		  actor.pos.x < other.pos.x + other.size.x &&
+		  actor.pos.y + actor.size.y > other.pos.y &&
+		  actor.pos.y < other.pos.y + other.size.y)
+		return other;
 	}
-
-		ctx.strokeStyle = "#00ffff";
-		ctx.fillStyle = "#00ffff";
-			ctx.lineWidth = 2;
-		if (fireact) {
-			firetm++;
-			if(firetm>5) {
-
-				cannons.push(new Cannon(pointer.x+(stage.w-pointer.x)/2.5,pointer.y+(stage.h-pointer.y)/2.5,pointer.x,pointer.y));
-				cannons.push(new Cannon(pointer.x-(pointer.x)/2.5,pointer.y+(stage.h-pointer.y)/2.5,pointer.x,pointer.y));
-
-
-				firetm=0;
-			}
-
-			arm.x=Math.floor(Math.random()*50)-25+stage.w;
-			arm.y=Math.floor(Math.random()*50)-25+stage.h;
-			arm2.x=Math.floor(Math.random()*30)-15;
-			arm2.y=Math.floor(Math.random()*30)-15+stage.h;
-		} else {
-			arm.x=stage.w;
-			arm.y=stage.h;
-			arm2.x=0;
-			arm2.y=stage.h;
-		}
-
-
-
-
-
-
-		for (var i = 0; i < cannons.length; i++) {
-			
-			var can = cannons[i];
-
-			can.x += (can.tx-can.x)/5;
-			can.y += (can.ty-can.y)/5;
-			can.r += (0-can.r)/5;
-
-			ctx.beginPath();
-			ctx.arc(can.x,can.y, can.r, 0, 2*Math.PI);
-			ctx.fill();
-
-
-			if (can.r<2&&!gameover) {
-				for (var a = 0; a < enemies.length; a++) {
-					var en = enemies[a];
-					var dx = can.x-en.x;
-					var dy = can.y-en.y;
-					var dis = dx*dx+dy*dy;
-					if (dis<en.r*en.r) {
-
-						// enemies.splice(a,1);
-						if (!enemies[a].des) {
-						enemies[a].des = true;
-
-						score+=10;
-
-						}
-					}
-
-				}
-				
-			}
-
-			if (can.r<1&&!gameover) {
-				for (var a = 0; a < powers.length; a++) {
-					var en = powers[a];
-					var dx = can.x-en.x;
-					var dy = can.y-en.y;
-					var dis = dx*dx+dy*dy;
-					if (dis<en.r*en.r) {
-
-						if (!en.des) {
-							powers[a].des = true;
-							if (en.type==1) {
-							health = 100;
-							}
-
-						}
-					}
-
-				}
-
-			}
-
-			if (can.r<1&&gameover) {
-
-				if (can.x>(stage.w-220)/2&&can.y>stage.h*0.65-25&&can.x<(stage.w-220)/2+220&&can.y<stage.h*0.65-25+50) {
-
-					againprog +=1;
-					if (againprog>220) {
-						newGame();
-						gameover = false;
-					}
-				}
-			}
-			if (Math.abs(can.tx-can.x)<1) {
-
-
-
-
-				cannons.splice(i,1);
-			}
-
-
-		
-		}
-		ctx.beginPath();
-		ctx.moveTo(pointer.x-20,pointer.y);
-		ctx.lineTo(pointer.x+20,pointer.y);
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.moveTo(pointer.x,pointer.y-20);
-		ctx.lineTo(pointer.x,pointer.y+20);
-		ctx.stroke();
-
-			ctx.beginPath();
-			ctx.arc(pointer.x,pointer.y, 8, 0, 2*Math.PI);
-			ctx.stroke();
-
-		ctx.beginPath();
-		ctx.moveTo(pointer.x+(arm.x-pointer.x)/3,pointer.y+(arm.y-pointer.y)/3+10);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/2.5,pointer.y+(arm.y-pointer.y)/2.5+10);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/2,pointer.y+(arm.y-pointer.y)/2+10);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.5,pointer.y+(arm.y-pointer.y)/1.5+50);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.2,pointer.y+(arm.y-pointer.y)/1.2+80);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.1,pointer.y+(arm.y-pointer.y)/1.1+100);
-		ctx.stroke();
-		ctx.beginPath();
-		ctx.moveTo(pointer.x+(arm.x-pointer.x)/3-10,pointer.y+(arm.y-pointer.y)/3);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/2.5-10,pointer.y+(arm.y-pointer.y)/2.5);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/2-10,pointer.y+(arm.y-pointer.y)/2);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.5-50,pointer.y+(arm.y-pointer.y)/1.5);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.2-80,pointer.y+(arm.y-pointer.y)/1.2);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.1-100,pointer.y+(arm.y-pointer.y)/1.1);
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.moveTo(pointer.x+(arm.x-pointer.x)/3,pointer.y+(arm.y-pointer.y)/3-10);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/2.5,pointer.y+(arm.y-pointer.y)/2.5-10);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/2,pointer.y+(arm.y-pointer.y)/2-10);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.5,pointer.y+(arm.y-pointer.y)/1.5-50);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.2,pointer.y+(arm.y-pointer.y)/1.2-80);
-		ctx.lineTo(pointer.x+(arm.x-pointer.x)/1.1,pointer.y+(arm.y-pointer.y)/1.1-100);
-		ctx.stroke();
-
-
-
-		ctx.beginPath();
-		ctx.moveTo(arm2.x+pointer.x-(pointer.x)/3,pointer.y+(arm2.y-pointer.y)/3+10);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/2.5,pointer.y+(arm2.y-pointer.y)/2.5+10);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/2,pointer.y+(arm2.y-pointer.y)/2+10);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.5,pointer.y+(arm2.y-pointer.y)/1.5+50);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.2,pointer.y+(arm2.y-pointer.y)/1.2+80);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.1,pointer.y+(arm2.y-pointer.y)/1.1+100);
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.moveTo(arm2.x+pointer.x-(pointer.x)/3-10,pointer.y+(arm2.y-pointer.y)/3);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/2.5-10,pointer.y+(arm2.y-pointer.y)/2.5);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/2-10,pointer.y+(arm2.y-pointer.y)/2);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.5-50,pointer.y+(arm2.y-pointer.y)/1.5);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.2-80,pointer.y+(arm2.y-pointer.y)/1.2);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.1-100,pointer.y+(arm2.y-pointer.y)/1.1);
-		ctx.stroke();
-
-		ctx.beginPath();
-		ctx.moveTo(arm2.x+pointer.x-(pointer.x)/3,pointer.y+(arm2.y-pointer.y)/3-10);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/2.5,pointer.y+(arm2.y-pointer.y)/2.5-10);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/2,pointer.y+(arm2.y-pointer.y)/2-10);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.5,pointer.y+(arm2.y-pointer.y)/1.5-50);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.2,pointer.y+(arm2.y-pointer.y)/1.2-80);
-		ctx.lineTo(arm2.x+pointer.x-(pointer.x)/1.1,pointer.y+(arm2.y-pointer.y)/1.1-100);
-		ctx.stroke();
-
-
-
-
-		ctx.beginPath();
-		ctx.arc(pointer.x+(arm.x-pointer.x)/3,pointer.y+(arm.y-pointer.y)/3, 10, 0, 2*Math.PI);
-		ctx.arc(pointer.x+(arm.x-pointer.x)/2.5,pointer.y+(arm.y-pointer.y)/2.5, 10, 0, 2*Math.PI);
-		ctx.arc(pointer.x+(arm.x-pointer.x)/2,pointer.y+(arm.y-pointer.y)/2, 10, 0, 2*Math.PI);
-		ctx.arc(pointer.x+(arm.x-pointer.x)/1.5,pointer.y+(arm.y-pointer.y)/1.5, 50, 0, 2*Math.PI);
-		ctx.arc(pointer.x+(arm.x-pointer.x)/1.2,pointer.y+(arm.y-pointer.y)/1.2, 80, 0, 2*Math.PI);
-		ctx.arc(pointer.x+(arm.x-pointer.x)/1.1,pointer.y+(arm.y-pointer.y)/1.1, 100, 0, 2*Math.PI);
-		ctx.stroke();
-
-		
-		ctx.beginPath();
-		ctx.arc(arm2.x+pointer.x-(pointer.x/3),pointer.y+(arm2.y-pointer.y)/3, 10, 0, 2*Math.PI);
-		ctx.arc(arm2.x+pointer.x-(pointer.x/2.5),pointer.y+(arm2.y-pointer.y)/2.5, 10, 0, 2*Math.PI);
-		ctx.arc(arm2.x+pointer.x-(pointer.x)/2,pointer.y+(arm2.y-pointer.y)/2, 10, 0, 2*Math.PI);
-		ctx.arc(arm2.x+pointer.x-(pointer.x)/1.5,pointer.y+(arm2.y-pointer.y)/1.5, 50, 0, 2*Math.PI);
-		ctx.arc(arm2.x+pointer.x-(pointer.x)/1.2,pointer.y+(arm2.y-pointer.y)/1.2, 80, 0, 2*Math.PI);
-		ctx.arc(arm2.x+pointer.x-(pointer.x)/1.1,pointer.y+(arm2.y-pointer.y)/1.1, 100, 0, 2*Math.PI);
-		ctx.stroke();
-
-
-    	ctx.fillStyle='#004444';
-	    ctx.font = "14px arial";
-	    ctx.textAlign = "center"; 
-	    ctx.textBaseline = "middle"; 
-	    ctx.fillText("Coronavirus Shooting Game, Designed & Developed by Faisal Jawed",stage.w/2,stage.h-20);
-}
-
-
-
-// ------------------------------------------------------------------------------- events
-// ------------------------------------------------------------------------------- events
-// ------------------------------------------------------------------------------- events
-// ------------------------------------------------------------------------------- events
-
-function toggleFullScreen() {
-	var doc = window.document;
-	var docEl = doc.documentElement;
-
-	var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-	var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-	if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-		requestFullScreen.call(docEl);
-
+  };
+  
+  var maxStep = 0.05;
+  
+  Level.prototype.animate = function(step, keys) {
+	if (this.status != null)
+	  this.finishDelay -= step;
+  
+	while (step > 0) {
+	  var thisStep = Math.min(step, maxStep);
+	  this.actors.forEach(function(actor) {
+		actor.act(thisStep, this, keys);
+	  }, this);
+	  step -= thisStep;
 	}
-	else {
-		cancelFullScreen.call(doc);
-
-	}
-}
-
-
-var ox = 0;
-var oy = 0;
-function mousestart(e) {
-	mxpos = (e.pageX-loffset)*scale;
-	mypos = (e.pageY-toffset)*scale;
-	pointer.x = mxpos;
-	pointer.y = mypos;
-
-// fireact = true;
-
-
-
-}
-function mousemove(e) {
-	mxpos = (e.pageX-loffset)*scale;
-	mypos = (e.pageY-toffset)*scale;
-	pointer.x = mxpos;
-	pointer.y = mypos;
-
-	// ball.vY += (mxpos-ox)/15*line.d;
-
-	ox = mxpos;
-}
-
-function mouseend(e) {
-// fireact = false;
-
-}
-
-var moveX = 0;
-var moveY = 0;
-var moveZ = 0;
-
-
-function keydowned(e) {
-	// if (e.keyCode==65) {
-	// 	moveX = 10;
-	// } else if (e.keyCode==68) {
-	// 	moveX = -10;
-	// }
-	// if (e.keyCode==83) {
-	// 	moveY = -10;
-	// } else if (e.keyCode==87) {
-	// 	moveY = 10;
-	// }
-
-	// if (e.keyCode==69) {
-	// 	moveZ = 10;
-	// } else if (e.keyCode==81) {
-	// 	moveZ = -10;
-	// }
-	// console.log(e.keyCode);
-}
-
-
-
-function keyuped(e) {
-	// if (e.keyCode==65) {
-	// 	moveX = 0;
-	// } else if (e.keyCode==68) {
-	// 	moveX = 0;
-	// }
-	// if (e.keyCode==87) {
-	// 	moveY = 0;
-	// } else if (e.keyCode==83) {
-	// 	moveY = 0;
-	// }
-	// if (e.keyCode==81) {
-	// 	moveZ = 0;
-	// } else if (e.keyCode==69) {
-	// 	moveZ = 0;
-	// }
-	// console.log("u"+e.keyCode);
-}
-
-
-
-window.addEventListener('mousedown', function(e) {
-	mousestart(e);
-}, false);
-window.addEventListener('mousemove', function(e) {
-	mousemove(e);
-}, false);
-window.addEventListener('mouseup', function(e) {
-	mouseend(e);
-}, false);
-window.addEventListener('touchstart', function(e) {
-	e.preventDefault();
-	mousestart(e.touches[0]);
-}, false);
-window.addEventListener('touchmove', function(e) {
-	e.preventDefault();
-	mousemove(e.touches[0]);
-}, false);
-window.addEventListener('touchend', function(e) {
-	e.preventDefault();
-	mouseend(e.touches[0]);
-}, false);
-
-
-window.addEventListener('keydown', function(e) {
-	keydowned(e);
-}, false);
-window.addEventListener('keyup', function(e) {
-	keyuped(e);
-}, false);
-
-// ------------------------------------------------------------------------ stager
-// ------------------------------------------------------------------------ stager
-// ------------------------------------------------------------------------ stager
-// ------------------------------------------------------------------------ stager
-function _pexresize() {
-	var cw = window.innerWidth;
-	var ch = window.innerHeight;
-	if (cw<=ch*stage.w/stage.h) {
-		portrait = true;
-		scale = stage.w/cw;
-		loffset = 0;
-		toffset = Math.floor(ch-(cw*stage.h/stage.w))/2;
-		_pexcanvas.style.width = cw + "px";
-		_pexcanvas.style.height = Math.floor(cw*stage.h/stage.w) + "px";
+  };
+  
+  
+  Lava.prototype.act = function(step, level) {
+	var newPos = this.pos.plus(this.speed.times(step));
+	if (!level.obstacleAt(newPos, this.size))
+	  this.pos = newPos;
+	else if (this.repeatPos)
+	  this.pos = this.repeatPos;
+	else
+	  this.speed = this.speed.times(-1);
+  };
+  
+  var wobbleSpeed = 8, wobbleDist = 0.07;
+  
+  Coin.prototype.act = function(step) {
+	this.wobble += step * wobbleSpeed;
+	var wobblePos = Math.sin(this.wobble) * wobbleDist;
+	this.pos = this.basePos.plus(new Vector(0, wobblePos));
+  };
+  
+  
+  var playerXSpeed = 10;
+  
+  Player.prototype.moveX = function(step, level, keys) {
+	this.speed.x = 0;
+	if (keys.left) this.speed.x -= playerXSpeed;
+	if (keys.right) this.speed.x += playerXSpeed;
+  
+	var motion = new Vector(this.speed.x * step, 0);
+	var newPos = this.pos.plus(motion);
+	var obstacle = level.obstacleAt(newPos, this.size);
+	if (obstacle)
+	  level.playerTouched(obstacle);
+	else
+	  this.pos = newPos;
+  };
+  
+  var gravity = 30;
+  var jumpSpeed = 17;
+  
+  Player.prototype.moveY = function(step, level, keys) {
+	this.speed.y += step * gravity;
+	var motion = new Vector(0, this.speed.y * step);
+	var newPos = this.pos.plus(motion);
+	var obstacle = level.obstacleAt(newPos, this.size);
+	if (obstacle) {
+	  level.playerTouched(obstacle);
+	  if (keys.up && this.speed.y > 0)
+		this.speed.y = -jumpSpeed;
+	  else
+		this.speed.y = 0;
 	} else {
-		scale = stage.h/ch;
-		portrait = false;
-		loffset = Math.floor(cw-(ch*stage.w/stage.h))/2;
-		toffset = 0;
-		_pexcanvas.style.height = ch + "px";
-		_pexcanvas.style.width = Math.floor(ch*stage.w/stage.h) + "px";
+	  this.pos = newPos;
 	}
-	_pexcanvas.style.marginLeft = loffset +"px";
-	_pexcanvas.style.marginTop = toffset +"px";
-}
-
-
-window.requestAnimFrame = (function(){
-	return  window.requestAnimationFrame       ||
-	window.webkitRequestAnimationFrame ||
-	window.mozRequestAnimationFrame    ||
-	window.oRequestAnimationFrame      ||
-	window.msRequestAnimationFrame     ||
-	function( callback ){
-		window.setTimeout(callback, 1000 / 60);
-	};})();
-
-
-
-	var fps = 60;
-
-
-	var nfcount = 0;
-
-function animated() {
-	requestAnimFrame(animated);
-	enginestep();
-
-   	nfcount++;
-    ctx.fillStyle='#00ffff';
-    ctx.font = "12px arial";
-    ctx.textAlign = "left"; 
-    ctx.fillText("FPS: "+Math.floor(fps),10,stage.h-20);
-}
-
-_pexresize();
-animated();
-
-
-function countfps() {
-	fps = nfcount;
-	nfcount = 0;
-}
-setInterval(countfps,1000);
+  };
+  
+  Player.prototype.act = function(step, level, keys) {
+	this.moveX(step, level, keys);
+	this.moveY(step, level, keys);
+  
+	var otherActor = level.actorAt(this);
+	if (otherActor)
+	  level.playerTouched(otherActor.type, otherActor);
+  
+	// Losing animation
+	if (level.status == "lost") {
+	  this.pos.y += step;
+	  this.size.y -= step;
+	}
+  };
+  
+  Level.prototype.playerTouched = function(type, actor) {
+	if (type == "lava" && this.status == null) {
+	  this.status = "lost";
+	  this.finishDelay = 1;
+	} else if (type == "coin") {
+	  this.actors = this.actors.filter(function(other) {
+		return other != actor;
+	  });
+	  if (!this.actors.some(function(actor) {
+		return actor.type == "coin";
+	  })) {
+		this.status = "won";
+		this.finishDelay = 1;
+	  }
+	}
+  };
+  
+  var arrowCodes = {37: "left", 38: "up", 39: "right"};
+  
+  function trackKeys(codes) {
+	var pressed = Object.create(null);
+	function handler(event) {
+	  if (codes.hasOwnProperty(event.keyCode)) {
+		var down = event.type == "keydown";
+		pressed[codes[event.keyCode]] = down;
+		event.preventDefault();
+	  }
+	}
+	addEventListener("keydown", handler);
+	addEventListener("keyup", handler);
+	return pressed;
+  }
+  
+  function runAnimation(frameFunc) {
+	var lastTime = null;
+	function frame(time) {
+	  var stop = false;
+	  if (lastTime != null) {
+		var timeStep = Math.min(time - lastTime, 100) / 1000;
+		stop = frameFunc(timeStep) === false;
+	  }
+	  lastTime = time;
+	  if (!stop)
+		requestAnimationFrame(frame);
+	}
+	requestAnimationFrame(frame);
+  }
+  
+  var arrows = trackKeys(arrowCodes);
+  
+  function runLevel(level, Display, andThen) {
+	var display = new Display(document.body, level);
+	runAnimation(function(step) {
+	  level.animate(step, arrows);
+	  display.drawFrame(step);
+	  if (level.isFinished()) {
+		display.clear();
+		if (andThen)
+		  andThen(level.status);
+		return false;
+	  }
+	});
+  }
+  
+  function runGame(plans, Display) {
+	function startLevel(n) {
+	  runLevel(new Level(plans[n]), Display, function(status) {
+		if (status == "lost")
+		  startLevel(n);
+		else if (n < plans.length - 1)
+		  startLevel(n + 1);
+		else
+		  alert("You win!");
+	  });
+	}
+	startLevel(0);
+  }
+  
+  runGame(LEVELS, DOMDisplay);
 `;
 
-const someCSSCodeExample = `body {background:#111;margin:0;padding:0}
-canvas {background:#000;display:block;cursor: none}
-`;
+const someCSSCodeExample = `body {
+	background: #222;
+  }
+  
+  h2 {
+	color: #666;
+	font-family: monospace;
+	text-align: center;
+  }
+  
+  .background {
+	table-layout: fixed;
+	border-spacing: 0;
+  }
+  
+  .background td {
+	padding: 0;
+  }
+  
+  .lava, .actor {
+	background: #e55;
+  }
+  
+  .wall {
+	background: #444;
+	border: solid 3px #333;
+	box-sizing: content-box;
+  }
+  
+  .actor {
+	position: absolute;
+  }
+  
+  .coin {
+	background: #e2e838;
+	border-radius: 50%;
+  }
+  
+  .player {
+	background: #335699;
+	box-shadow: none;
+  }
+  
+  .lost .player {
+	background: #a04040;
+  }
+  
+  .won .player {
+	background: green;
+  }
+  
+  .game {
+	position: relative;
+	overflow: hidden;
+  }`;
 
-const someHTMLCodeExample = `
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Coronavirus Shooting </title>
-</head>
-<body onresize='_pexresize()'>
-	<canvas id='canvas' width='1280' height='720'></canvas>`
+const someHTMLCodeExample = `<h2>Simple JavaScript Game</h2>`;
 
 const someCCodeExample = ``;
 

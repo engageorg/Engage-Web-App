@@ -2,7 +2,7 @@
 .text-editor {
     display: flex;
     width: 100vw;
-    height: 100vh;
+    height: 97.6vh;
     flex: 1;
     overflow: hidden;
   }
@@ -157,9 +157,41 @@
   background-color: rgb(0, 122, 204);
   color: rgb(255, 255, 255);
   z-index: 3;
-  top:97.6vh
+  top: 97.6vh;
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.side_footer {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.footer_text {
+  font-size: 1.4vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.footer_text:nth-child(1) {
+  margin: 0 0.8vh 0 0.5vh;
 }
 
 
+.l_footer{
+  margin-left: 1.5vw;
+  margin-top: 0.1vh;
+}
+
+.r_footer{
+  margin-right: 1.5vw;
+  margin-top: 0.1vh;
+}
+
+
+.footer_text:hover:not(.disabled) {
+  background-color: rgba(255, 255, 255, 0.12);
+}
  
 
