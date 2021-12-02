@@ -12,7 +12,7 @@ let url
 if(env === "development") {
     url = 'http://localhost:3000/receiver/'
 }else{
-    url = 'https://fierce-reef-05156.herokuapp.com/' 
+    url = 'https://fierce-reef-05156.herokuapp.com/receiver/' 
 }
 
 var constraints = {
@@ -48,7 +48,7 @@ function LiveClassEmitter() {
   const socketRef = useRef();
   const [stream, setStream] = useState();
   //while in development mode change document.location.origin to http://localhost:5000
-  socketRef.current = io.connect("http://localhost:5000");
+  socketRef.current = io.connect(document.location.origin);
   // Record each type of event
   const myVideo = useRef();
   const userVideo = useRef();
