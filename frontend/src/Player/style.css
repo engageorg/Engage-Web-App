@@ -28,6 +28,11 @@
   height: 24em;
 }
 
+.preloaderText {
+padding-bottom: 50px;
+}
+
+
 .load img {
 	width: 250px; height: 250px;
 	background-size: contain;

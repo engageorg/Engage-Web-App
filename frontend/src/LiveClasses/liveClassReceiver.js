@@ -14,6 +14,20 @@ import {
 } from "../actions";
 import * as io from 'socket.io-client'
 import { useParams } from "react-router";
+import img from "../assets/Gear-0.2s-200px.png";
+
+function Preloader() {
+  return (
+    <div className="loader">
+      <div className="preloader">
+        <div className="preloaderText">Please Wait ...</div>
+        <div className="load">
+          <img src={img} border="0" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function LiveClassReceiver() {
     const { classid, type } = useParams();
@@ -186,6 +200,8 @@ function LiveClassReceiver() {
 
         socketRef.current.on("emitStream", (data) => {
           console.log(data.signalData)
+          document.getElementsByClassName("loader")[0].style.display = "none";
+          console.log("loaded");
           answerButton.style.display="block"
           setCallerSignal(data.signalData)
         })
@@ -214,7 +230,8 @@ function LiveClassReceiver() {
     }
 
     return (
-        <>
+        <>  
+        <Preloader />
             <div style={{display:"flex", flexDirection:"row-reverse"}}>
             <div style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
             <button className="answerButton" onClick={() => answerCall()}>Answer Call</button>
