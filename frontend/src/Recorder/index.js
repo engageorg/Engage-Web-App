@@ -206,19 +206,19 @@ export default function Recorder(props) {
     prefix: "data:audio/wav;base64,",
   });
 
-  function listen(eventName, handler) {
-    return document.getElementsByClassName("outputiframe")[0].contentDocument.addEventListener(eventName, handler, true);
+  function listeniframe(eventName, handler) {
+    return document.documentElement.getElementsByClassName("outputiframe")[0].contentDocument.addEventListener(eventName, handler, true);
   }
 
-  function listeniframe(eventName, handler) {
-    return document.addEventListener(eventName, handler, true);
+  function listen(eventName, handler) {
+    return document.documentElement.addEventListener(eventName, handler, true);
   }
 
   function startRecording() {
     startTime = Date.now();
     Recording.events = [];
     handlers.map((x) => listen(x.eventName, x.handler));
-    if(name !== "ide"){
+    if(name === "ide"){
       handlers.map((x) => listeniframe(x.eventName, x.handler));
     }
     Mp3Recorder.start()
@@ -229,7 +229,7 @@ export default function Recorder(props) {
   }
 
   function removeListener(eventName, handler) {
-    return document.removeEventListener(
+    return document.documentElement.removeEventListener(
       eventName,
       handler,
       true
