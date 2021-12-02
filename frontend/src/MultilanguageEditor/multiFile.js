@@ -86,10 +86,10 @@ function MultiFile(props) {
               </span>
               <div className="optionButton">
                 <button className="showModal" onClick={handleModal}>
-                  <i class="fas fa-chalkboard-teacher"></i>
+                  <i className="fas fa-chalkboard-teacher"></i>
                 </button>
                 <button className="showCodeOutput" onClick={handleOutput}>
-                  <i class="fas fa-play"></i> Execute
+                  <i className="fas fa-play"></i> Execute
                 </button>
               </div>
             </div>
@@ -121,7 +121,7 @@ function MultiFile(props) {
                 rows="20"
                 cols="52"
                 className="userOutputArea"
-                value={outputValue}
+                defaultValue={outputValue}
               ></textarea>
             </div>
           </div>
