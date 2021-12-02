@@ -32,6 +32,7 @@ export const Popover = ({
         }
       };
       document.addEventListener("click", handler, false);
+      //check with pointer down
       return () => document.removeEventListener("click", handler, false);
     }
   }, [onCloseRequest]);

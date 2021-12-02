@@ -27,9 +27,14 @@ function TextEditor(props) {
   }
   
   useEffect(() => {
+      let timer;              
+      const waitTime = 500; //in ms
       dispatch(setSrcDocs());
       document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
-        dispatch(setSrcDocs());
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          dispatch(setSrcDocs());
+      }, waitTime);
       });
       document.getElementsByClassName("closechalkboard")[0].addEventListener("click", function () {
         document.getElementsByClassName("chalkboardweb")[0].style.display = "none"
@@ -67,7 +72,7 @@ function TextEditor(props) {
     });
     
 
-  });
+  }, [srcDoc]);
 
 
   return (
@@ -145,7 +150,7 @@ function TextEditor(props) {
         <Editor
           height="100vh"
           width="47vw"
-          theme="vs-light"
+          theme="vs-dark"
           path={file.name}
           defaultLanguage={file.language}
           defaultValue={file.value}
