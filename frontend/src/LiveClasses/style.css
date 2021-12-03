@@ -7,6 +7,8 @@
     border-radius: 50%;
     flex-direction: column;
     padding-right: 10px;
+    top: 70%;
+    right: 1%;
 }
 
 .startButton{
@@ -45,6 +47,10 @@
     justify-content: center;
 }
 
+.contentWindow{
+    display: none;
+}
+
 .answerButton{
     color: white;
     cursor: pointer;
@@ -52,8 +58,7 @@
     padding: 5px 15px 5px 15px;
     font-size: 22px;
     font-weight: 400;
-    margin-top:4px;
-    margin-right: 4px;
+    margin-right: 0px;
 }
 
 .answerButton:hover{

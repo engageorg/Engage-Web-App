@@ -21,6 +21,7 @@ function Preloader() {
     <div className="loader">
       <div className="preloader">
         <div className="preloaderText">Please Wait ...</div>
+        <button className="answerButton">Enter</button>
         <div className="load">
           <img src={img} border="0" />
         </div>
@@ -86,9 +87,8 @@ function LiveClassReceiver() {
 
     useEffect(() => {
         socketRef.current.emit("join-class", {classid:classid})
-
         const answerButton = document.getElementsByClassName("answerButton")[0]
-        answerButton.style.display = "none"
+        const contentWindow = document.getElementsByClassName("contentWindow")[0]
         socketRef.current.on("receiveData", (data) => {
           const drawStatus = {
             status:false
@@ -200,41 +200,65 @@ function LiveClassReceiver() {
 
         socketRef.current.on("emitStream", (data) => {
           console.log(data.signalData)
-          document.getElementsByClassName("loader")[0].style.display = "none";
+          document.getElementsByClassName("load")[0].style.display = "none";
           console.log("loaded");
           answerButton.style.display="block"
           setCallerSignal(data.signalData)
+          answerButton.addEventListener("click", () => {
+            console.log("working")
+            const peer = new Peer({
+              initiator: false,
+              trickle: false,
+              stream: stream,
+            });
+      
+            peer.on("signal", (data) => {
+              socketRef.current.emit("answerCall", { 
+                signalData: data,
+                classid:classid
+              })
+            })
+            console.log(callerSignal)
+            peer.signal(data.signalData)
+      
+            peer.on("stream", (stream) => {
+              setStream(stream)
+              userVideo.current.srcObject = stream
+            })
+          document.getElementsByClassName("loader")[0].style.display = "none";
+          contentWindow.style.display="block"
+          })
         })
     }, [])
     
-    function answerCall() {
-      const peer = new Peer({
-        initiator: false,
-        trickle: false,
-        stream: stream,
-      });
+    // function answerCall() {
+    //   const peer = new Peer({
+    //     initiator: false,
+    //     trickle: false,
+    //     stream: stream,
+    //   });
 
-      peer.on("signal", (data) => {
-        socketRef.current.emit("answerCall", { 
-          signalData: data,
-          classid:classid
-        })
-      })
+    //   peer.on("signal", (data) => {
+    //     socketRef.current.emit("answerCall", { 
+    //       signalData: data,
+    //       classid:classid
+    //     })
+    //   })
   
-      peer.signal(callerSignal)
+    //   peer.signal(callerSignal)
 
-      peer.on("stream", (stream) => {
-        setStream(stream)
-        userVideo.current.srcObject = stream
-      })
-    }
+    //   peer.on("stream", (stream) => {
+    //     setStream(stream)
+    //     userVideo.current.srcObject = stream
+    //   })
+    // }
 
     return (
-        <>  
+        <div>  
         <Preloader />
-            <div style={{display:"flex", flexDirection:"row-reverse"}}>
-            <div style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
-            <button className="answerButton" onClick={() => answerCall()}>Answer Call</button>
+        <div className="contentWindow">
+        <div style={{display:"flex", flexDirection:"row-reverse"}}>
+            <div className="streamingWindow" style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
             {stream && <video playsInline ref={userVideo} autoPlay style={{width: "300px" }} />}
             </div>
             </div>
@@ -245,7 +269,8 @@ function LiveClassReceiver() {
           ) : (
             <IDE name={name} language={language} refresh={refresh} />
           )}
-        </>
+        </div>
+        </div>
     )
 }
 
