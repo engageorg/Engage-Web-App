@@ -31,15 +31,27 @@ justify-content: center;
 color: #6b6a67;
 cursor: pointer;
 padding: 15px;
-
+}
+.sidenav_button_active{
+  color: white !important;
+}
+.sidenav-buttons:active{
+  color: #6b6a67 ;
+  transform: scale(0.9) ;
 }
 
 .sidenav-buttons:hover{ 
 color: white;
 transform: scale(1.1);
-
-
 }
+
+.editor-header {
+  height: 35px;
+  top: 0;
+  background-color: #2b2a2a;;
+  
+}
+
 .sidebar-heading {
   color: #fffffe;
   padding: 4px;
@@ -61,9 +73,8 @@ transform: scale(1.1);
 
 .jsfile:disabled, .cssfile:disabled, .htmlfile:disabled  {
   color: white !important;
-  background: rgba(13,34,48,0.4);
+  background: #1e1e1e;
   border: 1px solid rgba( 255, 255, 255, 0.18 );
-  border-radius: 10px;
   backdrop-filter: blur(2px);
   border: none;
   text-align: left;

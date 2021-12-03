@@ -386,7 +386,7 @@ export default function Video(props) {
           cancelable: true,
         });
         const path = event.target;
-        document.getElementsByClassName(path)[0].dispatchEvent(eve); 
+        if(document.getElementsByClassName(path)[0]) document.getElementsByClassName(path)[0].dispatchEvent(eve); 
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();

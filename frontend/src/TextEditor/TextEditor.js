@@ -26,15 +26,12 @@ function TextEditor(props) {
 
   function handleEditorChange(value) {
     file.value = value;
-
   }
 
   function handleEditorDidMount(editor, monaco) {
-    // here is the editor instance
-    // you can store it in `useRef` for further usage
     editorRef.current = editor;
-    
   }
+
   useEffect(() => {
       let timer;   
       let consoleView = false;   
@@ -65,10 +62,12 @@ function TextEditor(props) {
         
         if(selectedSidebar === true){
           document.getElementsByClassName("selected-sidebar")[0].style.display = "none";
+          document.getElementsByClassName("folder")[0].className = 'folder sidenav-buttons';
           selectedSidebar = false;
         }
         else {
           document.getElementsByClassName("selected-sidebar")[0].style.display = "flex";
+          document.getElementsByClassName("folder")[0].className = 'folder sidenav-buttons sidenav_button_active';
           selectedSidebar = true;
         }
       }) 
@@ -84,7 +83,6 @@ function TextEditor(props) {
           consoleView = true;
         }
       }) 
-
       if(document.getElementsByClassName("outputiframe")[0].contentWindow){
       Hook(
         document.getElementsByClassName("outputiframe")[0].contentWindow.console,
@@ -121,7 +119,8 @@ function TextEditor(props) {
     <div className="text-editor">
       {/* Sidebar   */}
       <div className="editor-sidebar">
-      <button className = "folder sidenav-buttons"><i class="far fa-folder"></i></button>
+      <button className = "suprise_button sidenav-buttons"><i className="fas fa-laugh-wink"></i></button>
+      <button className = "folder sidenav-buttons sidenav_button_active"><i className="far fa-folder"></i></button>
       <button className="output sidenav-buttons"> <i className="fas fa-chalkboard-teacher"></i></button> 
       </div>
       <div className="selected-sidebar">
@@ -173,9 +172,12 @@ function TextEditor(props) {
           direction="horizontal"
           cursor="col-resize"
           className="split-flex"
-      >
+      > 
+        <div className="editor-window">
+          <div className = "editor-header">
+          </div>
         <Editor
-          height="97.6vh"
+          height="calc(100vh - 2.4vh - 35px)"
           theme="vs-dark"
           path={file.name}
           defaultLanguage={file.language}
@@ -187,6 +189,7 @@ function TextEditor(props) {
           value={file.value}
           className="code_text"
         /> 
+        </div>
         
         <iframe
           height="97.6vh"
