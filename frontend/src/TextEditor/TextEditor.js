@@ -56,13 +56,15 @@ function TextEditor(props) {
           selectedSidebar = true;
         }
       }) 
-
+      
+      if(document.getElementsByClassName("outputiframe")[0].contentWindow){
       Hook(
         document.getElementsByClassName("outputiframe")[0].contentWindow.console,
         (log) => setLogs((currLogs) => [...currLogs, log]),
         false
       )
-      return () => Unhook(document.getElementsByClassName("outputiframe")[0].contentWindow.console)
+      // return () => Unhook(document.getElementsByClassName("outputiframe")[0].contentWindow.console)
+      }
   },[]);
 
   useEffect(() => {
