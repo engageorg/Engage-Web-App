@@ -180,8 +180,7 @@ function TextEditor(props) {
             disabled={fileName === "index.html"}
             onClick={() => dispatch(html())}
           >
-            <i className="fab fa-html5"></i>
-            <span className="buttontext html">{files["index.html"].name} </span>
+            <i className="fab fa-html5"></i><span className="buttontext html">{files["index.html"].name} </span>
           </button>
 
           <button

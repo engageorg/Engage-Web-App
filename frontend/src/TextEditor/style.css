@@ -91,9 +91,26 @@ transform: scale(1.1);
   padding: 10px;
 }
 
+.jsfile_2:disabled, .cssfile_2:disabled, .htmlfile_2:disabled  {
+  color: rgb(182, 158, 93) !important;
+  background: #1e1e1e;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  backdrop-filter: blur(2px);
+  border: none;
+  text-align: left;
+  width: 125px;
+  transition: 200ms;
+}
+
+.jsfile_2, .cssfile_2, .htmlfile_2 {
+  color: #fffffe;
+  border: none;
+  text-align: left;
+  width: 125px;
+  padding: 10px;
+}
 .buttontext {
   font-size: 13px;
-  width: 100%;
 }
 
 .fa-html5{
@@ -101,6 +118,7 @@ transform: scale(1.1);
   padding-right: 6px;
   width: 22px;
   height: 35px;
+  margin-right: -10px;
 }
 
 
@@ -109,6 +127,7 @@ transform: scale(1.1);
   padding-right: 6px;
   width: 22px;
   height: 35px;
+  margin-right: -10px;
 }
 
 .fa-js-square{
@@ -116,6 +135,7 @@ transform: scale(1.1);
   padding-right: 6px;
   width: 22px;
   height: 35px;
+  margin-right: -10px;
 }
 
 .sidebar-footer{
