@@ -27,7 +27,8 @@ function TextEditor(props) {
   }
   
   useEffect(() => {
-      let timer;              
+      let timer;     
+      let selectedSidebar = false;       
       const waitTime = 500; //in ms
       dispatch(setSrcDocs());
       document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
@@ -43,7 +44,18 @@ function TextEditor(props) {
       document.getElementsByClassName("output")[0].addEventListener("click", function () {
         document.getElementsByClassName("chalkboardweb")[0].style.display = "block"
       }) 
-    
+
+      document.getElementsByClassName("folder")[0].addEventListener("click", function () {
+        console.log(selectedSidebar)
+        if(selectedSidebar === true){
+          document.getElementsByClassName("selected-sidebar")[0].style.display = "none";
+          selectedSidebar = false;
+        }
+        else {
+          document.getElementsByClassName("selected-sidebar")[0].style.display = "flex";
+          selectedSidebar = true;
+        }
+      }) 
 
       Hook(
         document.getElementsByClassName("outputiframe")[0].contentWindow.console,
@@ -79,10 +91,13 @@ function TextEditor(props) {
     <div className="text-editor">
       {/* Sidebar   */}
       <div className="editor-sidebar">
-        <div className="sidebar-heading">
+      <button className = "folder sidenav-buttons"><i class="far fa-folder"></i></button>
+      <button className="output sidenav-buttons"> <i className="fas fa-chalkboard-teacher"></i></button> 
+      </div>
+      <div className="selected-sidebar">
+       <div className="sidebar-heading">
           <span id="explorer-spam">Explorer</span>
           <button className="sidebar-add-file">
-            {/* <i className = "fas fa-plus" style = {{color : "#fffffe" }}></i>  */}
           </button>
         </div>
         <div className="sidebar-navbutton">
@@ -117,27 +132,9 @@ function TextEditor(props) {
         </div>
         <div className="sidebar-footer">
 
-          <button
-            
-            style={{
-              color: "white",
-              backgroundColor: "green",
-              padding: "7px",
-              borderRadius: "5px",
-            }}
-            className="output"
-          >
-            <i className="fas fa-chalkboard-teacher"></i>
-            <span
-              className="outputtext"
-              style={{ color: "white", backgroundColor: "green" }}
-            >
-              {" "}
-              Chalkboard
-            </span>
-          </button>
+ 
+        </div> 
         </div>
-      </div>
 
       {/* Editor */}
       <div className="editor">

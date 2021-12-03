@@ -7,19 +7,45 @@
     overflow: hidden;
   }
   
-  .editor-sidebar {
+.editor-sidebar {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    align-items: center;
+    width: 48px;
     background-color: var(--fg);
-  }
+    border-right: 1px solid #6b6a67;
+}
+
+.selected-sidebar {
+  width: 170px;
+  background-color: var(--fg);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidenav-buttons{
+  font-size: 24px;
+  align-items: center;
+  transition: 0.2s;
+  justify-content: center;
+  color: #6b6a67;
+  cursor: pointer;
+  padding: 15px;
+
+}
+
+.sidenav-buttons:hover{ 
+  color: white;
+  transform: scale(1.1);
   
+
+}
   .sidebar-heading {
     color: #fffffe;
-    padding: 24px;
+    padding: 4px;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 10px;
     letter-spacing: 1px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -111,19 +137,7 @@
     cursor: pointer;
     pointer-events: all;
     }
-  
- 
-  .output{
-    transition: 0.5s; 
-    margin: 5px;
-    min-width: 8vw;
-    padding-top: 15px;
-  }
 
-  .output:hover {
-    transform: scale(1.1);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
 
   .chalkboardweb{
     position: fixed;
@@ -167,12 +181,14 @@
   display: flex;
   justify-content: center;
   align-items: start;
+  cursor: pointer;
 }
 
 .footer_text {
   font-size: 1.4vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   transform: scale(0.97);
+  cursor: pointer;
   /* padding-left: 1vw;
   padding-right: 1vw; */
 }
