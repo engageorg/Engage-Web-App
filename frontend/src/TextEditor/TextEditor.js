@@ -26,8 +26,7 @@ function TextEditor(props) {
 
   function handleEditorChange(value) {
     file.value = value;
-    setLn(editorRef.current.getPosition().lineNumber)
-    setCol(editorRef.current.getPosition().column);
+
   }
 
   function handleEditorDidMount(editor, monaco) {
@@ -43,6 +42,8 @@ function TextEditor(props) {
       const waitTime = 500; //in ms
       dispatch(setSrcDocs());
       document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
+        setLn(editorRef.current.getPosition().lineNumber)
+        setCol(editorRef.current.getPosition().column);
         clearTimeout(timer);
         timer = setTimeout(() => {
           dispatch(setSrcDocs());
@@ -219,7 +220,7 @@ function TextEditor(props) {
        <div className = "side_footer">
        <span className = "footer_text r_footer line-col-num">{`Ln ${Ln}, Col ${Col}`}</span>
            <span className = "footer_text r_footer">Layout: US</span>
-           <span className = "footer_text r_footer"><i className="fab fa-markdown"></i> HTML</span>
+           <span className = "footer_text r_footer language"><i className="fab fa-markdown"></i> {file.language}</span>
            <span className = "footer_text r_footer">CRLF</span>
            <span className = "footer_text r_footer">UTF-8</span>
            <span className = "footer_text r_footer console-button"><i className="fas fa-terminal"></i> {" "}Console</span>
