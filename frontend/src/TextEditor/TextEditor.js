@@ -27,8 +27,9 @@ function TextEditor(props) {
   }
   
   useEffect(() => {
-      let timer;     
-      let selectedSidebar = false;       
+      let timer;   
+      let consoleView = false;   
+      let selectedSidebar = true;       
       const waitTime = 500; //in ms
       dispatch(setSrcDocs());
       document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
@@ -46,7 +47,7 @@ function TextEditor(props) {
       }) 
 
       document.getElementsByClassName("folder")[0].addEventListener("click", function () {
-        console.log(selectedSidebar)
+        
         if(selectedSidebar === true){
           document.getElementsByClassName("selected-sidebar")[0].style.display = "none";
           selectedSidebar = false;
@@ -57,6 +58,18 @@ function TextEditor(props) {
         }
       }) 
       
+      document.getElementsByClassName("console-button")[0].addEventListener("click", function () {
+       
+        if(consoleView === true){
+          document.getElementsByClassName("console-window")[0].style.display = "none";
+          consoleView = false;
+        }
+        else {
+          document.getElementsByClassName("console-window")[0].style.display = "block";
+          consoleView = true;
+        }
+      }) 
+
       if(document.getElementsByClassName("outputiframe")[0].contentWindow){
       Hook(
         document.getElementsByClassName("outputiframe")[0].contentWindow.console,
@@ -148,7 +161,6 @@ function TextEditor(props) {
       >
         <Editor
           height="97.6vh"
-          width="47vw"
           theme="vs-dark"
           path={file.name}
           defaultLanguage={file.language}
@@ -167,14 +179,16 @@ function TextEditor(props) {
           className="outputiframe"
           frameBorder="0"
         />
-        {/* <div style={{ backgroundColor: "#242424" }}>
-         <Console logs={logs} variant="dark" />
-        </div> */}
+
       </Split>
        
      
       </div>
-
+      <div className="console-window">
+         <div className="console-heading">Console</div>
+         <Console logs={logs} variant="dark" />
+ 
+      </div>
       <div className="chalkboardweb">
           <button className = "closechalkboard"><i className=" fas fa-window-close"></i></button>
           <ChalkBoard />
@@ -192,7 +206,7 @@ function TextEditor(props) {
            <span className = "footer_text r_footer"><i className="fab fa-markdown"></i> HTML</span>
            <span className = "footer_text r_footer">CRLF</span>
            <span className = "footer_text r_footer">UTF-8</span>
-           <span className = "footer_text r_footer"><i className="fas fa-terminal"></i> {" "}Console</span>
+           <span className = "footer_text r_footer console-button"><i className="fas fa-terminal"></i> {" "}Console</span>
        </div>
   
       </footer>

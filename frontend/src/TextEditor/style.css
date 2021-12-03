@@ -218,3 +218,22 @@ margin-top: 0.2vh;
 .footer_text:hover:not(.disabled) {
 background-color: rgba(255, 255, 255, 0.12);
 }
+
+.console-window{
+  position: absolute;
+  border-radius: 10px;
+  display: none;
+  top:calc(100vh - 2.4vh - 305px);
+  width: 375px;
+  border: 1px solid #6b6a67;
+  height: 300px;
+  left:calc(100vw - 382px);;
+  z-index: 3;
+  background-color: var(--fg);
+}
+
+.console-heading{
+  color:white;
+  width:  375px;
+  border-bottom: 1px solid #6b6a67;
+}
