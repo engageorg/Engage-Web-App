@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Hook, Console, Unhook } from 'console-feed'
 import Editor from "@monaco-editor/react";
-import Split from 'react-split';
+import Split from 'react-split'
+
 import {
   js,
   css,
@@ -27,8 +28,7 @@ function TextEditor(props) {
   
   useEffect(() => {
       let timer;     
-      let selectedSidebar = false;  
-      let consoleView = false;     
+      let selectedSidebar = false;       
       const waitTime = 500; //in ms
       dispatch(setSrcDocs());
       document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
@@ -45,8 +45,6 @@ function TextEditor(props) {
         document.getElementsByClassName("chalkboardweb")[0].style.display = "block"
       }) 
 
-      
-
       document.getElementsByClassName("folder")[0].addEventListener("click", function () {
         console.log(selectedSidebar)
         if(selectedSidebar === true){
@@ -56,18 +54,6 @@ function TextEditor(props) {
         else {
           document.getElementsByClassName("selected-sidebar")[0].style.display = "flex";
           selectedSidebar = true;
-        }
-      }) 
-
-      document.getElementsByClassName("console-button")[0].addEventListener("click", function () {
-       
-        if(consoleView === true){
-          document.getElementsByClassName("console_window")[0].style.display = "none";
-          consoleView = false;
-        }
-        else {
-          document.getElementsByClassName("console_window")[0].style.display = "block";
-          consoleView = true;
         }
       }) 
 
@@ -153,50 +139,44 @@ function TextEditor(props) {
       {/* Editor */}
       <div className="editor">
       <Split
-          sizes={[75, 25]}
-          expandToMin={true}
+          sizes={[65, 35]}
           direction="horizontal"
-          dragInterval={1}
           cursor="col-resize"
           className="split-flex"
-      > 
-        <div className="editor-window">
-          <div className = "editor-header">
-          </div>
-          <Editor
-            height="95.2vh"
-            theme="vs-dark"
-            path={file.name}
-            defaultLanguage={file.language}
-            defaultValue={file.value}
-            saveViewState={true}
-            onChange={handleEditorChange}
-            cursorSmoothCaretAnimation="true"
-            value={file.value}
-            className="code_text"
-          /> 
-        </div>
-       
-          <iframe
-            height="97.6vh"
-            src="./output/output.html"
-            title="output"
-            className="outputiframe"
-            frameBorder="0"
-          />      
+      >
+        <Editor
+          height="97.6vh"
+          width="47vw"
+          theme="vs-dark"
+          path={file.name}
+          defaultLanguage={file.language}
+          defaultValue={file.value}
+          saveViewState={true}
+          onChange={handleEditorChange}
+          cursorSmoothCaretAnimation="true"
+          value={file.value}
+          className="code_text"
+        /> 
+        
+        <iframe
+          height="97.6vh"
+          src="./output/output.html"
+          title="output"
+          className="outputiframe"
+          frameBorder="0"
+        />
+        {/* <div style={{ backgroundColor: "#242424" }}>
+         <Console logs={logs} variant="dark" />
+        </div> */}
       </Split>
        
-
+     
       </div>
 
       <div className="chalkboardweb">
           <button className = "closechalkboard"><i className=" fas fa-window-close"></i></button>
           <ChalkBoard />
       </div>
-
-      {/* <div className = "console_window" style={{ backgroundColor: "#242424" }}>
-              <Console  logs={logs} variant="dark" />
-      </div> */}
 
       <footer className = "texteditor_footer">
       
@@ -210,7 +190,7 @@ function TextEditor(props) {
            <span className = "footer_text r_footer"><i className="fab fa-markdown"></i> HTML</span>
            <span className = "footer_text r_footer">CRLF</span>
            <span className = "footer_text r_footer">UTF-8</span>
-           <span className = "footer_text r_footer console-button"><i className="fas fa-terminal"></i> {" "}Console</span>
+           <span className = "footer_text r_footer"><i className="fas fa-terminal"></i> {" "}Console</span>
        </div>
   
       </footer>
