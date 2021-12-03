@@ -377,7 +377,16 @@ export default function Video(props) {
           flashClass(tar, "clicked");
         }
       } else if (event.type === "keyup") {
+        let eve = new KeyboardEvent("keyup", {
+          key: event.key,
+          shiftKey: event.shiftKey,
+          code: event.code,
+          isComposing: event.isComposing,
+          bubbles: true,
+          cancelable: true,
+        });
         const path = event.target;
+        document.getElementsByClassName(path)[0].dispatchEvent(eve); 
         tar = document.getElementsByClassName(path)[0];
         if (tar != null) {
           tar.focus();

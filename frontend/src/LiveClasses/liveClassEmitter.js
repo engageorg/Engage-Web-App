@@ -60,6 +60,7 @@ function LiveClassEmitter() {
 
     inviteButton.addEventListener("click", () => {
       navigator.clipboard.writeText(inviteLink.value)
+      alert("link Copied")
     })
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
       setStream(stream);

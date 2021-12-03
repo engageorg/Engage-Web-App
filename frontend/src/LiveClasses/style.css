@@ -59,6 +59,7 @@
     font-size: 22px;
     font-weight: 400;
     margin-right: 0px;
+    display: none;
 }
 
 .answerButton:hover{
