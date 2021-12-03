@@ -7,19 +7,52 @@
     overflow: hidden;
   }
   
-  .editor-sidebar {
+.editor-sidebar {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    background-color: var(--fg);
-  }
+    align-items: center;
+    width: 48px;
+    background-color: #333333;
+    
+}
+
+
+.editor-header {
+  height: 2.4vh;
+  top: 0;
+  background-color: var(--fg);
+  border-bottom: 1px solid #6b6a67;
+}
+
+.selected-sidebar {
+  min-width: 170px;
+  background-color: var(--fg);
+  display: flex;
+  flex-direction: column;
   
-  .sidebar-heading {
+}
+
+.sidenav-buttons{
+  font-size: 24px;
+  align-items: center;
+  transition: 0.2s;
+  justify-content: center;
+  color: #6b6a67;
+  cursor: pointer;
+  padding: 15px;
+}
+
+.sidenav-buttons:hover{ 
+  color: white;
+  transform: scale(1.1);
+}
+
+.sidebar-heading {
     color: #fffffe;
-    padding: 24px;
+    padding: 4px;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 10px;
     letter-spacing: 1px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -100,6 +133,12 @@
     height: 100vh;
   }
 
+  .output-window{
+    height: 100vh;
+    min-width: 170px;
+    z-index: 3;
+  }
+
   .closechalkboard{
     color: rgb(239, 57, 61);
     padding: 10px;
@@ -111,19 +150,7 @@
     cursor: pointer;
     pointer-events: all;
     }
-  
- 
-  .output{
-    transition: 0.5s; 
-    margin: 5px;
-    min-width: 8vw;
-    padding-top: 15px;
-  }
 
-  .output:hover {
-    transform: scale(1.1);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
 
   .chalkboardweb{
     position: fixed;
@@ -140,14 +167,17 @@
     flex-direction: row;
   }
 
-.split-row-flex {
-    display: flex;
-    flex-direction: column;
-  }
+
+.gutter {
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-color: #333333;
+}
 
 .gutter.gutter-horizontal {
-    cursor: ew-resize;
-    background-color: var(--fg) !important;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: col-resize;
+   
 }
 
 .texteditor_footer {
@@ -163,16 +193,19 @@
   
 }
 
+
 .side_footer {
   display: flex;
   justify-content: center;
   align-items: start;
+  cursor: pointer;
 }
 
 .footer_text {
   font-size: 1.4vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   transform: scale(0.97);
+  cursor: pointer;
   /* padding-left: 1vw;
   padding-right: 1vw; */
 }
