@@ -220,6 +220,7 @@ background-color: rgba(255, 255, 255, 0.12);
 }
 
 .console-window{
+  
   position: absolute;
   border-radius: 10px;
   display: none;
@@ -233,7 +234,17 @@ background-color: rgba(255, 255, 255, 0.12);
 }
 
 .console-heading{
+  display: flex;
+  justify-content: space-between;
   color:white;
   width:  375px;
   border-bottom: 1px solid #6b6a67;
+}
+
+.fa-times {
+  cursor: pointer;
+}
+
+.fa-times:hover {
+  transform: scale(1.1);
 }

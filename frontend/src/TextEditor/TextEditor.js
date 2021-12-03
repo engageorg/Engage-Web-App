@@ -46,6 +46,10 @@ function TextEditor(props) {
         document.getElementsByClassName("chalkboardweb")[0].style.display = "block"
       }) 
 
+      document.getElementsByClassName("fas fa-times")[0].addEventListener("click", function () {
+        document.getElementsByClassName("console-window")[0].style.display = "none";
+      }) 
+
       document.getElementsByClassName("folder")[0].addEventListener("click", function () {
         
         if(selectedSidebar === true){
@@ -185,7 +189,7 @@ function TextEditor(props) {
      
       </div>
       <div className="console-window">
-         <div className="console-heading">Console</div>
+         <div className="console-heading"><span style={{marginLeft:"15px"}}>Console</span> <i style={{marginRight:"15px", marginTop:"4px"}} className="fas fa-times"></i></div>
          <Console logs={logs} variant="dark" />
  
       </div>
