@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Hook, Console, Unhook } from 'console-feed'
 import Editor from "@monaco-editor/react";
 import Split from 'react-split'
-
 import {
   js,
   css,
@@ -18,14 +17,25 @@ function TextEditor(props) {
   const srcDoc = useSelector((state) => state.srcDocs);
   const [logs, setLogs] = useState([])
   const fileName = useSelector((state) => state.fileName);
+  const [Ln, setLn] = useState(1);
+  const [Col, setCol] = useState(1);
   const dispatch = useDispatch();
-
+  const editorRef = useRef(null);
+  
   const file = files[fileName];
 
   function handleEditorChange(value) {
     file.value = value;
+    setLn(editorRef.current.getPosition().lineNumber)
+    setCol(editorRef.current.getPosition().column);
   }
-  
+
+  function handleEditorDidMount(editor, monaco) {
+    // here is the editor instance
+    // you can store it in `useRef` for further usage
+    editorRef.current = editor;
+    
+  }
   useEffect(() => {
       let timer;   
       let consoleView = false;   
@@ -170,6 +180,7 @@ function TextEditor(props) {
           defaultLanguage={file.language}
           defaultValue={file.value}
           saveViewState={true}
+          onMount={handleEditorDidMount}
           onChange={handleEditorChange}
           cursorSmoothCaretAnimation="true"
           value={file.value}
@@ -206,6 +217,7 @@ function TextEditor(props) {
            <span className = "footer_text l_footer warnings"><i className="fas fa-exclamation-triangle"></i> {"  "}0</span>
        </div>
        <div className = "side_footer">
+       <span className = "footer_text r_footer line-col-num">{`Ln ${Ln}, Col ${Col}`}</span>
            <span className = "footer_text r_footer">Layout: US</span>
            <span className = "footer_text r_footer"><i className="fab fa-markdown"></i> HTML</span>
            <span className = "footer_text r_footer">CRLF</span>
