@@ -175,6 +175,34 @@ function TextEditor(props) {
       > 
         <div className="editor-window">
           <div className = "editor-header">
+          <button
+            className="top_ui_buttons htmlfile_2"
+            disabled={fileName === "index.html"}
+            onClick={() => dispatch(html())}
+          >
+            <i className="fab fa-html5"></i>
+            <span className="buttontext html">{files["index.html"].name} </span>
+          </button>
+
+          <button
+            className="top_ui_buttons cssfile_2"
+            disabled={fileName === "style.css"}
+            onClick={() => dispatch(css())}
+          >
+            <i className="fab fa-css3-alt"></i>
+            <span className="buttontext style">{files["style.css"].name} </span>
+          </button>
+
+          <button
+            className="top_ui_buttons jsfile_2"
+            disabled={fileName === "script.js"}
+            onClick={() => dispatch(js())}
+          >
+            <i className="fab fa-js-square"></i>
+            <span className="buttontext script">
+              {files["script.js"].name}
+            </span>
+          </button>
           </div>
         <Editor
           height="calc(100vh - 2.4vh - 35px)"

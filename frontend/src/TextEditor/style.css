@@ -48,8 +48,9 @@ transform: scale(1.1);
 .editor-header {
   height: 35px;
   top: 0;
-  background-color: #2b2a2a;;
-  
+  background-color: #2b2a2a;
+  display: flex;
+  padding-left: 5px;
 }
 
 .sidebar-heading {
@@ -91,28 +92,30 @@ transform: scale(1.1);
 }
 
 .buttontext {
-  font-size: medium;
+  font-size: 13px;
   width: 100%;
 }
 
 .fa-html5{
   color:#cc0000;
-  margin-right: 5px;
-  font-size: 20px; 
+  padding-right: 6px;
+  width: 22px;
+  height: 35px;
 }
 
 
 .fa-css3-alt{
   color: #0066ff;
-  margin-right: 5px;
-  font-size: 20px; 
- 
+  padding-right: 6px;
+  width: 22px;
+  height: 35px;
 }
 
 .fa-js-square{
   color: #ffd11a;
-  margin-right: 5px;
-  font-size: 20px; 
+  padding-right: 6px;
+  width: 22px;
+  height: 35px;
 }
 
 .sidebar-footer{
@@ -262,4 +265,8 @@ background-color: rgba(255, 255, 255, 0.12);
 
 .language {
   text-transform: uppercase;
+}
+
+.top_ui_buttons {
+  color: white;
 }
