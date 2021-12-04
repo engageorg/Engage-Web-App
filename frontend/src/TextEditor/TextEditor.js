@@ -35,7 +35,7 @@ function TextEditor(props) {
   useEffect(() => {
       let timer;   
       let consoleView = false;   
-      let selectedSidebar = true;       
+      let selectedSidebar = false;       
       const waitTime = 500; //in ms
       dispatch(setSrcDocs());
       document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
@@ -120,7 +120,7 @@ function TextEditor(props) {
       {/* Sidebar   */}
       <div className="editor-sidebar">
       <button className = "suprise_button sidenav-buttons"><i className="fas fa-laugh-wink"></i></button>
-      <button className = "folder sidenav-buttons sidenav_button_active"><i className="far fa-folder"></i></button>
+      <button className = "folder sidenav-buttons"><i className="far fa-folder"></i></button>
       <button className="output sidenav-buttons"> <i className="fas fa-chalkboard-teacher"></i></button> 
       </div>
       <div className="selected-sidebar">
