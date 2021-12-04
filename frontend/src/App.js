@@ -7,6 +7,7 @@ import Test from "./TestComponent";
 import UserSection from "./UserSection";
 import { createStore, compose, applyMiddleware } from "redux";
 import RecorderForm from "./RecorderForm/recorderForm";
+import MultiFile from "./MultilanguageEditor/multiFile";
 import Video from "./Player";
 import LiveClassEmitter from "./LiveClasses/liveClassEmitter";
 import LiveClassReceiver from "./LiveClasses/liveClassReceiver";
@@ -56,6 +57,7 @@ function App() {
           />
           <Route exact path="/drawboard" component={ChalkBoard} />
           <Route exact path="/webd" component={TextEditor} />
+          <Route exact path="/dsaide" component={MultiFile} />
           <Route exact path="/recordform" component={RecorderForm} />
           <Route exact path="/classform" component={RecorderForm} />
           <Route exact path="/videoplayer" component={Video} />

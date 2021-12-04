@@ -82,7 +82,11 @@ function UserSection() {
 					</article>
                     </Link>
                     
-					<Link to="/drawboard">
+					<Link
+					to={{
+						pathname: "/dsaide",
+						state: { recording: false }
+					  }}>
                     <article className="uscard">
 						<div className="card-header">
 							<div>

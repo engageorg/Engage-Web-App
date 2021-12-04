@@ -72,6 +72,11 @@ textarea::-webkit-input-placeholder{
     color: white;
     background-color: #807d7d;
     padding: 4px;
+    margin-right: 10px;
+}
+
+.langInfo span{
+    font-size: 27px;
 }
 
 .optionButton{

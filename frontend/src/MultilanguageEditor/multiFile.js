@@ -8,7 +8,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { runCode } from "../actions/outputAction";
 import "./style.css";
 function MultiFile(props) {
-  const [language, setLanguage] = useState(props.language);
+  console.log(props)
+
+  const [language, setLanguage] = useState("python2");
   const [modalActive, setModal] = useState(false);
   const dispatch = useDispatch();
   const [outputValue, setOutputValue] = useState("");
@@ -37,6 +39,10 @@ function MultiFile(props) {
   }
 
   useEffect(() => {
+    if(props.language){
+      setLanguage(props.language)
+    }
+    const selectLang = document.getElementsByClassName("language")[0]
     document
       .getElementsByClassName("closechalkboard")[0]
       .addEventListener("click", function () {
@@ -50,6 +56,12 @@ function MultiFile(props) {
         document.getElementsByClassName("chalkboardweb")[0].style.display =
           "block";
       });
+      if(props.language){
+        selectLang.style.display="none"
+      }
+      selectLang.addEventListener("click", (e) => {
+        setLanguage(e.target.value)
+      })
   }, []);
 
   function handleOutput(e) {
@@ -78,12 +90,23 @@ function MultiFile(props) {
         <div className="navbar">
           <div className="editor">
             <div className="navbar">
+              <div className="langInfo">
               <span className="fileName">
                 main
                 {language === "python2" || language === "python3"
                   ? ".py"
                   : ".cpp"}
               </span>
+              <select className="language">
+                  <option value="python2">Python 2</option>
+                  <option value="python3">Python 3</option>
+                  <option value="cpp">C++</option>
+                  <option value="c99">C99</option>
+                  <option value="c">C</option>
+                  <option value="cpp14">C++ 14</option>
+                  <option value="cpp17">C++ 17</option>
+              </select>
+              </div>
               <div className="optionButton">
                 <button className="showModal" onClick={handleModal}>
                   <i className="fas fa-chalkboard-teacher"></i>
