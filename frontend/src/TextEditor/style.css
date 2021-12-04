@@ -187,7 +187,6 @@ transform: scale(1.1);
   background-color: var(--fg);
   background-repeat: no-repeat;
   background-position: 50%;
-  border: rgb(102, 99, 99) 0.5px solid;
 }
 
 .gutter.gutter-horizontal {
