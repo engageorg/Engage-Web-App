@@ -54,18 +54,19 @@ function LiveClassEmitter() {
   const userVideo = useRef();
   const connectionRef = useRef();
   useEffect(() => {
-    socketRef.current.emit("join-class", { classid: classid });
+    socketRef.current.emit("admin-class", { classid: classid });
     const inviteButton = document.getElementsByClassName("inviteButton")[0]
     const inviteLink= document.getElementsByClassName("inviteLink")[0]
+
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+      setStream(stream);
+      myVideo.current.srcObject = stream;
+    });
 
     inviteButton.addEventListener("click", () => {
       navigator.clipboard.writeText(inviteLink.value)
       alert("link Copied")
     })
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-      setStream(stream);
-      myVideo.current.srcObject = stream;
-    });
   }, []);
 
   const handlers = [
@@ -226,7 +227,6 @@ function LiveClassEmitter() {
       console.log(data.signalData);
       peer.signal(data.signalData);
     });
-
     handlers.map((x) => listen(x.eventName, x.handler));
   }
 
@@ -237,19 +237,11 @@ function LiveClassEmitter() {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-        <div className="streamingWindow">
-          <div className="buttons">
-            <button className="startButton" onClick={() => startLive()}>
-              Start
-            </button>
-            <button className="stopButton" onClick={() => stopLive()}>
-              Stop
-            </button>
-            <button className="inviteButton">
+      <button onClick={() => startLive()} className="inviteButton">
                <input className="inviteLink" defaultValue={joinLink}/>
-              <i  className="fas inviteButton fa-clipboard-list"></i>
-            </button>
-          </div>
+              <i  className="fas fa-clipboard-list"></i>
+        </button>
+        <div className="streamingWindow">
           {stream && (
             <video
               className="instructorStream"
