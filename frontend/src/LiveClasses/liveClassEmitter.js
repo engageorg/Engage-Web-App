@@ -3,6 +3,7 @@ import ChalkBoard from "../ChalkBoard/index";
 import files from "../assets/files";
 import Peer from "simple-peer";
 import * as io from "socket.io-client";
+import { motion } from "framer-motion"
 import "./style.css";
 import IDE from "../IDE";
 import { useParams } from "react-router";
@@ -241,7 +242,7 @@ function LiveClassEmitter() {
                <input className="inviteLink" defaultValue={joinLink}/>
               <i  className="fas fa-clipboard-list"></i>
         </button>
-        <div className="streamingWindow">
+        <motion.div drag = {true} dragConstraints = {{left: -1000, top: -800, right: 0, bottom: 0}}  dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }} dragElastic={0.5} whileTap={{ cursor: "grabbing" }}style = {{cursor: "grab", overflow: "hidden"}}className="streamingWindow">
           {stream && (
             <video
               className="instructorStream"
@@ -252,8 +253,9 @@ function LiveClassEmitter() {
               style={{ width: "300px" }}
             />
           )}
+        </motion.div>
         </div>
-      </div>
+   
       {name === "dra" ? (
         <div className="chalk">
           <ChalkBoard />

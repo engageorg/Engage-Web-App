@@ -116,7 +116,7 @@ function TextEditor(props) {
     dispatch(setSrcDocs());
     document
       .getElementsByClassName("code_text")[0]
-      .addEventListener("keyup", function () {
+      .addEventListener("keydown", function () {
         setLn(editorRef.current.getPosition().lineNumber);
         setCol(editorRef.current.getPosition().column);
       });
