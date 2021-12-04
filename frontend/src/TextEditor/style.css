@@ -187,6 +187,7 @@ transform: scale(1.1);
   background-color: var(--fg);
   background-repeat: no-repeat;
   background-position: 50%;
+  border: rgb(102, 99, 99) 0.5px solid;
 }
 
 .gutter.gutter-horizontal {
@@ -204,7 +205,6 @@ z-index: 3;
 top: 97.6vh;
 display: flex;
 justify-content: space-between;
-
 }
 
 .side_footer {
@@ -219,8 +219,6 @@ font-size: 1.4vh;
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 transform: scale(0.97);
 cursor: pointer;
-/* padding-left: 1vw;
-padding-right: 1vw; */
 }
 
 .footer_text:nth-child(3) {
@@ -245,7 +243,6 @@ background-color: rgba(255, 255, 255, 0.12);
 }
 
 .console-window{
-  
   position: absolute;
   border-radius: 10px;
   display: none;
