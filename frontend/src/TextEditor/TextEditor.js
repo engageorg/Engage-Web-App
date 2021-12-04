@@ -124,6 +124,8 @@ function TextEditor(props) {
       document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
         setLn(editorRef.current.getPosition().lineNumber)
         setCol(editorRef.current.getPosition().column);
+      });
+      document.getElementsByClassName("code_text")[0].addEventListener("keyup", function () {
         clearTimeout(timer);
         timer = setTimeout(() => {
           dispatch(setSrcDocs());
