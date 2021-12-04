@@ -32,6 +32,47 @@ function TextEditor(props) {
     editorRef.current = editor;
   }
 
+  function handleEditorSearch() {
+
+    let eve2 = new KeyboardEvent("keydown", {
+      altKey: false,
+      bubbles: true,
+      cancelBubble: false,
+      cancelable: true,
+      charCode: 0,
+      code: "ControlLeft",
+      composed: true,
+      ctrlKey: true,
+      currentTarget: null,
+      defaultPrevented: false,
+      detail: 0,
+      eventPhase: 0,
+      isComposing: false,
+      key: "Control",
+      keyCode: 17,
+      location: 1,
+    })
+      let eve = new KeyboardEvent("keydown", {
+        altKey: false,
+        bubbles: true,
+        cancelBubble: false,
+        cancelable: true,
+        charCode: 102,
+        code: "KeyF",
+        composed: true,
+        ctrlKey: true,
+        currentTarget: null,
+        defaultPrevented: false,
+        detail: 0,
+        eventPhase: 0,
+        isComposing: false,
+        key: "f",
+        keyCode: 70,
+        location: 0,
+      });
+      document.getElementsByClassName("code_text")[0].dispatchEvent(eve2);
+      document.getElementsByClassName("code_text")[0].dispatchEvent(eve);
+    }
   function handleFullScreen() {
 
   let eve2 = new KeyboardEvent("keydown", {
@@ -70,8 +111,8 @@ function TextEditor(props) {
       keyCode: 70,
       location: 0,
     });
-    document.getElementsByClassName("code_text")[0].dispatchEvent(eve2);
-    document.getElementsByClassName("code_text")[0].dispatchEvent(eve);
+    document.dispatchEvent(eve2);
+    document.dispatchEvent(eve);
   }
 
   useEffect(() => {
@@ -168,6 +209,7 @@ function TextEditor(props) {
       <button className = "suprise_button sidenav-buttons"><i className="fas fa-laugh-wink"></i></button>
       <button className = "folder sidenav-buttons"><i className="far fa-folder"></i></button>
       <button className = "full sidenav-buttons" onClick={handleFullScreen}><i className="fas fa-expand-arrows-alt"></i></button>
+      <button className = "full sidenav-buttons" onClick={handleEditorSearch}><i className="fas fa-search"></i></button>
       <button className="output sidenav-buttons"> <i className="fas fa-chalkboard-teacher"></i></button> 
       </div>
       <div className="selected-sidebar">
