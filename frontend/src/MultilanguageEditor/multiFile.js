@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import files from "../assets/files";
 import ChalkBoard from "../ChalkBoard";
-import ReactModal from "react-modal";
 import { c, c99, cpp, cpp14, cpp17, python2, python3 } from "../actions";
 import { useSelector, useDispatch } from "react-redux";
 import { runCode } from "../actions/outputAction";
