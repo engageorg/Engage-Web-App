@@ -1,7 +1,8 @@
 const api = require('./routes/api');
 const path = require('path')
 const savedata = require('./routes/saveFile')
-const express = require('express')
+const express = require('express');
+const { off } = require('process');
 const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http, {
@@ -11,7 +12,7 @@ const io = require('socket.io')(http, {
 })
 
 require('dotenv').config()
-
+let offer
 const port = process.env.PORT || 5000;
 app.use(express.json({limit: '50mb'}));
 app.use(express.json());
@@ -33,9 +34,16 @@ if (true) {
 
 
 io.on('connection', socket => {
+
+  socket.on("admin-class", ({classid}) => {
+    socket.join(classid)
+  })
+
   
   socket.on("join-class", ({classid}) => {
       socket.join(classid)
+      console.log(offer)
+      io.to(classid).emit("emitStream", offer)
   })
 
   socket.on("classid", ({callId}) => {
@@ -47,6 +55,7 @@ io.on('connection', socket => {
     io.to(classid).emit("receiveData", data)
   })
   socket.on("sendStream", (data) => {
+    offer = data.signalData
     io.to(data.classid).emit("emitStream", data )
   })
   socket.on("answerCall", (data) => {

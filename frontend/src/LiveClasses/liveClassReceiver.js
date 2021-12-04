@@ -199,11 +199,11 @@ function LiveClassReceiver() {
         })
 
         socketRef.current.on("emitStream", (data) => {
-          console.log(data.signalData)
+          console.log(data)
           document.getElementsByClassName("load")[0].style.display = "none";
           console.log("loaded");
           answerButton.style.display="block"
-          setCallerSignal(data.signalData)
+          setCallerSignal(data)
           answerButton.addEventListener("click", () => {
             console.log("working")
             const peer = new Peer({
@@ -219,7 +219,7 @@ function LiveClassReceiver() {
               })
             })
             console.log(callerSignal)
-            peer.signal(data.signalData)
+            peer.signal(data)
       
             peer.on("stream", (stream) => {
               setStream(stream)
@@ -231,28 +231,6 @@ function LiveClassReceiver() {
         })
     }, [])
     
-    // function answerCall() {
-    //   const peer = new Peer({
-    //     initiator: false,
-    //     trickle: false,
-    //     stream: stream,
-    //   });
-
-    //   peer.on("signal", (data) => {
-    //     socketRef.current.emit("answerCall", { 
-    //       signalData: data,
-    //       classid:classid
-    //     })
-    //   })
-  
-    //   peer.signal(callerSignal)
-
-    //   peer.on("stream", (stream) => {
-    //     setStream(stream)
-    //     userVideo.current.srcObject = stream
-    //   })
-    // }
-
     return (
         <div>  
         <Preloader />

@@ -89,3 +89,11 @@ color: rgba(9, 218, 131, 0.932);
 .inviteLink{
     display: none;
 }
+
+.inviteButton{
+    position: absolute;
+    z-index: 100;
+    top: 2vh;
+    right: 3vw;
+    cursor: pointer;
+}
