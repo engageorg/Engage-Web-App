@@ -15,6 +15,7 @@ import {
 import * as io from 'socket.io-client'
 import { useParams } from "react-router";
 import img from "../assets/Gear-0.2s-200px.png";
+import { motion } from "framer-motion"
 
 function Preloader() {
   return (
@@ -236,9 +237,9 @@ function LiveClassReceiver() {
         <Preloader />
         <div className="contentWindow">
         <div style={{display:"flex", flexDirection:"row-reverse"}}>
-            <div className="streamingWindow" style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
+            <motion.div drag = {true} dragConstraints = {{left: -1000, top: -800, right: 0, bottom: 0}}  dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }} dragElastic={0.5} whileTap={{ cursor: "grabbing" }}style = {{cursor: "grab", overflow: "hidden"}} className="streamingWindow" style={{position:"absolute", zIndex:"3",display:"flex", flexDirection:"column", paddingRight:"10px"}}>
             {stream && <video playsInline ref={userVideo} autoPlay style={{width: "300px" }} />}
-            </div>
+            </motion.div>
             </div>
             {name === "dra" ? (
             <div className="chalk">
