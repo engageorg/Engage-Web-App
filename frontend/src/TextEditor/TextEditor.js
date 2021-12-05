@@ -28,44 +28,8 @@ function TextEditor(props) {
   }
 
   function handleEditorSearch() {
-    let eve2 = new KeyboardEvent("keydown", {
-      altKey: false,
-      bubbles: true,
-      cancelBubble: false,
-      cancelable: true,
-      charCode: 0,
-      code: "ControlLeft",
-      composed: true,
-      ctrlKey: true,
-      currentTarget: null,
-      defaultPrevented: false,
-      detail: 0,
-      eventPhase: 0,
-      isComposing: false,
-      key: "Control",
-      keyCode: 17,
-      location: 1,
-    });
-    let eve = new KeyboardEvent("keydown", {
-      altKey: false,
-      bubbles: true,
-      cancelBubble: false,
-      cancelable: true,
-      charCode: 102,
-      code: "KeyF",
-      composed: true,
-      ctrlKey: true,
-      currentTarget: null,
-      defaultPrevented: false,
-      detail: 0,
-      eventPhase: 0,
-      isComposing: false,
-      key: "f",
-      keyCode: 70,
-      location: 0,
-    });
-    document.getElementsByClassName("code_text")[0].dispatchEvent(eve2);
-    document.getElementsByClassName("code_text")[0].dispatchEvent(eve);
+    editorRef.current.focus();
+    editorRef.current.trigger('', 'actions.find');
   }
   function handleFullScreen() {
     let eve2 = new KeyboardEvent("keydown", {
