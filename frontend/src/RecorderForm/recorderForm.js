@@ -11,16 +11,6 @@ function RecorderForm() {
     let lectureType;
     let lectureCreator;
     let languageType;
-    const navigateToRecorderWeb = () => history.push({
-        pathname:'/recorder',
-        state:{lectureType, lectureName, lectureCreator, languageType}}
-    );
-    const navigateToLiveClass = () => history.push({
-        pathname:`/emitter/${lectureType+languageType}/${classid}`,
-        state:{lectureType, lectureName, lectureCreator, languageType}}
-    );
-
-
     const languageList = {
         "Python 2": "python2", 
         C: "c",
@@ -33,7 +23,14 @@ function RecorderForm() {
     
 
     useEffect(() => {
-
+        const navigateToRecorderWeb = () => history.push({
+            pathname:'/recorder',
+            state:{lectureType, lectureName, lectureCreator, languageType}}
+        );
+        const navigateToLiveClass = () => history.push({
+            pathname:`/emitter/${lectureType+languageType}/${classid}`,
+            state:{lectureType, lectureName, lectureCreator, languageType}}
+        );
         const select = document.getElementById("language");
         for (let key in languageList) {
           var option = document.createElement("option");
@@ -57,6 +54,12 @@ function RecorderForm() {
             }else{
                 languageType = ''
             }
+            if(lectureName && lectureCreator){
+                if( path==="/classform") navigateToLiveClass()
+                else navigateToRecorderWeb()   
+               }else{
+                   alert("Fill The Form")
+               }
         })
         type.addEventListener("change", (e) =>{
             if(e.target.value === "dsa"){
@@ -78,7 +81,7 @@ function RecorderForm() {
                 <option value="dra">Chalk Board</option>
             </select>
             <select name="language" id="language"></select>
-            <button type="button" onClick = {path==="/classform"?navigateToLiveClass:navigateToRecorderWeb} id="submit">Submit</button>
+            <button type="button" id="submit">Submit</button>
         </form>
         </motion.div>
     )

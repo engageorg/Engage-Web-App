@@ -1,4 +1,4 @@
-const someJSCodeExample = `$(function () {
+const JSCode = `$(function () {
 	$(".sidebar-link").click(function () {
 	 $(".sidebar-link").removeClass("is-active");
 	 $(this).addClass("is-active");
@@ -55,7 +55,7 @@ const someJSCodeExample = `$(function () {
    });
    `;
 
-const someCSSCodeExample = `@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+const CSSCode = `@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
 * {
   outline: none;
   box-sizing: border-box;
@@ -1167,7 +1167,7 @@ button.vjs-play-control.vjs-control.vjs-button {
   border-radius: 10px;
 }`;
 
-const someHTMLCodeExample = `<div class="container">
+const HTMLCode = `<div class="container">
 <div class="sidebar">
  <span class="logo">S</span>
  <a class="logo-expand" href="#">skateboard</a>
@@ -1520,70 +1520,99 @@ const someHTMLCodeExample = `<div class="container">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>`;
 
-const someCCodeExample = ``;
+const CCode = ``;
 
-const someCpp99CodeExample = ``
+const Cpp99Code = ``
 
-const someCppCodeExample = ``
+const CppCode = ``
 
-const someCpp14CodeExample = ``
+const Cpp14Code = ``
 
-const someCpp17CodeExample = ``
+const Cpp17Code = ``
 
-const somePython2CodeExample = ``
+const Python2Code = ``
 
-const somePython3CodeExample = ``
+const Python3Code = ``
 
 const files = {
+  "aman": {
+    type : "folder",
+    "script.js": {
+      name: "script.js",
+      language: "javascript",
+      value: JSCode
+    },
+    "style.css": {
+      name: "style.css",
+      language: "css",
+      value: CSSCode
+    },
+    "index.html": {
+      name: "index.html",
+      language: "html",
+      value: HTMLCode
+    }
+
+  },
   "script.js": {
+    type: "file",
     name: "script.js",
     language: "javascript",
-    value: someJSCodeExample
+    value: JSCode
   },
   "style.css": {
+    type: "file",
     name: "style.css",
     language: "css",
-    value: someCSSCodeExample
+    value: CSSCode
   },
   "index.html": {
+    type: "file",
     name: "index.html",
     language: "html",
-    value: someHTMLCodeExample
+    value: HTMLCode
   },
   "c": {
+    type: "file",
     name: "main.c",
     language: "cpp",
-    value: someCCodeExample
+    value: CCode
   },
   "c99": {
+    type: "file",
     name: "main.cpp",
     language: "cpp",
-    value: someCpp99CodeExample
+    value: Cpp99Code
   },
   "cpp": {
+    type: "file",
     name: "main.cpp",
     language: "cpp",
-    value: someCppCodeExample
+    value: CppCode
   },
   "cpp14": {
+    type: "file",
     name: "main.cpp",
     language: "cpp",
-    value: someCpp14CodeExample
+    value: Cpp14Code
   },
   "cpp17": {
+    type: "file",
     name: "main.cpp",
     language: "cpp",
-    value: someCpp17CodeExample
+    value: Cpp17Code
   },
   "python2": {
+    type: "file",
     name: "python",
     language: "python",
-    value: somePython2CodeExample
+    value: Python2Code
   },
   "python3": {
+    type: "file",
     name: "python",
     language: "python",
-    value: somePython3CodeExample
+    value: Python3Code
   }
 };
 

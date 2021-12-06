@@ -414,7 +414,7 @@ const ExcalidrawWrapper = () => {
           </div>);
         }
         return (<>
-          {renderEncryptedIcon()}
+          {/* {renderEncryptedIcon()} */}
         </>);
     }, [langCode]);
     const renderCustomStats = () => {

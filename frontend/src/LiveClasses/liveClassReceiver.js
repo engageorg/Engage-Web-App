@@ -15,6 +15,7 @@ import {
 import * as io from "socket.io-client";
 import { useParams } from "react-router";
 import img from "../assets/Gear-0.2s-200px.png";
+import { motion } from "framer-motion"
 
 function Preloader() {
   return (

@@ -15,7 +15,7 @@ export const hasStrokeStyle = (type) => type === "rectangle" ||
     type === "diamond" ||
     type === "arrow" ||
     type === "line";
-export const canChangeSharpness = (type) => type === "rectangle" || type === "arrow" || type === "line";
+export const canChangeSharpness = (type) => type === "rectangle" || type === "arrow" || type === "line" || type === "diamond";
 export const hasText = (type) => type === "text";
 export const canHaveArrowheads = (type) => type === "arrow";
 export const getElementAtPosition = (elements, isAtPositionFn) => {
