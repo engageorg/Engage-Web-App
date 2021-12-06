@@ -2,7 +2,6 @@ import clsx from "clsx";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CLASSES } from "../constants";
 import { exportCanvas } from "../data";
-import Libraries from '../../savedLib/savedLib.json'
 import { importLibraryFromJSON, saveLibraryAsJSON } from "../data/json";
 import { isTextElement, showSelectedShapeActions } from "../element";
 import { t } from "../i18n";
@@ -12,6 +11,7 @@ import { muteFSAbortError } from "../utils";
 import { SelectedShapeActions, ShapesSwitcher, ZoomActions } from "./Actions";
 import { BackgroundPickerAndDarkModeToggle } from "./BackgroundPickerAndDarkModeToggle";
 import CollabButton from "./CollabButton";
+import {libraries} from '../data/Libraries'
 import { ErrorDialog } from "./ErrorDialog";
 import { ImageExportDialog } from "./ImageExportDialog";
 import { FixedSideContainer } from "./FixedSideContainer";
@@ -79,6 +79,7 @@ const LibraryMenuItems = ({
     libraryReturnUrl || window.location.origin + window.location.pathname;
   rows.push(
     <div className="layer-ui__library-header" key="library-header">
+      {/* <input type="text" onChange={changeLibraryParma} /> */}
       <ToolButton
         key="import"
         type="button"
@@ -143,6 +144,8 @@ const LibraryMenuItems = ({
   for (let row = 0; row < numRows; row++) {
     const y = CELLS_PER_ROW * row;
     const children = [];
+    // console.log(numRows)
+    // console.log(CELLS_PER_ROW)
     for (let x = 0; x < CELLS_PER_ROW; x++) {
       const shouldAddPendingElements =
         pendingElements.length > 0 &&
@@ -202,16 +205,18 @@ const LibraryMenu = ({
   });
   const [libraryItems, setLibraryItems] = useState([]);
   const [loadingState, setIsLoading] = useState("preloading");
+  const [libraryParam, setLibraryParam] = useState('');
   const loadingTimerRef = useRef(null);
   useEffect(() => {
+    //console.log(libraryParam)
     Promise.race([
       new Promise((resolve) => {
         loadingTimerRef.current = window.setTimeout(() => {
           resolve("loading");
         }, 100);
       }),
-      //console.log(Libraries.library),
-      setLibraryItems(Libraries.library),
+      console.log(libraries(libraryParam).library.length),
+      setLibraryItems(libraries(libraryParam).library),
       setIsLoading("ready")
       // library.loadLibrary().then((items) => {
       //   console.log(items)
@@ -227,7 +232,7 @@ const LibraryMenu = ({
     return () => {
       clearTimeout(loadingTimerRef.current);
     };
-  }, [library]);
+  }, [library, libraryParam]);
   const removeFromLibrary = useCallback(
     async (indexToRemove) => {
       const items = await library.loadLibrary();
@@ -240,6 +245,10 @@ const LibraryMenu = ({
     },
     [library, setAppState]
   );
+  const changeLibraryParma = (e) => {
+    console.log(e.target.value)
+    setLibraryParam(e.target.value)
+  }
   const addToLibrary = useCallback(
     async (elements) => {
       if (elements.some((element) => element.type === "image")) {
@@ -265,6 +274,7 @@ const LibraryMenu = ({
           {t("labels.libraryLoadingMessage")}
         </div>
       ) : (
+        
         <LibraryMenuItems
           libraryItems={libraryItems}
           onRemoveFromLibrary={removeFromLibrary}
@@ -281,6 +291,7 @@ const LibraryMenu = ({
           id={id}
         />
       )}
+      <input type="text" onChange={changeLibraryParma} />
     </Island>
   );
 };
