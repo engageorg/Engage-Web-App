@@ -275,31 +275,77 @@ export default function Video(props) {
     }
 
     function drawEvent(event, fakeCursor) {
-      if (event.type === "mousedown") {
+      if (event.type === "pointerdown") {
         let eve = new PointerEvent("pointerdown", {
-          bubbles: true,
-          cancelable: true,
+          altKey: event.altKey,
+          altitudeAngle: event.altitudeAngle,
+          azimuthAngle: event.azimuthAngle,
+          bubbles: event.bubbles,
           button: event.button,
+          buttons: event.buttons,
+          cancelBubble: event.cancelBubble,
+          cancelable: event.cancelable,
           clientX: event.clientX,
           clientY: event.clientY,
+          ctrlKey: event.ctrlKey,
+          offsetX: event.offsetX,
+          offsetY: event.offsetY,
+          pageX: event.pageX,
+          pageY: event.pageY,
+          pointerType: event.pointerType,
+          screenX: event.screenX,
+          screenY: event.screenY,
           shiftKey: event.shiftKey,
+          target: event.target.className,
+          tiltX: event.tiltX,
+          tiltY: event.tiltY,
+          timeStamp: event.timeStamp,
+          toElement: event.toElement,
+          twist: event.twist,
+          type: event.type,
+          width: event.width,
+          x: event.x,
+          y: event.y,
         });
         console.log(event.target);
         if (document.getElementsByClassName(event.target)[0])
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
-      } else if (event.type === "mousemove") {
+      } else if (event.type === "pointermove") {
         // TODO: Add e.buttons too
         let eve = new PointerEvent("pointermove", {
-          bubbles: true,
-          cancelable: true,
+          altKey: event.altKey,
+          altitudeAngle: event.altitudeAngle,
+          azimuthAngle: event.azimuthAngle,
+          bubbles: event.bubbles,
           button: event.button,
+          buttons: event.buttons,
+          cancelBubble: event.cancelBubble,
+          cancelable: event.cancelable,
           clientX: event.clientX,
           clientY: event.clientY,
+          ctrlKey: event.ctrlKey,
+          offsetX: event.offsetX,
+          offsetY: event.offsetY,
+          pageX: event.pageX,
+          pageY: event.pageY,
+          pointerType: event.pointerType,
+          screenX: event.screenX,
+          screenY: event.screenY,
           shiftKey: event.shiftKey,
+          target: event.target.className,
+          tiltX: event.tiltX,
+          tiltY: event.tiltY,
+          timeStamp: event.timeStamp,
+          toElement: event.toElement,
+          twist: event.twist,
+          type: event.type,
+          width: event.width,
+          x: event.x,
+          y: event.y,
         });
 
-        if (document.getElementsByClassName(event.class)[0]) {
-          document.getElementsByClassName(event.class)[0].dispatchEvent(eve);
+        if (document.getElementsByClassName(event.target)[0]) {
+          document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
         }
 
         //document.getElementsByClassName("cursor")[0].style.top = JSON.stringify(event.y) + "px";
@@ -311,14 +357,37 @@ export default function Video(props) {
         if (tar != null) {
           tar.focus();
         }
-      } else if (event.type === "mouseup") {
+      } else if (event.type === "pointerup") {
         let eve = new PointerEvent("pointerup", {
-          bubbles: true,
-          cancelable: true,
+          altKey: event.altKey,
+          altitudeAngle: event.altitudeAngle,
+          azimuthAngle: event.azimuthAngle,
+          bubbles: event.bubbles,
           button: event.button,
+          buttons: event.buttons,
+          cancelBubble: event.cancelBubble,
+          cancelable: event.cancelable,
           clientX: event.clientX,
           clientY: event.clientY,
+          ctrlKey: event.ctrlKey,
+          offsetX: event.offsetX,
+          offsetY: event.offsetY,
+          pageX: event.pageX,
+          pageY: event.pageY,
+          pointerType: event.pointerType,
+          screenX: event.screenX,
+          screenY: event.screenY,
           shiftKey: event.shiftKey,
+          target: event.target.className,
+          tiltX: event.tiltX,
+          tiltY: event.tiltY,
+          timeStamp: event.timeStamp,
+          toElement: event.toElement,
+          twist: event.twist,
+          type: event.type,
+          width: event.width,
+          x: event.x,
+          y: event.y,
         });
         if (document.getElementsByClassName(event.target)[0])
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);

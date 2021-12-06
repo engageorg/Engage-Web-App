@@ -3,17 +3,17 @@ import ChalkBoard from "../ChalkBoard/index";
 import files from "../assets/files";
 import Peer from "simple-peer";
 import * as io from "socket.io-client";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import "./style.css";
 import IDE from "../IDE";
 import { useParams } from "react-router";
 const env = process.env.NODE_ENV; // current environment
 
-let url
-if(env === "development") {
-    url = 'http://localhost:3000/receiver/'
-}else{
-    url = 'https://fierce-reef-05156.herokuapp.com/receiver/' 
+let url;
+if (env === "development") {
+  url = "http://localhost:3000/receiver/";
+} else {
+  url = "https://fierce-reef-05156.herokuapp.com/receiver/";
 }
 
 var constraints = {
@@ -43,21 +43,21 @@ function LiveClassEmitter() {
   }
   let childValue;
   var lastKeyClass = "";
-  const joinLink = url + name + language + "/" + classid
+  const joinLink = url + name + language + "/" + classid;
   //TODO needed to reload the text editor
   const [refresh, setRefresh] = useState("");
   const socketRef = useRef();
   const [stream, setStream] = useState();
   //while in development mode change document.location.origin to http://localhost:5000
-  socketRef.current = io.connect(document.location.origin);
+  socketRef.current = io.connect("http://localhost:5000");
   // Record each type of event
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
   useEffect(() => {
     socketRef.current.emit("admin-class", { classid: classid });
-    const inviteButton = document.getElementsByClassName("inviteButton")[0]
-    const inviteLink= document.getElementsByClassName("inviteLink")[0]
+    const inviteButton = document.getElementsByClassName("inviteButton")[0];
+    const inviteLink = document.getElementsByClassName("inviteLink")[0];
 
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
       setStream(stream);
@@ -65,49 +65,119 @@ function LiveClassEmitter() {
     });
 
     inviteButton.addEventListener("click", () => {
-      navigator.clipboard.writeText(inviteLink.value)
-      alert("link Copied")
-    })
+      navigator.clipboard.writeText(inviteLink.value);
+      alert("link Copied");
+    });
   }, []);
 
   const handlers = [
     {
-      eventName: "mouseup",
+      eventName: "pointerup",
       handler: function handleMouseMove(e) {
         const data = {
-          type: "mouseup",
-          target: e.target.className,
+          altKey: e.altKey,
+          altitudeAngle: e.altitudeAngle,
+          azimuthAngle: e.azimuthAngle,
+          bubbles: e.bubbles,
+          button: e.button,
+          buttons: e.buttons,
+          cancelBubble: e.cancelBubble,
+          cancelable: e.cancelable,
           clientX: e.clientX,
           clientY: e.clientY,
+          ctrlKey: e.ctrlKey,
+          offsetX: e.offsetX,
+          offsetY: e.offsetY,
+          pageX: e.pageX,
+          pageY: e.pageY,
+          pointerType: e.pointerType,
+          screenX: e.screenX,
+          screenY: e.screenY,
           shiftKey: e.shiftKey,
+          target: e.target.className,
+          tiltX: e.tiltX,
+          tiltY: e.tiltY,
+          timeStamp: e.timeStamp,
+          toElement: e.toElement,
+          twist: e.twist,
+          type: e.type,
+          width: e.width,
+          x: e.x,
+          y: e.y,
         };
         sendData(data);
       },
     },
     {
-      eventName: "mousedown",
+      eventName: "pointerdown",
       handler: function handleMouseMove(e) {
         const data = {
-          type: "mousedown",
+          altKey: e.altKey,
+          altitudeAngle: e.altitudeAngle,
+          azimuthAngle: e.azimuthAngle,
+          bubbles: e.bubbles,
           button: e.button,
+          buttons: e.buttons,
+          cancelBubble: e.cancelBubble,
+          cancelable: e.cancelable,
           clientX: e.clientX,
           clientY: e.clientY,
+          ctrlKey: e.ctrlKey,
+          offsetX: e.offsetX,
+          offsetY: e.offsetY,
+          pageX: e.pageX,
+          pageY: e.pageY,
+          pointerType: e.pointerType,
+          screenX: e.screenX,
+          screenY: e.screenY,
           shiftKey: e.shiftKey,
           target: e.target.className,
+          tiltX: e.tiltX,
+          tiltY: e.tiltY,
+          timeStamp: e.timeStamp,
+          toElement: e.toElement,
+          twist: e.twist,
+          type: e.type,
+          width: e.width,
+          x: e.x,
+          y: e.y,
         };
         sendData(data);
       },
     },
     {
-      eventName: "mousemove",
+      eventName: "pointermove",
       handler: function handleMouseMove(e) {
         const data = {
-          type: "mousemove",
+          altKey: e.altKey,
+          altitudeAngle: e.altitudeAngle,
+          azimuthAngle: e.azimuthAngle,
+          bubbles: e.bubbles,
           button: e.button,
+          buttons: e.buttons,
+          cancelBubble: e.cancelBubble,
+          cancelable: e.cancelable,
           clientX: e.clientX,
           clientY: e.clientY,
+          ctrlKey: e.ctrlKey,
+          offsetX: e.offsetX,
+          offsetY: e.offsetY,
+          pageX: e.pageX,
+          pageY: e.pageY,
+          pointerType: e.pointerType,
+          screenX: e.screenX,
+          screenY: e.screenY,
           shiftKey: e.shiftKey,
           target: e.target.className,
+          tiltX: e.tiltX,
+          tiltY: e.tiltY,
+          timeStamp: e.timeStamp,
+          toElement: e.toElement,
+          twist: e.twist,
+          type: e.type,
+          width: e.width,
+          x: e.x,
+          y: e.y,
         };
         sendData(data);
       },
@@ -238,11 +308,19 @@ function LiveClassEmitter() {
   return (
     <>
       <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-      <button onClick={() => startLive()} className="inviteButton">
-               <input className="inviteLink" defaultValue={joinLink}/>
-              <i  className="fas fa-clipboard-list"></i>
+        <button onClick={() => startLive()} className="inviteButton">
+          <input className="inviteLink" defaultValue={joinLink} />
+          <i className="fas fa-clipboard-list"></i>
         </button>
-        <motion.div drag = {true} dragConstraints = {{left: -1000, top: -800, right: 0, bottom: 0}}  dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }} dragElastic={0.5} whileTap={{ cursor: "grabbing" }}style = {{cursor: "grab", overflow: "hidden"}}className="streamingWindow">
+        <motion.div
+          drag={true}
+          dragConstraints={{ left: -1000, top: -800, right: 0, bottom: 0 }}
+          dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+          dragElastic={0.5}
+          whileTap={{ cursor: "grabbing" }}
+          style={{ cursor: "grab", overflow: "hidden" }}
+          className="streamingWindow"
+        >
           {stream && (
             <video
               className="instructorStream"
@@ -254,8 +332,8 @@ function LiveClassEmitter() {
             />
           )}
         </motion.div>
-        </div>
-   
+      </div>
+
       {name === "dra" ? (
         <div className="chalk">
           <ChalkBoard />
