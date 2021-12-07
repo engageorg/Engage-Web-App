@@ -1,3 +1,5 @@
+import { js, css, html } from "../actions";
+
 const JSCode = `$(function () {
 	$(".sidebar-link").click(function () {
 	 $(".sidebar-link").removeClass("is-active");
@@ -1535,85 +1537,118 @@ const Python2Code = ``
 const Python3Code = ``
 
 const files = {
-  "aman": {
-    type : "folder",
-    "script.js": {
-      name: "script.js",
-      language: "javascript",
-      value: JSCode
-    },
-    "style.css": {
-      name: "style.css",
-      language: "css",
-      value: CSSCode
-    },
-    "index.html": {
-      name: "index.html",
-      language: "html",
-      value: HTMLCode
-    }
-
-  },
   "script.js": {
     type: "file",
     name: "script.js",
     language: "javascript",
-    value: JSCode
+    value: JSCode,
+    class : "jsfile",
+    icon : "fab fa-js-square",
+    btntext : "script",
+    func : js()
   },
   "style.css": {
     type: "file",
     name: "style.css",
     language: "css",
-    value: CSSCode
+    value: CSSCode,
+    class : "cssfile",
+    icon : "fab fa-css3-alt",
+    btntext : "style",
+    func : css()
   },
   "index.html": {
     type: "file",
     name: "index.html",
     language: "html",
-    value: HTMLCode
-  },
-  "c": {
-    type: "file",
-    name: "main.c",
-    language: "cpp",
-    value: CCode
-  },
-  "c99": {
-    type: "file",
-    name: "main.cpp",
-    language: "cpp",
-    value: Cpp99Code
-  },
-  "cpp": {
-    type: "file",
-    name: "main.cpp",
-    language: "cpp",
-    value: CppCode
-  },
-  "cpp14": {
-    type: "file",
-    name: "main.cpp",
-    language: "cpp",
-    value: Cpp14Code
-  },
-  "cpp17": {
-    type: "file",
-    name: "main.cpp",
-    language: "cpp",
-    value: Cpp17Code
-  },
-  "python2": {
-    type: "file",
-    name: "python",
-    language: "python",
-    value: Python2Code
-  },
-  "python3": {
-    type: "file",
-    name: "python",
-    language: "python",
-    value: Python3Code
+    value: HTMLCode,
+    class : "htmlfile",
+    icon : "fab fa-html5",
+    btntext : "html",
+    func : html()
   }
 };
+
+// const files = {
+//   "aman": {
+//     type : "folder",
+//     "script.js": {
+//       name: "script.js",
+//       language: "javascript",
+//       value: JSCode
+//     },
+//     "style.css": {
+//       name: "style.css",
+//       language: "css",
+//       value: CSSCode
+//     },
+//     "index.html": {
+//       name: "index.html",
+//       language: "html",
+//       value: HTMLCode
+//     }
+
+//   },
+//   "script.js": {
+//     type: "file",
+//     name: "script.js",
+//     language: "javascript",
+//     value: JSCode
+//   },
+//   "style.css": {
+//     type: "file",
+//     name: "style.css",
+//     language: "css",
+//     value: CSSCode
+//   },
+//   "index.html": {
+//     type: "file",
+//     name: "index.html",
+//     language: "html",
+//     value: HTMLCode
+//   },
+//   "c": {
+//     type: "file",
+//     name: "main.c",
+//     language: "cpp",
+//     value: CCode
+//   },
+//   "c99": {
+//     type: "file",
+//     name: "main.cpp",
+//     language: "cpp",
+//     value: Cpp99Code
+//   },
+//   "cpp": {
+//     type: "file",
+//     name: "main.cpp",
+//     language: "cpp",
+//     value: CppCode
+//   },
+//   "cpp14": {
+//     type: "file",
+//     name: "main.cpp",
+//     language: "cpp",
+//     value: Cpp14Code
+//   },
+//   "cpp17": {
+//     type: "file",
+//     name: "main.cpp",
+//     language: "cpp",
+//     value: Cpp17Code
+//   },
+//   "python2": {
+//     type: "file",
+//     name: "python",
+//     language: "python",
+//     value: Python2Code
+//   },
+//   "python3": {
+//     type: "file",
+//     name: "python",
+//     language: "python",
+//     value: Python3Code
+//   }
+// };
 
 export default files;

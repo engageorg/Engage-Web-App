@@ -242,8 +242,7 @@ function TextEditor(props) {
   }, [srcDoc]);
 
   return (
-    <div className="text-editor">
-      {/* Sidebar   */}
+    <div className="text-editor"> 
       <div className="editor-sidebar">
         <button className="suprise_button sidenav-buttons">
           <i className="fas fa-laugh-wink"></i>
@@ -268,7 +267,19 @@ function TextEditor(props) {
           <button className="sidebar-add-file"></button>
         </div>
         <div className="sidebar-navbutton">
-          <button
+
+          {Object.keys(files).map((key,index) => (
+            <button
+              className={files[key].class}
+              disabled={fileName === files[key].name}
+              onClick={() => dispatch(files[key].func)}
+            > 
+              <i className={files[key].icon}></i>{" "}
+              <span className={`buttontext `+files[key].btntext}>{files[key].name} </span>
+            </button>
+          ))}
+
+          {/* <button
             className="htmlfile"
             disabled={fileName === "index.html"}
             onClick={() => dispatch(html())}
@@ -295,7 +306,7 @@ function TextEditor(props) {
             <span className="buttontext script">
               {files["script.js"].name}{" "}
             </span>
-          </button>
+          </button> */}
         </div>
         {/* <div className="sidebar-footer">
 
@@ -303,7 +314,6 @@ function TextEditor(props) {
         </div>  */}
       </div>
 
-      {/* Editor */}
       <div className="editor">
         <Split
           sizes={[65, 35]}
