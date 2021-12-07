@@ -159,7 +159,50 @@ function TextEditor(props) {
     document.addEventListener("keydown", function (e) {
       console.log(e);
     });
-    document
+    document.getElementsByClassName("suprise_button")[0].addEventListener("click", async function () {
+      const directoryHandle = await window.showDirectoryPicker()
+      let folderName = `${directoryHandle.name}`;
+
+      const dir = 
+      {
+        "rootfolder" : {
+          type : "directory",
+          name : folderName,
+          content : {}
+        }
+      } 
+      async function handleFolder(curDir, directoryhandle) {
+
+        for await (let [fileName, handle] of directoryhandle) {
+         
+         if(handle.kind === "directory"){
+          console.log("folder",curDir);
+          curDir[`${fileName}`] = ''
+          curDir[`${fileName}`] = {
+             type : "folder",
+             name : fileName,
+             content : {}
+           };
+           handleFolder(curDir[`${fileName}`]["content"], handle);
+         }
+         else if(handle.kind === "file") {
+          const file = await handle.getFile();
+          const fileContent = await file.text()
+          curDir[`${fileName}`] = ''
+          curDir[`${fileName}`] = {
+             type : "file",
+             name : fileName,
+             content : fileContent
+           };
+         }
+        }
+      }
+
+      handleFolder(dir["rootfolder"].content, directoryHandle);
+      console.log('🎹', dir)
+    });
+
+      document
       .getElementsByClassName("closechalkboard")[0]
       .addEventListener("click", function () {
         document.getElementsByClassName("chalkboardweb")[0].style.display =
