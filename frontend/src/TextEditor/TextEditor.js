@@ -159,41 +159,48 @@ function TextEditor(props) {
     document.addEventListener("keydown", function (e) {
       console.log(e);
     });
-    // document.getElementsByClassName("suprise_button")[0].addEventListener("click", async function () {
-    //   const directoryHandle = await window.showDirectoryPicker()
-    //   const files = {
-    //     `${directoryHandle.name}` : {
+    document.getElementsByClassName("suprise_button")[0].addEventListener("click", async function () {
+      const directoryHandle = await window.showDirectoryPicker()
+      let folderName = `${directoryHandle.name}`;
 
-    //     },
-    //   }
-    //   function handleFolder(name, directoryhandle) {
-    //     for await (let [name, handle] of directoryhandle) {
-    //      if(handle.type === "directory"){
-    //        handleFolder(name, handle);
-    //      }
-    //      else{
+      const dir = 
+      {
+        "rootfolder" : {
+          type : "directory",
+          name : folderName,
+          content : {}
+        }
+      } 
+      async function handleFolder(curDir, directoryhandle) {
 
-    //      }
-    //     }
-    //   }
-    //   console.log(directoryHandle.name);
-    //   for await (let [name, handle] of directoryHandle) {
-    //     // const file = await handle.getFile()
+        for await (let [fileName, handle] of directoryhandle) {
+         
+         if(handle.kind === "directory"){
+          console.log("folder",curDir);
+          curDir[`${fileName}`] = ''
+          curDir[`${fileName}`] = {
+             type : "folder",
+             name : fileName,
+             content : {}
+           };
+           handleFolder(curDir[`${fileName}`]["content"], handle);
+         }
+         else if(handle.kind === "file") {
+          const file = await handle.getFile();
+          const fileContent = await file.text()
+          curDir[`${fileName}`] = ''
+          curDir[`${fileName}`] = {
+             type : "file",
+             name : fileName,
+             content : fileContent
+           };
+         }
+        }
+      }
 
-    //    // if you want to access the content of the file 
-    //   //  const content = await file.text()
-       
-    //   //  files.push({
-    //   //     name,
-    //   //     handle,
-    //   //     file,
-    //   //     content,
-    //   //   })
-
-    //   console.log(file);
-    //   }
-    //   console.log('🎹', files)
-    // });
+      handleFolder(dir["rootfolder"].content, directoryHandle);
+      console.log('🎹', dir)
+    });
 
       document
       .getElementsByClassName("closechalkboard")[0]
