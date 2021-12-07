@@ -159,7 +159,43 @@ function TextEditor(props) {
     document.addEventListener("keydown", function (e) {
       console.log(e);
     });
-    document
+    // document.getElementsByClassName("suprise_button")[0].addEventListener("click", async function () {
+    //   const directoryHandle = await window.showDirectoryPicker()
+    //   const files = {
+    //     `${directoryHandle.name}` : {
+
+    //     },
+    //   }
+    //   function handleFolder(name, directoryhandle) {
+    //     for await (let [name, handle] of directoryhandle) {
+    //      if(handle.type === "directory"){
+    //        handleFolder(name, handle);
+    //      }
+    //      else{
+
+    //      }
+    //     }
+    //   }
+    //   console.log(directoryHandle.name);
+    //   for await (let [name, handle] of directoryHandle) {
+    //     // const file = await handle.getFile()
+
+    //    // if you want to access the content of the file 
+    //   //  const content = await file.text()
+       
+    //   //  files.push({
+    //   //     name,
+    //   //     handle,
+    //   //     file,
+    //   //     content,
+    //   //   })
+
+    //   console.log(file);
+    //   }
+    //   console.log('🎹', files)
+    // });
+
+      document
       .getElementsByClassName("closechalkboard")[0]
       .addEventListener("click", function () {
         document.getElementsByClassName("chalkboardweb")[0].style.display =
