@@ -1566,89 +1566,49 @@ const files = {
     icon : "fab fa-html5",
     btntext : "html",
     func : html()
+  },
+  "c": {
+    type: "file",
+    name: "main.c",
+    language: "cpp",
+    value: CCode
+  },
+  "c99": {
+    type: "file",
+    name: "main.cpp",
+    language: "cpp",
+    value: Cpp99Code
+  },
+  "cpp": {
+    type: "file",
+    name: "main.cpp",
+    language: "cpp",
+    value: CppCode
+  },
+  "cpp14": {
+    type: "file",
+    name: "main.cpp",
+    language: "cpp",
+    value: Cpp14Code
+  },
+  "cpp17": {
+    type: "file",
+    name: "main.cpp",
+    language: "cpp",
+    value: Cpp17Code
+  },
+  "python2": {
+    type: "file",
+    name: "python",
+    language: "python",
+    value: Python2Code
+  },
+  "python3": {
+    type: "file",
+    name: "python",
+    language: "python",
+    value: Python3Code
   }
 };
-
-// const files = {
-//   "aman": {
-//     type : "folder",
-//     "script.js": {
-//       name: "script.js",
-//       language: "javascript",
-//       value: JSCode
-//     },
-//     "style.css": {
-//       name: "style.css",
-//       language: "css",
-//       value: CSSCode
-//     },
-//     "index.html": {
-//       name: "index.html",
-//       language: "html",
-//       value: HTMLCode
-//     }
-
-//   },
-//   "script.js": {
-//     type: "file",
-//     name: "script.js",
-//     language: "javascript",
-//     value: JSCode
-//   },
-//   "style.css": {
-//     type: "file",
-//     name: "style.css",
-//     language: "css",
-//     value: CSSCode
-//   },
-//   "index.html": {
-//     type: "file",
-//     name: "index.html",
-//     language: "html",
-//     value: HTMLCode
-//   },
-//   "c": {
-//     type: "file",
-//     name: "main.c",
-//     language: "cpp",
-//     value: CCode
-//   },
-//   "c99": {
-//     type: "file",
-//     name: "main.cpp",
-//     language: "cpp",
-//     value: Cpp99Code
-//   },
-//   "cpp": {
-//     type: "file",
-//     name: "main.cpp",
-//     language: "cpp",
-//     value: CppCode
-//   },
-//   "cpp14": {
-//     type: "file",
-//     name: "main.cpp",
-//     language: "cpp",
-//     value: Cpp14Code
-//   },
-//   "cpp17": {
-//     type: "file",
-//     name: "main.cpp",
-//     language: "cpp",
-//     value: Cpp17Code
-//   },
-//   "python2": {
-//     type: "file",
-//     name: "python",
-//     language: "python",
-//     value: Python2Code
-//   },
-//   "python3": {
-//     type: "file",
-//     name: "python",
-//     language: "python",
-//     value: Python3Code
-//   }
-// };
 
 export default files;

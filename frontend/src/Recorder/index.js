@@ -230,6 +230,12 @@ export default function Recorder(props) {
         });
       },
     },
+    {
+      eventName: "drag",
+      handler: function handleKeyPress(e) {
+        console.log(e)
+      },
+    },
     // {
     //   eventName: "click",
     //   handler: function handleClick(e) {
