@@ -5,6 +5,7 @@ import { exportCanvas } from "../data";
 import { importLibraryFromJSON, saveLibraryAsJSON } from "../data/json";
 import { isTextElement, showSelectedShapeActions } from "../element";
 import { t } from "../i18n";
+import { LibraryWindow } from "./LibraryWindow";
 import { useIsMobile } from "../components/App";
 import { calculateScrollCenter, getSelectedElements } from "../scene";
 import { muteFSAbortError } from "../utils";
@@ -71,7 +72,7 @@ const LibraryMenuItems = ({
 }) => {
   const isMobile = useIsMobile();
   const numCells = libraryItems.length + (pendingElements.length > 0 ? 1 : 0);
-  const CELLS_PER_ROW = isMobile ? 4 : 6;
+  const CELLS_PER_ROW = isMobile ? 1 : 2;
   const numRows = Math.max(1, Math.ceil(numCells / CELLS_PER_ROW));
   const rows = [];
   let addedPendingElements = false;
@@ -79,6 +80,7 @@ const LibraryMenuItems = ({
     libraryReturnUrl || window.location.origin + window.location.pathname;
   rows.push(
     <div className="layer-ui__library-header" key="library-header">
+    <Stack.Row gap={1}>
       {/* <input type="text" onChange={changeLibraryParma} /> */}
       <ToolButton
         key="import"
@@ -131,14 +133,7 @@ const LibraryMenuItems = ({
           />
         </>
       )}
-      {/* <a
-        href={`https://libraries.excalidraw.com?target=${
-          window.name || "_blank"
-        }&referrer=${referrer}&useHash=true&token=${id}&theme=${theme}`}
-        target="_excalidraw_libraries"
-      >
-        {t("labels.libraries")}
-      </a> */}
+    </Stack.Row>
     </div>
   );
   for (let row = 0; row < numRows; row++) {
@@ -171,13 +166,13 @@ const LibraryMenuItems = ({
       );
     }
     rows.push(
-      <Stack.Row align="center" gap={1} key={row}>
+      <Stack.Row justifyContent="center" gap={2} key={row}>
         {children}
       </Stack.Row>
     );
   }
   return (
-    <Stack.Col align="start" gap={1} className="layer-ui__library-items">
+    <Stack.Col align="start" gap={3} className="layer-ui__library-items">
       {rows}
     </Stack.Col>
   );
@@ -268,14 +263,17 @@ const LibraryMenu = ({
     [onAddToLibrary, library, setAppState]
   );
   return loadingState === "preloading" ? null : (
-    <Island padding={1} ref={ref} className="layer-ui__library">
-      {loadingState === "loading" ? (
+    
+    <LibraryWindow>
+    <Island padding={2} ref={ref} className="layer-ui__library">
+       {loadingState === "loading" ? (
         <div className="layer-ui__library-message">
           {t("labels.libraryLoadingMessage")}
         </div>
       ) : (
-        
-        <LibraryMenuItems
+        <div className="librarySearchMenu">
+          <input type="text" onChange={changeLibraryParma} />
+          <LibraryMenuItems
           libraryItems={libraryItems}
           onRemoveFromLibrary={removeFromLibrary}
           onAddToLibrary={addToLibrary}
@@ -289,10 +287,12 @@ const LibraryMenu = ({
           theme={theme}
           files={files}
           id={id}
-        />
-      )}
-      <input type="text" onChange={changeLibraryParma} />
-    </Island>
+         />
+         </div>
+       )}
+       </Island>
+    </LibraryWindow>
+
   );
 };
 const LayerUI = ({
