@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import IDE from "../IDE";
 import ChalkBoard from "../ChalkBoard/index";
 import files from "../assets/files";
@@ -12,10 +12,12 @@ var startTime;
 export default function Recorder(props) {
   const name = props.location.state.lectureType;
   const language = props.location.state.languageType;
+  const [file, setFile] = useState(null);
   console.log(name);
   const Recording = { events: [] };
   var lastMouse = { x: 0, y: 0 };
   var lastKey = "";
+  var audioString;
   let fileName;
   if (name === "dsa") {
     fileName = language;
@@ -29,6 +31,12 @@ export default function Recorder(props) {
     childValue = childData;
     //console.log(childValue)
   }
+
+  function handleChange(e) {
+    console.log(e)
+    setFile(e.target.files[0]);
+  }
+
   // Record each type of event
   const handlers = [
     {
@@ -323,6 +331,21 @@ export default function Recorder(props) {
     localStorage.setItem("recording", JSON.stringify(Recording));
     document.getElementsByClassName("stop-record")[0].style.display = "none";
     document.getElementsByClassName("record")[0].style.display = "block";
+    Mp3Recorder.stop()
+      .getMp3()
+      .then(async ([buffer, blob]) => {
+        console.log(blob);
+        var reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+          audioString = reader.result;
+        };
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function uploadRecording() {
+    // upload recording
     const recordingString = JSON.stringify(Recording);
     console.log(Recording);
     firebase
@@ -352,40 +375,35 @@ export default function Recorder(props) {
             console.log("Recording Tally Saved");
           });
         console.log("Recording Saved");
-        let audioString;
-        Mp3Recorder.stop()
-          .getMp3()
-          .then(([buffer, blob]) => {
-            new File(buffer, "me-at-thevoice.mp3", {
-              type: blob.type,
-              lastModified: Date.now(),
-            });
-            var reader = new FileReader();
-            reader.readAsDataURL(blob);
-            reader.onloadend = () => {
-              audioString = reader.result;
-              var storageRef = firebase.storage().ref();
-              const id = JSON.parse(localStorage.getItem("recordingId"));
-              localStorage.removeItem("recordingId");
-              const lectureData = {
-                recording: recordingString,
-                audio: audioString,
-              };
-              var audioRef = storageRef.child(id);
-              audioRef
-                .putString(audioString, "data_url")
-                .then((snapshot) => {
-                  alert("Audio saved!");
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-              axios.post("http://localhost:5000/savedata", {
-                lectureData,
-              });
-            };
+        var storageRef = firebase.storage().ref();
+
+        const id = JSON.parse(localStorage.getItem("recordingId"));
+        localStorage.removeItem("recordingId");
+        const lectureData = {
+          recording: recordingString,
+          audio: audioString,
+        };
+        var audioRef = storageRef.child(id);
+        var imageRef = storageRef.child(`/images/${id}`);
+        audioRef
+          .putString(audioString, "data_url")
+          .then((snapshot) => {
+            alert("Audio saved!");
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            console.log(e);
+          });
+          imageRef
+          .put(file)
+          .then((snapshot) => {
+            console.log("THUMNAIL SAVED")
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+        axios.post("http://localhost:5000/savedata", {
+          lectureData,
+        });
       });
   }
 
@@ -405,6 +423,12 @@ export default function Recorder(props) {
             onClick={handleStop}
           ></i>
         </div>
+        <div className="upload-button">
+          <i class="fas fa-file-upload record" onClick={uploadRecording}></i>
+        </div>
+        {/* <form className="uploadForm">
+          <input id="thumnail" type="file" onChange={handleChange}/>
+        </form> */}
         {name === "dra" ? (
           <div className="chalk">
             {" "}

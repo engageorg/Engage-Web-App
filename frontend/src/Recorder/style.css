@@ -14,6 +14,13 @@
     font-size: 1.5rem;
     color: gray;
   }
+
+  .fa-microphone:hover{
+    font-size: 1.7rem;
+    color: rgb(160, 160, 160);
+    transition: 0.1s;
+  }
+  
   
 .fa-microphone-slash{
     font-size: 1.3rem;
@@ -23,4 +30,26 @@
 
 .chalk{
   height: 100vh;
+}
+
+.uploadForm{
+  position: absolute;
+}
+
+.fa-file-upload{
+  font-size: 1.5rem;
+  color: rgb(9, 184, 9);
+}
+
+.upload-button{
+  position: absolute;
+  top: 2vh;
+  right: 5vw;
+  z-index: 100;
+}
+
+.upload-button i:hover{
+  font-size: 1.7rem;
+  color: rgb(9, 216, 9);
+  transition: 0.1s;
 }
