@@ -5,14 +5,13 @@ import { exportCanvas } from "../data";
 import { importLibraryFromJSON, saveLibraryAsJSON } from "../data/json";
 import { isTextElement, showSelectedShapeActions } from "../element";
 import { t } from "../i18n";
-import { LibraryWindow } from "./LibraryWindow";
 import { useIsMobile } from "../components/App";
 import { calculateScrollCenter, getSelectedElements } from "../scene";
 import { muteFSAbortError } from "../utils";
 import { SelectedShapeActions, ShapesSwitcher, ZoomActions } from "./Actions";
 import { BackgroundPickerAndDarkModeToggle } from "./BackgroundPickerAndDarkModeToggle";
 import CollabButton from "./CollabButton";
-import {libraries} from '../data/Libraries'
+import { libraries } from "../data/Libraries";
 import { ErrorDialog } from "./ErrorDialog";
 import { ImageExportDialog } from "./ImageExportDialog";
 import { FixedSideContainer } from "./FixedSideContainer";
@@ -72,7 +71,7 @@ const LibraryMenuItems = ({
 }) => {
   const isMobile = useIsMobile();
   const numCells = libraryItems.length + (pendingElements.length > 0 ? 1 : 0);
-  const CELLS_PER_ROW = isMobile ? 1 : 2;
+  const CELLS_PER_ROW = isMobile ? 4 : 6;
   const numRows = Math.max(1, Math.ceil(numCells / CELLS_PER_ROW));
   const rows = [];
   let addedPendingElements = false;
@@ -80,7 +79,6 @@ const LibraryMenuItems = ({
     libraryReturnUrl || window.location.origin + window.location.pathname;
   rows.push(
     <div className="layer-ui__library-header" key="library-header">
-    <Stack.Row gap={1}>
       {/* <input type="text" onChange={changeLibraryParma} /> */}
       <ToolButton
         key="import"
@@ -133,7 +131,14 @@ const LibraryMenuItems = ({
           />
         </>
       )}
-    </Stack.Row>
+      {/* <a
+        href={`https://libraries.excalidraw.com?target=${
+          window.name || "_blank"
+        }&referrer=${referrer}&useHash=true&token=${id}&theme=${theme}`}
+        target="_excalidraw_libraries"
+      >
+        {t("labels.libraries")}
+      </a> */}
     </div>
   );
   for (let row = 0; row < numRows; row++) {
@@ -166,13 +171,13 @@ const LibraryMenuItems = ({
       );
     }
     rows.push(
-      <Stack.Row justifyContent="center" gap={2} key={row}>
+      <Stack.Row align="center" gap={1} key={row}>
         {children}
       </Stack.Row>
     );
   }
   return (
-    <Stack.Col align="start" gap={3} className="layer-ui__library-items">
+    <Stack.Col align="start" gap={1} className="layer-ui__library-items">
       {rows}
     </Stack.Col>
   );
@@ -200,7 +205,7 @@ const LibraryMenu = ({
   });
   const [libraryItems, setLibraryItems] = useState([]);
   const [loadingState, setIsLoading] = useState("preloading");
-  const [libraryParam, setLibraryParam] = useState('');
+  const [libraryParam, setLibraryParam] = useState("");
   const loadingTimerRef = useRef(null);
   useEffect(() => {
     //console.log(libraryParam)
@@ -212,7 +217,7 @@ const LibraryMenu = ({
       }),
       console.log(libraries(libraryParam).library.length),
       setLibraryItems(libraries(libraryParam).library),
-      setIsLoading("ready")
+      setIsLoading("ready"),
       // library.loadLibrary().then((items) => {
       //   console.log(items)
       //   console.log(Libraries.library)
@@ -241,9 +246,9 @@ const LibraryMenu = ({
     [library, setAppState]
   );
   const changeLibraryParma = (e) => {
-    console.log(e.target.value)
-    setLibraryParam(e.target.value)
-  }
+    console.log(e.target.value);
+    setLibraryParam(e.target.value);
+  };
   const addToLibrary = useCallback(
     async (elements) => {
       if (elements.some((element) => element.type === "image")) {
@@ -263,17 +268,13 @@ const LibraryMenu = ({
     [onAddToLibrary, library, setAppState]
   );
   return loadingState === "preloading" ? null : (
-    
-    <LibraryWindow>
-    <Island padding={2} ref={ref} className="layer-ui__library">
-       {loadingState === "loading" ? (
+    <Island padding={1} ref={ref} className="layer-ui__library">
+      {loadingState === "loading" ? (
         <div className="layer-ui__library-message">
           {t("labels.libraryLoadingMessage")}
         </div>
       ) : (
-        <div className="librarySearchMenu">
-          <input type="text" onChange={changeLibraryParma} />
-          <LibraryMenuItems
+        <LibraryMenuItems
           libraryItems={libraryItems}
           onRemoveFromLibrary={removeFromLibrary}
           onAddToLibrary={addToLibrary}
@@ -287,12 +288,10 @@ const LibraryMenu = ({
           theme={theme}
           files={files}
           id={id}
-         />
-         </div>
-       )}
-       </Island>
-    </LibraryWindow>
-
+        />
+      )}
+      <input type="text" onChange={changeLibraryParma} />
+    </Island>
   );
 };
 const LayerUI = ({
@@ -493,6 +492,64 @@ const LayerUI = ({
       id={id}
     />
   ) : null;
+
+  const renderSideContainer = () => {
+    const shouldRenderSelectedShapeActions = showSelectedShapeActions(
+      appState,
+      elements
+    );
+
+    return (
+      <>
+        <FixedSideContainer side="top">
+          <HintViewer
+            appState={appState}
+            elements={elements}
+            isMobile={isMobile}
+          />
+        </FixedSideContainer>
+        <FixedSideContainer side="right">
+          <Section heading="shapes">
+            {(heading) => (
+              <Stack.Row gap={4} align="start">
+                <Stack.Col gap={1}>
+                  <LockButton
+                    zenModeEnabled={zenModeEnabled}
+                    checked={appState.elementLocked}
+                    onChange={onLockToggle}
+                    title={t("toolBar.lock")}
+                  />
+                  <Island
+                    padding={1}
+                    className={clsx({ "zen-mode": zenModeEnabled })}
+                  >
+                    {heading}
+                    <Stack.Col gap={1}>
+                      <ShapesSwitcher
+                        canvas={canvas}
+                        elementType={appState.elementType}
+                        setAppState={setAppState}
+                        onImageAction={({ pointerType }) => {
+                          onImageAction({
+                            insertOnCanvasDirectly: pointerType !== "mouse",
+                          });
+                        }}
+                      />
+                    </Stack.Col>
+                  </Island>
+                  <LibraryButton
+                    appState={appState}
+                    setAppState={setAppState}
+                  />
+                </Stack.Col>
+                {libraryMenu}
+              </Stack.Row>
+            )}
+          </Section>
+        </FixedSideContainer>
+      </>
+    );
+  };
   const renderFixedSideContainer = () => {
     const shouldRenderSelectedShapeActions = showSelectedShapeActions(
       appState,
@@ -714,7 +771,7 @@ const LayerUI = ({
       })}
     >
       {dialogs}
-      {renderFixedSideContainer()}
+      {renderSideContainer()}
       {renderBottomAppMenu()}
       {appState.scrolledOutside && (
         <button

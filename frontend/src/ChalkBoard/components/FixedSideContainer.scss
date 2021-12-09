@@ -27,11 +27,11 @@
   bottom: var(--space-factor);
   z-index: 1;
 }
-/* TODO: if these are used, make sure to implement RTL support
+
 .FixedSideContainer_side_right {
-  right: var(--space-factor);
-  top: var(--space-factor);
+  right:0;
+  top: 22vh;
+  // top: var(--space-factor);
   bottom: var(--space-factor);
   z-index: 3;
 }
-*/
