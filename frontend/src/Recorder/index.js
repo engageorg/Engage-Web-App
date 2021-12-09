@@ -231,9 +231,100 @@ export default function Recorder(props) {
       },
     },
     {
-      eventName: "drag",
+      eventName: "mousedown",
       handler: function handleKeyPress(e) {
-        console.log(e)
+        if(e.target.className === 'gutter gutter-horizontal'){
+          Recording.events.push({
+            clientX: e.clientX,
+            clientY: e.clientY,
+            ctrlKey: e.ctrlKey,
+            offsetX: e.offsetX,
+            offsetY: e.offsetY,
+            bubbles: e.bubbles,
+          button: e.button,
+            pageX: e.pageX,
+            pageY: e.pageY,
+            screenX: e.screenX,
+            screenY: e.screenY,
+            shiftKey: e.shiftKey,
+            target: e.target.className,
+            tiltX: e.tiltX,
+            tiltY: e.tiltY,
+            timeStamp: e.timeStamp,
+            toElement: e.toElement,
+            twist: e.twist,
+            type: e.type,
+            width: e.width,
+            x: e.x,
+            y: e.y,
+            time: Date.now() - startTime,
+          });
+        }
+      },
+    },
+    {
+      eventName: "mouseup",
+      handler: function handleKeyPress(e) {
+        //console.log(e)
+        if(e.target.className === 'gutter gutter-horizontal'){
+          Recording.events.push({
+            clientX: e.clientX,
+            clientY: e.clientY,
+            ctrlKey: e.ctrlKey,
+            bubbles: e.bubbles,
+          button: e.button,
+            offsetX: e.offsetX,
+            offsetY: e.offsetY,
+            pageX: e.pageX,
+            pageY: e.pageY,
+            screenX: e.screenX,
+            screenY: e.screenY,
+            shiftKey: e.shiftKey,
+            target: e.target.className,
+            tiltX: e.tiltX,
+            tiltY: e.tiltY,
+            timeStamp: e.timeStamp,
+            toElement: e.toElement,
+            twist: e.twist,
+            type: e.type,
+            width: e.width,
+            x: e.x,
+            y: e.y,
+            time: Date.now() - startTime,
+          });
+        }
+      },
+    },
+    {
+      eventName: "mousemove",
+      handler: function handleKeyPress(e) {
+        if(e.target.className === 'gutter gutter-horizontal'){
+          Recording.events.push({
+            clientX: e.clientX,
+            clientY: e.clientY,
+            ctrlKey: e.ctrlKey,
+            bubbles: e.bubbles,
+          button: e.button,
+            offsetX: e.offsetX,
+            offsetY: e.offsetY,
+            pageX: e.pageX,
+            pageY: e.pageY,
+            screenX: e.screenX,
+            screenY: e.screenY,
+            shiftKey: e.shiftKey,
+            target: e.target.className,
+            tiltX: e.tiltX,
+            tiltY: e.tiltY,
+            timeStamp: e.timeStamp,
+            toElement: e.toElement,
+            twist: e.twist,
+            type: e.type,
+            width: e.width,
+            x: e.x,
+            y: e.y,
+            time: Date.now() - startTime,
+          });
+        }
       },
     },
     // {
@@ -261,6 +352,12 @@ export default function Recorder(props) {
     //     }
     //   },
     //   },
+    {
+      eventName:"selectstart",
+      handler: function handleChange(e) {
+        console.log(e)
+      },
+    },
     {
       eventName: "output",
       handler: function handleChange(e) {
@@ -320,7 +417,7 @@ export default function Recorder(props) {
   function stopRecording() {
     // stop recording
     handlers.map((x) => removeListener(x.eventName, x.handler));
-    localStorage.setItem("recording", JSON.stringify(Recording));
+    //localStorage.setItem("recording", JSON.stringify(Recording));
     document.getElementsByClassName("stop-record")[0].style.display = "none";
     document.getElementsByClassName("record")[0].style.display = "block";
     const recordingString = JSON.stringify(Recording);

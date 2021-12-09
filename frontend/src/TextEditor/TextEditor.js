@@ -273,15 +273,6 @@ function TextEditor(props) {
     frame.write("");
     frame.write(srcDoc);
     frame.close();
-    var fra =
-      document.getElementsByClassName("outputiframe")[0].contentDocument;
-    fra.addEventListener("click", function () {
-      console.log("clicked!");
-    });
-
-    fra.addEventListener("mousemove", function () {
-      console.log("mousemove");
-    });
   }, [srcDoc]);
 
   return (

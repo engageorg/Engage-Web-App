@@ -407,7 +407,94 @@ export default function Video(props) {
           document.getElementsByClassName("canvas_text")[0].value = event.value;  
           document.getElementsByClassName("canvas_text")[0].dispatchEvent(eve); 
         }
-      } else if(event.type === "dblclick"){
+      }
+      else if (event.type === "mousedown") {
+        let eve = new MouseEvent("mousedown", {
+          clientX: event.clientX,
+          clientY: event.clientY,
+          ctrlKey: event.ctrlKey,
+          offsetX: event.offsetX,
+          offsetY: event.offsetY,
+          pageX: event.pageX,
+          bubbles: event.bubbles,
+          button: event.button,
+          pageY: event.pageY,
+          screenX: event.screenX,
+          screenY: event.screenY,
+          shiftKey: event.shiftKey,
+          target: event.target.className,
+          tiltX: event.tiltX,
+          tiltY: event.tiltY,
+          timeStamp: event.timeStamp,
+          toElement: event.toElement,
+          twist: event.twist,
+          type: event.type,
+          width: event.width,
+          x: event.x,
+          y: event.y,
+        });
+        if (document.getElementsByClassName(event.target)[0])
+          document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
+          //document.getElementsByClassName(event.target)[0].select()
+        }
+      else if (event.type === "mouseup") {
+        let eve = new MouseEvent("mouseup", {
+          clientX: event.clientX,
+          clientY: event.clientY,
+          ctrlKey: event.ctrlKey,
+          bubbles: event.bubbles,
+          button: event.button,
+          offsetX: event.offsetX,
+          offsetY: event.offsetY,
+          pageX: event.pageX,
+          pageY: event.pageY,
+          screenX: event.screenX,
+          screenY: event.screenY,
+          shiftKey: event.shiftKey,
+          target: event.target.className,
+          tiltX: event.tiltX,
+          tiltY: event.tiltY,
+          timeStamp: event.timeStamp,
+          toElement: event.toElement,
+          twist: event.twist,
+          type: event.type,
+          width: event.width,
+          x: event.x,
+          y: event.y,
+        });
+        if (document.getElementsByClassName(event.target)[0])
+          document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
+      }
+      else if (event.type === "mousemove") {
+        let eve = new MouseEvent("mousemove", {
+          clientX: event.clientX,
+          clientY: event.clientY,
+          ctrlKey: event.ctrlKey,
+          offsetX: event.offsetX,
+          offsetY: event.offsetY,
+          pageX: event.pageX,
+          bubbles: event.bubbles,
+          button: event.button,
+          pageY: event.pageY,
+          screenX: event.screenX,
+          screenY: event.screenY,
+          shiftKey: event.shiftKey,
+          target: event.target.className,
+          tiltX: event.tiltX,
+          tiltY: event.tiltY,
+          timeStamp: event.timeStamp,
+          toElement: event.toElement,
+          twist: event.twist,
+          type: event.type,
+          width: event.width,
+          x: event.x,
+          y: event.y,
+        });
+        console.log(event.target)
+        if (document.getElementsByClassName(event.target)[0])
+          document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
+      }
+      else if(event.type === "dblclick"){
         let eve = new PointerEvent("dblclick", {
           bubbles: true,
           cancelable: true,
