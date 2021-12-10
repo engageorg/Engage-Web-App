@@ -156,6 +156,15 @@ function TextEditor(props) {
         }, waitTime);
       });
 
+      document
+      .getElementsByClassName("code_text")[0]
+      .addEventListener("click", function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          dispatch(setSrcDocs());
+        }, waitTime);
+      });
+
     document.addEventListener("keydown", function (e) {
       console.log(e);
     });
