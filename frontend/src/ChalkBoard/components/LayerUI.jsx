@@ -508,7 +508,12 @@ const LayerUI = ({
             isMobile={isMobile}
           />
         </FixedSideContainer>
-        <FixedSideContainer side="right">
+        <FixedSideContainer side="right" className={clsx(
+            "zen-mode-transition",
+            {
+              "transition-right disable-pointerEvents": zenModeEnabled,
+            })}>
+            <Stack.Row>
           <Section heading="shapes">
             {(heading) => (
               <Stack.Row gap={4} align="start">
@@ -546,6 +551,16 @@ const LayerUI = ({
               </Stack.Row>
             )}
           </Section>
+          <Stack.Col
+            gap={4}
+            className={clsx({ "disable-pointerEvents": zenModeEnabled })}
+            >
+            {/* {viewModeEnabled
+              ? renderViewModeCanvasActions()
+              : renderCanvasActions()} */}
+            {shouldRenderSelectedShapeActions && renderSelectedShapeActions()}
+          </Stack.Col>
+          </Stack.Row>
         </FixedSideContainer>
       </>
     );
