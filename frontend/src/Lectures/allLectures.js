@@ -2,6 +2,7 @@ import React , {useEffect, useLayoutEffect, useState} from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import Card from '../Card/card'
+import axios from "axios";
 function Preloader(){
     return(
       <div className = "loader">
@@ -54,12 +55,10 @@ function AllLectures() {
     let lecturesArray = []
     const [isLoading, setLoading] = useState(false)
     useEffect(() => {
-        firebase.firestore().collection("recordIndex").orderBy("createdAt", 'desc')
-        .limit(10).get().then((result) => {
-            result.forEach((doc) => {
-                lecturesArray.push(doc.data())
-            })
-            setLectures(lecturesArray)
+        console.log("WROING")
+        axios.get("http://localhost:5000/savelecture").then(result => {
+            console.log(result.data)
+            setLectures(result.data)
             setLoading(true)
         })
     }, [])

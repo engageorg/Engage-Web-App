@@ -445,63 +445,21 @@ export default function Recorder(props) {
     // upload recording
     const recordingString = JSON.stringify(Recording);
     console.log(Recording);
-    firebase
-      .firestore()
-      .collection("events")
-      .add({
-        recordingString,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      const lectureData = {
+        recording: recordingString,
+        audio: audioString,
         name: props.location.state.lectureName,
-        creator: props.location.state.lectureCreator,
         type: props.location.state.lectureType,
+        creator: props.location.state.lectureCreator,
+        language : props.location.state.languageType
+      };
+      axios.post("http://localhost:5000/savelecture", {
+        lectureData,
+      }).then(response => {
+        if(response.data) {
+          alert("Lecture Saved")
+        }
       })
-      .then((result) => {
-        localStorage.setItem("recordingId", JSON.stringify(result.id));
-        firebase
-          .firestore()
-          .collection("recordIndex")
-          .add({
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            name: props.location.state.lectureName,
-            type: props.location.state.lectureType,
-            creator: props.location.state.lectureCreator,
-            language: language,
-            id: result.id,
-          })
-          .then((result) => {
-            console.log("Recording Tally Saved");
-          });
-        console.log("Recording Saved");
-        var storageRef = firebase.storage().ref();
-
-        const id = JSON.parse(localStorage.getItem("recordingId"));
-        localStorage.removeItem("recordingId");
-        const lectureData = {
-          recording: recordingString,
-          audio: audioString,
-        };
-        var audioRef = storageRef.child(id);
-        var imageRef = storageRef.child(`/images/${id}`);
-        audioRef
-          .putString(audioString, "data_url")
-          .then((snapshot) => {
-            alert("Audio saved!");
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-          imageRef
-          .put(file)
-          .then((snapshot) => {
-            console.log("THUMNAIL SAVED")
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-        axios.post("http://localhost:5000/savedata", {
-          lectureData,
-        });
-      });
   }
 
   function handleStop(e) {

@@ -18,6 +18,7 @@ import "firebase/storage";
 import "./style.css";
 import ChalkBoard from "../ChalkBoard/index";
 import img from "../assets/Gear-0.2s-200px.png";
+import axios from "axios";
 
 function Preloader() {
   return (
@@ -54,38 +55,11 @@ export default function Video(props) {
     var paused = false;
 
     localStorage.setItem("lastSessionTimeStamp", JSON.stringify(offsetPlay));
-
-    // fetch recording from local storage
     let recording = { events: [] };
-
-    // fetch from firebase collection
-    firebase
-      .firestore()
-      .collection("events")
-      .where(firebase.firestore.FieldPath.documentId(), "==", id)
-      .get()
-      .then((snap) => {
-        snap.forEach((doc) => {
-          console.log(doc.data());
-          recording = JSON.parse(doc.data().recordingString);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    // fetch from cloud storage
-    var storageRef = firebase.storage().ref();
-    storageRef
-      .child(id)
-      .getDownloadURL()
-      .then((url) => {
-        audioPlayer.src = url;
-        localStorage.setItem("url", url);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    axios.get(`http://localhost:5000/savelecture/${id}`).then(result => {
+      recording =JSON.parse(result.data.recordingString)
+      audioPlayer.src = result.data.audio
+    })
 
     //fake cursor for playing, create and append
     const fakeCursor = document.createElement("div");

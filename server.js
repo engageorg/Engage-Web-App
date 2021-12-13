@@ -1,6 +1,7 @@
 const api = require('./routes/api');
 const path = require('path')
 const savedata = require('./routes/saveFile')
+const savelecture = require('./routes/saveLecture')
 const express = require('express');
 const { off } = require('process');
 const app = require('express')()
@@ -11,27 +12,30 @@ const io = require('socket.io')(http, {
   }
 })
 
-require('dotenv').config()
-let offer
-const port = process.env.PORT || 5000;
-app.use(express.json({limit: '50mb'}));
-app.use(express.json());
-//app.use(express.json({limit: '50mb'}));
-//handle CORS related issues that you might face when trying to access the API from different domains during development and testing:
+require('dotenv').config();
+
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
+
+let offer
+const port = process.env.PORT || 5000;
+app.use(express.json({limit: '50mb'}));
+app.use(express.json());
+//app.use(express.json({limit: '50mb'}));
+//handle CORS related issues that you might face when trying to access the API from different domains during development and testing:
+
 if (true) {
   app.use(express.static(path.join(__dirname, '/frontendStatic')))
 
-  app.get('*', (req, res) =>
+  app.get('/', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'frontendStatic', 'index.html'))
   )
 }
-
 
 io.on('connection', socket => {
 
@@ -65,6 +69,7 @@ io.on('connection', socket => {
 
 app.use('/api', api);
 app.use('/savedata', savedata);
+app.use('/savelecture', savelecture);
 
 
 http.listen(port, () => {
