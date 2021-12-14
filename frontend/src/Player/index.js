@@ -12,9 +12,6 @@ import {
   outputModalFalse,
   setSrcDocs,
 } from "../actions";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
 import "./style.css";
 import ChalkBoard from "../ChalkBoard/index";
 import img from "../assets/Gear-0.2s-200px.png";
@@ -251,35 +248,12 @@ export default function Video(props) {
     function drawEvent(event, fakeCursor) {
       if (event.type === "pointerdown") {
         let eve = new PointerEvent("pointerdown", {
-          altKey: event.altKey,
-          altitudeAngle: event.altitudeAngle,
-          azimuthAngle: event.azimuthAngle,
           bubbles: event.bubbles,
-          button: event.button,
-          buttons: event.buttons,
-          cancelBubble: event.cancelBubble,
-          cancelable: event.cancelable,
           clientX: event.clientX,
           clientY: event.clientY,
-          ctrlKey: event.ctrlKey,
           offsetX: event.offsetX,
           offsetY: event.offsetY,
-          pageX: event.pageX,
-          pageY: event.pageY,
           pointerType: event.pointerType,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          shiftKey: event.shiftKey,
-          target: event.target.className,
-          tiltX: event.tiltX,
-          tiltY: event.tiltY,
-          timeStamp: event.timeStamp,
-          toElement: event.toElement,
-          twist: event.twist,
-          type: event.type,
-          width: event.width,
-          x: event.x,
-          y: event.y,
         });
         console.log(event.target);
         if (document.getElementsByClassName(event.target)[0])
@@ -287,35 +261,12 @@ export default function Video(props) {
       } else if (event.type === "pointermove") {
         // TODO: Add e.buttons too
         let eve = new PointerEvent("pointermove", {
-          altKey: event.altKey,
-          altitudeAngle: event.altitudeAngle,
-          azimuthAngle: event.azimuthAngle,
           bubbles: event.bubbles,
-          button: event.button,
-          buttons: event.buttons,
-          cancelBubble: event.cancelBubble,
-          cancelable: event.cancelable,
           clientX: event.clientX,
           clientY: event.clientY,
-          ctrlKey: event.ctrlKey,
           offsetX: event.offsetX,
           offsetY: event.offsetY,
-          pageX: event.pageX,
-          pageY: event.pageY,
           pointerType: event.pointerType,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          shiftKey: event.shiftKey,
-          target: event.target.className,
-          tiltX: event.tiltX,
-          tiltY: event.tiltY,
-          timeStamp: event.timeStamp,
-          toElement: event.toElement,
-          twist: event.twist,
-          type: event.type,
-          width: event.width,
-          x: event.x,
-          y: event.y,
         });
 
         if (document.getElementsByClassName(event.target)[0]) {
@@ -333,35 +284,12 @@ export default function Video(props) {
         }
       } else if (event.type === "pointerup") {
         let eve = new PointerEvent("pointerup", {
-          altKey: event.altKey,
-          altitudeAngle: event.altitudeAngle,
-          azimuthAngle: event.azimuthAngle,
           bubbles: event.bubbles,
-          button: event.button,
-          buttons: event.buttons,
-          cancelBubble: event.cancelBubble,
-          cancelable: event.cancelable,
           clientX: event.clientX,
           clientY: event.clientY,
-          ctrlKey: event.ctrlKey,
           offsetX: event.offsetX,
           offsetY: event.offsetY,
-          pageX: event.pageX,
-          pageY: event.pageY,
           pointerType: event.pointerType,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          shiftKey: event.shiftKey,
-          target: event.target.className,
-          tiltX: event.tiltX,
-          tiltY: event.tiltY,
-          timeStamp: event.timeStamp,
-          toElement: event.toElement,
-          twist: event.twist,
-          type: event.type,
-          width: event.width,
-          x: event.x,
-          y: event.y,
         });
         if (document.getElementsByClassName(event.target)[0])
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
@@ -386,26 +314,10 @@ export default function Video(props) {
         let eve = new MouseEvent("mousedown", {
           clientX: event.clientX,
           clientY: event.clientY,
-          ctrlKey: event.ctrlKey,
           offsetX: event.offsetX,
           offsetY: event.offsetY,
-          pageX: event.pageX,
           bubbles: event.bubbles,
           button: event.button,
-          pageY: event.pageY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          shiftKey: event.shiftKey,
-          target: event.target.className,
-          tiltX: event.tiltX,
-          tiltY: event.tiltY,
-          timeStamp: event.timeStamp,
-          toElement: event.toElement,
-          twist: event.twist,
-          type: event.type,
-          width: event.width,
-          x: event.x,
-          y: event.y,
         });
         if (document.getElementsByClassName(event.target)[0])
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
@@ -415,26 +327,10 @@ export default function Video(props) {
         let eve = new MouseEvent("mouseup", {
           clientX: event.clientX,
           clientY: event.clientY,
-          ctrlKey: event.ctrlKey,
-          bubbles: event.bubbles,
-          button: event.button,
           offsetX: event.offsetX,
           offsetY: event.offsetY,
-          pageX: event.pageX,
-          pageY: event.pageY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          shiftKey: event.shiftKey,
-          target: event.target.className,
-          tiltX: event.tiltX,
-          tiltY: event.tiltY,
-          timeStamp: event.timeStamp,
-          toElement: event.toElement,
-          twist: event.twist,
-          type: event.type,
-          width: event.width,
-          x: event.x,
-          y: event.y,
+          bubbles: event.bubbles,
+          button: event.button,
         });
         if (document.getElementsByClassName(event.target)[0])
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
@@ -443,26 +339,10 @@ export default function Video(props) {
         let eve = new MouseEvent("mousemove", {
           clientX: event.clientX,
           clientY: event.clientY,
-          ctrlKey: event.ctrlKey,
           offsetX: event.offsetX,
           offsetY: event.offsetY,
-          pageX: event.pageX,
           bubbles: event.bubbles,
           button: event.button,
-          pageY: event.pageY,
-          screenX: event.screenX,
-          screenY: event.screenY,
-          shiftKey: event.shiftKey,
-          target: event.target.className,
-          tiltX: event.tiltX,
-          tiltY: event.tiltY,
-          timeStamp: event.timeStamp,
-          toElement: event.toElement,
-          twist: event.twist,
-          type: event.type,
-          width: event.width,
-          x: event.x,
-          y: event.y,
         });
         console.log(event.target)
         if (document.getElementsByClassName(event.target)[0])

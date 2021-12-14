@@ -12,25 +12,11 @@ import Video from "./Player";
 import LiveClassEmitter from "./LiveClasses/liveClassEmitter";
 import LiveClassReceiver from "./LiveClasses/liveClassReceiver";
 import AllLectures from "./Lectures/allLectures";
-import firebase from "firebase/app";
 import allReducer from "./reducers";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import "./App.css";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAp2cQvNNp8fUKOv6kO_7wR5IsKROCoh14",
-  authDomain: "engage-6ef42.firebaseapp.com",
-  projectId: "engage-6ef42",
-  storageBucket: "engage-6ef42.appspot.com",
-  messagingSenderId: "27842359842",
-  appId: "1:27842359842:web:e8f5b15f6a86ac66fa507b",
-  measurementId: "G-EVEY2DP36T",
-};
-
-if (firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig);
-}
 
 const middleware = [thunk];
 
