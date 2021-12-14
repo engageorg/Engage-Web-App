@@ -70,6 +70,7 @@ function MultiFile(props) {
       for (let i = 0; i < words.length; i++) {
         code = code + words[i];
       }
+      setOutputValue("Wait ... ")
       dispatch(runCode(language, code, inputValue)).then((e) => {
         setOutputValue(e.data.output);
         const data = {
