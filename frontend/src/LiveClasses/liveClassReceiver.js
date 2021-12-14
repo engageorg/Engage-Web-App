@@ -16,6 +16,7 @@ import * as io from "socket.io-client";
 import { useParams } from "react-router";
 import img from "../assets/Gear-0.2s-200px.png";
 import { motion } from "framer-motion"
+const env = process.env.NODE_ENV; // current environment
 
 function Preloader() {
   return (
@@ -31,6 +32,13 @@ function Preloader() {
   );
 }
 
+let socketUrl;
+if (env === "development") {
+  socketUrl = "http://localhost:5000";
+} else {
+  socketUrl = "https://fierce-reef-05156.herokuapp.com";
+}
+
 function LiveClassReceiver() {
   const { classid, type } = useParams();
   const name = type.slice(0, 3);
@@ -44,7 +52,7 @@ function LiveClassReceiver() {
   const [refresh, setRefresh] = useState("");
   const userVideo = useRef();
   //while in development mode change document.location.origin to http://localhost:5000
-  socketRef.current = io.connect(document.location.origin);
+  socketRef.current = io.connect(socketUrl);
   function handleButtonEvents(target) {
     switch (target) {
       case "outputtext":
@@ -98,70 +106,25 @@ function LiveClassReceiver() {
       document.dispatchEvent(eve);
       if (data.type === "pointerdown") {
         let eve = new PointerEvent("pointerdown", {
-          altKey: data.altKey,
-          altitudeAngle: data.altitudeAngle,
-          azimuthAngle: data.azimuthAngle,
           bubbles: data.bubbles,
-          button: data.button,
-          buttons: data.buttons,
-          cancelBubble: data.cancelBubble,
-          cancelable: data.cancelable,
           clientX: data.clientX,
           clientY: data.clientY,
-          ctrlKey: data.ctrlKey,
           offsetX: data.offsetX,
           offsetY: data.offsetY,
-          pageX: data.pageX,
-          pageY: data.pageY,
           pointerType: data.pointerType,
-          screenX: data.screenX,
-          screenY: data.screenY,
-          shiftKey: data.shiftKey,
-          target: data.target.className,
-          tiltX: data.tiltX,
-          tiltY: data.tiltY,
-          timeStamp: data.timeStamp,
-          toElement: data.toElement,
-          twist: data.twist,
-          type: data.type,
-          width: data.width,
-          x: data.x,
-          y: data.y,
         });
         if (document.getElementsByClassName(data.target)[0])
           document.getElementsByClassName(data.target)[0].dispatchEvent(eve);
       } else if (data.type === "pointermove") {
         let eve = new PointerEvent("pointermove", {
-          altKey: data.altKey,
-          altitudeAngle: data.altitudeAngle,
-          azimuthAngle: data.azimuthAngle,
           bubbles: data.bubbles,
-          button: data.button,
-          buttons: data.buttons,
-          cancelBubble: data.cancelBubble,
-          cancelable: data.cancelable,
           clientX: data.clientX,
           clientY: data.clientY,
-          ctrlKey: data.ctrlKey,
           offsetX: data.offsetX,
           offsetY: data.offsetY,
-          pageX: data.pageX,
-          pageY: data.pageY,
           pointerType: data.pointerType,
-          screenX: data.screenX,
-          screenY: data.screenY,
-          shiftKey: data.shiftKey,
-          target: data.target.className,
-          tiltX: data.tiltX,
-          tiltY: data.tiltY,
-          timeStamp: data.timeStamp,
-          toElement: data.toElement,
-          twist: data.twist,
-          type: data.type,
-          width: data.width,
-          x: data.x,
-          y: data.y,
         });
+
         if (document.getElementsByClassName(data.target)[0]) {
           document.getElementsByClassName(data.target)[0].dispatchEvent(eve);
         }
@@ -172,39 +135,53 @@ function LiveClassReceiver() {
         }
       } else if (data.type === "pointerup") {
         let eve = new PointerEvent("pointerup", {
-          altKey: data.altKey,
-          altitudeAngle: data.altitudeAngle,
-          azimuthAngle: data.azimuthAngle,
           bubbles: data.bubbles,
-          button: data.button,
-          buttons: data.buttons,
-          cancelBubble: data.cancelBubble,
-          cancelable: data.cancelable,
           clientX: data.clientX,
           clientY: data.clientY,
-          ctrlKey: data.ctrlKey,
           offsetX: data.offsetX,
           offsetY: data.offsetY,
-          pageX: data.pageX,
-          pageY: data.pageY,
           pointerType: data.pointerType,
-          screenX: data.screenX,
-          screenY: data.screenY,
-          shiftKey: data.shiftKey,
-          target: data.target.className,
-          tiltX: data.tiltX,
-          tiltY: data.tiltY,
-          timeStamp: data.timeStamp,
-          toElement: data.toElement,
-          twist: data.twist,
-          type: data.type,
-          width: data.width,
-          x: data.x,
-          y: data.y,
         });
         if (document.getElementsByClassName(data.target)[0])
           document.getElementsByClassName(data.target)[0].dispatchEvent(eve);
-      } else if (data.type === "click") {
+      }
+      else if (data.type === "mousedown") {
+        let eve = new MouseEvent("mousedown", {
+          clientX: data.clientX,
+          clientY: data.clientY,
+          offsetX: data.offsetX,
+          offsetY: data.offsetY,
+          bubbles: data.bubbles,
+          button: data.button,
+        });
+        if (document.getElementsByClassName(data.target)[0])
+          document.getElementsByClassName(data.target)[0].dispatchEvent(eve);
+      } 
+      else if (data.type === "mousemove") {
+        let eve = new MouseEvent("mousemove", {
+          clientX: data.clientX,
+          clientY: data.clientY,
+          offsetX: data.offsetX,
+          offsetY: data.offsetY,
+          bubbles: data.bubbles,
+          button: data.button,
+        });
+        if (document.getElementsByClassName(data.target)[0])
+          document.getElementsByClassName(data.target)[0].dispatchEvent(eve);
+      } 
+      else if (data.type === "mouseup") {
+        let eve = new MouseEvent("mouseup", {
+          clientX: data.clientX,
+          clientY: data.clientY,
+          offsetX: data.offsetX,
+          offsetY: data.offsetY,
+          bubbles: data.bubbles,
+          button: data.button,
+        });
+        if (document.getElementsByClassName(data.target)[0])
+          document.getElementsByClassName(data.target)[0].dispatchEvent(eve);
+      }  
+      else if (data.type === "click") {
         if (document.getElementsByClassName(data.target)[0] !== undefined) {
           let clickEvent = new MouseEvent("click", {
             pageX: data.x,

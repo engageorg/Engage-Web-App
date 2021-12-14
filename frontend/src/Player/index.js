@@ -321,7 +321,6 @@ export default function Video(props) {
         });
         if (document.getElementsByClassName(event.target)[0])
           document.getElementsByClassName(event.target)[0].dispatchEvent(eve);
-          //document.getElementsByClassName(event.target)[0].select()
         }
       else if (event.type === "mouseup") {
         let eve = new MouseEvent("mouseup", {

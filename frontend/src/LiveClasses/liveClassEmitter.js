@@ -15,6 +15,12 @@ if (env === "development") {
 } else {
   url = "https://fierce-reef-05156.herokuapp.com/receiver/";
 }
+let socketUrl;
+if (env === "development") {
+  socketUrl = "http://localhost:5000";
+} else {
+  socketUrl = "https://fierce-reef-05156.herokuapp.com";
+}
 
 var constraints = {
   audio: {
@@ -49,7 +55,7 @@ function LiveClassEmitter() {
   const socketRef = useRef();
   const [stream, setStream] = useState();
   //while in development mode change document.location.origin to http://localhost:5000
-  socketRef.current = io.connect(document.location.origin);
+  socketRef.current = io.connect(socketUrl);
   // Record each type of event
   const myVideo = useRef();
   const userVideo = useRef();
@@ -75,35 +81,14 @@ function LiveClassEmitter() {
       eventName: "pointerup",
       handler: function handleMouseMove(e) {
         const data = {
-          altKey: e.altKey,
-          altitudeAngle: e.altitudeAngle,
-          azimuthAngle: e.azimuthAngle,
+          type: e.type,
           bubbles: e.bubbles,
-          button: e.button,
-          buttons: e.buttons,
-          cancelBubble: e.cancelBubble,
-          cancelable: e.cancelable,
           clientX: e.clientX,
           clientY: e.clientY,
-          ctrlKey: e.ctrlKey,
           offsetX: e.offsetX,
           offsetY: e.offsetY,
-          pageX: e.pageX,
-          pageY: e.pageY,
           pointerType: e.pointerType,
-          screenX: e.screenX,
-          screenY: e.screenY,
-          shiftKey: e.shiftKey,
           target: e.target.className,
-          tiltX: e.tiltX,
-          tiltY: e.tiltY,
-          timeStamp: e.timeStamp,
-          toElement: e.toElement,
-          twist: e.twist,
-          type: e.type,
-          width: e.width,
-          x: e.x,
-          y: e.y,
         };
         sendData(data);
       },
@@ -112,35 +97,14 @@ function LiveClassEmitter() {
       eventName: "pointerdown",
       handler: function handleMouseMove(e) {
         const data = {
-          altKey: e.altKey,
-          altitudeAngle: e.altitudeAngle,
-          azimuthAngle: e.azimuthAngle,
+          type: "pointerdown",
           bubbles: e.bubbles,
-          button: e.button,
-          buttons: e.buttons,
-          cancelBubble: e.cancelBubble,
-          cancelable: e.cancelable,
           clientX: e.clientX,
           clientY: e.clientY,
-          ctrlKey: e.ctrlKey,
           offsetX: e.offsetX,
           offsetY: e.offsetY,
-          pageX: e.pageX,
-          pageY: e.pageY,
           pointerType: e.pointerType,
-          screenX: e.screenX,
-          screenY: e.screenY,
-          shiftKey: e.shiftKey,
           target: e.target.className,
-          tiltX: e.tiltX,
-          tiltY: e.tiltY,
-          timeStamp: e.timeStamp,
-          toElement: e.toElement,
-          twist: e.twist,
-          type: e.type,
-          width: e.width,
-          x: e.x,
-          y: e.y,
         };
         sendData(data);
       },
@@ -149,37 +113,72 @@ function LiveClassEmitter() {
       eventName: "pointermove",
       handler: function handleMouseMove(e) {
         const data = {
-          altKey: e.altKey,
-          altitudeAngle: e.altitudeAngle,
-          azimuthAngle: e.azimuthAngle,
+          type: e.type,
           bubbles: e.bubbles,
-          button: e.button,
-          buttons: e.buttons,
-          cancelBubble: e.cancelBubble,
-          cancelable: e.cancelable,
           clientX: e.clientX,
           clientY: e.clientY,
-          ctrlKey: e.ctrlKey,
           offsetX: e.offsetX,
           offsetY: e.offsetY,
-          pageX: e.pageX,
-          pageY: e.pageY,
           pointerType: e.pointerType,
-          screenX: e.screenX,
-          screenY: e.screenY,
-          shiftKey: e.shiftKey,
           target: e.target.className,
-          tiltX: e.tiltX,
-          tiltY: e.tiltY,
-          timeStamp: e.timeStamp,
-          toElement: e.toElement,
-          twist: e.twist,
-          type: e.type,
-          width: e.width,
           x: e.x,
           y: e.y,
         };
         sendData(data);
+      },
+    },
+    {
+      eventName: "mousedown",
+      handler: function handleMouseMove(e) {
+        const data = {
+          clientX: e.clientX,
+          clientY: e.clientY,
+          offsetX: e.offsetX,
+          offsetY: e.offsetY,
+          bubbles: e.bubbles,
+          button: e.button,
+          target: e.target.className,
+          type: e.type,
+        };
+        if(e.target.className === 'gutter gutter-horizontal'){
+          sendData(data);
+        }
+      },
+    },
+    {
+      eventName: "mousemove",
+      handler: function handleMouseMove(e) {
+        const data = {
+          clientX: e.clientX,
+          clientY: e.clientY,
+          offsetX: e.offsetX,
+          offsetY: e.offsetY,
+          bubbles: e.bubbles,
+          button: e.button,
+          target: e.target.className,
+          type: e.type,
+        };
+        if(e.target.className === 'gutter gutter-horizontal'){
+          sendData(data);
+        }
+      },
+    },
+    {
+      eventName: "mouseup",
+      handler: function handleMouseMove(e) {
+        const data = {
+          clientX: e.clientX,
+          clientY: e.clientY,
+          offsetX: e.offsetX,
+          offsetY: e.offsetY,
+          bubbles: e.bubbles,
+          button: e.button,
+          target: e.target.className,
+          type: e.type,
+        };
+        if(e.target.className === 'gutter gutter-horizontal'){
+          sendData(data);
+        }
       },
     },
     {
