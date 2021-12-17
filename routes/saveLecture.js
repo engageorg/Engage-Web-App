@@ -67,14 +67,15 @@ router.get("/:id", (req,res) => {
 
 
 router.post("/", (req,res) => {
-    console.log(req.body.lectureData.audio)
+    //console.log(req.body.lectureData)
     let id
-    const recordingString = (req.body.lectureData.recording);
+    const recordingString = req.body.lectureData.recording;
     const audioString = req.body.lectureData.audio;
-    const name= (req.body.lectureData.name)
-    const creator= (req.body.lectureData.creator)
-    const type= (req.body.lectureData.type)
-    const language= (req.body.lectureData.language)
+    const name= req.body.lectureData.name
+    const creator= req.body.lectureData.creator
+    const type= req.body.lectureData.type
+    const language= req.body.lectureData.language
+    const imageString= req.body.lectureData.image
     database
     .collection("events")
     .add({
@@ -102,8 +103,8 @@ router.post("/", (req,res) => {
         });
       console.log("Recording Saved");
       var storageRef = firebase.storage().ref();
-      var audioRef = storageRef.child(id);
-    //   var imageRef = storageRef.child(`/images/${id}`);
+      var audioRef = storageRef.child(`/audio/${id}`);
+      var imageRef = storageRef.child(`/images/${id}`);
       audioRef
         .putString(audioString, "data_url")
         .then((snapshot) => {
@@ -112,14 +113,15 @@ router.post("/", (req,res) => {
         .catch((e) => {
           console.log(e);
         });
-    //     imageRef
-    //     .put(file)
-    //     .then((snapshot) => {
-    //       console.log("THUMNAIL SAVED")
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
+        //console.log(imageString)
+        imageRef
+        .putString(imageString,  "data_url")
+        .then((snapshot) => {
+          console.log("THUMNAIL SAVED")
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     //   axios.post("http://localhost:5000/savelecture", {
     //     lectureData,
     //   });

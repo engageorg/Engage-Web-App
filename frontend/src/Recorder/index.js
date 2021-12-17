@@ -15,6 +15,7 @@ export default function Recorder(props) {
   var lastMouse = { x: 0, y: 0 };
   var lastKey = "";
   var audioString;
+  var imageString;
   let fileName;
   if (name === "dsa") {
     fileName = language;
@@ -344,7 +345,8 @@ export default function Recorder(props) {
         name: props.location.state.lectureName,
         type: props.location.state.lectureType,
         creator: props.location.state.lectureCreator,
-        language : props.location.state.languageType
+        language : props.location.state.languageType,
+        image:imageString
       };
       axios.post("http://localhost:5000/savelecture", {
         lectureData,
@@ -354,7 +356,13 @@ export default function Recorder(props) {
         }
       })
   }
-
+  function thumnailUpload(e) {
+    var reader = new FileReader();
+    reader.readAsDataURL(e);
+    reader.onloadend = () => {
+      imageString = reader.result
+    };
+  }
   function handleStop(e) {
     e.preventDefault();
     stopRecording();
@@ -370,6 +378,7 @@ export default function Recorder(props) {
             className="fas fa-microphone-slash stop-record"
             onClick={handleStop}
           ></i>
+          <input type = 'file' className="thumnailImage" onChange={(e) => thumnailUpload(e.target.files[0])}/>
         </div>
         <div className="upload-button">
           <i class="fas fa-file-upload record" onClick={uploadRecording}></i>
