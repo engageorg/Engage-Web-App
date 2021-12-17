@@ -1,7 +1,7 @@
 import { CODES, KEYS } from "../keys";
 import { isWritableElement, getFontString, viewportCoordsToSceneCoords, getFontFamilyString, } from "../utils";
 import Scene from "../scene/Scene";
-import { isTextElement } from "./typeChecks";
+import { isBoundToContainer, isTextElement } from "./typeChecks";
 import { CLASSES, PADDING } from "../constants";
 import { mutateElement } from "./mutateElement";
 import { getApproxLineHeight, getBoundTextElementId, wrapText, } from "./textElement";
@@ -148,8 +148,11 @@ export const textWysiwyg = ({ id, appState, onChange, onSubmit, getViewportCoord
     editable.wrap = "off";
     editable.classList.add("excalidraw-wysiwyg");
     let whiteSpace = "pre";
-    if (isTextElement(element)) {
-        whiteSpace = element.containerId ? "pre-wrap" : "pre";
+    let wordBreak = "normal";
+
+    if (isBoundToContainer(element)) {
+      whiteSpace = "pre-wrap";
+      wordBreak = "break-word";
     }
     Object.assign(editable.style, {
         position: "absolute",
@@ -165,7 +168,7 @@ export const textWysiwyg = ({ id, appState, onChange, onSubmit, getViewportCoord
         overflow: "hidden",
         // must be specified because in dark mode canvas creates a stacking context
         zIndex: "var(--zIndex-wysiwyg)",
-        wordBreak: "break-word",
+        wordBreak,
         // prevent line wrapping (`whitespace: nowrap` doesn't work on FF)
         whiteSpace,
         overflowWrap: "break-word",
@@ -173,8 +176,10 @@ export const textWysiwyg = ({ id, appState, onChange, onSubmit, getViewportCoord
     updateWysiwygStyle();
     if (onChange) {
         editable.oninput = () => {
-            editable.style.height = "auto";
-            editable.style.height = `${editable.scrollHeight}px`;
+            if (isBoundToContainer(element)) {
+                editable.style.height = "auto";
+                editable.style.height = `${editable.scrollHeight}px`;
+              }
             onChange(normalizeText(editable.value));
         };
     }
@@ -305,10 +310,10 @@ export const textWysiwyg = ({ id, appState, onChange, onSubmit, getViewportCoord
                 if (isTextElement(updateElement) && updateElement.containerId) {
                     if (editable.value) {
                         mutateElement(updateElement, {
-                            y,
+                            y: y + appState.offsetTop,
                             height: Number(editable.style.height.slice(0, -2)),
                             width: Number(editable.style.width.slice(0, -2)),
-                            x,
+                            x: x + appState.offsetLeft,
                         });
                         const boundTextElementId = getBoundTextElementId(container);
                         if (!boundTextElementId || boundTextElementId !== element.id) {

@@ -2791,7 +2791,10 @@ class App extends React.Component {
                     sceneX: x,
                     sceneY: y,
                 }, this.state);
-                return [viewportX, viewportY];
+                return [
+                    viewportX - this.state.offsetLeft,
+                    viewportY - this.state.offsetTop,
+                  ];
             },
             onChange: withBatchedUpdates((text) => {
                 updateElement(text, text, false, !element.containerId);
