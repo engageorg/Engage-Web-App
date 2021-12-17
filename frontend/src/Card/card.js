@@ -11,11 +11,12 @@ function Card(props) {
                 {props.lectures.map((lecture) => {
                     const id = lecture.id;
                     const type = `${lecture.type}${lecture.language}`;
+                    const thumbnail = lecture.imageThumnail
                     return(
                     <div key={lecture.id}>
                         <Link to = {`/player/${type}/${id}`}>
                         <div className="card">
-                        <div className="card__background"></div>
+                        <div className="card__background" style={{backgroundImage:`url(${thumbnail})`}}></div>
                         <div className="card__content">
                             <p className="card__category">{lecture.creator}</p>
                             <h3 className="card__heading">{lecture.name}</h3> 
