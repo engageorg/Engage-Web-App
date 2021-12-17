@@ -1,17 +1,20 @@
+import { ENCRYPTION_KEY_BITS } from "../constants";
 export const IV_LENGTH_BYTES = 12;
 export const createIV = () => {
     const arr = new Uint8Array(IV_LENGTH_BYTES);
     return window.crypto.getRandomValues(arr);
 };
-export const generateEncryptionKey = async () => {
+export const generateEncryptionKey = async (returnAs) => {
     const key = await window.crypto.subtle.generateKey({
         name: "AES-GCM",
-        length: 128,
+        length: ENCRYPTION_KEY_BITS,
     }, true, // extractable
     ["encrypt", "decrypt"]);
-    return (await window.crypto.subtle.exportKey("jwk", key)).k;
+    return (returnAs === "cryptoKey"
+        ? key
+        : (await window.crypto.subtle.exportKey("jwk", key)).k);
 };
-export const getImportedKey = (key, usage) => window.crypto.subtle.importKey("jwk", {
+export const getCryptoKey = (key, usage) => window.crypto.subtle.importKey("jwk", {
     alg: "A128GCM",
     ext: true,
     k: key,
@@ -19,11 +22,11 @@ export const getImportedKey = (key, usage) => window.crypto.subtle.importKey("jw
     kty: "oct",
 }, {
     name: "AES-GCM",
-    length: 128,
+    length: ENCRYPTION_KEY_BITS,
 }, false, // extractable
 [usage]);
 export const encryptData = async (key, data) => {
-    const importedKey = await getImportedKey(key, "encrypt");
+    const importedKey = typeof key === "string" ? await getCryptoKey(key, "encrypt") : key;
     const iv = createIV();
     const buffer = typeof data === "string"
         ? new TextEncoder().encode(data)
@@ -32,6 +35,8 @@ export const encryptData = async (key, data) => {
             : data instanceof Blob
                 ? await data.arrayBuffer()
                 : data;
+    // We use symmetric encryption. AES-GCM is the recommended algorithm and
+    // includes checks that the ciphertext has not been modified by an attacker.
     const encryptedBuffer = await window.crypto.subtle.encrypt({
         name: "AES-GCM",
         iv,
@@ -39,7 +44,7 @@ export const encryptData = async (key, data) => {
     return { encryptedBuffer, iv };
 };
 export const decryptData = async (iv, encrypted, privateKey) => {
-    const key = await getImportedKey(privateKey, "decrypt");
+    const key = await getCryptoKey(privateKey, "decrypt");
     return window.crypto.subtle.decrypt({
         name: "AES-GCM",
         iv,

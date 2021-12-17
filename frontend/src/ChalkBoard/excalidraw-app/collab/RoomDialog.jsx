@@ -66,13 +66,13 @@ const RoomDialog = ({ handleClose, activeRoomLink, username, onUsernameChange, o
                 {"share" in navigator ? (<ToolButton type="button" icon={getShareIcon()} title={t("labels.share")} aria-label={t("labels.share")} onClick={shareRoomLink}/>) : null}
                 <ToolButton type="button" icon={clipboard} title={t("labels.copy")} aria-label={t("labels.copy")} onClick={copyRoomLink}/>
               </Stack.Row>
-              <input value={activeRoomLink} readOnly={true} className="RoomDialog-link" ref={roomLinkInput} onPointerDown={selectInput}/>
+              <input type="text" value={activeRoomLink} readOnly={true} className="RoomDialog-link" ref={roomLinkInput} onPointerDown={selectInput}/>
             </div>
             <div className="RoomDialog-usernameContainer">
               <label className="RoomDialog-usernameLabel" htmlFor="username">
                 {t("labels.yourName")}
               </label>
-              <input id="username" value={username || ""} className="RoomDialog-username TextInput" onChange={(event) => onUsernameChange(event.target.value)} onKeyPress={(event) => event.key === "Enter" && handleClose()}/>
+              <input type="text" id="username" value={username || ""} className="RoomDialog-username TextInput" onChange={(event) => onUsernameChange(event.target.value)} onKeyPress={(event) => event.key === "Enter" && handleClose()}/>
             </div>
             <p>
               <span role="img" aria-hidden="true" className="RoomDialog-emoji">

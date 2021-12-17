@@ -1,8 +1,8 @@
-import { encryptAESGEM, } from "../data";
 import { BROADCAST, FILE_UPLOAD_TIMEOUT, SCENE } from "../app_constants";
 import { trackEvent } from "../../analytics";
 import { throttle } from "lodash";
 import { newElementWith } from "../../element/mutateElement";
+import { encryptData } from "../../data/encryption";
 class Portal {
     constructor(collab) {
         this.socket = null;
@@ -153,8 +153,8 @@ class Portal {
         if (this.isOpen()) {
             const json = JSON.stringify(data);
             const encoded = new TextEncoder().encode(json);
-            const encrypted = await encryptAESGEM(encoded, this.roomKey);
-            this.socket?.emit(volatile ? BROADCAST.SERVER_VOLATILE : BROADCAST.SERVER, this.roomId, encrypted.data, encrypted.iv);
+            const { encryptedBuffer, iv } = await encryptData(this.roomKey, encoded);
+            this.socket?.emit(volatile ? BROADCAST.SERVER_VOLATILE : BROADCAST.SERVER, this.roomId, encryptedBuffer, iv);
         }
     }
 }

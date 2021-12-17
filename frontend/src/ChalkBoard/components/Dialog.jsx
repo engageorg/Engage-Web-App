@@ -48,7 +48,7 @@ export const Dialog = (props) => {
         lastActiveElement.focus();
         props.onCloseRequest();
     };
-    return (<Modal className={clsx("Dialog", props.className)} labelledBy="dialog-title" maxWidth={props.small ? 550 : 800} onCloseRequest={onClose} theme={props.theme}>
+    return (<Modal className={clsx("Dialog", props.className)} labelledBy="dialog-title" maxWidth={props.small ? 550 : 800} onCloseRequest={onClose} theme={props.theme} closeOnClickOutside={props.closeOnClickOutside}>
       <Island ref={setIslandNode}>
         <h2 id={`${id}-dialog-title`} className="Dialog__title">
           <span className="Dialog__titleContent">{props.title}</span>

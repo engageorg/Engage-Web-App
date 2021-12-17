@@ -101,7 +101,7 @@ export const actionResetZoom = register({
             commitToHistory: false,
         };
     },
-    PanelComponent: ({ updateData, appState }) => (<Tooltip label={t("buttons.resetZoom")}>
+    PanelComponent: ({ updateData, appState }) => (<Tooltip label={t("buttons.resetZoom")} style={{ height: "100%" }}>
       <ToolButton type="button" className="reset-zoom-button" title={t("buttons.resetZoom")} aria-label={t("buttons.resetZoom")} onClick={() => {
             updateData(null);
         }} size="small">

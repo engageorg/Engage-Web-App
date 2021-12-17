@@ -22,7 +22,8 @@ const clipboardContainsElements = (contents) => {
     return false;
 };
 export const copyToClipboard = async (elements, appState, files) => {
-    const selectedElements = getSelectedElements(elements, appState);
+    // select binded text elements when copying
+    const selectedElements = getSelectedElements(elements, appState, true);
     const contents = {
         type: EXPORT_DATA_TYPES.excalidrawClipboard,
         elements: selectedElements,

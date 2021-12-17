@@ -35,7 +35,7 @@ export const actionCopyAsSvg = register({
                 commitToHistory: false,
             };
         }
-        const selectedElements = getSelectedElements(getNonDeletedElements(elements), appState);
+        const selectedElements = getSelectedElements(getNonDeletedElements(elements), appState, true);
         try {
             await exportCanvas("clipboard-svg", selectedElements.length
                 ? selectedElements
@@ -65,7 +65,7 @@ export const actionCopyAsPng = register({
                 commitToHistory: false,
             };
         }
-        const selectedElements = getSelectedElements(getNonDeletedElements(elements), appState);
+        const selectedElements = getSelectedElements(getNonDeletedElements(elements), appState, true);
         try {
             await exportCanvas("clipboard", selectedElements.length
                 ? selectedElements

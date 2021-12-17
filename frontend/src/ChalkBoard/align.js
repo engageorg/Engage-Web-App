@@ -1,5 +1,5 @@
 import { newElementWith } from "./element/mutateElement";
-import { getCommonBounds } from "./element";
+import { getCommonBoundingBox } from "./element/bounds";
 export const alignElements = (selectedElements, alignment) => {
     const groups = getMaximumGroups(selectedElements);
     const selectionBoundingBox = getCommonBoundingBox(selectedElements);
@@ -43,8 +43,4 @@ const calculateTranslation = (group, selectionBoundingBox, { axis, position }) =
         [axis]: (selectionBoundingBox[min] + selectionBoundingBox[max]) / 2 -
             (groupBoundingBox[min] + groupBoundingBox[max]) / 2,
     };
-};
-const getCommonBoundingBox = (elements) => {
-    const [minX, minY, maxX, maxY] = getCommonBounds(elements);
-    return { minX, minY, maxX, maxY };
 };

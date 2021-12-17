@@ -1,18 +1,18 @@
 import { alignElements } from "../align";
 import { AlignBottomIcon, AlignLeftIcon, AlignRightIcon, AlignTopIcon, CenterHorizontallyIcon, CenterVerticallyIcon, } from "../components/icons";
 import { ToolButton } from "../components/ToolButton";
-import { getElementMap, getNonDeletedElements } from "../element";
+import { getNonDeletedElements } from "../element";
 import { t } from "../i18n";
 import { KEYS } from "../keys";
 import { getSelectedElements, isSomeElementSelected } from "../scene";
-import { getShortcutKey } from "../utils";
+import { arrayToMap, getShortcutKey } from "../utils";
 import { register } from "./register";
 const enableActionGroup = (elements, appState) => getSelectedElements(getNonDeletedElements(elements), appState).length > 1;
 const alignSelectedElements = (elements, appState, alignment) => {
     const selectedElements = getSelectedElements(getNonDeletedElements(elements), appState);
     const updatedElements = alignElements(selectedElements, alignment);
-    const updatedElementsMap = getElementMap(updatedElements);
-    return elements.map((element) => updatedElementsMap[element.id] || element);
+    const updatedElementsMap = arrayToMap(updatedElements);
+    return elements.map((element) => updatedElementsMap.get(element.id) || element);
 };
 export const actionAlignTop = register({
     name: "alignTop",

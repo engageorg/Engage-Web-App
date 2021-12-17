@@ -14,7 +14,12 @@ describe("library", () => {
         await API.drop(await API.loadFile("./fixtures/fixture_library.excalidrawlib"));
         await waitFor(async () => {
             expect(await h.app.library.loadLibrary()).toEqual([
-                [expect.objectContaining({ id: "A" })],
+                {
+                    status: "unpublished",
+                    elements: [expect.objectContaining({ id: "A" })],
+                    id: "id0",
+                    created: expect.any(Number),
+                },
             ]);
         });
     });

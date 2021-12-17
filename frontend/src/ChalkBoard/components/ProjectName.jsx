@@ -26,7 +26,7 @@ export const ProjectName = (props) => {
       <label className="ProjectName-label" htmlFor="filename">
         {`${props.label}${props.isNameEditable ? "" : ":"}`}
       </label>
-      {props.isNameEditable ? (<input className="TextInput" onBlur={handleBlur} onKeyDown={handleKeyDown} id={`${id}-filename`} value={fileName} onChange={(event) => setFileName(event.target.value)}/>) : (<span className="TextInput TextInput--readonly" id={`${id}-filename`}>
+      {props.isNameEditable ? (<input type="text" className="TextInput" onBlur={handleBlur} onKeyDown={handleKeyDown} id={`${id}-filename`} value={fileName} onChange={(event) => setFileName(event.target.value)}/>) : (<span className="TextInput TextInput--readonly" id={`${id}-filename`}>
           {props.value}
         </span>)}
     </div>);

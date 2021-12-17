@@ -1,4 +1,5 @@
 import React, { useEffect, forwardRef } from "react";
+import "./publicPath";
 import { InitializeApp } from "../../components/InitializeApp";
 import App from "../../components/App";
 import "../../css/app.scss";
@@ -71,7 +72,7 @@ const areEqual = (prevProps, nextProps) => {
 };
 const forwardedRefComp = forwardRef((props, ref) => <Excalidraw {...props} excalidrawRef={ref}/>);
 export default React.memo(forwardedRefComp, areEqual);
-export { getSceneVersion, getElementMap, isInvisiblySmallElement, getNonDeletedElements, } from "../../element";
+export { getSceneVersion, isInvisiblySmallElement, getNonDeletedElements, } from "../../element";
 export { defaultLang, languages } from "../../i18n";
 export { restore, restoreAppState, restoreElements } from "../../data/restore";
 export { exportToCanvas, exportToBlob, exportToSvg, serializeAsJSON, loadLibraryFromBlob, loadFromBlob, getFreeDrawSvgPath, } from "../../packages/utils";

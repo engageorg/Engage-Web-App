@@ -48,7 +48,7 @@ const exportToExcalidrawPlus = async (elements, appState, files) => {
     window.open(`https://plus.excalidraw.com/import?excalidraw=${id},${encryptionKey}`);
 };
 export const ExportToExcalidrawPlus = ({ elements, appState, files, onError }) => {
-    return (<Card color="indigo">
+    return (<Card color="primary">
       <div className="Card-icon">{excalidrawPlusIcon}</div>
       <h2>Excalidraw+</h2>
       <div className="Card-details">

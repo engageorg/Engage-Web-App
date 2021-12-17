@@ -12,6 +12,7 @@ import Excalidraw, { defaultLang, languages, } from "../packages/excalidraw/inde
 import { debounce, getVersion, preventUnload, resolvablePromise, } from "../utils";
 import { FIREBASE_STORAGE_PREFIXES, SAVE_TO_LOCAL_STORAGE_TIMEOUT, } from "./app_constants";
 import CollabWrapper, { CollabContext, CollabContextConsumer, } from "./collab/CollabWrapper";
+import { LanguageList } from "./components/LanguageList";
 import { exportToBackend, getCollaborationLinkData, loadScene } from "./data";
 import { importFromLocalStorage, saveToLocalStorage, } from "./data/localStorage";
 import CustomStats from "./CustomStats";
@@ -89,9 +90,9 @@ const onBlur = () => {
 const initializeScene = async (opts) => {
     const searchParams = new URLSearchParams(window.location.search);
     const id = searchParams.get("id");
-    const jsonBackendMatch = window.location.hash.match(/^#json=([0-9]+),([a-zA-Z0-9_-]+)$/);
+    const jsonBackendMatch = window.location.hash.match(/^#json=([a-zA-Z0-9_-]+),([a-zA-Z0-9_-]+)$/);
     const externalUrlMatch = window.location.hash.match(/^#url=(.*)$/);
-    const localDataState = null;
+    const localDataState = importFromLocalStorage();
     let scene = await loadScene(null, null, localDataState);
     let roomLinkData = getCollaborationLinkData(window.location.href);
     const isExternalScene = !!(id || jsonBackendMatch || roomLinkData);
@@ -166,7 +167,13 @@ const initializeScene = async (opts) => {
     }
     return { scene: null, isExternalScene: false };
 };
-
+const PlusLinkJSX = (<p style={{ direction: "ltr", unicodeBidi: "embed" }}>
+    Introducing Excalidraw+
+    <br />
+    <a href="https://plus.excalidraw.com/?utm_source=excalidraw&utm_medium=banner&utm_campaign=launch" target="_blank" rel="noreferrer">
+      Try out now!
+    </a>
+  </p>);
 const ExcalidrawWrapper = () => {
     const [errorMessage, setErrorMessage] = useState("");
     let currentLangCode = languageDetector.detect() || defaultLang.code;
@@ -380,6 +387,7 @@ const ExcalidrawWrapper = () => {
             }}>
           {/* <GitHubCorner theme={appState.theme} dir={document.dir} /> */}
           {/* FIXME remove after 2021-05-20 */}
+          {PlusLinkJSX}
         </div>);
     }, []);
     const renderFooter = useCallback((isMobile) => {
@@ -388,6 +396,7 @@ const ExcalidrawWrapper = () => {
             {shield}
           </Tooltip>
         </a>);
+        const renderLanguageList = () => (<LanguageList onChange={(langCode) => setLangCode(langCode)} languages={languages} currentLangCode={langCode}/>);
         if (isMobile) {
             const isTinyDevice = window.innerWidth < 362;
             return (<div style={{
@@ -396,6 +405,7 @@ const ExcalidrawWrapper = () => {
                 }}>
             <fieldset>
               <legend>{t("labels.language")}</legend>
+              {renderLanguageList()}
             </fieldset>
             {/* FIXME remove after 2021-05-20 */}
             <div style={{
@@ -409,12 +419,13 @@ const ExcalidrawWrapper = () => {
                     border: "1px dashed #aaa",
                     borderRadius: 12,
                 }}>
-              
+              {PlusLinkJSX}
             </div>
           </div>);
         }
         return (<>
-          {/* {renderEncryptedIcon()} */}
+          {renderEncryptedIcon()}
+          {renderLanguageList()}
         </>);
     }, [langCode]);
     const renderCustomStats = () => {

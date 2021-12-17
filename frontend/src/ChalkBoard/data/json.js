@@ -1,6 +1,6 @@
 import { fileOpen, fileSave } from "./filesystem";
 import { cleanAppStateForExport, clearAppStateForDatabase } from "../appState";
-import { EXPORT_DATA_TYPES, EXPORT_SOURCE, MIME_TYPES } from "../constants";
+import { EXPORT_DATA_TYPES, EXPORT_SOURCE, MIME_TYPES, VERSIONS, } from "../constants";
 import { clearElementsForDatabase, clearElementsForExport } from "../element";
 import { isImageFileHandle, loadFromBlob } from "./blob";
 /**
@@ -21,7 +21,7 @@ const filterOutDeletedFiles = (elements, files) => {
 export const serializeAsJSON = (elements, appState, files, type) => {
     const data = {
         type: EXPORT_DATA_TYPES.excalidraw,
-        version: 2,
+        version: VERSIONS.excalidraw,
         source: EXPORT_SOURCE,
         elements: type === "local"
             ? clearElementsForExport(elements)
@@ -70,15 +70,14 @@ export const isValidLibrary = (json) => {
     return (typeof json === "object" &&
         json &&
         json.type === EXPORT_DATA_TYPES.excalidrawLibrary &&
-        json.version === 1);
+        (json.version === 1 || json.version === 2));
 };
-export const saveLibraryAsJSON = async (library) => {
-    const libraryItems = await library.loadLibrary();
+export const saveLibraryAsJSON = async (libraryItems) => {
     const data = {
         type: EXPORT_DATA_TYPES.excalidrawLibrary,
-        version: 1,
+        version: VERSIONS.excalidrawLibrary,
         source: EXPORT_SOURCE,
-        library: libraryItems,
+        libraryItems,
     };
     const serialized = JSON.stringify(data, null, 2);
     await fileSave(new Blob([serialized], {

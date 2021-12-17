@@ -1,7 +1,7 @@
 import { KEYS } from "../keys";
 import { register } from "./register";
 import { selectGroupsForSelectedElements } from "../groups";
-import { getNonDeletedElements } from "../element";
+import { getNonDeletedElements, isTextElement } from "../element";
 export const actionSelectAll = register({
     name: "selectAll",
     perform: (elements, appState) => {
@@ -13,7 +13,8 @@ export const actionSelectAll = register({
                 ...appState,
                 editingGroupId: null,
                 selectedElementIds: elements.reduce((map, element) => {
-                    if (!element.isDeleted) {
+                    if (!element.isDeleted &&
+                        !(isTextElement(element) && element.containerId)) {
                         map[element.id] = true;
                     }
                     return map;

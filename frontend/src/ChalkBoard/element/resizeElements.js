@@ -5,8 +5,10 @@ import { getElementAbsoluteCoords, getCommonBounds, getResizedElementAbsoluteCoo
 import { isFreeDrawElement, isLinearElement, isTextElement, } from "./typeChecks";
 import { mutateElement } from "./mutateElement";
 import { getPerfectElementSize } from "./sizeHelpers";
-import { measureText, getFontString } from "../utils";
+import { getFontString } from "../utils";
 import { updateBoundElements } from "./binding";
+import Scene from "../scene/Scene";
+import { getApproxMinLineWidth, getBoundTextElementId, handleBindTextResize, measureText, } from "./textElement";
 export const normalizeAngle = (angle) => {
     if (angle >= 2 * Math.PI) {
         return angle - 2 * Math.PI;
@@ -52,6 +54,7 @@ export const transformElements = (pointerDownState, transformHandleType, selecte
             transformHandleType === "sw" ||
             transformHandleType === "se") {
             resizeMultipleElements(selectedElements, transformHandleType, pointerX, pointerY);
+            handleBindTextResize(selectedElements, transformHandleType);
             return true;
         }
     }
@@ -68,6 +71,11 @@ const rotateSingleElement = (element, pointerX, pointerY, shouldRotateWithDiscre
     }
     angle = normalizeAngle(angle);
     mutateElement(element, { angle });
+    const boundTextElementId = getBoundTextElementId(element);
+    if (boundTextElementId) {
+        const textElement = Scene.getScene(element).getElement(boundTextElementId);
+        mutateElement(textElement, { angle });
+    }
 };
 // used in DEV only
 const validateTwoPointElementNormalized = (element) => {
@@ -125,7 +133,7 @@ const measureFontSizeFromWH = (element, nextWidth, nextHeight) => {
     if (nextFontSize < MIN_FONT_SIZE) {
         return null;
     }
-    const metrics = measureText(element.text, getFontString({ fontSize: nextFontSize, fontFamily: element.fontFamily }));
+    const metrics = measureText(element.text, getFontString({ fontSize: nextFontSize, fontFamily: element.fontFamily }), element.containerId ? element.width : null);
     return {
         size: nextFontSize,
         baseline: metrics.baseline + (nextHeight - metrics.height),
@@ -197,6 +205,7 @@ export const resizeSingleElement = (stateAtResizeStart, shouldMaintainAspectRati
     const rotatedPointer = rotatePoint([pointerX, pointerY], startCenter, -stateAtResizeStart.angle);
     // Get bounds corners rendered on screen
     const [esx1, esy1, esx2, esy2] = getResizedElementAbsoluteCoords(element, element.width, element.height);
+    const boundTextElementId = getBoundTextElementId(element);
     const boundsCurrentWidth = esx2 - esx1;
     const boundsCurrentHeight = esy2 - esy1;
     // It's important we set the initial scale value based on the width and height at resize start,
@@ -246,6 +255,10 @@ export const resizeSingleElement = (stateAtResizeStart, shouldMaintainAspectRati
     const [newBoundsX1, newBoundsY1, newBoundsX2, newBoundsY2] = getResizedElementAbsoluteCoords(stateAtResizeStart, eleNewWidth, eleNewHeight);
     const newBoundsWidth = newBoundsX2 - newBoundsX1;
     const newBoundsHeight = newBoundsY2 - newBoundsY1;
+    // don't allow resize to negative dimensions when text is bounded to container
+    if ((newBoundsWidth < 0 || newBoundsHeight < 0) && boundTextElementId) {
+        return;
+    }
     // Calculate new topLeft based on fixed corner during resize
     let newTopLeft = [...startTopLeft];
     if (["n", "w", "nw"].includes(transformHandleDirection)) {
@@ -327,7 +340,12 @@ export const resizeSingleElement = (stateAtResizeStart, shouldMaintainAspectRati
             ],
         });
     }
-    if (resizedElement.width !== 0 &&
+    let minWidth = 0;
+    if (boundTextElementId) {
+        const boundTextElement = Scene.getScene(element).getElement(boundTextElementId);
+        minWidth = getApproxMinLineWidth(getFontString(boundTextElement));
+    }
+    if (resizedElement.width > minWidth &&
         resizedElement.height !== 0 &&
         Number.isFinite(resizedElement.x) &&
         Number.isFinite(resizedElement.y)) {
@@ -335,6 +353,7 @@ export const resizeSingleElement = (stateAtResizeStart, shouldMaintainAspectRati
             newSize: { width: resizedElement.width, height: resizedElement.height },
         });
         mutateElement(element, resizedElement);
+        handleBindTextResize([element], transformHandleDirection);
     }
 };
 const resizeMultipleElements = (elements, transformHandleType, pointerX, pointerY) => {
@@ -383,7 +402,7 @@ const resizeMultipleElements = (elements, transformHandleType, pointerX, pointer
             const width = element.width * scale;
             const height = element.height * scale;
             let font = {};
-            if (element.type === "text") {
+            if (isTextElement(element)) {
                 const nextFont = measureFontSizeFromWH(element, width, height);
                 if (nextFont === null) {
                     return null;
@@ -427,6 +446,15 @@ const rotateMultipleElements = (pointerDownState, elements, pointerX, pointerY, 
             y: element.y + (rotatedCY - cy),
             angle: normalizeAngle(centerAngle + origAngle),
         });
+        const boundTextElementId = getBoundTextElementId(element);
+        if (boundTextElementId) {
+            const textElement = Scene.getScene(element).getElement(boundTextElementId);
+            mutateElement(textElement, {
+                x: textElement.x + (rotatedCX - cx),
+                y: textElement.y + (rotatedCY - cy),
+                angle: normalizeAngle(centerAngle + origAngle),
+            });
+        }
     });
 };
 export const getResizeOffsetXY = (transformHandleType, selectedElements, x, y) => {

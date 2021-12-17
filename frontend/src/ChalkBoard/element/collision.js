@@ -7,7 +7,9 @@ import { distance2d, rotatePoint, isPathALoop, isPointInPolygon, rotate, } from 
 import { pointsOnBezierCurves } from "points-on-curve";
 import { getElementAbsoluteCoords, getCurvePathOps } from "./bounds";
 import { getShapeForElement } from "../renderer/renderElement";
-import { isImageElement } from "./typeChecks";
+import { hasBoundTextElement, isImageElement } from "./typeChecks";
+import { isTextElement } from ".";
+import { isTransparent } from "../utils";
 const isElementDraggableFromInside = (element) => {
     if (element.type === "arrow") {
         return false;
@@ -15,7 +17,8 @@ const isElementDraggableFromInside = (element) => {
     if (element.type === "freedraw") {
         return true;
     }
-    const isDraggableFromInside = element.backgroundColor !== "transparent";
+    const isDraggableFromInside = !isTransparent(element.backgroundColor) ||
+        (isTransparent(element.backgroundColor) && hasBoundTextElement(element));
     if (element.type === "line") {
         return isDraggableFromInside && isPathALoop(element.points);
     }
@@ -35,9 +38,9 @@ export const isHittingElementBoundingBoxWithoutHittingElement = (element, appSta
     return (!isHittingElementNotConsideringBoundingBox(element, appState, [x, y]) &&
         isPointHittingElementBoundingBox(element, [x, y], threshold));
 };
-const isHittingElementNotConsideringBoundingBox = (element, appState, point) => {
+export const isHittingElementNotConsideringBoundingBox = (element, appState, point) => {
     const threshold = 10 / appState.zoom.value;
-    const check = element.type === "text"
+    const check = isTextElement(element)
         ? isStrictlyInside
         : isElementDraggableFromInside(element)
             ? isInsideCheck

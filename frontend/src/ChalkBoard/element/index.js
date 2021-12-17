@@ -12,10 +12,6 @@ export { textWysiwyg } from "./textWysiwyg";
 export { redrawTextBoundingBox } from "./textElement";
 export { getPerfectElementSize, isInvisiblySmallElement, resizePerfectLineForNWHandler, getNormalizedDimensions, } from "./sizeHelpers";
 export { showSelectedShapeActions } from "./showSelectedShapeActions";
-export const getElementMap = (elements) => elements.reduce((acc, element) => {
-    acc[element.id] = element;
-    return acc;
-}, {});
 export const getSceneVersion = (elements) => elements.reduce((acc, el) => acc + el.version, 0);
 export const getVisibleElements = (elements) => elements.filter((el) => !el.isDeleted && !isInvisiblySmallElement(el));
 export const getNonDeletedElements = (elements) => elements.filter((element) => !element.isDeleted);

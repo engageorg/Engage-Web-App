@@ -2,30 +2,42 @@ import { updateBoundElements } from "./binding";
 import { getCommonBounds } from "./bounds";
 import { mutateElement } from "./mutateElement";
 import { getPerfectElementSize } from "./sizeHelpers";
-export const dragSelectedElements = (pointerDownState, selectedElements, pointerX, pointerY, scene, lockDirection = false, distanceX = 0, distanceY = 0) => {
+import Scene from "../scene/Scene";
+import { getBoundTextElementId } from "./textElement";
+export const dragSelectedElements = (pointerDownState, selectedElements, pointerX, pointerY, lockDirection = false, distanceX = 0, distanceY = 0) => {
     const [x1, y1] = getCommonBounds(selectedElements);
     const offset = { x: pointerX - x1, y: pointerY - y1 };
     selectedElements.forEach((element) => {
-        let x;
-        let y;
-        if (lockDirection) {
-            const lockX = lockDirection && distanceX < distanceY;
-            const lockY = lockDirection && distanceX > distanceY;
-            const original = pointerDownState.originalElements.get(element.id);
-            x = lockX && original ? original.x : element.x + offset.x;
-            y = lockY && original ? original.y : element.y + offset.y;
+        updateElementCoords(lockDirection, distanceX, distanceY, pointerDownState, element, offset);
+        if (!element.groupIds.length) {
+            const boundTextElementId = getBoundTextElementId(element);
+            if (boundTextElementId) {
+                const textElement = Scene.getScene(element).getElement(boundTextElementId);
+                updateElementCoords(lockDirection, distanceX, distanceY, pointerDownState, textElement, offset);
+            }
         }
-        else {
-            x = element.x + offset.x;
-            y = element.y + offset.y;
-        }
-        mutateElement(element, {
-            x,
-            y,
-        });
         updateBoundElements(element, {
             simultaneouslyUpdated: selectedElements,
         });
+    });
+};
+const updateElementCoords = (lockDirection, distanceX, distanceY, pointerDownState, element, offset) => {
+    let x;
+    let y;
+    if (lockDirection) {
+        const lockX = lockDirection && distanceX < distanceY;
+        const lockY = lockDirection && distanceX > distanceY;
+        const original = pointerDownState.originalElements.get(element.id);
+        x = lockX && original ? original.x : element.x + offset.x;
+        y = lockY && original ? original.y : element.y + offset.y;
+    }
+    else {
+        x = element.x + offset.x;
+        y = element.y + offset.y;
+    }
+    mutateElement(element, {
+        x,
+        y,
     });
 };
 export const getDragOffsetXY = (selectedElements, x, y) => {

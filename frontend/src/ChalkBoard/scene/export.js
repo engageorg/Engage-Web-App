@@ -33,12 +33,10 @@ export const exportToCanvas = async (elements, appState, files, { exportBackgrou
         remotePointerUserStates: {},
         theme: appState.exportWithDarkMode ? "dark" : "light",
         imageCache,
-    }, {
         renderScrollbars: false,
         renderSelection: false,
-        renderOptimizations: true,
         renderGrid: false,
-        isExport: true,
+        isExporting: true,
     });
     return canvas;
 };
@@ -47,7 +45,7 @@ export const exportToSvg = async (elements, appState, files) => {
     let metadata = "";
     if (exportEmbedScene) {
         try {
-            metadata = await (await import(/* webpackChunkName: "image" */ "../../../src/ChalkBoard/data/image")).encodeSvgMetadata({
+            metadata = await (await import(/* webpackChunkName: "image" */ "../data/image")).encodeSvgMetadata({
                 text: serializeAsJSON(elements, appState, files || {}, "local"),
             });
         }
@@ -96,6 +94,7 @@ export const exportToSvg = async (elements, appState, files) => {
     renderSceneToSvg(elements, rsvg, svgRoot, files || {}, {
         offsetX: -minX + exportPadding,
         offsetY: -minY + exportPadding,
+        exportWithDarkMode: appState.exportWithDarkMode,
     });
     return svgRoot;
 };

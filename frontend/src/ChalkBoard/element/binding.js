@@ -1,10 +1,10 @@
 import { getElementAtPosition } from "../scene";
-import { isBindableElement, isBindingElement } from "./typeChecks";
+import { isBindableElement, isBindingElement, isLinearElement, } from "./typeChecks";
 import { bindingBorderTest, distanceToBindableElement, maxBindingGap, determineFocusDistance, intersectElementWithLine, determineFocusPoint, } from "./collision";
 import { mutateElement } from "./mutateElement";
 import Scene from "../scene/Scene";
 import { LinearElementEditor } from "./linearElementEditor";
-import { tupleToCoors } from "../utils";
+import { arrayToMap, tupleToCoors } from "../utils";
 import { KEYS } from "../keys";
 export const shouldEnableBindingForPointerEvent = (event) => {
     return !event[KEYS.CTRL_OR_CMD];
@@ -22,7 +22,7 @@ export const bindOrUnbindLinearElement = (linearElement, startBindingElement, en
         .getNonDeletedElements(onlyUnbound)
         .forEach((element) => {
         mutateElement(element, {
-            boundElementIds: element.boundElementIds?.filter((id) => id !== linearElement.id),
+            boundElements: element.boundElements?.filter((element) => element.type !== "arrow" || element.id !== linearElement.id),
         });
     });
 };
@@ -82,9 +82,15 @@ const bindLinearElement = (linearElement, hoveredElement, startOrEnd) => {
             ...calculateFocusAndGap(linearElement, hoveredElement, startOrEnd),
         },
     });
-    mutateElement(hoveredElement, {
-        boundElementIds: Array.from(new Set([...(hoveredElement.boundElementIds ?? []), linearElement.id])),
-    });
+    const boundElementsMap = arrayToMap(hoveredElement.boundElements || []);
+    if (!boundElementsMap.has(linearElement.id)) {
+        mutateElement(hoveredElement, {
+            boundElements: (hoveredElement.boundElements || []).concat({
+                id: linearElement.id,
+                type: "arrow",
+            }),
+        });
+    }
 };
 // Don't bind both ends of a simple segment
 const isLinearElementSimpleAndAlreadyBoundOnOppositeEdge = (linearElement, bindableElement, startOrEnd) => {
@@ -131,27 +137,32 @@ const calculateFocusAndGap = (linearElement, hoveredElement, startOrEnd) => {
 // done before the `changedElement` is updated, and the `newSize` is passed
 // in explicitly.
 export const updateBoundElements = (changedElement, options) => {
-    const boundElementIds = changedElement.boundElementIds ?? [];
-    if (boundElementIds.length === 0) {
+    const boundLinearElements = (changedElement.boundElements ?? []).filter((el) => el.type === "arrow");
+    if (boundLinearElements.length === 0) {
         return;
     }
     const { newSize, simultaneouslyUpdated } = options ?? {};
     const simultaneouslyUpdatedElementIds = getSimultaneouslyUpdatedElementIds(simultaneouslyUpdated);
-    Scene.getScene(changedElement).getNonDeletedElements(boundElementIds).forEach((linearElement) => {
+    Scene.getScene(changedElement)
+        .getNonDeletedElements(boundLinearElements.map((el) => el.id))
+        .forEach((element) => {
+        if (!isLinearElement(element)) {
+            return;
+        }
         const bindableElement = changedElement;
-        // In case the boundElementIds are stale
-        if (!doesNeedUpdate(linearElement, bindableElement)) {
+        // In case the boundElements are stale
+        if (!doesNeedUpdate(element, bindableElement)) {
             return;
         }
-        const startBinding = maybeCalculateNewGapWhenScaling(bindableElement, linearElement.startBinding, newSize);
-        const endBinding = maybeCalculateNewGapWhenScaling(bindableElement, linearElement.endBinding, newSize);
+        const startBinding = maybeCalculateNewGapWhenScaling(bindableElement, element.startBinding, newSize);
+        const endBinding = maybeCalculateNewGapWhenScaling(bindableElement, element.endBinding, newSize);
         // `linearElement` is being moved/scaled already, just update the binding
-        if (simultaneouslyUpdatedElementIds.has(linearElement.id)) {
-            mutateElement(linearElement, { startBinding, endBinding });
+        if (simultaneouslyUpdatedElementIds.has(element.id)) {
+            mutateElement(element, { startBinding, endBinding });
             return;
         }
-        updateBoundPoint(linearElement, "start", startBinding, changedElement);
-        updateBoundPoint(linearElement, "end", endBinding, changedElement);
+        updateBoundPoint(element, "start", startBinding, changedElement);
+        updateBoundPoint(element, "end", endBinding, changedElement);
     });
 };
 const doesNeedUpdate = (boundElement, changedElement) => {
@@ -195,7 +206,12 @@ const updateBoundPoint = (linearElement, startOrEnd, binding, changedElement) =>
             newEdgePoint = intersections[0];
         }
     }
-    LinearElementEditor.movePoint(linearElement, edgePointIndex, LinearElementEditor.pointFromAbsoluteCoords(linearElement, newEdgePoint), { [startOrEnd === "start" ? "startBinding" : "endBinding"]: binding });
+    LinearElementEditor.movePoints(linearElement, [
+        {
+            index: edgePointIndex,
+            point: LinearElementEditor.pointFromAbsoluteCoords(linearElement, newEdgePoint),
+        },
+    ], { [startOrEnd === "start" ? "startBinding" : "endBinding"]: binding });
 };
 const maybeCalculateNewGapWhenScaling = (changedElement, currentBinding, newSize) => {
     if (currentBinding == null || newSize == null) {
@@ -269,11 +285,11 @@ duplicatesServeAsOld) => {
     const allBindableElementIds = new Set();
     const shouldReverseRoles = duplicatesServeAsOld === "duplicatesServeAsOld";
     oldElements.forEach((oldElement) => {
-        const { boundElementIds } = oldElement;
-        if (boundElementIds != null && boundElementIds.length > 0) {
-            boundElementIds.forEach((boundElementId) => {
-                if (shouldReverseRoles && !oldIdToDuplicatedId.has(boundElementId)) {
-                    allBoundElementIds.add(boundElementId);
+        const { boundElements } = oldElement;
+        if (boundElements != null && boundElements.length > 0) {
+            boundElements.forEach((boundElement) => {
+                if (shouldReverseRoles && !oldIdToDuplicatedId.has(boundElement.id)) {
+                    allBoundElementIds.add(boundElement.id);
                 }
             });
             allBindableElementIds.add(oldIdToDuplicatedId.get(oldElement.id));
@@ -308,10 +324,15 @@ duplicatesServeAsOld) => {
     sceneElements
         .filter(({ id }) => allBindableElementIds.has(id))
         .forEach((bindableElement) => {
-        const { boundElementIds } = bindableElement;
-        if (boundElementIds != null && boundElementIds.length > 0) {
+        const { boundElements } = bindableElement;
+        if (boundElements != null && boundElements.length > 0) {
             mutateElement(bindableElement, {
-                boundElementIds: boundElementIds.map((boundElementId) => oldIdToDuplicatedId.get(boundElementId) ?? boundElementId),
+                boundElements: boundElements.map((boundElement) => oldIdToDuplicatedId.has(boundElement.id)
+                    ? {
+                        id: oldIdToDuplicatedId.get(boundElement.id),
+                        type: boundElement.type,
+                    }
+                    : boundElement),
             });
         }
     });
@@ -333,9 +354,9 @@ export const fixBindingsAfterDeletion = (sceneElements, deletedElements) => {
     const boundElementIds = new Set();
     deletedElements.forEach((deletedElement) => {
         if (isBindableElement(deletedElement)) {
-            deletedElement.boundElementIds?.forEach((id) => {
-                if (!deletedElementIds.has(id)) {
-                    boundElementIds.add(id);
+            deletedElement.boundElements?.forEach((element) => {
+                if (!deletedElementIds.has(element.id)) {
+                    boundElementIds.add(element.id);
                 }
             });
         }

@@ -31,11 +31,11 @@ const updateTooltip = (item, tooltip, label, long) => {
         left: `${left - offsetLeft}px`,
     });
 };
-export const Tooltip = ({ children, label, long = false }) => {
+export const Tooltip = ({ children, label, long = false, style, }) => {
     useEffect(() => {
         return () => getTooltipDiv().classList.remove("excalidraw-tooltip--visible");
     }, []);
-    return (<div className="excalidraw-tooltip-wrapper" onPointerEnter={(event) => updateTooltip(event.currentTarget, getTooltipDiv(), label, long)} onPointerLeave={() => getTooltipDiv().classList.remove("excalidraw-tooltip--visible")}>
+    return (<div className="excalidraw-tooltip-wrapper" onPointerEnter={(event) => updateTooltip(event.currentTarget, getTooltipDiv(), label, long)} onPointerLeave={() => getTooltipDiv().classList.remove("excalidraw-tooltip--visible")} style={style}>
       {children}
     </div>);
 };

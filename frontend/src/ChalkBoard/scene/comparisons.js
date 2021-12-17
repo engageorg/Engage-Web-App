@@ -15,7 +15,10 @@ export const hasStrokeStyle = (type) => type === "rectangle" ||
     type === "diamond" ||
     type === "arrow" ||
     type === "line";
-export const canChangeSharpness = (type) => type === "rectangle" || type === "arrow" || type === "line" || type === "diamond";
+export const canChangeSharpness = (type) => type === "rectangle" ||
+    type === "arrow" ||
+    type === "line" ||
+    type === "diamond";
 export const hasText = (type) => type === "text";
 export const canHaveArrowheads = (type) => type === "arrow";
 export const getElementAtPosition = (elements, isAtPositionFn) => {
@@ -40,7 +43,7 @@ export const getElementsAtPosition = (elements, isAtPositionFn) => {
     // We want to preserve that order on the returned array.
     return elements.filter((element) => !element.isDeleted && isAtPositionFn(element));
 };
-export const getElementContainingPosition = (elements, x, y) => {
+export const getElementContainingPosition = (elements, x, y, excludedType) => {
     let hitElement = null;
     // We need to to hit testing from front (end of the array) to back (beginning of the array)
     for (let index = elements.length - 1; index >= 0; --index) {
@@ -48,7 +51,11 @@ export const getElementContainingPosition = (elements, x, y) => {
             continue;
         }
         const [x1, y1, x2, y2] = getElementAbsoluteCoords(elements[index]);
-        if (x1 < x && x < x2 && y1 < y && y < y2) {
+        if (x1 < x &&
+            x < x2 &&
+            y1 < y &&
+            y < y2 &&
+            elements[index].type !== excludedType) {
             hitElement = elements[index];
             break;
         }

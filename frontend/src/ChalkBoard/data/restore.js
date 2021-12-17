@@ -1,10 +1,12 @@
-import { getElementMap, getNormalizedDimensions, isInvisiblySmallElement, } from "../element";
+import { getNormalizedDimensions, isInvisiblySmallElement } from "../element";
 import { isLinearElementType } from "../element/typeChecks";
 import { randomId } from "../random";
 import { DEFAULT_FONT_FAMILY, DEFAULT_TEXT_ALIGN, DEFAULT_VERTICAL_ALIGN, FONT_FAMILY, } from "../constants";
 import { getDefaultAppState } from "../appState";
 import { LinearElementEditor } from "../element/linearElementEditor";
 import { bumpVersion } from "../element/mutateElement";
+import { getUpdatedTimestamp } from "../utils";
+import { arrayToMap } from "../utils";
 export const AllowedExcalidrawElementTypes = {
     selection: true,
     text: true,
@@ -47,7 +49,10 @@ const restoreElementWithProperties = (element, extra) => {
         groupIds: element.groupIds ?? [],
         strokeSharpness: element.strokeSharpness ??
             (isLinearElementType(element.type) ? "round" : "sharp"),
-        boundElementIds: element.boundElementIds ?? [],
+        boundElements: element.boundElementIds
+            ? element.boundElementIds.map((id) => ({ type: "arrow", id }))
+            : element.boundElements ?? [],
+        updated: element.updated ?? getUpdatedTimestamp(),
     };
     return {
         ...base,
@@ -72,6 +77,8 @@ const restoreElement = (element) => {
                 baseline: element.baseline,
                 textAlign: element.textAlign || DEFAULT_TEXT_ALIGN,
                 verticalAlign: element.verticalAlign || DEFAULT_VERTICAL_ALIGN,
+                containerId: element.containerId ?? null,
+                originalText: element.originalText ?? "",
             });
         case "freedraw": {
             return restoreElementWithProperties(element, {
@@ -134,14 +141,14 @@ const restoreElement = (element) => {
 export const restoreElements = (elements, 
 /** NOTE doesn't serve for reconciliation */
 localElements) => {
-    const localElementsMap = localElements ? getElementMap(localElements) : null;
+    const localElementsMap = localElements ? arrayToMap(localElements) : null;
     return (elements || []).reduce((elements, element) => {
         // filtering out selection, which is legacy, no longer kept in elements,
         // and causing issues if retained
         if (element.type !== "selection" && !isInvisiblySmallElement(element)) {
             let migratedElement = restoreElement(element);
             if (migratedElement) {
-                const localElement = localElementsMap?.[element.id];
+                const localElement = localElementsMap?.get(element.id);
                 if (localElement && localElement.version > migratedElement.version) {
                     migratedElement = bumpVersion(migratedElement, localElement.version);
                 }
@@ -192,4 +199,28 @@ localAppState, localElements) => {
         appState: restoreAppState(data?.appState, localAppState || null),
         files: data?.files || {},
     };
+};
+export const restoreLibraryItems = (libraryItems, defaultStatus) => {
+    const restoredItems = [];
+    for (const item of libraryItems) {
+        // migrate older libraries
+        if (Array.isArray(item)) {
+            restoredItems.push({
+                status: defaultStatus,
+                elements: item,
+                id: randomId(),
+                created: Date.now(),
+            });
+        }
+        else {
+            const _item = item;
+            restoredItems.push({
+                ..._item,
+                id: _item.id || randomId(),
+                status: _item.status || defaultStatus,
+                created: _item.created || Date.now(),
+            });
+        }
+    }
+    return restoredItems;
 };

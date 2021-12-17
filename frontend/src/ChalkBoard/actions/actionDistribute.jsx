@@ -1,18 +1,18 @@
 import { DistributeHorizontallyIcon, DistributeVerticallyIcon, } from "../components/icons";
 import { ToolButton } from "../components/ToolButton";
 import { distributeElements } from "../disitrubte";
-import { getElementMap, getNonDeletedElements } from "../element";
+import { getNonDeletedElements } from "../element";
 import { t } from "../i18n";
 import { CODES } from "../keys";
 import { getSelectedElements, isSomeElementSelected } from "../scene";
-import { getShortcutKey } from "../utils";
+import { arrayToMap, getShortcutKey } from "../utils";
 import { register } from "./register";
 const enableActionGroup = (elements, appState) => getSelectedElements(getNonDeletedElements(elements), appState).length > 1;
 const distributeSelectedElements = (elements, appState, distribution) => {
     const selectedElements = getSelectedElements(getNonDeletedElements(elements), appState);
     const updatedElements = distributeElements(selectedElements, distribution);
-    const updatedElementsMap = getElementMap(updatedElements);
-    return elements.map((element) => updatedElementsMap[element.id] || element);
+    const updatedElementsMap = arrayToMap(updatedElements);
+    return elements.map((element) => updatedElementsMap.get(element.id) || element);
 };
 export const distributeHorizontally = register({
     name: "distributeHorizontally",

@@ -2,6 +2,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const autoprefixer = require("autoprefixer");
+const { parseEnvVariables } = require("./env");
 module.exports = {
     mode: "development",
     devtool: false,
@@ -14,6 +15,7 @@ module.exports = {
         libraryTarget: "umd",
         filename: "[name].js",
         chunkFilename: "excalidraw-assets-dev/[name]-[contenthash].js",
+        assetModuleFilename: "excalidraw-assets-dev/[name][ext]",
         publicPath: "",
     },
     resolve: {
@@ -53,15 +55,7 @@ module.exports = {
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: [
-                    {
-                        loader: "file-loader",
-                        options: {
-                            name: "[name].[ext]",
-                            outputPath: "excalidraw-assets-dev",
-                        },
-                    },
-                ],
+                type: "asset/resource",
             },
         ],
     },
@@ -76,7 +70,12 @@ module.exports = {
             },
         },
     },
-    plugins: [new webpack.EvalSourceMapDevToolPlugin({ exclude: /vendor/ })],
+    plugins: [
+        new webpack.EvalSourceMapDevToolPlugin({ exclude: /vendor/ }),
+        new webpack.DefinePlugin({
+            "process.env": parseEnvVariables(path.resolve(__dirname, "../../../.env.development")),
+        }),
+    ],
     externals: {
         react: {
             root: "React",

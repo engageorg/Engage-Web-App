@@ -2,9 +2,9 @@ import { undo, redo } from "../components/icons";
 import { ToolButton } from "../components/ToolButton";
 import { t } from "../i18n";
 import { isWindows, KEYS } from "../keys";
-import { getElementMap } from "../element";
 import { newElementWith } from "../element/mutateElement";
 import { fixBindingsAfterDeletion } from "../element/binding";
+import { arrayToMap } from "../utils";
 const writeData = (prevElements, appState, updater) => {
     const commitToHistory = false;
     if (!appState.multiElement &&
@@ -15,12 +15,12 @@ const writeData = (prevElements, appState, updater) => {
         if (data === null) {
             return { commitToHistory };
         }
-        const prevElementMap = getElementMap(prevElements);
+        const prevElementMap = arrayToMap(prevElements);
         const nextElements = data.elements;
-        const nextElementMap = getElementMap(nextElements);
-        const deletedElements = prevElements.filter((prevElement) => !nextElementMap.hasOwnProperty(prevElement.id));
+        const nextElementMap = arrayToMap(nextElements);
+        const deletedElements = prevElements.filter((prevElement) => !nextElementMap.has(prevElement.id));
         const elements = nextElements
-            .map((nextElement) => newElementWith(prevElementMap[nextElement.id] || nextElement, nextElement))
+            .map((nextElement) => newElementWith(prevElementMap.get(nextElement.id) || nextElement, nextElement))
             .concat(deletedElements.map((prevElement) => newElementWith(prevElement, { isDeleted: true })));
         fixBindingsAfterDeletion(elements, deletedElements);
         return {

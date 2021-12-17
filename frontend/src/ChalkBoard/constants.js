@@ -1,5 +1,5 @@
 import cssVariables from "./css/variables.module.scss";
-export const APP_NAME = "ChalkBoard";
+export const APP_NAME = "Excalidraw";
 export const DRAGGING_THRESHOLD = 10; // px
 export const LINE_CONFIRM_THRESHOLD = 8; // px
 export const ELEMENT_SHIFT_TRANSLATE_AMOUNT = 5;
@@ -87,7 +87,7 @@ export const MIME_TYPES = {
 export const EXPORT_DATA_TYPES = {
     excalidraw: "excalidraw",
     excalidrawClipboard: "excalidraw/clipboard",
-    excalidrawLibrary: "chalkboardlib",
+    excalidrawLibrary: "excalidrawlib",
 };
 export const EXPORT_SOURCE = window.location.origin;
 export const STORAGE_KEYS = {
@@ -144,3 +144,9 @@ export const ALLOWED_IMAGE_MIME_TYPES = [
 ];
 export const MAX_ALLOWED_FILE_BYTES = 2 * 1024 * 1024;
 export const SVG_NS = "http://www.w3.org/2000/svg";
+export const ENCRYPTION_KEY_BITS = 128;
+export const VERSIONS = {
+    excalidraw: 2,
+    excalidrawLibrary: 2,
+};
+export const PADDING = 30;

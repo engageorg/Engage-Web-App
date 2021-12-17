@@ -5,6 +5,7 @@ import { clearElementsForExport } from "../element";
 import { CanvasError } from "../errors";
 import { t } from "../i18n";
 import { calculateScrollCenter } from "../scene";
+import { bytesToHexString } from "../utils";
 import { isValidExcalidrawData } from "./json";
 import { restore } from "./restore";
 const parseFileContents = async (blob) => {
@@ -151,22 +152,15 @@ export const canvasToBlob = async (canvas) => {
 /** generates SHA-1 digest from supplied file (if not supported, falls back
     to a 40-char base64 random id) */
 export const generateIdFromFile = async (file) => {
-    let id;
     try {
         const hashBuffer = await window.crypto.subtle.digest("SHA-1", await file.arrayBuffer());
-        id =
-            // convert buffer to byte array
-            Array.from(new Uint8Array(hashBuffer))
-                // convert to hex string
-                .map((byte) => byte.toString(16).padStart(2, "0"))
-                .join("");
+        return bytesToHexString(new Uint8Array(hashBuffer));
     }
     catch (error) {
         console.error(error);
         // length 40 to align with the HEX length of SHA-1 (which is 160 bit)
-        id = nanoid(40);
+        return nanoid(40);
     }
-    return id;
 };
 export const getDataURL = async (file) => {
     return new Promise((resolve, reject) => {
@@ -190,7 +184,7 @@ export const dataURLToFile = (dataURL, filename = "") => {
     }
     return new File([ab], filename, { type: mimeType });
 };
-export const resizeImageFile = async (file, maxWidthOrHeight) => {
+export const resizeImageFile = async (file, opts) => {
     // SVG files shouldn't a can't be resized
     if (file.type === MIME_TYPES.svg) {
         return file;
@@ -206,11 +200,21 @@ export const resizeImageFile = async (file, maxWidthOrHeight) => {
     const reduce = imageBlobReduce({
         pica: pica({ features: ["js", "wasm"] }),
     });
-    const fileType = file.type;
+    if (opts.outputType) {
+        const { outputType } = opts;
+        reduce._create_blob = function (env) {
+            return this.pica.toBlob(env.out_canvas, outputType, 0.8).then((blob) => {
+                env.out_blob = blob;
+                return env;
+            });
+        };
+    }
     if (!isSupportedImageFile(file)) {
         throw new Error(t("errors.unsupportedFileType"));
     }
-    return new File([await reduce.toBlob(file, { max: maxWidthOrHeight })], file.name, { type: fileType });
+    return new File([await reduce.toBlob(file, { max: opts.maxWidthOrHeight })], file.name, {
+        type: opts.outputType || file.type,
+    });
 };
 export const SVGStringToFile = (SVGString, filename = "") => {
     return new File([new TextEncoder().encode(SVGString)], filename, {

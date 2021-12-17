@@ -1,5 +1,6 @@
 import { getElementAbsoluteCoords } from "./bounds";
 import { rotate } from "../math";
+import { isTextElement } from ".";
 const transformHandleSizes = {
     mouse: 8,
     pen: 16,
@@ -117,7 +118,7 @@ export const getTransformHandles = (element, zoom, pointerType = "mouse") => {
             }
         }
     }
-    else if (element.type === "text") {
+    else if (isTextElement(element)) {
         omitSides = OMIT_SIDES_FOR_TEXT_ELEMENT;
     }
     return getTransformHandlesFromCoords(getElementAbsoluteCoords(element), element.angle, zoom, pointerType, omitSides);

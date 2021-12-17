@@ -51,7 +51,7 @@ const ImageExportModal = ({ elements, appState, files, exportPadding = DEFAULT_E
     const previewRef = useRef(null);
     const { exportBackground, viewBackgroundColor } = appState;
     const exportedElements = exportSelected
-        ? getSelectedElements(elements, appState)
+        ? getSelectedElements(elements, appState, true)
         : elements;
     useEffect(() => {
         setExportSelected(someElementIsSelected);

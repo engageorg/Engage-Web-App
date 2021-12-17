@@ -97,7 +97,7 @@ export const t = (path, replacement) => {
     }
     if (replacement) {
         for (const key in replacement) {
-            translation = translation.replace(`{{${key}}}`, replacement[key]);
+            translation = translation.replace(`{{${key}}}`, String(replacement[key]));
         }
     }
     return translation;

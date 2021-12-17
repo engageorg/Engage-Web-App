@@ -1,33 +1,41 @@
-import { measureText, getFontString } from "../utils";
+import { getFontString, getUpdatedTimestamp } from "../utils";
 import { randomInteger, randomId } from "../random";
-import { newElementWith } from "./mutateElement";
+import { mutateElement, newElementWith } from "./mutateElement";
 import { getNewGroupIdsForDuplication } from "../groups";
 import { getElementAbsoluteCoords } from ".";
 import { adjustXYWithRotation } from "../math";
 import { getResizedElementAbsoluteCoords } from "./bounds";
-const _newElementBase = (type, { x, y, strokeColor, backgroundColor, fillStyle, strokeWidth, strokeStyle, roughness, opacity, width = 0, height = 0, angle = 0, groupIds = [], strokeSharpness, boundElementIds = null, ...rest }) => ({
-    id: rest.id || randomId(),
-    type,
-    x,
-    y,
-    width,
-    height,
-    angle,
-    strokeColor,
-    backgroundColor,
-    fillStyle,
-    strokeWidth,
-    strokeStyle,
-    roughness,
-    opacity,
-    groupIds,
-    strokeSharpness,
-    seed: rest.seed ?? randomInteger(),
-    version: rest.version || 1,
-    versionNonce: rest.versionNonce ?? 0,
-    isDeleted: false,
-    boundElementIds,
-});
+import { measureText } from "./textElement";
+import { isBoundToContainer } from "./typeChecks";
+import Scene from "../scene/Scene";
+import { PADDING } from "../constants";
+const _newElementBase = (type, { x, y, strokeColor, backgroundColor, fillStyle, strokeWidth, strokeStyle, roughness, opacity, width = 0, height = 0, angle = 0, groupIds = [], strokeSharpness, boundElements = null, ...rest }) => {
+    const element = {
+        id: rest.id || randomId(),
+        type,
+        x,
+        y,
+        width,
+        height,
+        angle,
+        strokeColor,
+        backgroundColor,
+        fillStyle,
+        strokeWidth,
+        strokeStyle,
+        roughness,
+        opacity,
+        groupIds,
+        strokeSharpness,
+        seed: rest.seed ?? randomInteger(),
+        version: rest.version || 1,
+        versionNonce: rest.versionNonce ?? 0,
+        isDeleted: false,
+        boundElements,
+        updated: getUpdatedTimestamp(),
+    };
+    return element;
+};
 export const newElement = (opts) => _newElementBase(opts.type, opts);
 /** computes element x/y offset based on textAlign/verticalAlign */
 const getTextElementPositionOffsets = (opts, metrics) => {
@@ -55,16 +63,21 @@ export const newTextElement = (opts) => {
         width: metrics.width,
         height: metrics.height,
         baseline: metrics.baseline,
+        containerId: opts.containerId || null,
+        originalText: opts.text,
     }, {});
     return textElement;
 };
 const getAdjustedDimensions = (element, nextText) => {
-    const { width: nextWidth, height: nextHeight, baseline: nextBaseline, } = measureText(nextText, getFontString(element));
+    const maxWidth = element.containerId ? element.width : null;
+    const { width: nextWidth, height: nextHeight, baseline: nextBaseline, } = measureText(nextText, getFontString(element), maxWidth);
     const { textAlign, verticalAlign } = element;
     let x;
     let y;
-    if (textAlign === "center" && verticalAlign === "middle") {
-        const prevMetrics = measureText(element.text, getFontString(element));
+    if (textAlign === "center" &&
+        verticalAlign === "middle" &&
+        !element.containerId) {
+        const prevMetrics = measureText(element.text, getFontString(element), maxWidth);
         const offsets = getTextElementPositionOffsets(element, {
             width: nextWidth - prevMetrics.width,
             height: nextHeight - prevMetrics.height,
@@ -85,6 +98,22 @@ const getAdjustedDimensions = (element, nextText) => {
             w: textAlign === "center" || textAlign === "right",
         }, element.x, element.y, element.angle, deltaX1, deltaY1, deltaX2, deltaY2);
     }
+    // make sure container dimensions are set properly when
+    // text editor overflows beyond viewport dimensions
+    if (isBoundToContainer(element)) {
+        const container = Scene.getScene(element).getElement(element.containerId);
+        let height = container.height;
+        let width = container.width;
+        if (nextHeight > height - PADDING * 2) {
+            height = nextHeight + PADDING * 2;
+        }
+        if (nextWidth > width - PADDING * 2) {
+            width = nextWidth + PADDING * 2;
+        }
+        if (height !== container.height || width !== container.width) {
+            mutateElement(container, { height, width });
+        }
+    }
     return {
         width: nextWidth,
         height: nextHeight,
@@ -93,11 +122,15 @@ const getAdjustedDimensions = (element, nextText) => {
         baseline: nextBaseline,
     };
 };
-export const updateTextElement = (element, { text, isDeleted }) => {
+export const updateTextElement = (element, { text, isDeleted, originalText, }, updateDimensions) => {
+    const dimensions = updateDimensions
+        ? getAdjustedDimensions(element, text)
+        : undefined;
     return newElementWith(element, {
         text,
+        originalText,
         isDeleted: isDeleted ?? element.isDeleted,
-        ...getAdjustedDimensions(element, text),
+        ...dimensions,
     });
 };
 export const newFreeDrawElement = (opts) => {
@@ -192,6 +225,7 @@ export const duplicateElement = (editingGroupId, groupIdMapForOperation, element
     else {
         copy.id = randomId();
     }
+    copy.updated = getUpdatedTimestamp();
     copy.seed = randomInteger();
     copy.groupIds = getNewGroupIdsForDuplication(copy.groupIds, editingGroupId, (groupId) => {
         if (!groupIdMapForOperation.has(groupId)) {

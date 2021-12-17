@@ -2,6 +2,7 @@ import { invalidateShapeForElement } from "../renderer/renderElement";
 import Scene from "../scene/Scene";
 import { getSizeFromPoints } from "../points";
 import { randomInteger } from "../random";
+import { getUpdatedTimestamp } from "../utils";
 // This function tracks updates of text elements for the purposes for collaboration.
 // The version is used to compare updates when more than one user is working in
 // the same drawing. Note: this will trigger the component to update. Make sure you
@@ -68,6 +69,7 @@ export const mutateElement = (element, updates, informMutation = true) => {
     }
     element.version++;
     element.versionNonce = randomInteger();
+    element.updated = getUpdatedTimestamp();
     if (informMutation) {
         Scene.getScene(element)?.informMutation();
     }
@@ -92,17 +94,19 @@ export const newElementWith = (element, updates) => {
     return {
         ...element,
         ...updates,
+        updated: getUpdatedTimestamp(),
         version: element.version + 1,
         versionNonce: randomInteger(),
     };
 };
 /**
- * Mutates element and updates `version` & `versionNonce`.
+ * Mutates element, bumping `version`, `versionNonce`, and `updated`.
  *
  * NOTE: does not trigger re-render.
  */
 export const bumpVersion = (element, version) => {
     element.version = (version ?? element.version) + 1;
     element.versionNonce = randomInteger();
+    element.updated = getUpdatedTimestamp();
     return element;
 };

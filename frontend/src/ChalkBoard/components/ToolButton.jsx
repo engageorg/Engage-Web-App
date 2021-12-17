@@ -22,6 +22,9 @@ export const ToolButton = React.forwardRef((props, ref) => {
                 if (!(error instanceof AbortError)) {
                     throw error;
                 }
+                else {
+                    console.warn(error);
+                }
             }
             finally {
                 if (isMountedRef.current) {
@@ -34,19 +37,23 @@ export const ToolButton = React.forwardRef((props, ref) => {
         isMountedRef.current = false;
     }, []);
     const lastPointerTypeRef = useRef(null);
-    if (props.type === "button" || props.type === "icon") {
+    if (props.type === "button" ||
+        props.type === "icon" ||
+        props.type === "submit") {
+        const type = (props.type === "icon" ? "button" : props.type);
         return (<button className={clsx("ToolIcon_type_button", sizeCn, props.className, props.visible && !props.hidden
                 ? "ToolIcon_type_button--show"
                 : "ToolIcon_type_button--hide", {
                 ToolIcon: !props.hidden,
                 "ToolIcon--selected": props.selected,
                 "ToolIcon--plain": props.type === "icon",
-            })} data-testid={props["data-testid"]} hidden={props.hidden} title={props.title} aria-label={props["aria-label"]} type="button" onClick={onClick} ref={innerRef} disabled={isLoading}>
+            })} data-testid={props["data-testid"]} hidden={props.hidden} title={props.title} aria-label={props["aria-label"]} type={type} onClick={onClick} ref={innerRef} disabled={isLoading || props.isLoading}>
         {(props.icon || props.label) && (<div className="ToolIcon__icon" aria-hidden="true">
             {props.icon || props.label}
             {props.keyBindingLabel && (<span className="ToolIcon__keybinding">
                 {props.keyBindingLabel}
               </span>)}
+            {props.isLoading && <Spinner />}
           </div>)}
         {props.showAriaLabel && (<div className="ToolIcon__label">
             {props["aria-label"]} {isLoading && <Spinner />}
@@ -54,17 +61,17 @@ export const ToolButton = React.forwardRef((props, ref) => {
         {props.children}
       </button>);
     }
-    return (<label className={clsx(`ToolIcon ${props.title}`, props.className)} title={props.title} onPointerDown={(event) => {
+    return (<label className={clsx("ToolIcon", props.className)} title={props.title} onPointerDown={(event) => {
             lastPointerTypeRef.current = event.pointerType || null;
         }} onPointerUp={() => {
             requestAnimationFrame(() => {
                 lastPointerTypeRef.current = null;
             });
         }}>
-      <input className={`ToolIcon_type_radio ${sizeCn} ${props["aria-label"]}`} type="radio" name={props.name} aria-label={props["aria-label"]} aria-keyshortcuts={props["aria-keyshortcuts"]} data-testid={props["data-testid"]} id={`${excalId}-${props.id}`} onChange={() => {
+      <input className={`ToolIcon_type_radio ${sizeCn}`} type="radio" name={props.name} aria-label={props["aria-label"]} aria-keyshortcuts={props["aria-keyshortcuts"]} data-testid={props["data-testid"]} id={`${excalId}-${props.id}`} onChange={() => {
             props.onChange?.({ pointerType: lastPointerTypeRef.current });
         }} checked={props.checked} ref={innerRef}/>
-      <div className = {`ToolIcon__icon ${props["aria-label"]}`}>
+      <div className="ToolIcon__icon">
         {props.icon}
         {props.keyBindingLabel && (<span className="ToolIcon__keybinding">{props.keyBindingLabel}</span>)}
       </div>

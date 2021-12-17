@@ -9,10 +9,15 @@ import { newElementWith } from "../element/mutateElement";
 import { getElementsInGroup } from "../groups";
 import { LinearElementEditor } from "../element/linearElementEditor";
 import { fixBindingsAfterDeletion } from "../element/binding";
+import { isBoundToContainer } from "../element/typeChecks";
 const deleteSelectedElements = (elements, appState) => {
     return {
         elements: elements.map((el) => {
             if (appState.selectedElementIds[el.id]) {
+                return newElementWith(el, { isDeleted: true });
+            }
+            if (isBoundToContainer(el) &&
+                appState.selectedElementIds[el.containerId]) {
                 return newElementWith(el, { isDeleted: true });
             }
             return el;
@@ -39,15 +44,14 @@ export const actionDeleteSelected = register({
     name: "deleteSelectedElements",
     perform: (elements, appState) => {
         if (appState.editingLinearElement) {
-            const { elementId, activePointIndex, startBindingElement, endBindingElement, } = appState.editingLinearElement;
+            const { elementId, selectedPointsIndices, startBindingElement, endBindingElement, } = appState.editingLinearElement;
             const element = LinearElementEditor.getElement(elementId);
             if (!element) {
                 return false;
             }
             if (
             // case: no point selected → delete whole element
-            activePointIndex == null ||
-                activePointIndex === -1 ||
+            selectedPointsIndices == null ||
                 // case: deleting last remaining point
                 element.points.length < 2) {
                 const nextElements = elements.filter((el) => el.id !== element.id);
@@ -64,12 +68,14 @@ export const actionDeleteSelected = register({
             // We cannot do this inside `movePoint` because it is also called
             // when deleting the uncommitted point (which hasn't caused any binding)
             const binding = {
-                startBindingElement: activePointIndex === 0 ? null : startBindingElement,
-                endBindingElement: activePointIndex === element.points.length - 1
+                startBindingElement: selectedPointsIndices?.includes(0)
+                    ? null
+                    : startBindingElement,
+                endBindingElement: selectedPointsIndices?.includes(element.points.length - 1)
                     ? null
                     : endBindingElement,
             };
-            LinearElementEditor.movePoint(element, activePointIndex, "delete");
+            LinearElementEditor.deletePoints(element, selectedPointsIndices);
             return {
                 elements,
                 appState: {
@@ -77,7 +83,9 @@ export const actionDeleteSelected = register({
                     editingLinearElement: {
                         ...appState.editingLinearElement,
                         ...binding,
-                        activePointIndex: activePointIndex > 0 ? activePointIndex - 1 : 0,
+                        selectedPointsIndices: selectedPointsIndices?.[0] > 0
+                            ? [selectedPointsIndices[0] - 1]
+                            : [0],
                     },
                 },
                 commitToHistory: true,

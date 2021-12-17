@@ -1,12 +1,13 @@
 import { register } from "./register";
 import { getSelectedElements } from "../scene";
-import { getElementMap, getNonDeletedElements } from "../element";
+import { getNonDeletedElements } from "../element";
 import { mutateElement } from "../element/mutateElement";
 import { normalizeAngle, resizeSingleElement } from "../element/resizeElements";
 import { getTransformHandles } from "../element/transformHandles";
 import { isFreeDrawElement, isLinearElement } from "../element/typeChecks";
 import { updateBoundElements } from "../element/binding";
 import { LinearElementEditor } from "../element/linearElementEditor";
+import { arrayToMap } from "../utils";
 const enableActionFlipHorizontal = (elements, appState) => {
     const eligibleElements = getSelectedElements(getNonDeletedElements(elements), appState);
     return eligibleElements.length === 1 && eligibleElements[0].type !== "text";
@@ -48,8 +49,8 @@ const flipSelectedElements = (elements, appState, flipDirection) => {
         return elements;
     }
     const updatedElements = flipElements(selectedElements, appState, flipDirection);
-    const updatedElementsMap = getElementMap(updatedElements);
-    return elements.map((element) => updatedElementsMap[element.id] || element);
+    const updatedElementsMap = arrayToMap(updatedElements);
+    return elements.map((element) => updatedElementsMap.get(element.id) || element);
 };
 const flipElements = (elements, appState, flipDirection) => {
     elements.forEach((element) => {
@@ -94,10 +95,9 @@ const flipElement = (element, appState) => {
         }
     }
     if (isLinearElement(element)) {
-        for (let i = 1; i < element.points.length; i++) {
-            LinearElementEditor.movePoint(element, i, [
-                -element.points[i][0],
-                element.points[i][1],
+        for (let index = 1; index < element.points.length; index++) {
+            LinearElementEditor.movePoints(element, [
+                { index, point: [-element.points[index][0], element.points[index][1]] },
             ]);
         }
         LinearElementEditor.normalizePoints(element);

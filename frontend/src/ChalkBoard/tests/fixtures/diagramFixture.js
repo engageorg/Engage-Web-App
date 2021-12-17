@@ -1,7 +1,8 @@
+import { VERSIONS } from "../../constants";
 import { diamondFixture, ellipseFixture, rectangleFixture, } from "./elementFixture";
 export const diagramFixture = {
     type: "excalidraw",
-    version: 2,
+    version: VERSIONS.excalidraw,
     source: "https://excalidraw.com",
     elements: [diamondFixture, ellipseFixture, rectangleFixture],
     appState: {

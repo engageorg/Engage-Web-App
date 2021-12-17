@@ -38,7 +38,15 @@ export const isBindableElement = (element) => {
         (element.type === "rectangle" ||
             element.type === "diamond" ||
             element.type === "ellipse" ||
-            element.type === "text"));
+            element.type === "image" ||
+            (element.type === "text" && !element.containerId)));
+};
+export const isTextBindableContainer = (element) => {
+    return (element != null &&
+        (element.type === "rectangle" ||
+            element.type === "diamond" ||
+            element.type === "ellipse" ||
+            element.type === "image"));
 };
 export const isExcalidrawElement = (element) => {
     return (element?.type === "text" ||
@@ -48,4 +56,11 @@ export const isExcalidrawElement = (element) => {
         element?.type === "arrow" ||
         element?.type === "freedraw" ||
         element?.type === "line");
+};
+export const hasBoundTextElement = (element) => {
+    return (isBindableElement(element) &&
+        !!element.boundElements?.some(({ type }) => type === "text"));
+};
+export const isBoundToContainer = (element) => {
+    return (element !== null && isTextElement(element) && element.containerId !== null);
 };

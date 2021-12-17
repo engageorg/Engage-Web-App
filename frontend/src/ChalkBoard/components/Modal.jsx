@@ -6,7 +6,7 @@ import { KEYS } from "../keys";
 import { useExcalidrawContainer, useIsMobile } from "./App";
 import { THEME } from "../constants";
 export const Modal = (props) => {
-    const { theme = THEME.LIGHT } = props;
+    const { theme = THEME.LIGHT, closeOnClickOutside = true } = props;
     const modalRoot = useBodyRoot(theme);
     if (!modalRoot) {
         return null;
@@ -19,7 +19,7 @@ export const Modal = (props) => {
         }
     };
     return createPortal(<div className={clsx("Modal", props.className)} role="dialog" aria-modal="true" onKeyDown={handleKeydown} aria-labelledby={props.labelledBy}>
-      <div className="Modal__background" onClick={props.onCloseRequest}></div>
+      <div className="Modal__background" onClick={closeOnClickOutside ? props.onCloseRequest : undefined}></div>
       <div className="Modal__content" style={{ "--max-width": `${props.maxWidth}px` }} tabIndex={0}>
         {props.children}
       </div>

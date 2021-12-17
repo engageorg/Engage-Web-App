@@ -22,6 +22,7 @@ export const exportCanvas = async (type, elements, appState, files, { exportBack
         }, files);
         if (type === "svg") {
             return await fileSave(new Blob([tempSvg.outerHTML], { type: MIME_TYPES.svg }), {
+                description: "Export to SVG",
                 name,
                 extension: "svg",
                 fileHandle,
@@ -49,6 +50,7 @@ export const exportCanvas = async (type, elements, appState, files, { exportBack
             });
         }
         return await fileSave(blob, {
+            description: "Export to PNG",
             name,
             extension: "png",
             fileHandle,

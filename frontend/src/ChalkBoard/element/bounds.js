@@ -376,3 +376,7 @@ export const getClosestElementBounds = (elements, from) => {
     });
     return getElementBounds(closestElement);
 };
+export const getCommonBoundingBox = (elements) => {
+    const [minX, minY, maxX, maxY] = getCommonBounds(elements);
+    return { minX, minY, maxX, maxY };
+};

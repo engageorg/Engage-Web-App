@@ -1,5 +1,5 @@
 import { loadLibraryFromBlob } from "./blob";
-import { restoreElements } from "./restore";
+import { restoreElements, restoreLibraryItems } from "./restore";
 import { getNonDeletedElements } from "../element";
 class Library {
     constructor(app) {
@@ -9,8 +9,8 @@ class Library {
             this.libraryCache = [];
         };
         this.restoreLibraryItem = (libraryItem) => {
-            const elements = getNonDeletedElements(restoreElements(libraryItem, null));
-            return elements.length ? elements : null;
+            const elements = getNonDeletedElements(restoreElements(libraryItem.elements, null));
+            return elements.length ? { ...libraryItem, elements } : null;
         };
         this.loadLibrary = () => {
             return new Promise(async (resolve) => {
@@ -56,9 +56,9 @@ class Library {
         this.app = app;
     }
     /** imports library (currently merges, removing duplicates) */
-    async importLibrary(blob) {
+    async importLibrary(blob, defaultStatus = "unpublished") {
         const libraryFile = await loadLibraryFromBlob(blob);
-        if (!libraryFile || !libraryFile.library) {
+        if (!libraryFile || !(libraryFile.libraryItems || libraryFile.library)) {
             return;
         }
         /**
@@ -66,27 +66,29 @@ class Library {
          */
         const isUniqueitem = (existingLibraryItems, targetLibraryItem) => {
             return !existingLibraryItems.find((libraryItem) => {
-                if (libraryItem.length !== targetLibraryItem.length) {
+                if (libraryItem.elements.length !== targetLibraryItem.elements.length) {
                     return false;
                 }
                 // detect z-index difference by checking the excalidraw elements
                 // are in order
-                return libraryItem.every((libItemExcalidrawItem, idx) => {
-                    return (libItemExcalidrawItem.id === targetLibraryItem[idx].id &&
+                return libraryItem.elements.every((libItemExcalidrawItem, idx) => {
+                    return (libItemExcalidrawItem.id === targetLibraryItem.elements[idx].id &&
                         libItemExcalidrawItem.versionNonce ===
-                            targetLibraryItem[idx].versionNonce);
+                            targetLibraryItem.elements[idx].versionNonce);
                 });
             });
         };
         const existingLibraryItems = await this.loadLibrary();
-        const filtered = libraryFile.library.reduce((acc, libraryItem) => {
-            const restoredItem = this.restoreLibraryItem(libraryItem);
+        const library = libraryFile.libraryItems || libraryFile.library || [];
+        const restoredLibItems = restoreLibraryItems(library, defaultStatus);
+        const filteredItems = [];
+        for (const item of restoredLibItems) {
+            const restoredItem = this.restoreLibraryItem(item);
             if (restoredItem && isUniqueitem(existingLibraryItems, restoredItem)) {
-                acc.push(restoredItem);
+                filteredItems.push(restoredItem);
             }
-            return acc;
-        }, []);
-        await this.saveLibrary([...existingLibraryItems, ...filtered]);
+        }
+        await this.saveLibrary([...filteredItems, ...existingLibraryItems]);
     }
 }
 export default Library;

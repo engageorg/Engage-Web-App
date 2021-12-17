@@ -42,35 +42,6 @@ export const getFontFamilyString = ({ fontFamily, }) => {
 export const getFontString = ({ fontSize, fontFamily, }) => {
     return `${fontSize}px ${getFontFamilyString({ fontFamily })}`;
 };
-// https://github.com/grassator/canvas-text-editor/blob/master/lib/FontMetrics.js
-export const measureText = (text, font) => {
-    const line = document.createElement("div");
-    const body = document.body;
-    line.style.position = "absolute";
-    line.style.whiteSpace = "pre";
-    line.style.font = font;
-    body.appendChild(line);
-    line.innerText = text
-        .split("\n")
-        // replace empty lines with single space because leading/trailing empty
-        // lines would be stripped from computation
-        .map((x) => x || " ")
-        .join("\n");
-    const width = line.offsetWidth;
-    const height = line.offsetHeight;
-    // Now creating 1px sized item that will be aligned to baseline
-    // to calculate baseline shift
-    const span = document.createElement("span");
-    span.style.display = "inline-block";
-    span.style.overflow = "hidden";
-    span.style.width = "1px";
-    span.style.height = "1px";
-    line.appendChild(span);
-    // Baseline is important for positioning text on canvas
-    const baseline = span.offsetTop + span.offsetHeight;
-    document.body.removeChild(line);
-    return { width, height, baseline };
-};
 export const debounce = (fn, timeout) => {
     let handle = 0;
     let lastArgs = null;
@@ -95,6 +66,19 @@ export const debounce = (fn, timeout) => {
         clearTimeout(handle);
     };
     return ret;
+};
+// https://github.com/lodash/lodash/blob/es/chunk.js
+export const chunk = (array, size) => {
+    if (!array.length || size < 1) {
+        return [];
+    }
+    let index = 0;
+    let resIndex = 0;
+    const result = Array(Math.ceil(array.length / size));
+    while (index < array.length) {
+        result[resIndex++] = array.slice(index, (index += size));
+    }
+    return result;
 };
 export const selectNode = (node) => {
     const selection = window.getSelection();
@@ -181,6 +165,7 @@ export const tupleToCoors = (xyTuple) => {
 /** use as a rejectionHandler to mute filesystem Abort errors */
 export const muteFSAbortError = (error) => {
     if (error?.name === "AbortError") {
+        console.warn(error);
         return;
     }
     throw error;
@@ -302,4 +287,20 @@ export const preventUnload = (event) => {
     event.preventDefault();
     // NOTE: modern browsers no longer allow showing a custom message here
     event.returnValue = "";
+};
+export const bytesToHexString = (bytes) => {
+    return Array.from(bytes)
+        .map((byte) => `0${byte.toString(16)}`.slice(-2))
+        .join("");
+};
+export const getUpdatedTimestamp = () => process.env.NODE_ENV === "test" ? 1 : Date.now();
+/**
+ * Transforms array of objects containing `id` attribute,
+ * or array of ids (strings), into a Map, keyd by `id`.
+ */
+export const arrayToMap = (items) => {
+    return items.reduce((acc, element) => {
+        acc.set(typeof element === "string" ? element : element.id, element);
+        return acc;
+    }, new Map());
 };
