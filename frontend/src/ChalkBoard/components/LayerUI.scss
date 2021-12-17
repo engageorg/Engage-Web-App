@@ -1,64 +1,6 @@
 @import "open-color/open-color";
 
 .excalidraw {
-  .layer-ui__library {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .layer-ui__library-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      margin: 2px 10px;
-
-      button {
-        // 2px from the left to account for focus border of left-most button
-        margin: 0 2px;
-      }
-
-      a {
-        margin-inline-start: auto;
-        // 17px for scrollbar (needed for overlay scrollbars on Big Sur?) + 1px extra
-        padding-inline-end: 18px;
-        white-space: nowrap;
-      }
-    }
-  }
-  .inputContainer{
-    display: flex;
-    flex-direction: row;
-  }
-
-  .fa-search{
-    font-size: 20px;
-    padding: 5px 0px 3px 4px;
-  }
-  
-  .librarySearchMenu{
-    display: flex;
-    flex-direction: column;
-    padding: 4px;
-  }
-
-  .librarySearchMenu input {
-    border-radius: 15px;
-    margin-bottom: 5px;
-    height: 25px;
-    font-size: 20px;
-  }
-  .layer-ui__library-message {
-    padding: 10px 20px;
-    max-width: 200px;
-  }
-
-  .layer-ui__library-items {
-    max-height: 40vh;
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-    overflow-y: scroll; /* Add vertical scrollbar */
-  }
-
   .layer-ui__wrapper {
     z-index: var(--zIndex-layerUI);
 
