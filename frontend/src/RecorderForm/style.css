@@ -49,3 +49,10 @@ input::-webkit-input-placeholder{
     width: 500px;
     height: 300px;
 }
+
+input[type="file" i] {
+    cursor: default;
+    color: transparent;
+    white-space: pre;
+    text-align: start !important;
+}
