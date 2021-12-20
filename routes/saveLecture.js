@@ -21,7 +21,7 @@ if (firebase.apps.length === 0) {
 }
 
 const database = firebase.firestore();
-
+var image
 router.get("/",(req, res) => {
   let lecturesArray = []
   firebase.firestore().collection("recordIndex").orderBy("createdAt", 'desc')
@@ -97,7 +97,6 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  //console.log(req.body.lectureData)
   let id;
   const recordingString = req.body.lectureData.recording;
   const audioString = req.body.lectureData.audio;
@@ -105,7 +104,8 @@ router.post("/", (req, res) => {
   const creator = req.body.lectureData.creator;
   const type = req.body.lectureData.type;
   const language = req.body.lectureData.language;
-  const imageString = req.body.lectureData.image;
+  const imageString = image;
+  console.log(image)
   database
     .collection("events")
     .add({
@@ -127,7 +127,7 @@ router.post("/", (req, res) => {
           type: type,
           language: language,
           id: id,
-          imageThumnail:imageString
+          imageThumnail:image
         })
         .then((result) => {
           console.log("Recording Tally Saved");
@@ -154,6 +154,11 @@ router.post("/", (req, res) => {
         });
     });
 });
+
+router.post("/thum", (req, res) => {
+  image = req.body.imageString
+});
+
 
 async function getThumnail (id) {
   var storageRef = firebase.storage().ref();

@@ -356,13 +356,7 @@ export default function Recorder(props) {
         }
       })
   }
-  function thumnailUpload(e) {
-    var reader = new FileReader();
-    reader.readAsDataURL(e);
-    reader.onloadend = () => {
-      imageString = reader.result
-    };
-  }
+
   function handleStop(e) {
     e.preventDefault();
     stopRecording();
@@ -378,7 +372,6 @@ export default function Recorder(props) {
             className="fas fa-microphone-slash stop-record"
             onClick={handleStop}
           ></i>
-          <input type = 'file' className="thumnailImage" onChange={(e) => thumnailUpload(e.target.files[0])}/>
         </div>
         <div className="upload-button">
           <i class="fas fa-file-upload record" onClick={uploadRecording}></i>

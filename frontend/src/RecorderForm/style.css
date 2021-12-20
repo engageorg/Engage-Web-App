@@ -43,3 +43,9 @@ input::-webkit-input-placeholder{
     width: 15%;
     height: 30px;
 }
+
+.thumNailPreview{
+    display: none;
+    width: 500px;
+    height: 300px;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect} from 'react'
 import {useHistory} from "react-router-dom";
+import axios from "axios";
 import { motion } from "framer-motion";
 import "./style.css"
 import { v4 as uuidv4 } from 'uuid';
@@ -7,6 +8,7 @@ function RecorderForm() {
     const classid = uuidv4();
     const path = document.location.pathname
     const history = useHistory();
+    var imageString;
     let lectureName;
     let lectureType;
     let lectureCreator;
@@ -44,7 +46,8 @@ function RecorderForm() {
         const name = document.getElementById("lectureName")
         const creator = document.getElementById("creator")
         const button = document.getElementById("submit")
-
+        const thumNailButton = document.getElementsByClassName('thumnailImage')[0]
+        const thumNailPreview = document.getElementsByClassName('thumNailPreview')[0]
         button.addEventListener("click", () => {
             lectureType = type.value
             lectureName = name.value
@@ -60,6 +63,22 @@ function RecorderForm() {
                }else{
                    alert("Fill The Form")
                }
+            axios.post("http://localhost:5000/savelecture/thum", {
+                imageString,
+              }).then(response => {
+                if(response.data) {
+                  alert("Lecture Saved")
+                }
+              })
+        })
+        thumNailButton.addEventListener("change", (e) => {
+            var reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onloadend = () => {
+                thumNailPreview.src = reader.result
+                imageString = reader.result
+                thumNailPreview.style.display = "block"
+            };
         })
         type.addEventListener("change", (e) =>{
             if(e.target.value === "dsa"){
@@ -69,7 +88,7 @@ function RecorderForm() {
             }
         })
     },[])
-
+    
     return (
         <motion.div  initial= {{opacity:0, scale: 0.8 }} animate={{opacity:1, scale: 1, duration:0.5}} transition= {{type: "Tween"}}>
         <form className="lectureForm">
@@ -80,6 +99,8 @@ function RecorderForm() {
                 <option value="dsa">DSA</option>
                 <option value="dra">Chalk Board</option>
             </select>
+            <input type = 'file' className="thumnailImage"/>
+            <img className='thumNailPreview'></img>
             <select name="language" id="language"></select>
             <button type="button" id="submit">Submit</button>
         </form>

@@ -53,3 +53,7 @@
   color: rgb(9, 216, 9);
   transition: 0.1s;
 }
+
+.thumnailImage span{
+  display: none;
+}
