@@ -1601,7 +1601,7 @@ const files = {
     type: "file",
     name: "python",
     language: "python",
-    value: Python2Code
+    value: JSCode
   },
   "python3": {
     type: "file",

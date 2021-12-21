@@ -140,15 +140,14 @@ function TextEditor(props) {
     let consoleView = false;
     let selectedSidebar = false;
     const waitTime = 500; //in ms
+    const codeText = document.getElementsByClassName("code_text")[0]
     dispatch(setSrcDocs());
-    document
-      .getElementsByClassName("code_text")[0]
-      .addEventListener("keydown", function () {
+      codeText
+      .addEventListener("keyup", function () {
         setLn(editorRef.current.getPosition().lineNumber);
         setCol(editorRef.current.getPosition().column);
       });
-    document
-      .getElementsByClassName("code_text")[0]
+      codeText
       .addEventListener("keyup", function () {
         clearTimeout(timer);
         timer = setTimeout(() => {
@@ -156,13 +155,14 @@ function TextEditor(props) {
         }, waitTime);
       });
 
-      document
-      .getElementsByClassName("code_text")[0]
+      codeText
       .addEventListener("click", function () {
         clearTimeout(timer);
         timer = setTimeout(() => {
           dispatch(setSrcDocs());
         }, waitTime);
+        setLn(editorRef.current.getPosition().lineNumber);
+        setCol(editorRef.current.getPosition().column);
       });
 
     document.addEventListener("keydown", function (e) {
