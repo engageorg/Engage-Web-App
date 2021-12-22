@@ -75,3 +75,10 @@ export const python3 = () => {
         type : "python3",
     }
 }
+
+export const changefile = (file_id) => {
+    return {
+        type : "changefile",
+        f_id : file_id
+    }
+}

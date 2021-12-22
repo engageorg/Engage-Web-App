@@ -1645,21 +1645,21 @@ export const webDFiles = [
       "name": "index.html",
       "id": "6zgImNpHX5gcQq9AMCsGF",
       "children": [],
-      "content": ""
+      "content": "aman"
   },
   {
       "type": "file",
       "name": "script.js",
       "id": "wjS-tGoSLre8AUnuLXiim",
       "children": [],
-      "content": ""
+      "content": "aman"
   },
   {
       "type": "file",
       "name": "style.css",
       "id": "o-KZ6TIhTfeClAUkKFhwF",
       "children": [],
-      "content": ""
+      "content": "aman"
   }
 ]
 

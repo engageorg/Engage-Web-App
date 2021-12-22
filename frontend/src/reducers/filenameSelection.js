@@ -1,5 +1,11 @@
-const filenameReducer = (state = "index.html", action) => {
+import { webDFiles } from "../assets/files";
+var files = webDFiles
+const filenameReducer = (state = files[0], action) => {
   switch (action.type) {
+    case "changefile":
+      state = files.find( (file) => file.id === action.f_id )
+      console.log(files.find( (file) => file.id === action.f_id ));
+      return state;
     case "js":
       state = "script.js";
       return state;

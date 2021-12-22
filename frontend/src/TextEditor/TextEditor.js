@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Hook, Console, Unhook } from "console-feed";
 import Editor from "@monaco-editor/react";
 import Split from "react-split";
-import { js, css, html, setSrcDocs } from "../actions";
+import { js, css, html, setSrcDocs, changefile } from "../actions";
 import files, { webDFiles } from "../assets/files";
 import { nanoid } from 'nanoid'
 import "./style.css";
@@ -17,8 +17,9 @@ function TextEditor(props) {
   const [Col, setCol] = useState(1);
   const dispatch = useDispatch();
   const editorRef = useRef(null);
-
-  const file = files[fileName];
+  var editorLang = "html";
+  const file = files["index.html"];
+  const curr = useSelector((state) => state.fileName);
 
   function handleEditorChange(value) {
     file.value = value;
@@ -319,16 +320,38 @@ function TextEditor(props) {
         </div>
         <div className="sidebar-navbutton">
 
-          {Object.keys(files).map((key,index) => (
-            <button
-              className={files[key].class}
-              disabled={fileName === files[key].name}
-              onClick={() => dispatch(files[key].func)}
-            > 
-              <i className={files[key].icon}></i>{" "}
-              <span className={`buttontext `+files[key].btntext}>{files[key].name} </span>
+          {webDFiles.map((node) => {
+            let class_name = node.name.split('.').pop() + 'file';
+            let class_name_span = "buttontext " + node.name.split('.').pop();
+            let class_name_icon = '';
+            let func;
+            switch (node.name.split('.').pop()) {
+              case "html":
+                class_name_icon = "fab fa-html5";
+                editorLang = "html";
+                break;
+              case "css":
+                class_name_icon = "fab fa-css3-alt"; 
+                editorLang = "css";       
+                break;
+              case "js":
+                class_name_icon = "fab fa-js-square"; 
+                editorLang = "javascript";
+                break;
+              default:
+                break;
+            }
+            return(
+              <button
+              className= {class_name}
+              disabled={curr.id === node.id}
+              onClick={() => dispatch(changefile(node.id))}
+            >
+              <i className={class_name_icon}></i>{" "}
+              <span className={class_name_span}>{node.name} </span>
             </button>
-          ))}
+            )
+          })}
 
           {/* <button
             className="htmlfile"
@@ -410,14 +433,14 @@ function TextEditor(props) {
             <Editor
               height="calc(100vh - 2.4vh - 35px)"
               theme="vs-dark"
-              path={file.name}
-              defaultLanguage={file.language}
-              defaultValue={file.value}
+              path={curr.name}
+              defaultLanguage={editorLang}
+              defaultValue={curr.content}
               saveViewState={true}
               onMount={handleEditorDidMount}
               onChange={handleEditorChange}
               cursorSmoothCaretAnimation="true"
-              value={file.value}
+              value={curr.content}
               className="code_text"
             />
           </div>
@@ -465,7 +488,7 @@ function TextEditor(props) {
           <span className="footer_text r_footer line-col-num">{`Ln ${Ln}, Col ${Col}`}</span>
           <span className="footer_text r_footer">Layout: US</span>
           <span className="footer_text r_footer language">
-            <i className="fab fa-markdown"></i> {file.language}
+            <i className="fab fa-markdown"></i> {editorLang}
           </span>
           <span className="footer_text r_footer">CRLF</span>
           <span className="footer_text r_footer">UTF-8</span>
