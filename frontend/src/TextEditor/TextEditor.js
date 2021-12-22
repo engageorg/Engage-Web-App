@@ -4,7 +4,8 @@ import { Hook, Console, Unhook } from "console-feed";
 import Editor from "@monaco-editor/react";
 import Split from "react-split";
 import { js, css, html, setSrcDocs } from "../actions";
-import files from "../assets/files";
+import files, { webDFiles } from "../assets/files";
+import { nanoid } from 'nanoid'
 import "./style.css";
 import ChalkBoard from "../ChalkBoard";
 
@@ -172,42 +173,49 @@ function TextEditor(props) {
       const directoryHandle = await window.showDirectoryPicker()
       let folderName = `${directoryHandle.name}`;
 
-      const dir = 
-      {
-        "rootfolder" : {
-          type : "directory",
+      const dir = [ 
+        {
+          type : 'directory',
           name : folderName,
-          content : {}
-        }
-      } 
-      async function handleFolder(curDir, directoryhandle) {
+          children : [],
+          id : nanoid(),
+          content : '',
+        },
+      ] 
+      let i = 0
+      async function handleFolder(child, directoryhandle) {
 
         for await (let [fileName, handle] of directoryhandle) {
          
          if(handle.kind === "directory"){
-          console.log("folder",curDir);
-          curDir[`${fileName}`] = ''
-          curDir[`${fileName}`] = {
-             type : "folder",
+           dir.push({
+             type : 'directory',
              name : fileName,
-             content : {}
-           };
-           handleFolder(curDir[`${fileName}`]["content"], handle);
+             id : nanoid(),
+             children : [],
+             content : ''
+           })
+           i++;
+           child.push(dir[i].id);
+           handleFolder(dir[i].children, handle);
          }
          else if(handle.kind === "file") {
           const file = await handle.getFile();
           const fileContent = await file.text()
-          curDir[`${fileName}`] = ''
-          curDir[`${fileName}`] = {
-             type : "file",
-             name : fileName,
-             content : fileContent
-           };
+          dir.push({
+            type : 'file',
+            name : fileName,
+            id : nanoid(),
+            children : [],
+            content : fileContent
+          })
+          i++;
+          child.push(dir[i].id);
          }
         }
       }
 
-      handleFolder(dir["rootfolder"].content, directoryHandle);
+      handleFolder(dir[i].children, directoryHandle);
       console.log('🎹', dir)
     });
 

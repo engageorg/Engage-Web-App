@@ -1611,4 +1611,56 @@ const files = {
   }
 };
 
+export const webDFiles = [
+  {
+      "type": "directory",
+      "name": "test_folder",
+      "children": [
+          "5s3NmK28yQTyqV3UWVceg",
+          "sa1GQ3eYSvOv1kRvhEoQV",
+          "wjS-tGoSLre8AUnuLXiim",
+          "o-KZ6TIhTfeClAUkKFhwF"
+      ],
+      "id": "zQWR3ITnahzb-SK-aP7Ao",
+      "content": ""
+  },
+  {
+      "type": "directory",
+      "name": "another_folder",
+      "id": "5s3NmK28yQTyqV3UWVceg",
+      "children": [
+          "6zgImNpHX5gcQq9AMCsGF"
+      ],
+      "content": ""
+  },
+  {
+      "type": "file",
+      "name": "index.html",
+      "id": "sa1GQ3eYSvOv1kRvhEoQV",
+      "children": [],
+      "content": ""
+  },
+  {
+      "type": "file",
+      "name": "index.html",
+      "id": "6zgImNpHX5gcQq9AMCsGF",
+      "children": [],
+      "content": ""
+  },
+  {
+      "type": "file",
+      "name": "script.js",
+      "id": "wjS-tGoSLre8AUnuLXiim",
+      "children": [],
+      "content": ""
+  },
+  {
+      "type": "file",
+      "name": "style.css",
+      "id": "o-KZ6TIhTfeClAUkKFhwF",
+      "children": [],
+      "content": ""
+  }
+]
+
 export default files;
