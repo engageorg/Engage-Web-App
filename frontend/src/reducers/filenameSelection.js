@@ -1,9 +1,22 @@
 import { webDFiles } from "../assets/files";
-var files = webDFiles
+
+var fi = webDFiles;
+
+export const files = (state = webDFiles, action) => {
+  switch(action.type){
+    case "uploadfile":
+      state = action.file;
+      fi = webDFiles
+      return state;
+    default:
+      return state;
+  }
+}
+
 const filenameReducer = (state = files[0], action) => {
   switch (action.type) {
     case "changefile":
-      state = files.find( (file) => file.id === action.f_id )
+      state = fi.find( (file) => file.id === action.f_id )
       console.log(files.find( (file) => file.id === action.f_id ));
       return state;
     case "js":
@@ -19,34 +32,5 @@ const filenameReducer = (state = files[0], action) => {
       return state;
   }
 };
-
-
-const languageReducer = (state="c", action) => {
-  switch(action.type){
-    case "c":
-      state = "c";
-      return state;
-    case "c99":
-      state = "c99";
-      return state;
-    case "cpp":
-      state = "cpp";
-      return state;
-    case "cpp14":
-      state = "cpp14";
-      return state;
-    case "cpp17":
-      state = "cpp17";
-      return state;
-    case "python2":
-      state = "python2";
-      return state;
-    case "python3":
-      state = "python3";
-      return state;
-    default:
-      return state;
-  }
-}
 
 export default filenameReducer;

@@ -82,3 +82,10 @@ export const changefile = (file_id) => {
         f_id : file_id
     }
 }
+
+export const uploadfile = (files) => {
+    return {
+        type : "uploadfile",
+        file : files
+    }
+}

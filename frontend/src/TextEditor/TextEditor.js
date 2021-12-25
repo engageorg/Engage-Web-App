@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Hook, Console, Unhook } from "console-feed";
 import Editor from "@monaco-editor/react";
 import Split from "react-split";
-import { js, css, html, setSrcDocs, changefile } from "../actions";
-import files, { webDFiles } from "../assets/files";
+import { js, css, html, setSrcDocs, changefile, uploadfile } from "../actions";
+import files from "../assets/files";
 import { nanoid } from 'nanoid'
 import "./style.css";
 import ChalkBoard from "../ChalkBoard";
@@ -13,6 +13,7 @@ function TextEditor(props) {
   const srcDoc = useSelector((state) => state.srcDocs);
   const [logs, setLogs] = useState([]);
   const fileName = useSelector((state) => state.fileName);
+  const webDFiles = useSelector((state) => state.files);
   const [Ln, setLn] = useState(1);
   const [Col, setCol] = useState(1);
   const dispatch = useDispatch();
@@ -217,6 +218,7 @@ function TextEditor(props) {
       }
 
       handleFolder(dir[i].children, directoryHandle);
+      dispatch(uploadfile(dir));
       console.log('🎹', dir)
     });
 
