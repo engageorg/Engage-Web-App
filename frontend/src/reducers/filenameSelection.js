@@ -13,7 +13,7 @@ export const files = (state = webDFiles, action) => {
   }
 }
 
-const filenameReducer = (state = files[0], action) => {
+const filenameReducer = (state = webDFiles, action) => {
   switch (action.type) {
     case "changefile":
       state = fi.find( (file) => file.id === action.f_id )
