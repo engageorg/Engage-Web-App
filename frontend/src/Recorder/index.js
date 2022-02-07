@@ -6,6 +6,14 @@ import MicRecorder from "mic-recorder-to-mp3";
 import axios from "axios";
 import "./style.css";
 var startTime;
+
+let url;
+if (env === "development") {
+  url = "http://localhost:5000/savelecture";
+} else {
+  url = "https://fierce-reef-05156.herokuapp.com/savelecture";
+}
+
 export default function Recorder(props) {
   const name = props.location.state.lectureType;
   const language = props.location.state.languageType;
@@ -348,7 +356,7 @@ export default function Recorder(props) {
         language : props.location.state.languageType,
         image:imageString
       };
-      axios.post("http://localhost:5000/savelecture", {
+      axios.post(url, {
         lectureData,
       }).then(response => {
         if(response.data) {
