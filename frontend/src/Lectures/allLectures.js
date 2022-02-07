@@ -3,6 +3,14 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import Card from '../Card/card'
 import axios from "axios";
+
+let url;
+if (env === "development") {
+  url = "http://localhost:5000/savelecture";
+} else {
+  url = "https://fierce-reef-05156.herokuapp.com/savelecture";
+}
+
 function Preloader(){
     return(
       <div className = "loader">
@@ -56,7 +64,7 @@ function AllLectures() {
     const [isLoading, setLoading] = useState(false)
     useEffect(() => {
         console.log("WROING")
-        axios.get("http://localhost:5000/savelecture").then(result => {
+        axios.get(url).then(result => {
             console.log(result.data)
             setLectures(result.data)
             setLoading(true)
