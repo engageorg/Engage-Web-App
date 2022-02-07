@@ -6,6 +6,7 @@ import MicRecorder from "mic-recorder-to-mp3";
 import axios from "axios";
 import "./style.css";
 var startTime;
+const env = process.env.NODE_ENV; // current environment
 
 let url;
 if (env === "development") {

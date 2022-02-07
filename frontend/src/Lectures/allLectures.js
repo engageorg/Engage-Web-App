@@ -3,6 +3,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import Card from '../Card/card'
 import axios from "axios";
+const env = process.env.NODE_ENV; // current environment
 
 let url;
 if (env === "development") {
