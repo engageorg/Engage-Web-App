@@ -72,8 +72,8 @@ function RecorderForm() {
               })
         })
         thumNailButton.addEventListener("change", (e) => {
-            console.log(e.target.files[0])
-            if(e.target.files[0].type === "image/jpeg" && e.target.files[0].size<=100000) {
+            console.log(e.target.files[0].type)
+            if(e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/png" || e.target.files[0].type === "image/jpg" && e.target.files[0].size<=100000) {
                 var reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
                 reader.onloadend = () => {
